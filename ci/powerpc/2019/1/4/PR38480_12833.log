@@ -1,0 +1,159 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-34 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins2328165156719003479.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+chown: cannot access '/home/docker/workspace/Docker-PRs-powerpc/bundles': No such file or directory
+Failed build for hudson.tasks.Shell@39ff8a96
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 2b7e084dc98b1259e3be82d4c8d4fdfdcf615ba5 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 2b7e084dc98b1259e3be82d4c8d4fdfdcf615ba5
+Commit message: "Merge pull request #38473 from thaJeztah/use_testenv_client"
+ > git rev-list --no-walk 2b7e084dc98b1259e3be82d4c8d4fdfdcf615ba5 # timeout=10
+Set build name.
+New build name is '#38480'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:2b7e084) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins3767521600427929459.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38480/head -> origin/pr/38480
+Updating 2b7e084..ae3ca7b
+Fast-forward
+ integration/image/import_test.go | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+Sending build context to Docker daemon   45.1MB
+Step 1/94 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+56fd7f7cdb66: Pulling fs layer
+9f635fa148b3: Pulling fs layer
+f8c0099cf676: Pulling fs layer
+ac453cf9be46: Pulling fs layer
+87753e667bd2: Pulling fs layer
+fd06104180c0: Pulling fs layer
+c571c0ef23fa: Pulling fs layer
+ac453cf9be46: Waiting
+87753e667bd2: Waiting
+fd06104180c0: Waiting
+c571c0ef23fa: Waiting
+f8c0099cf676: Verifying Checksum
+f8c0099cf676: Download complete
+9f635fa148b3: Verifying Checksum
+9f635fa148b3: Download complete
+56fd7f7cdb66: Verifying Checksum
+56fd7f7cdb66: Download complete
+ac453cf9be46: Verifying Checksum
+ac453cf9be46: Download complete
+c571c0ef23fa: Verifying Checksum
+c571c0ef23fa: Download complete
+87753e667bd2: Verifying Checksum
+87753e667bd2: Download complete
+56fd7f7cdb66: Pull complete
+9f635fa148b3: Pull complete
+f8c0099cf676: Pull complete
+fd06104180c0: Verifying Checksum
+fd06104180c0: Download complete
+ac453cf9be46: Pull complete
+87753e667bd2: Pull complete
+fd06104180c0: Pull complete
+c571c0ef23fa: Pull complete
+Digest: sha256:4f1cd313c3d59faa0ca93910f9d853bd74be7afbf6f6997aee06924415ec7dc9
+Status: Downloaded newer image for golang:1.11.4
+ ---> c35b367ad4c4
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in 3a3942c98df6
+Removing intermediate container 3a3942c98df6
+ ---> 813fa715ee25
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in 2786afd796a8
+Removing intermediate container 2786afd796a8
+ ---> 7802d5a1d871
+Step 4/94 : FROM base AS criu
+ ---> 7802d5a1d871
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Running in 886bca261103
+Removing intermediate container 886bca261103
+ ---> 4bb0305ba0ab
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in ee86312c0710
+Err:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:2 http://security.debian.org/debian-security stretch/updates InRelease
+  Could not resolve 'security.debian.org'
+Err:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Reading package lists...
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Failed to fetch http://security.debian.org/debian-security/dists/stretch/updates/InRelease  Could not resolve 'security.debian.org'
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch-updates/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package libnet-dev
+E: Unable to locate package libprotobuf-c0-dev
+E: Unable to locate package libprotobuf-dev
+E: Unable to locate package libnl-3-dev
+E: Unable to locate package libcap-dev
+E: Unable to locate package protobuf-compiler
+E: Unable to locate package protobuf-c-compiler
+E: Unable to locate package python-protobuf
+Removing intermediate container ee86312c0710
+The command '/bin/sh -c apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu' returned a non-zero code: 100
+Unable to find image 'docker-powerpc:ae3ca7b' locally
+docker: Error response from daemon: pull access denied for docker-powerpc, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38480'
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins3228220883290120394.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins3079072337127600260.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+Unable to find image 'ppc64le/busybox:latest' locally
+latest: Pulling from ppc64le/busybox
+1580a7fbce05: Pulling fs layer
+1580a7fbce05: Verifying Checksum
+1580a7fbce05: Download complete
+1580a7fbce05: Pull complete
+Digest: sha256:dddeeefa525ee375a4001a37f2cd981ee8c23df49e4e9f1084c1e9a1029f1491
+Status: Downloaded newer image for ppc64le/busybox:latest
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins4714169008051526022.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Sending e-mails to: tophj@linux.vnet.ibm.com christy@linux.vnet.ibm.com
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

@@ -1,0 +1,34 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-27 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins2244746892107105764.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+e27cb5f7cb08: Pulling fs layer
+e27cb5f7cb08: Verifying Checksum
+e27cb5f7cb08: Download complete
+e27cb5f7cb08: Pull complete
+Digest: sha256:a96ac102195557231128367b35920c085157ee8c5e378cb2842147f0b71e9d58
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@54493290
+Wiping out workspace first.
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins7352886401029729653.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+chown: /workspace/bundles/test-integration/d075fc2a28afb/root/vfs/dir/78fff822b05d7bc2a49efb2d29a70407829ae63b11c17901cb82dabe7dddc12c/bin/install: No such file or directory
+Build step 'Execute Scripts' marked build as failure
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

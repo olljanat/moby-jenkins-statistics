@@ -1,0 +1,271 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-7 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision de640c9f4932d851316a0a72470c4d3446f6f5ac (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f de640c9f4932d851316a0a72470c4d3446f6f5ac
+Commit message: "Merge pull request #38038 from AkihiroSuda/ubuntu-overlayfs"
+ > git rev-list --no-walk de640c9f4932d851316a0a72470c4d3446f6f5ac # timeout=10
+Set build name.
+New build name is '#38465'
+[docker] $ sh -xe C:\Users\jenkins\jenkins3795705345150921394.sh
++ git fetch origin +refs/pull/38465/head:refs/remotes/origin/pr/38465
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/38465/head -> origin/pr/38465
++ git merge origin/pr/38465
+Merge made by the 'recursive' strategy.
+ Dockerfile.windows              |  2 +-
+ text.txt                        |  1 +
+ volume/mounts/lcow_parser.go    |  4 ++--
+ volume/mounts/linux_parser.go   |  1 +
+ volume/mounts/parser_test.go    | 40 ++++++++++++++++++++--------------------
+ volume/mounts/windows_parser.go | 38 +++++++++++++++++++++++---------------
+ 6 files changed, 48 insertions(+), 38 deletions(-)
+ create mode 100644 text.txt
+[docker] $ powershell.exe -NonInteractive -ExecutionPolicy ByPass "& 'C:\Users\jenkins\jenkins2022341637929259690.ps1'"
+NEW entrypoint
+
+INFO: executeCI.ps1 starting at Fri Jan  4 16:57:15 CUT 2019
+
+INFO: Script version 28-Aug-2018 09:33 PDT
+INFO: Running git version 2.18.0.windows.1
+INFO: Branch:rs1_release Build:14393.2312.180607-1919
+INFO: Environment variables:
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+_                              /cygdrive/c/ProgramData/Oracle/Java/javapath/java                                       
+ALLUSERSPROFILE                C:\ProgramData                                                                          
+APPDATA                        C:\Users\jenkins\AppData\Roaming                                                        
+BASE_BRANCH                    master                                                                                  
+BUILD_CAUSE                    MANUALTRIGGER                                                                           
+BUILD_CAUSE_MANUALTRIGGER      true                                                                                    
+BUILD_DISPLAY_NAME             #38465                                                                                  
+BUILD_ID                       23550                                                                                   
+BUILD_NUMBER                   23550                                                                                   
+BUILD_TAG                      jenkins-Docker-PRs-WoW-RS1-23550                                                        
+BUILD_URL                      https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23550/                         
+CommonProgramFiles             C:\Program Files\Common Files                                                           
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files                                                     
+CommonProgramW6432             C:\Program Files\Common Files                                                           
+COMPUTERNAME                   jenkins-rs1-7                                                                           
+COMSPEC                        C:\Windows\system32\cmd.exe                                                             
+ConfigSet                      rs                                                                                      
+CYGWIN                         binmode ntsec                                                                           
+EXECUTOR_NUMBER                0                                                                                       
+GIT_AUTHOR_EMAIL               janky@dockerproject.org                                                                 
+GIT_AUTHOR_NAME                Docker Jenkins                                                                          
+GIT_BASE_REPO                  moby/moby                                                                               
+GIT_BRANCH                     origin/master                                                                           
+GIT_COMMIT                     de640c9f4932d851316a0a72470c4d3446f6f5ac                                                
+GIT_COMMITTER_EMAIL            janky@dockerproject.org                                                                 
+GIT_COMMITTER_NAME             Docker Jenkins                                                                          
+GIT_HEAD_REPO                  steveazz/moby                                                                           
+GIT_PREVIOUS_COMMIT            de640c9f4932d851316a0a72470c4d3446f6f5ac                                                
+GIT_PREVIOUS_SUCCESSFUL_COMMIT de640c9f4932d851316a0a72470c4d3446f6f5ac                                                
+GIT_SHA1                       287ec4690d9ca4b69ed6b049967d61276ba315e5                                                
+GIT_URL                        https://github.com/moby/moby.git                                                        
+GITHUB_URL                     https://github.com/moby/moby/pull/38465                                                 
+HOME                           C:\cygwin\home\jenkins                                                                  
+HOMEDRIVE                      C:                                                                                      
+HOMEPATH                       \cygwin\home\jenkins                                                                    
+HUDSON_COOKIE                  6c50ebfb-42a0-4bf8-9882-dd4a7bba9992                                                    
+HUDSON_HOME                    /var/jenkins_home                                                                       
+HUDSON_SERVER_COOKIE           5654907fc74b1465                                                                        
+HUDSON_URL                     https://jenkins.dockerproject.org/                                                      
+JENKINS_HOME                   /var/jenkins_home                                                                       
+JENKINS_SERVER_COOKIE          5654907fc74b1465                                                                        
+JENKINS_URL                    https://jenkins.dockerproject.org/                                                      
+JOB_BASE_NAME                  Docker-PRs-WoW-RS1                                                                      
+JOB_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/display/redirect               
+JOB_NAME                       Docker-PRs-WoW-RS1                                                                      
+JOB_URL                        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/                               
+LOCALAPPDATA                   C:\Users\jenkins\AppData\Local                                                          
+LOGNAME                        jenkins                                                                                 
+LOGONSERVER                    \\jenkins-rs1-7                                                                         
+MAIL                           /var/spool/mail//jenkins                                                                
+NODE_LABELS                    azure-windows-rs1-7 windows-rs1                                                         
+NODE_NAME                      azure-windows-rs1-7                                                                     
+NUMBER_OF_PROCESSORS           4                                                                                       
+OLDPWD                         /home/jenkins                                                                           
+OS                             Windows_NT                                                                              
+PATH                           C:\cygwin\bin;C:\ProgramData\Oracle\Java\javapath;C:\pstools;C:\Program Files\Notepad...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL                              
+PR                             38465                                                                                   
+PROCESSOR_ARCHITECTURE         AMD64                                                                                   
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 79 Stepping 1, GenuineIntel                                      
+PROCESSOR_LEVEL                6                                                                                       
+PROCESSOR_REVISION             4f01                                                                                    
+ProgramData                    C:\ProgramData                                                                          
+PROGRAMFILES                   C:\Program Files                                                                        
+ProgramFiles(x86)              C:\Program Files (x86)                                                                  
+ProgramW6432                   C:\Program Files                                                                        
+PSExecutionPolicyPreference    Bypass                                                                                  
+PSModulePath                   C:\Users\jenkins\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShe...
+PUBLIC                         C:\Users\Public                                                                         
+PWD                            /cygdrive/c/workspace                                                                   
+ROOT_BUILD_CAUSE               MANUALTRIGGER                                                                           
+ROOT_BUILD_CAUSE_MANUALTRIGGER true                                                                                    
+RUN_CHANGES_DISPLAY_URL        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23550/display/redirect?page=...
+RUN_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23550/display/redirect         
+SHELL                          /bin/bash                                                                               
+SHLVL                          1                                                                                       
+SOURCES_DRIVE                  c                                                                                       
+SOURCES_SUBDIR                 gopath                                                                                  
+SSH_CLIENT                     52.88.204.51 9308 22                                                                    
+SSH_CONNECTION                 52.88.204.51 9308 10.0.0.10 22                                                          
+SYSTEMDRIVE                    C:                                                                                      
+SYSTEMROOT                     C:\Windows                                                                              
+TEMP                           d:\temp                                                                                 
+TESTRUN_DRIVE                  d                                                                                       
+TESTRUN_SUBDIR                 CI                                                                                      
+USER                           jenkins                                                                                 
+USERDOMAIN                     jenkins-rs1-7                                                                           
+USERNAME                       jenkins                                                                                 
+USERPROFILE                    C:\Users\jenkins                                                                        
+WINDIR                         C:\Windows                                                                              
+WORKSPACE                      /gopath/src/github.com/docker/docker                                                    
+
+
+
+INFO: PR#38465 (https://github.com/docker/docker/pull/38465)
+INFO: Sources under c:\gopath\...
+INFO: Test run under d:\CI\...
+INFO: Running in C:\gopath\src\github.com\docker\docker
+INFO: docker/docker repository was found
+INFO: Image microsoft/windowsservercore:latest is already loaded in the control daemon
+INFO: Version of microsoft/windowsservercore:latest is '10.0.14393.2312'
+INFO: Docker version of control daemon
+
+Client:
+ Version:           master-dockerproject-2018-10-09
+ API version:       1.39
+ Go version:        go1.10.4
+ Git commit:        ab50c2f2
+ Built:             Tue Oct  9 23:49:39 2018
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          master-dockerproject-2018-10-09
+  API version:      1.39 (minimum version 1.24)
+  Go version:       go1.11.1
+  Git commit:       82a4797
+  Built:            Tue Oct  9 23:58:23 2018
+  OS/Arch:          windows/amd64
+  Experimental:     false
+
+INFO: Docker info of control daemon
+
+Containers: 2
+ Running: 0
+ Paused: 0
+ Stopped: 2
+Images: 8
+Server Version: master-dockerproject-2018-10-09
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins:
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 14393 (14393.2312.amd64fre.rs1_release.180607-1919)
+Operating System: Windows Server 2016 Datacenter Version 1607 (OS Build 14393.2312)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 14GiB
+Name: jenkins-rs1-7
+ID: VZ4X:H24D:QJ3I:LTUC:HZF5:YCM7:NSVS:OZLH:APYR:PMUF:BH6T:QIGR
+Docker Root Dir: D:\control
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Commit hash is 737a80966d
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 2
+1176106929bb
+ca45cd3ca58e
+INFO: Non-base image count on control daemon to delete is 1
+Deleted: sha256:32ae2c5beda7103bc9db98b514acad368da93c2c375ee4f81aeeff4be0b8cda1
+Deleted: sha256:38dba4890e6825b38025c8d60da076321c1450c984f70c718a896d0bbc75a32b
+
+
+__GENUS          : 2
+__CLASS          : __PARAMETERS
+__SUPERCLASS     : 
+__DYNASTY        : __PARAMETERS
+__RELPATH        : 
+__PROPERTY_COUNT : 1
+__DERIVATION     : {}
+__SERVER         : 
+__NAMESPACE      : 
+__PATH           : 
+ReturnValue      : 0
+PSComputerName   : 
+
+INFO: Nuking d:\CI
+time="2019-01-04T16:57:22Z" level=error msg="hcsshim::DestroyLayer - Win32 API call returned error r1=0x80070020 err=The process cannot access the file because it is being used by another process.id=CI flavour=0" 
+ERROR:  hcsshim::DestroyLayer - Win32 API call returned error r1=0x80070020 err=The process cannot access the file because it is being used by another process.id=CI flavour=0
+INFO: Location for testing is d:\CI\CI-737a80966d
+INFO: Validating GOLang consistency in Dockerfile.windows...
+
+
+INFO: Building the image from Dockerfile.windows at 01/04/2019 16:57:22...
+
+Sending build context to Docker daemon   46.4MB
+
+Step 1/7 : FROM mcr.microsoft.com/windows/servercore:ltsc2019
+ltsc2019: Pulling from windows/servercore
+no matching manifest for unknown in the manifest list entries
+
+
+ERROR: Failed 'ERROR: Failed to build image from Dockerfile.windows' at 01/04/2019 16:57:32
+At C:\gopath\src\github.com\docker\docker\hack\ci\windows.ps1:460 char:12
++            Throw "ERROR: Failed to build image from Dockerfile.window ...
++            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+INFO: Tidying up at end of run
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 0
+INFO: Nuking d:\CI
+time="2019-01-04T16:57:33Z" level=error msg="hcsshim::DestroyLayer - Win32 API call returned error r1=0x80070020 err=The process cannot access the file because it is being used by another process.id=CI flavour=0" 
+ERROR:  hcsshim::DestroyLayer - Win32 API call returned error r1=0x80070020 err=The process cannot access the file because it is being used by another process.id=CI flavour=0
+
+INFO: executeCI.ps1 exiting at Fri Jan  4 16:57:33 CUT 2019. Duration 00:00:17.9426526
+
+
+
+Build step 'Windows PowerShell' marked build as failure
+Set build name.
+New build name is '#38465'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

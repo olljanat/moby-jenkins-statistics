@@ -1,0 +1,2258 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-32 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins309306178297779036.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+Success build forhudson.tasks.Shell@39ff8a96
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 2ee53a42db814c513770421f1b0d48f27faeadea (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 2ee53a42db814c513770421f1b0d48f27faeadea
+Commit message: "Merge pull request #38490 from kolyshkin/test-rename-anon-ct"
+ > git rev-list --no-walk 2ee53a42db814c513770421f1b0d48f27faeadea # timeout=10
+Set build name.
+New build name is '#38050'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:2ee53a4) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins1506537054196822174.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38050/head -> origin/pr/38050
+Merge made by the 'recursive' strategy.
+ Dockerfile                                    | 14 +++++
+ cli/config/configdir.go                       |  2 +
+ cmd/dockerd/config_common_unix.go             | 21 +++++++
+ cmd/dockerd/config_unix.go                    |  4 +-
+ cmd/dockerd/daemon.go                         | 43 +++++++++++--
+ cmd/dockerd/daemon_unix.go                    | 24 +++++++-
+ cmd/dockerd/options.go                        |  2 +
+ contrib/dockerd-rootless.sh                   | 69 +++++++++++++++++++++
+ daemon/config/config_unix.go                  |  6 ++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/daemon_unix.go                         |  3 -
+ daemon/info.go                                |  3 +
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/oci_linux.go                           |  9 ++-
+ docs/rootless.md                              | 88 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 34 +++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 28 +++++++++
+ hack/make/.binary-setup                       |  3 +
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 +
+ opts/hosts.go                                 | 22 ++++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/homedir/homedir_linux.go                  | 88 +++++++++++++++++++++++++++
+ pkg/homedir/homedir_others.go                 | 20 ++++++
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/doc.go                               |  2 +
+ rootless/rootless.go                          | 22 +++++++
+ rootless/specconv/specconv_linux.go           | 38 ++++++++++++
+ 30 files changed, 554 insertions(+), 19 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/doc.go
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+Sending build context to Docker daemon  45.14MB
+Step 1/108 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+56fd7f7cdb66: Pulling fs layer
+9f635fa148b3: Pulling fs layer
+f8c0099cf676: Pulling fs layer
+ac453cf9be46: Pulling fs layer
+87753e667bd2: Pulling fs layer
+fd06104180c0: Pulling fs layer
+c571c0ef23fa: Pulling fs layer
+ac453cf9be46: Waiting
+87753e667bd2: Waiting
+fd06104180c0: Waiting
+c571c0ef23fa: Waiting
+f8c0099cf676: Verifying Checksum
+f8c0099cf676: Download complete
+9f635fa148b3: Verifying Checksum
+9f635fa148b3: Download complete
+56fd7f7cdb66: Verifying Checksum
+56fd7f7cdb66: Download complete
+ac453cf9be46: Verifying Checksum
+ac453cf9be46: Download complete
+c571c0ef23fa: Verifying Checksum
+c571c0ef23fa: Download complete
+87753e667bd2: Verifying Checksum
+87753e667bd2: Download complete
+56fd7f7cdb66: Pull complete
+9f635fa148b3: Pull complete
+f8c0099cf676: Pull complete
+fd06104180c0: Verifying Checksum
+fd06104180c0: Download complete
+ac453cf9be46: Pull complete
+87753e667bd2: Pull complete
+fd06104180c0: Pull complete
+c571c0ef23fa: Pull complete
+Digest: sha256:4f1cd313c3d59faa0ca93910f9d853bd74be7afbf6f6997aee06924415ec7dc9
+Status: Downloaded newer image for golang:1.11.4
+ ---> c35b367ad4c4
+Step 2/108 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in 09118565ddfd
+Removing intermediate container 09118565ddfd
+ ---> 146387c8e873
+Step 3/108 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in b1cb079868a3
+Removing intermediate container b1cb079868a3
+ ---> 571694d9d1c4
+Step 4/108 : FROM base AS criu
+ ---> 571694d9d1c4
+Step 5/108 : ENV CRIU_VERSION 3.6
+ ---> Running in 1ff13b928a20
+Removing intermediate container 1ff13b928a20
+ ---> 836c63f411fe
+Step 6/108 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in f232f122aa2d
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5096 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
+Fetched 7664 kB in 2s (2955 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3548 kB of archives.
+After this operation, 21.2 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnet1 ppc64el 1.1.6+dfsg-3 [57.6 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libcap-dev ppc64el 1:2.25-1 [29.7 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnet1-dev ppc64el 1.1.6+dfsg-3 [117 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnl-3-200 ppc64el 3.2.27-2 [55.9 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnl-3-dev ppc64el 3.2.27-2 [95.0 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-c1 ppc64el 1.2.1-2 [24.6 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-c-dev ppc64el 1.2.1-2 [32.0 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el zlib1g-dev ppc64el 1:1.2.8.dfsg-5 [205 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf10 ppc64el 3.0.0-9 [658 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-lite10 ppc64el 3.0.0-9 [124 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-dev ppc64el 3.0.0-9 [974 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotoc10 ppc64el 3.0.0-9 [589 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el protobuf-c-compiler ppc64el 1.2.1-2 [75.2 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el protobuf-compiler ppc64el 3.0.0-9 [53.0 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-protobuf ppc64el 3.0.0-9 [291 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 3548 kB in 0s (13.4 MB/s)
+Selecting previously unselected package libnet1:ppc64el.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_ppc64el.deb ...
+Unpacking libnet1:ppc64el (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:ppc64el.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_ppc64el.deb ...
+Unpacking libcap-dev:ppc64el (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_ppc64el.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:ppc64el.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_ppc64el.deb ...
+Unpacking libnl-3-200:ppc64el (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:ppc64el.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_ppc64el.deb ...
+Unpacking libnl-3-dev:ppc64el (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:ppc64el.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_ppc64el.deb ...
+Unpacking libprotobuf-c1:ppc64el (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:ppc64el.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_ppc64el.deb ...
+Unpacking libprotobuf-c-dev:ppc64el (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:ppc64el.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_ppc64el.deb ...
+Unpacking zlib1g-dev:ppc64el (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:ppc64el.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_ppc64el.deb ...
+Unpacking libprotobuf10:ppc64el (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:ppc64el.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_ppc64el.deb ...
+Unpacking libprotobuf-lite10:ppc64el (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:ppc64el.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_ppc64el.deb ...
+Unpacking libprotobuf-dev:ppc64el (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:ppc64el.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_ppc64el.deb ...
+Unpacking libprotoc10:ppc64el (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_ppc64el.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_ppc64el.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_ppc64el.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:ppc64el (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:ppc64el (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+Setting up libnet1-dev (1.1.6+dfsg-3) ...
+Setting up libprotobuf10:ppc64el (3.0.0-9) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up python-protobuf (3.0.0-9) ...
+Setting up libcap-dev:ppc64el (1:2.25-1) ...
+Setting up libprotobuf-c-dev:ppc64el (1.2.1-2) ...
+Setting up libnl-3-200:ppc64el (3.2.27-2) ...
+Setting up libprotobuf-lite10:ppc64el (3.0.0-9) ...
+Setting up libprotoc10:ppc64el (3.0.0-9) ...
+Setting up protobuf-c-compiler (1.2.1-2) ...
+Setting up zlib1g-dev:ppc64el (1:1.2.8.dfsg-5) ...
+Setting up protobuf-compiler (3.0.0-9) ...
+Setting up libprotobuf-dev:ppc64el (3.0.0-9) ...
+Setting up libnl-3-dev:ppc64el (3.2.27-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+fatal: Not a git repository (or any of the parent directories): .git
+  GEN      .gitid
+  GEN      criu/include/version.h
+  GEN      include/common/asm
+  PBCC     images/google/protobuf/descriptor.pb-c.c
+  PBCC     images/opts.pb-c.c
+  PBCC     images/sit.pb-c.c
+  DEP      images/google/protobuf/descriptor.pb-c.d
+  DEP      images/opts.pb-c.d
+  DEP      images/sit.pb-c.d
+  PBCC     images/macvlan.pb-c.c
+  DEP      images/macvlan.pb-c.d
+  PBCC     images/autofs.pb-c.c
+  DEP      images/autofs.pb-c.d
+  PBCC     images/sysctl.pb-c.c
+  DEP      images/sysctl.pb-c.d
+  PBCC     images/time.pb-c.c
+  DEP      images/time.pb-c.d
+  PBCC     images/binfmt-misc.pb-c.c
+  DEP      images/binfmt-misc.pb-c.d
+  PBCC     images/seccomp.pb-c.c
+  DEP      images/seccomp.pb-c.d
+  PBCC     images/userns.pb-c.c
+  DEP      images/userns.pb-c.d
+  PBCC     images/cgroup.pb-c.c
+  DEP      images/cgroup.pb-c.d
+  PBCC     images/fown.pb-c.c
+  PBCC     images/ext-file.pb-c.c
+  DEP      images/fown.pb-c.d
+  DEP      images/ext-file.pb-c.d
+  PBCC     images/rpc.pb-c.c
+  DEP      images/rpc.pb-c.d
+  PBCC     images/siginfo.pb-c.c
+  DEP      images/siginfo.pb-c.d
+  PBCC     images/pagemap.pb-c.c
+  DEP      images/pagemap.pb-c.d
+  PBCC     images/rlimit.pb-c.c
+  DEP      images/rlimit.pb-c.d
+  PBCC     images/file-lock.pb-c.c
+  DEP      images/file-lock.pb-c.d
+  PBCC     images/tty.pb-c.c
+  DEP      images/tty.pb-c.d
+  PBCC     images/tun.pb-c.c
+  PBCC     images/netdev.pb-c.c
+  DEP      images/tun.pb-c.d
+  DEP      images/netdev.pb-c.d
+  PBCC     images/vma.pb-c.c
+  DEP      images/vma.pb-c.d
+  PBCC     images/creds.pb-c.c
+  DEP      images/creds.pb-c.d
+  PBCC     images/utsns.pb-c.c
+  DEP      images/utsns.pb-c.d
+  PBCC     images/ipc-desc.pb-c.c
+  PBCC     images/ipc-sem.pb-c.c
+  DEP      images/ipc-desc.pb-c.d
+  DEP      images/ipc-sem.pb-c.d
+  PBCC     images/ipc-msg.pb-c.c
+  DEP      images/ipc-msg.pb-c.d
+  PBCC     images/ipc-shm.pb-c.c
+  DEP      images/ipc-shm.pb-c.d
+  PBCC     images/ipc-var.pb-c.c
+  DEP      images/ipc-var.pb-c.d
+  PBCC     images/sk-opts.pb-c.c
+  PBCC     images/packet-sock.pb-c.c
+  DEP      images/sk-opts.pb-c.d
+  DEP      images/packet-sock.pb-c.d
+  PBCC     images/sk-netlink.pb-c.c
+  DEP      images/sk-netlink.pb-c.d
+  PBCC     images/sk-inet.pb-c.c
+  DEP      images/sk-inet.pb-c.d
+  PBCC     images/sk-unix.pb-c.c
+  DEP      images/sk-unix.pb-c.d
+  PBCC     images/mm.pb-c.c
+  DEP      images/mm.pb-c.d
+  PBCC     images/timerfd.pb-c.c
+  DEP      images/timerfd.pb-c.d
+  PBCC     images/timer.pb-c.c
+  DEP      images/timer.pb-c.d
+  PBCC     images/sa.pb-c.c
+  DEP      images/sa.pb-c.d
+  PBCC     images/pipe-data.pb-c.c
+  DEP      images/pipe-data.pb-c.d
+  PBCC     images/mnt.pb-c.c
+  DEP      images/mnt.pb-c.d
+  PBCC     images/sk-packet.pb-c.c
+  DEP      images/sk-packet.pb-c.d
+  PBCC     images/tcp-stream.pb-c.c
+  DEP      images/tcp-stream.pb-c.d
+  PBCC     images/pipe.pb-c.c
+  DEP      images/pipe.pb-c.d
+  PBCC     images/pstree.pb-c.c
+  DEP      images/pstree.pb-c.d
+  PBCC     images/fs.pb-c.c
+  DEP      images/fs.pb-c.d
+  PBCC     images/signalfd.pb-c.c
+  DEP      images/signalfd.pb-c.d
+  PBCC     images/fh.pb-c.c
+  PBCC     images/fsnotify.pb-c.c
+  DEP      images/fh.pb-c.d
+  DEP      images/fsnotify.pb-c.d
+  PBCC     images/eventpoll.pb-c.c
+  DEP      images/eventpoll.pb-c.d
+  PBCC     images/eventfd.pb-c.c
+  DEP      images/eventfd.pb-c.d
+  PBCC     images/remap-file-path.pb-c.c
+  DEP      images/remap-file-path.pb-c.d
+  PBCC     images/fifo.pb-c.c
+  DEP      images/fifo.pb-c.d
+  PBCC     images/ghost-file.pb-c.c
+  DEP      images/ghost-file.pb-c.d
+  PBCC     images/regfile.pb-c.c
+  DEP      images/regfile.pb-c.d
+  PBCC     images/ns.pb-c.c
+  DEP      images/ns.pb-c.d
+  PBCC     images/fdinfo.pb-c.c
+  DEP      images/fdinfo.pb-c.d
+  PBCC     images/core-aarch64.pb-c.c
+  PBCC     images/core-arm.pb-c.c
+  PBCC     images/core-ppc64.pb-c.c
+  PBCC     images/core-s390.pb-c.c
+  PBCC     images/core-x86.pb-c.c
+  PBCC     images/core.pb-c.c
+  PBCC     images/inventory.pb-c.c
+  DEP      images/core-aarch64.pb-c.d
+  DEP      images/core-arm.pb-c.d
+  DEP      images/core-ppc64.pb-c.d
+  DEP      images/core-s390.pb-c.d
+  DEP      images/core-x86.pb-c.d
+  DEP      images/core.pb-c.d
+  DEP      images/inventory.pb-c.d
+  PBCC     images/cpuinfo.pb-c.c
+  DEP      images/cpuinfo.pb-c.d
+  PBCC     images/stats.pb-c.c
+  DEP      images/stats.pb-c.d
+make[1]: Nothing to be done for 'all'.
+  CC       images/stats.o
+  CC       images/core.o
+  CC       images/core-x86.o
+  CC       images/core-arm.o
+  CC       images/core-aarch64.o
+  CC       images/core-ppc64.o
+  CC       images/core-s390.o
+  CC       images/cpuinfo.o
+  CC       images/inventory.o
+  CC       images/fdinfo.o
+  CC       images/fown.o
+  CC       images/ns.o
+  CC       images/regfile.o
+  CC       images/ghost-file.o
+  CC       images/fifo.o
+  CC       images/remap-file-path.o
+  CC       images/eventfd.o
+  CC       images/eventpoll.o
+  CC       images/fh.o
+  CC       images/fsnotify.o
+  CC       images/signalfd.o
+  CC       images/fs.o
+  CC       images/pstree.o
+  CC       images/pipe.o
+  CC       images/tcp-stream.o
+  CC       images/sk-packet.o
+  CC       images/mnt.o
+  CC       images/pipe-data.o
+  CC       images/sa.o
+  CC       images/timer.o
+  CC       images/timerfd.o
+  CC       images/mm.o
+  CC       images/sk-opts.o
+  CC       images/sk-unix.o
+  CC       images/sk-inet.o
+  CC       images/tun.o
+  CC       images/sk-netlink.o
+  CC       images/packet-sock.o
+  CC       images/ipc-var.o
+  CC       images/ipc-desc.o
+  CC       images/ipc-shm.o
+  CC       images/ipc-msg.o
+  CC       images/ipc-sem.o
+  CC       images/utsns.o
+  CC       images/creds.o
+  CC       images/vma.o
+  CC       images/netdev.o
+  CC       images/tty.o
+  CC       images/file-lock.o
+  CC       images/rlimit.o
+  CC       images/pagemap.o
+  CC       images/siginfo.o
+  CC       images/rpc.o
+  CC       images/ext-file.o
+  CC       images/cgroup.o
+  CC       images/userns.o
+  CC       images/google/protobuf/descriptor.o
+  CC       images/opts.o
+  CC       images/seccomp.o
+  CC       images/binfmt-misc.o
+  CC       images/time.o
+  CC       images/sysctl.o
+  CC       images/autofs.o
+  CC       images/macvlan.o
+  CC       images/sit.o
+  LINK     images/built-in.o
+  GEN      compel/include/asm
+  GEN      compel/include/version.h
+touch .config
+  GEN      criu/include/config.h
+  GEN      compel/plugins/include/uapi/std/syscall-codes.h
+  GEN      compel/plugins/include/uapi/std/syscall.h
+  GEN      compel/arch/ppc64/plugins/std/syscalls/syscalls.S
+  DEP      compel/arch/ppc64/plugins/std/syscalls/syscalls.d
+  DEP      compel/arch/ppc64/plugins/std/memcmp.d
+  DEP      compel/arch/ppc64/plugins/std/memcpy.d
+  DEP      compel/arch/ppc64/plugins/std/parasite-head.d
+  GEN      compel/plugins/include/uapi/std/asm/syscall-types.h
+  DEP      compel/plugins/std/infect.d
+  DEP      compel/plugins/std/string.d
+  DEP      compel/plugins/std/log.d
+  DEP      compel/plugins/std/fds.d
+  DEP      compel/plugins/std/std.d
+  DEP      compel/plugins/shmem/shmem.d
+  DEP      compel/plugins/fds/fds.d
+  CC       compel/plugins/std/std.o
+  CC       compel/plugins/std/fds.o
+  CC       compel/plugins/std/log.o
+  CC       compel/plugins/std/string.o
+  CC       compel/plugins/std/infect.o
+  CC       compel/arch/ppc64/plugins/std/parasite-head.o
+  CC       compel/arch/ppc64/plugins/std/memcpy.o
+  CC       compel/arch/ppc64/plugins/std/memcmp.o
+  CC       compel/arch/ppc64/plugins/std/syscalls/syscalls.o
+  AR       compel/plugins/std.lib.a
+  CC       compel/plugins/fds/fds.o
+  AR       compel/plugins/fds.lib.a
+  HOSTDEP  compel/src/lib/log-host.d
+  HOSTDEP  compel/src/lib/handle-elf-host.d
+  HOSTDEP  compel/arch/ppc64/src/lib/handle-elf-host.d
+  HOSTDEP  compel/src/main-host.d
+  DEP      compel/src/main.d
+  DEP      compel/src/lib/handle-elf.d
+  DEP      compel/arch/ppc64/src/lib/handle-elf.d
+  DEP      compel/src/lib/ptrace.d
+  DEP      compel/src/lib/infect.d
+  DEP      compel/src/lib/infect-util.d
+  DEP      compel/src/lib/infect-rpc.d
+  DEP      compel/arch/ppc64/src/lib/infect.d
+  DEP      compel/arch/ppc64/src/lib/cpu.d
+  DEP      compel/src/lib/log.d
+  CC       compel/src/lib/log.o
+  CC       compel/arch/ppc64/src/lib/cpu.o
+  CC       compel/arch/ppc64/src/lib/infect.o
+  CC       compel/src/lib/infect-rpc.o
+  CC       compel/src/lib/infect-util.o
+  CC       compel/src/lib/infect.o
+  CC       compel/src/lib/ptrace.o
+  AR       compel/libcompel.a
+  HOSTCC   compel/src/main-host.o
+  HOSTCC   compel/arch/ppc64/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/log-host.o
+  HOSTLINK compel/compel-host-bin
+  DEP      soccr/soccr.d
+  CC       soccr/soccr.o
+  AR       soccr/libsoccr.a
+make[1]: 'soccr/libsoccr.a' is up to date.
+  DEP      criu/arch/ppc64/sigframe.d
+  DEP      criu/arch/ppc64/crtools.d
+  DEP      criu/arch/ppc64/cpu.d
+  CC       criu/arch/ppc64/cpu.o
+  CC       criu/arch/ppc64/crtools.o
+  CC       criu/arch/ppc64/sigframe.o
+  LINK     criu/arch/ppc64/crtools.built-in.o
+  DEP      criu/arch/ppc64/misc.d
+  DEP      criu/arch/ppc64/vdso-trampoline.d
+  DEP      criu/arch/ppc64/vdso-pie.d
+  DEP      criu/pie/parasite-vdso.d
+  DEP      criu/pie/util-vdso.d
+  DEP      criu/pie/util.d
+  CC       criu/pie/util.o
+  CC       criu/pie/util-vdso.o
+  CC       criu/pie/parasite-vdso.o
+  CC       criu/arch/ppc64/vdso-pie.o
+  CC       criu/arch/ppc64/vdso-trampoline.o
+  CC       criu/arch/ppc64/misc.o
+  AR       criu/pie/pie.lib.a
+  DEP      criu/pie/restorer.d
+  DEP      criu/arch/ppc64/restorer.d
+  DEP      criu/pie/parasite.d
+  CC       criu/pie/parasite.o
+  LINK     criu/pie/parasite.built-in.o
+  GEN      criu/pie/parasite-blob.h
+  CC       criu/arch/ppc64/restorer.o
+  CC       criu/pie/restorer.o
+  LINK     criu/pie/restorer.built-in.o
+  GEN      criu/pie/restorer-blob.h
+  DEP      criu/vdso.d
+  DEP      criu/uts_ns.d
+  DEP      criu/util.d
+  DEP      criu/uffd.d
+  DEP      criu/tun.d
+  DEP      criu/tty.d
+  DEP      criu/timerfd.d
+  DEP      criu/sysfs_parse.d
+  DEP      criu/sysctl.d
+  DEP      criu/string.d
+  DEP      criu/stats.d
+  DEP      criu/sockets.d
+  DEP      criu/sk-unix.d
+  DEP      criu/sk-tcp.d
+  DEP      criu/sk-queue.d
+  DEP      criu/sk-packet.d
+  DEP      criu/sk-netlink.d
+  DEP      criu/sk-inet.d
+  DEP      criu/signalfd.d
+  DEP      criu/sigframe.d
+  DEP      criu/shmem.d
+  DEP      criu/seize.d
+  DEP      criu/seccomp.d
+  DEP      criu/rst-malloc.d
+  DEP      criu/rbtree.d
+  DEP      criu/pstree.d
+  DEP      criu/protobuf.d
+  GEN      criu/protobuf-desc-gen.h
+  DEP      criu/protobuf-desc.d
+  DEP      criu/proc_parse.d
+  DEP      criu/plugin.d
+  DEP      criu/pipes.d
+  DEP      criu/pie-util.d
+  DEP      criu/pie-util-vdso.d
+  DEP      criu/pie-util-vdso-elf32.d
+  DEP      criu/path.d
+  DEP      criu/parasite-syscall.d
+  DEP      criu/pagemap.d
+  DEP      criu/pagemap-cache.d
+  DEP      criu/page-xfer.d
+  DEP      criu/page-pipe.d
+  DEP      criu/netfilter.d
+  DEP      criu/net.d
+  DEP      criu/namespaces.d
+  DEP      criu/mount.d
+  DEP      criu/mem.d
+  DEP      criu/lsm.d
+  DEP      criu/log.d
+  DEP      criu/libnetlink.d
+  DEP      criu/kerndat.d
+  DEP      criu/kcmp-ids.d
+  DEP      criu/irmap.d
+  DEP      criu/ipc_ns.d
+  DEP      criu/image.d
+  DEP      criu/image-desc.d
+  DEP      criu/fsnotify.d
+  DEP      criu/filesystems.d
+  DEP      criu/files.d
+  DEP      criu/files-reg.d
+  DEP      criu/files-ext.d
+  DEP      criu/file-lock.d
+  DEP      criu/file-ids.d
+  DEP      criu/fifo.d
+  DEP      criu/fdstore.d
+  DEP      criu/fault-injection.d
+  DEP      criu/external.d
+  DEP      criu/eventpoll.d
+  DEP      criu/eventfd.d
+  DEP      criu/crtools.d
+  DEP      criu/cr-service.d
+  DEP      criu/cr-restore.d
+  DEP      criu/cr-errno.d
+  DEP      criu/cr-dump.d
+  DEP      criu/cr-dedup.d
+  DEP      criu/cr-check.d
+  DEP      criu/clone-noasan.d
+  DEP      criu/cgroup.d
+  DEP      criu/cgroup-props.d
+  DEP      criu/bitmap.d
+  DEP      criu/bfd.d
+  DEP      criu/autofs.d
+  DEP      criu/aio.d
+  DEP      criu/action-scripts.d
+  CC       criu/action-scripts.o
+  CC       criu/aio.o
+  CC       criu/autofs.o
+  CC       criu/bfd.o
+  CC       criu/bitmap.o
+  CC       criu/cgroup-props.o
+  CC       criu/cgroup.o
+  CC       criu/clone-noasan.o
+  CC       criu/cr-check.o
+  CC       criu/cr-dedup.o
+  CC       criu/cr-dump.o
+  CC       criu/cr-errno.o
+  CC       criu/cr-restore.o
+  CC       criu/cr-service.o
+  CC       criu/crtools.o
+  CC       criu/eventfd.o
+  CC       criu/eventpoll.o
+  CC       criu/external.o
+  CC       criu/fault-injection.o
+  CC       criu/fdstore.o
+  CC       criu/fifo.o
+  CC       criu/file-ids.o
+  CC       criu/file-lock.o
+  CC       criu/files-ext.o
+  CC       criu/files-reg.o
+  CC       criu/files.o
+  CC       criu/filesystems.o
+  CC       criu/fsnotify.o
+  CC       criu/image-desc.o
+  CC       criu/image.o
+  CC       criu/ipc_ns.o
+  CC       criu/irmap.o
+  CC       criu/kcmp-ids.o
+  CC       criu/kerndat.o
+  CC       criu/libnetlink.o
+  CC       criu/log.o
+  CC       criu/lsm.o
+  CC       criu/mem.o
+  CC       criu/mount.o
+  CC       criu/namespaces.o
+  CC       criu/net.o
+  CC       criu/netfilter.o
+  CC       criu/page-pipe.o
+  CC       criu/page-xfer.o
+  CC       criu/pagemap-cache.o
+  CC       criu/pagemap.o
+  CC       criu/parasite-syscall.o
+  CC       criu/path.o
+  CC       criu/pie-util-vdso-elf32.o
+  CC       criu/pie-util-vdso.o
+  CC       criu/pie-util.o
+  CC       criu/pipes.o
+  CC       criu/plugin.o
+  CC       criu/proc_parse.o
+  CC       criu/protobuf-desc.o
+  CC       criu/protobuf.o
+  CC       criu/pstree.o
+  CC       criu/rbtree.o
+  CC       criu/rst-malloc.o
+  CC       criu/seccomp.o
+  CC       criu/seize.o
+  CC       criu/shmem.o
+  CC       criu/sigframe.o
+  CC       criu/signalfd.o
+  CC       criu/sk-inet.o
+  CC       criu/sk-netlink.o
+  CC       criu/sk-packet.o
+  CC       criu/sk-queue.o
+  CC       criu/sk-tcp.o
+  CC       criu/sk-unix.o
+  CC       criu/sockets.o
+  CC       criu/stats.o
+  CC       criu/string.o
+  CC       criu/sysctl.o
+  CC       criu/sysfs_parse.o
+  CC       criu/timerfd.o
+  CC       criu/tty.o
+  CC       criu/tun.o
+  CC       criu/uffd.o
+  CC       criu/util.o
+  CC       criu/uts_ns.o
+  CC       criu/vdso.o
+  LINK     criu/built-in.o
+  LINK     criu/criu
+  DEP      lib/c/criu.d
+  CC       images/rpc.pb-c.o
+  CC       lib/c/criu.o
+  LINK     lib/c/built-in.o
+  LINK     lib/c/libcriu.so
+  GEN      magic.py
+fatal: Not a git repository (or any of the parent directories): .git
+make[1]: Nothing to be done for 'all'.
+make[1]: 'images/built-in.o' is up to date.
+make[1]: 'compel/plugins/std.lib.a' is up to date.
+make[1]: 'compel/plugins/fds.lib.a' is up to date.
+make[1]: 'compel/libcompel.a' is up to date.
+make[1]: 'compel/compel-host-bin' is up to date.
+make[1]: Nothing to be done for 'all'.
+make[1]: 'soccr/libsoccr.a' is up to date.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+  INSTALL  criu/criu
+Removing intermediate container f232f122aa2d
+ ---> e2966c758a8e
+Step 7/108 : FROM base AS registry
+ ---> 571694d9d1c4
+Step 8/108 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Running in 655cbe65b5ce
+Removing intermediate container 655cbe65b5ce
+ ---> 7b391a62664c
+Step 9/108 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Running in 5cf36162f74d
+Removing intermediate container 5cf36162f74d
+ ---> fea2c0e2c3cd
+Step 10/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Running in b285ef38fe89
++ mktemp -d
++ export GOPATH=/tmp/tmp.d0fYxC4JRM
++ git clone https://github.com/docker/distribution.git /tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution
+Cloning into '/tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution'...
++ cd /tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution
++ git checkout -q 47a064d4195a9b56133891bbb13620c3ac83a827
++ GOPATH=/tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.d0fYxC4JRM go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry
++ dpkg --print-architecture
++ cd /tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution
++ git checkout -q ec87e9b6971d831f0eff752ddb54fb64693e51cd
++ GOPATH=/tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.d0fYxC4JRM
++ go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry
++ rm -rf /tmp/tmp.d0fYxC4JRM/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.d0fYxC4JRM
+Removing intermediate container b285ef38fe89
+ ---> d11a7d7f1d83
+Step 11/108 : FROM base AS docker-py
+ ---> 571694d9d1c4
+Step 12/108 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Running in 98fe75b2ef37
+Removing intermediate container 98fe75b2ef37
+ ---> 513f7c4994e1
+Step 13/108 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Running in fc132f0ba214
+Cloning into '/build'...
+Removing intermediate container fc132f0ba214
+ ---> d48f09d87ba4
+Step 14/108 : FROM base AS swagger
+ ---> 571694d9d1c4
+Step 15/108 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Running in bd0cab715273
+Removing intermediate container bd0cab715273
+ ---> 66503cda86d1
+Step 16/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Running in 07d892cc0583
++ mktemp -d
++ export GOPATH=/tmp/tmp.oGtu9MsE0e
++ git clone https://github.com/go-swagger/go-swagger.git /tmp/tmp.oGtu9MsE0e/src/github.com/go-swagger/go-swagger
+Cloning into '/tmp/tmp.oGtu9MsE0e/src/github.com/go-swagger/go-swagger'...
++ cd /tmp/tmp.oGtu9MsE0e/src/github.com/go-swagger/go-swagger
++ git checkout -q c28258affb0b6251755d92489ef685af8d4ff3eb
++ go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger
++ rm -rf /tmp/tmp.oGtu9MsE0e
+Removing intermediate container 07d892cc0583
+ ---> 6daa6837e369
+Step 17/108 : FROM base AS frozen-images
+ ---> 571694d9d1c4
+Step 18/108 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Running in be2e84133be8
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5096 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
+Fetched 7664 kB in 3s (2407 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20161130+nmu1+deb9u1).
+The following additional packages will be installed:
+  libjq1 libonig4
+The following NEW packages will be installed:
+  jq libjq1 libonig4
+0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+Need to get 310 kB of archives.
+After this operation, 1267 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libonig4 ppc64el 6.1.3-2 [140 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libjq1 ppc64el 1.5+dfsg-1.3 [111 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el jq ppc64el 1.5+dfsg-1.3 [58.9 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 310 kB in 0s (1535 kB/s)
+Selecting previously unselected package libonig4:ppc64el.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
+Preparing to unpack .../libonig4_6.1.3-2_ppc64el.deb ...
+Unpacking libonig4:ppc64el (6.1.3-2) ...
+Selecting previously unselected package libjq1:ppc64el.
+Preparing to unpack .../libjq1_1.5+dfsg-1.3_ppc64el.deb ...
+Unpacking libjq1:ppc64el (1.5+dfsg-1.3) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../jq_1.5+dfsg-1.3_ppc64el.deb ...
+Unpacking jq (1.5+dfsg-1.3) ...
+Setting up libonig4:ppc64el (6.1.3-2) ...
+Setting up libjq1:ppc64el (1.5+dfsg-1.3) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up jq (1.5+dfsg-1.3) ...
+Removing intermediate container be2e84133be8
+ ---> b01ee1b07786
+Step 19/108 : COPY contrib/download-frozen-image-v2.sh /
+ ---> 6da56c6875d2
+Step 20/108 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Running in 5954f284dea0
+Downloading 'library/buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251' (4 layers)...
+######################################################################## 100.0%
+####                                                                       6.5%############                                                              17.2%#######################                                                   32.9%#######################################                                   54.8%######################################################                    76.1%###################################################################       93.2%######################################################################## 100.0%
+######################################################################## 100.0%
+##########                                                                14.6%########################################                                  55.9%######################################################################## 100.0%
+######################################################################## 100.0%
+############                                                              17.3%##########################                                                36.8%#####################################                                     51.4%#######################################################                   77.4%######################################################################## 100.0%
+######################################################################## 100.0%
+                                                                           0.0%####                                                                       5.7%########                                                                  11.6%###############                                                           21.0%#####################                                                     30.5%############################                                              40.1%###################################                                       49.4%###########################################                               60.1%##############################################                            64.9%###################################################                       71.1%#######################################################                   77.2%############################################################              83.8%################################################################          89.6%######################################################################    97.3%######################################################################## 100.0%
+
+Downloading 'library/busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0' (1 layers)...
+######################################################################## 100.0%
+######################################################################## 100.0%
+
+Downloading 'library/busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6' (1 layers)...
+######################################################################## 100.0%
+######################################################################## 100.0%
+
+Downloading 'library/debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60' (1 layers)...
+skipping existing c8c2d4a6b2e3
+
+Downloading 'library/hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c' (1 layers)...
+######################################################################## 100.0%
+######################################################################## 100.0%
+
+Download of images into '/build' complete.
+Use something like the following to load the result into a Docker daemon:
+  tar -cC '/build' . | docker load
+Removing intermediate container 5954f284dea0
+ ---> 2c4d7de183c3
+Step 21/108 : FROM base AS runtime-dev
+ ---> 571694d9d1c4
+Step 22/108 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Running in b006b47463e2
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5096 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
+Fetched 7664 kB in 2s (3155 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libapparmor1 libseccomp2
+Suggested packages:
+  seccomp
+The following NEW packages will be installed:
+  libapparmor-dev libapparmor1 libseccomp-dev libseccomp2
+0 upgraded, 4 newly installed, 0 to remove and 1 not upgraded.
+Need to get 296 kB of archives.
+After this operation, 1346 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libseccomp2 ppc64el 2.3.1-2.1+deb9u1 [39.6 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libseccomp-dev ppc64el 2.3.1-2.1+deb9u1 [61.1 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libapparmor1 ppc64el 2.11.0-3+deb9u2 [77.1 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libapparmor-dev ppc64el 2.11.0-3+deb9u2 [118 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 296 kB in 0s (3240 kB/s)
+Selecting previously unselected package libseccomp2:ppc64el.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
+Preparing to unpack .../libseccomp2_2.3.1-2.1+deb9u1_ppc64el.deb ...
+Unpacking libseccomp2:ppc64el (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:ppc64el.
+Preparing to unpack .../libseccomp-dev_2.3.1-2.1+deb9u1_ppc64el.deb ...
+Unpacking libseccomp-dev:ppc64el (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libapparmor1:ppc64el.
+Preparing to unpack .../libapparmor1_2.11.0-3+deb9u2_ppc64el.deb ...
+Unpacking libapparmor1:ppc64el (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:ppc64el.
+Preparing to unpack .../libapparmor-dev_2.11.0-3+deb9u2_ppc64el.deb ...
+Unpacking libapparmor-dev:ppc64el (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up libseccomp2:ppc64el (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor1:ppc64el (2.11.0-3+deb9u2) ...
+Setting up libseccomp-dev:ppc64el (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor-dev:ppc64el (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container b006b47463e2
+ ---> ad2c9ab452de
+Step 23/108 : FROM base AS tomlv
+ ---> 571694d9d1c4
+Step 24/108 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Running in 9e844458f5d4
+Removing intermediate container 9e844458f5d4
+ ---> 055dfc2a8107
+Step 25/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> b6d2b49df88f
+Step 26/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 8a0861b99553
+Step 27/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 58f010950b2a
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.BWGJ8SjP74
++ GOPATH=/tmp/tmp.BWGJ8SjP74
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=tomlv
++ shift
++ [[ ! -f ./tomlv.installer ]]
++ . ./tomlv.installer
+++ TOMLV_COMMIT=3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ install_tomlv
+Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ echo 'Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005'
++ git clone https://github.com/BurntSushi/toml.git /tmp/tmp.BWGJ8SjP74/src/github.com/BurntSushi/toml
+Cloning into '/tmp/tmp.BWGJ8SjP74/src/github.com/BurntSushi/toml'...
++ cd /tmp/tmp.BWGJ8SjP74/src/github.com/BurntSushi/toml
++ git checkout -q 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ go build -v -buildmode=pie -o /build/tomlv github.com/BurntSushi/toml/cmd/tomlv
+errors
+internal/cpu
+internal/race
+runtime/internal/atomic
+runtime/internal/sys
+sync/atomic
+math
+internal/testlog
+internal/bytealg
+math/bits
+unicode/utf8
+runtime
+unicode
+encoding
+runtime/cgo
+strconv
+sync
+io
+reflect
+syscall
+bytes
+strings
+bufio
+text/tabwriter
+path
+internal/syscall/unix
+time
+internal/poll
+os
+sort
+path/filepath
+fmt
+io/ioutil
+log
+flag
+github.com/BurntSushi/toml
+github.com/BurntSushi/toml/cmd/tomlv
+Removing intermediate container 58f010950b2a
+ ---> ab13d809c6d3
+Step 28/108 : FROM base AS vndr
+ ---> 571694d9d1c4
+Step 29/108 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Running in 82cd8af94d70
+Removing intermediate container 82cd8af94d70
+ ---> 83a660edb659
+Step 30/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 6227943a35d3
+Step 31/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 92f64afda86a
+Step 32/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 080312c99ff4
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.4nnWDFfXGZ
++ GOPATH=/tmp/tmp.4nnWDFfXGZ
++ RM_GOPATH=1
+++ dirname ./install.sh
+Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52
++ dir=.
++ bin=vndr
++ shift
++ [[ ! -f ./vndr.installer ]]
++ . ./vndr.installer
+++ VNDR_COMMIT=81cb8916aad3c8d06193f008dba3e16f82851f52
++ install_vndr
++ echo 'Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52'
++ git clone https://github.com/LK4D4/vndr.git /tmp/tmp.4nnWDFfXGZ/src/github.com/LK4D4/vndr
+Cloning into '/tmp/tmp.4nnWDFfXGZ/src/github.com/LK4D4/vndr'...
++ cd /tmp/tmp.4nnWDFfXGZ/src/github.com/LK4D4/vndr
++ git checkout -q 81cb8916aad3c8d06193f008dba3e16f82851f52
++ go build -buildmode=pie -v -o /build/vndr .
+errors
+internal/cpu
+internal/race
+runtime/internal/atomic
+runtime/internal/sys
+sync/atomic
+unicode
+internal/bytealg
+unicode/utf8
+math
+runtime
+internal/testlog
+math/bits
+encoding
+unicode/utf16
+container/list
+strconv
+crypto/internal/subtle
+crypto/subtle
+vendor/golang_org/x/crypto/cryptobyte/asn1
+vendor/golang_org/x/net/dns/dnsmessage
+internal/nettrace
+runtime/cgo
+crypto/rc4
+sync
+github.com/LK4D4/vndr/godl/singleflight
+io
+reflect
+syscall
+math/rand
+internal/singleflight
+bytes
+strings
+bufio
+path
+hash
+hash/crc32
+crypto/cipher
+crypto
+crypto/internal/randutil
+crypto/sha512
+crypto/aes
+time
+internal/syscall/unix
+crypto/hmac
+crypto/md5
+crypto/sha1
+crypto/sha256
+vendor/golang_org/x/text/transform
+internal/poll
+sort
+encoding/binary
+os
+regexp/syntax
+crypto/des
+encoding/base64
+vendor/golang_org/x/crypto/internal/chacha20
+encoding/pem
+vendor/golang_org/x/crypto/poly1305
+vendor/golang_org/x/crypto/chacha20poly1305
+vendor/golang_org/x/crypto/curve25519
+fmt
+path/filepath
+io/ioutil
+regexp
+flag
+go/token
+net/url
+go/scanner
+text/template/parse
+log
+encoding/json
+go/ast
+encoding/xml
+text/template
+go/parser
+compress/flate
+context
+math/big
+encoding/hex
+compress/gzip
+net
+vendor/golang_org/x/text/unicode/bidi
+go/doc
+vendor/golang_org/x/text/secure/bidirule
+vendor/golang_org/x/text/unicode/norm
+github.com/LK4D4/vndr/build
+crypto/rand
+crypto/elliptic
+encoding/asn1
+crypto/rsa
+crypto/dsa
+vendor/golang_org/x/net/idna
+crypto/ecdsa
+crypto/x509/pkix
+vendor/golang_org/x/crypto/cryptobyte
+vendor/golang_org/x/net/http2/hpack
+mime
+mime/quotedprintable
+net/http/internal
+os/exec
+vendor/golang_org/x/net/http/httpproxy
+net/textproto
+crypto/x509
+vendor/golang_org/x/net/http/httpguts
+mime/multipart
+crypto/tls
+net/http/httptrace
+net/http
+github.com/LK4D4/vndr/godl
+github.com/LK4D4/vndr
+Removing intermediate container 080312c99ff4
+ ---> 1aabe15565ea
+Step 33/108 : FROM base AS containerd
+ ---> 571694d9d1c4
+Step 34/108 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Running in 0c8e58d14907
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5096 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
+Fetched 7664 kB in 2s (3110 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  btrfs-progs liblzo2-2
+The following NEW packages will be installed:
+  btrfs-progs btrfs-tools liblzo2-2
+0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+Need to get 588 kB of archives.
+After this operation, 5005 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el liblzo2-2 ppc64el 2.08-1.2+b2 [51.0 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el btrfs-progs ppc64el 4.7.3-1 [520 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el btrfs-tools ppc64el 4.7.3-1 [16.9 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 588 kB in 0s (3206 kB/s)
+Selecting previously unselected package liblzo2-2:ppc64el.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
+Preparing to unpack .../liblzo2-2_2.08-1.2+b2_ppc64el.deb ...
+Unpacking liblzo2-2:ppc64el (2.08-1.2+b2) ...
+Selecting previously unselected package btrfs-progs.
+Preparing to unpack .../btrfs-progs_4.7.3-1_ppc64el.deb ...
+Unpacking btrfs-progs (4.7.3-1) ...
+Selecting previously unselected package btrfs-tools.
+Preparing to unpack .../btrfs-tools_4.7.3-1_ppc64el.deb ...
+Unpacking btrfs-tools (4.7.3-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up liblzo2-2:ppc64el (2.08-1.2+b2) ...
+Setting up btrfs-progs (4.7.3-1) ...
+Setting up btrfs-tools (4.7.3-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 0c8e58d14907
+ ---> bf2354e19941
+Step 35/108 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Running in 1f2c2cc9e570
+Removing intermediate container 1f2c2cc9e570
+ ---> 1cc98c6a8928
+Step 36/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 3059fb9aaa81
+Step 37/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> a68253fa78c3
+Step 38/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 77a171c82e92
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.z8u0KCimbs
++ GOPATH=/tmp/tmp.z8u0KCimbs
++ RM_GOPATH=1
+++ dirname ./install.sh
+Install containerd version aa5e000c963756778ab3ebd1a12c67449c503a34
++ dir=.
++ bin=containerd
++ shift
++ [[ ! -f ./containerd.installer ]]
++ . ./containerd.installer
+++ CONTAINERD_COMMIT=aa5e000c963756778ab3ebd1a12c67449c503a34
++ install_containerd
++ echo 'Install containerd version aa5e000c963756778ab3ebd1a12c67449c503a34'
++ git clone https://github.com/containerd/containerd.git /tmp/tmp.z8u0KCimbs/src/github.com/containerd/containerd
+Cloning into '/tmp/tmp.z8u0KCimbs/src/github.com/containerd/containerd'...
++ cd /tmp/tmp.z8u0KCimbs/src/github.com/containerd/containerd
++ git checkout -q aa5e000c963756778ab3ebd1a12c67449c503a34
++ export 'BUILDTAGS=netgo osusergo static_build'
++ BUILDTAGS='netgo osusergo static_build'
++ export EXTRA_FLAGS=-buildmode=pie
++ EXTRA_FLAGS=-buildmode=pie
++ export 'EXTRA_LDFLAGS=-extldflags "-fno-PIC -static"'
++ EXTRA_LDFLAGS='-extldflags "-fno-PIC -static"'
++ '[' '' == dynamic ']'
++ make
+🇩 bin/ctr
+🇩 bin/containerd
+🇩 bin/containerd-stress
+🇩 bin/containerd-shim
+🇩 bin/containerd-shim-runc-v1
+🇩 binaries
++ mkdir -p /build
++ cp bin/containerd /build/containerd
++ cp bin/containerd-shim /build/containerd-shim
++ cp bin/ctr /build/ctr
+Removing intermediate container 77a171c82e92
+ ---> d2337248121b
+Step 39/108 : FROM base AS proxy
+ ---> 571694d9d1c4
+Step 40/108 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Running in 012fbadebdce
+Removing intermediate container 012fbadebdce
+ ---> d9b34414b3fb
+Step 41/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 2ed0226d84e1
+Step 42/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 413992c65ca4
+Step 43/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in fc6b99b9aa7a
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.B9tuaATHpy
++ GOPATH=/tmp/tmp.B9tuaATHpy
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=proxy
++ shift
++ [[ ! -f ./proxy.installer ]]
++ . ./proxy.installer
+++ LIBNETWORK_COMMIT=1a06131fb8a047d919f7deaf02a4c414d7884b83
++ install_proxy
++ case "$1" in
+Install docker-proxy version 1a06131fb8a047d919f7deaf02a4c414d7884b83
++ export CGO_ENABLED=0
++ CGO_ENABLED=0
++ _install_proxy
++ echo 'Install docker-proxy version 1a06131fb8a047d919f7deaf02a4c414d7884b83'
++ git clone https://github.com/docker/libnetwork.git /tmp/tmp.B9tuaATHpy/src/github.com/docker/libnetwork
+Cloning into '/tmp/tmp.B9tuaATHpy/src/github.com/docker/libnetwork'...
++ cd /tmp/tmp.B9tuaATHpy/src/github.com/docker/libnetwork
++ git checkout -q 1a06131fb8a047d919f7deaf02a4c414d7884b83
++ go build -ldflags= -o /build/docker-proxy github.com/docker/libnetwork/cmd/proxy
+Removing intermediate container fc6b99b9aa7a
+ ---> e1b96035bfac
+Step 44/108 : FROM base AS gometalinter
+ ---> 571694d9d1c4
+Step 45/108 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Running in 157b3fe8a577
+Removing intermediate container 157b3fe8a577
+ ---> dbcafebf64d7
+Step 46/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 00ab29beb1e4
+Step 47/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> db87825b9180
+Step 48/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in caf9baa0ce6a
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.Oezbl8v3t6
++ GOPATH=/tmp/tmp.Oezbl8v3t6
++ RM_GOPATH=1
+++ dirname ./install.sh
+Installing gometalinter version v2.0.6
++ dir=.
++ bin=gometalinter
++ shift
++ [[ ! -f ./gometalinter.installer ]]
++ . ./gometalinter.installer
+++ GOMETALINTER_COMMIT=v2.0.6
++ install_gometalinter
++ echo 'Installing gometalinter version v2.0.6'
++ go get -d github.com/alecthomas/gometalinter
++ cd /tmp/tmp.Oezbl8v3t6/src/github.com/alecthomas/gometalinter
++ git checkout -q v2.0.6
++ go build -buildmode=pie -o /build/gometalinter github.com/alecthomas/gometalinter
++ GOBIN=/build
++ /build/gometalinter --install
+Installing:
+  deadcode
+  dupl
+  errcheck
+  gas
+  gochecknoglobals
+  gochecknoinits
+  goconst
+  gocyclo
+  goimports
+  golint
+  gosimple
+  gotype
+  gotypex
+  ineffassign
+  interfacer
+  lll
+  maligned
+  megacheck
+  misspell
+  nakedret
+  safesql
+  staticcheck
+  structcheck
+  unconvert
+  unparam
+  unused
+  varcheck
+Removing intermediate container caf9baa0ce6a
+ ---> e1e47842bd06
+Step 49/108 : FROM base AS dockercli
+ ---> 571694d9d1c4
+Step 50/108 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Running in 454db9e499bf
+Removing intermediate container 454db9e499bf
+ ---> 70bdad251950
+Step 51/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> eb4fefbb5a5f
+Step 52/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 94687e5dcb7d
+Step 53/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 4e843731874b
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.FdcgDz7Far
++ GOPATH=/tmp/tmp.FdcgDz7Far
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=dockercli
++ shift
++ [[ ! -f ./dockercli.installer ]]
++ . ./dockercli.installer
+++ DOCKERCLI_CHANNEL=edge
+++ DOCKERCLI_VERSION=17.06.0-ce
++ install_dockercli
++ echo 'Install docker/cli version 17.06.0-ce from edge'
+++ uname -m
+Install docker/cli version 17.06.0-ce from edge
++ arch=ppc64le
++ '[' ppc64le '!=' x86_64 ']'
++ '[' ppc64le '!=' s390x ']'
++ build_dockercli
++ git clone https://github.com/docker/docker-ce /tmp/tmp.FdcgDz7Far/tmp/docker-ce
+Cloning into '/tmp/tmp.FdcgDz7Far/tmp/docker-ce'...
++ cd /tmp/tmp.FdcgDz7Far/tmp/docker-ce
++ git checkout -q v17.06.0-ce
++ mkdir -p /tmp/tmp.FdcgDz7Far/src/github.com/docker
++ mv components/cli /tmp/tmp.FdcgDz7Far/src/github.com/docker/cli
++ go build -buildmode=pie -o /build/docker github.com/docker/cli/cmd/docker
++ return
+Removing intermediate container 4e843731874b
+ ---> d39529c48878
+Step 54/108 : FROM runtime-dev AS runc
+ ---> ad2c9ab452de
+Step 55/108 : ENV INSTALL_BINARY_NAME=runc
+ ---> Running in 6cf01846253a
+Removing intermediate container 6cf01846253a
+ ---> f5aad8730527
+Step 56/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 991ad6451548
+Step 57/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> f856f00171bf
+Step 58/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in bf5459df7953
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.Ikf1NMnpu0
++ GOPATH=/tmp/tmp.Ikf1NMnpu0
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=runc
++ shift
++ [[ ! -f ./runc.installer ]]
++ . ./runc.installer
+++ RUNC_COMMIT=96ec2177ae841256168fcf76954f7177af9446eb
++ install_runc
++ uname -r
++ grep -q '^3\.10\.0.*\.el7\.'
+Install runc version 96ec2177ae841256168fcf76954f7177af9446eb (build tags: seccomp apparmor selinux )
++ RUNC_BUILDTAGS='seccomp apparmor selinux '
++ echo 'Install runc version 96ec2177ae841256168fcf76954f7177af9446eb (build tags: seccomp apparmor selinux )'
++ git clone https://github.com/opencontainers/runc.git /tmp/tmp.Ikf1NMnpu0/src/github.com/opencontainers/runc
+Cloning into '/tmp/tmp.Ikf1NMnpu0/src/github.com/opencontainers/runc'...
++ cd /tmp/tmp.Ikf1NMnpu0/src/github.com/opencontainers/runc
++ git checkout -q 96ec2177ae841256168fcf76954f7177af9446eb
++ '[' -z '' ']'
++ target=static
++ make 'BUILDTAGS=seccomp apparmor selinux ' static
+CGO_ENABLED=1 go build  -tags "seccomp apparmor selinux  netgo osusergo static_build" -installsuffix netgo -ldflags "-w -extldflags -static -X main.gitCommit="96ec2177ae841256168fcf76954f7177af9446eb" -X main.version=1.0.0-rc6+dev " -o runc .
+CGO_ENABLED=1 go build  -tags "seccomp apparmor selinux  netgo osusergo static_build" -installsuffix netgo -ldflags "-w -extldflags -static -X main.gitCommit="96ec2177ae841256168fcf76954f7177af9446eb" -X main.version=1.0.0-rc6+dev " -o contrib/cmd/recvtty/recvtty ./contrib/cmd/recvtty
++ mkdir -p /build
++ cp runc /build/runc
+Removing intermediate container bf5459df7953
+ ---> c485ceaff756
+Step 59/108 : FROM base AS tini
+ ---> 571694d9d1c4
+Step 60/108 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Running in 07e837367c05
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5096 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
+Fetched 7664 kB in 2s (3165 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  cmake-data libarchive13 libgpm2 libicu57 libjsoncpp1 liblzo2-2 libuv1
+  libxml2 sgml-base vim vim-runtime xml-core xxd
+Suggested packages:
+  codeblocks eclipse ninja-build lrzip gpm sgml-base-doc ctags vim-doc
+  vim-scripts debhelper
+The following NEW packages will be installed:
+  cmake cmake-data libarchive13 libgpm2 libicu57 libjsoncpp1 liblzo2-2 libuv1
+  libxml2 sgml-base vim vim-common vim-runtime xml-core xxd
+0 upgraded, 15 newly installed, 0 to remove and 1 not upgraded.
+Need to get 19.7 MB of archives.
+After this operation, 91.7 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el cmake-data all 3.7.2-1 [1216 kB]
+Get:2 http://security.debian.org/debian-security stretch/updates/main ppc64el libarchive13 ppc64el 3.2.2-2+deb9u1 [272 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el liblzo2-2 ppc64el 2.08-1.2+b2 [51.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libicu57 ppc64el 57.1-6+deb9u2 [7667 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libxml2 ppc64el 2.9.4+dfsg1-2.2+deb9u2 [830 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libjsoncpp1 ppc64el 1.7.4-3 [75.8 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libuv1 ppc64el 1.9.1-3 [78.3 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el cmake ppc64el 3.7.2-1 [2872 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el sgml-base all 1.29 [14.8 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el xxd ppc64el 2:8.0.0197-4+deb9u1 [132 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el vim-common all 2:8.0.0197-4+deb9u1 [159 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libgpm2 ppc64el 1.20.4-6.2+b1 [33.9 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el vim-runtime all 2:8.0.0197-4+deb9u1 [5407 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el vim ppc64el 2:8.0.0197-4+deb9u1 [913 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el xml-core all 0.17 [23.2 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 19.7 MB in 0s (27.3 MB/s)
+Selecting previously unselected package cmake-data.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
+Preparing to unpack .../00-cmake-data_3.7.2-1_all.deb ...
+Unpacking cmake-data (3.7.2-1) ...
+Selecting previously unselected package liblzo2-2:ppc64el.
+Preparing to unpack .../01-liblzo2-2_2.08-1.2+b2_ppc64el.deb ...
+Unpacking liblzo2-2:ppc64el (2.08-1.2+b2) ...
+Selecting previously unselected package libicu57:ppc64el.
+Preparing to unpack .../02-libicu57_57.1-6+deb9u2_ppc64el.deb ...
+Unpacking libicu57:ppc64el (57.1-6+deb9u2) ...
+Selecting previously unselected package libxml2:ppc64el.
+Preparing to unpack .../03-libxml2_2.9.4+dfsg1-2.2+deb9u2_ppc64el.deb ...
+Unpacking libxml2:ppc64el (2.9.4+dfsg1-2.2+deb9u2) ...
+Selecting previously unselected package libarchive13:ppc64el.
+Preparing to unpack .../04-libarchive13_3.2.2-2+deb9u1_ppc64el.deb ...
+Unpacking libarchive13:ppc64el (3.2.2-2+deb9u1) ...
+Selecting previously unselected package libjsoncpp1:ppc64el.
+Preparing to unpack .../05-libjsoncpp1_1.7.4-3_ppc64el.deb ...
+Unpacking libjsoncpp1:ppc64el (1.7.4-3) ...
+Selecting previously unselected package libuv1:ppc64el.
+Preparing to unpack .../06-libuv1_1.9.1-3_ppc64el.deb ...
+Unpacking libuv1:ppc64el (1.9.1-3) ...
+Selecting previously unselected package cmake.
+Preparing to unpack .../07-cmake_3.7.2-1_ppc64el.deb ...
+Unpacking cmake (3.7.2-1) ...
+Selecting previously unselected package sgml-base.
+Preparing to unpack .../08-sgml-base_1.29_all.deb ...
+Unpacking sgml-base (1.29) ...
+Selecting previously unselected package xxd.
+Preparing to unpack .../09-xxd_2%3a8.0.0197-4+deb9u1_ppc64el.deb ...
+Unpacking xxd (2:8.0.0197-4+deb9u1) ...
+Selecting previously unselected package vim-common.
+Preparing to unpack .../10-vim-common_2%3a8.0.0197-4+deb9u1_all.deb ...
+Unpacking vim-common (2:8.0.0197-4+deb9u1) ...
+Selecting previously unselected package libgpm2:ppc64el.
+Preparing to unpack .../11-libgpm2_1.20.4-6.2+b1_ppc64el.deb ...
+Unpacking libgpm2:ppc64el (1.20.4-6.2+b1) ...
+Selecting previously unselected package vim-runtime.
+Preparing to unpack .../12-vim-runtime_2%3a8.0.0197-4+deb9u1_all.deb ...
+Adding 'diversion of /usr/share/vim/vim80/doc/help.txt to /usr/share/vim/vim80/doc/help.txt.vim-tiny by vim-runtime'
+Adding 'diversion of /usr/share/vim/vim80/doc/tags to /usr/share/vim/vim80/doc/tags.vim-tiny by vim-runtime'
+Unpacking vim-runtime (2:8.0.0197-4+deb9u1) ...
+Selecting previously unselected package vim.
+Preparing to unpack .../13-vim_2%3a8.0.0197-4+deb9u1_ppc64el.deb ...
+Unpacking vim (2:8.0.0197-4+deb9u1) ...
+Selecting previously unselected package xml-core.
+Preparing to unpack .../14-xml-core_0.17_all.deb ...
+Unpacking xml-core (0.17) ...
+Processing triggers for mime-support (3.60) ...
+Setting up xxd (2:8.0.0197-4+deb9u1) ...
+Setting up libgpm2:ppc64el (1.20.4-6.2+b1) ...
+Setting up libuv1:ppc64el (1.9.1-3) ...
+Setting up cmake-data (3.7.2-1) ...
+Setting up sgml-base (1.29) ...
+Setting up libicu57:ppc64el (57.1-6+deb9u2) ...
+Setting up libxml2:ppc64el (2.9.4+dfsg1-2.2+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up vim-common (2:8.0.0197-4+deb9u1) ...
+Setting up vim-runtime (2:8.0.0197-4+deb9u1) ...
+Setting up xml-core (0.17) ...
+Setting up liblzo2-2:ppc64el (2.08-1.2+b2) ...
+Setting up libjsoncpp1:ppc64el (1.7.4-3) ...
+Setting up vim (2:8.0.0197-4+deb9u1) ...
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vim (vim) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vimdiff (vimdiff) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rvim (rvim) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rview (rview) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vi (vi) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/view (view) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/ex (ex) in auto mode
+update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/editor (editor) in auto mode
+Setting up libarchive13:ppc64el (3.2.2-2+deb9u1) ...
+Setting up cmake (3.7.2-1) ...
+Processing triggers for sgml-base (1.29) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 07e837367c05
+ ---> f04ff9d4ab3f
+Step 61/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 4a030495c17b
+Step 62/108 : ENV INSTALL_BINARY_NAME=tini
+ ---> Running in 2c3679daf9ae
+Removing intermediate container 2c3679daf9ae
+ ---> cd2dfdf77cd5
+Step 63/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 800f13fb3cbd
+Step 64/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in f5745a544f3b
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.XssqJdQiCl
++ GOPATH=/tmp/tmp.XssqJdQiCl
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=tini
++ shift
++ [[ ! -f ./tini.installer ]]
++ . ./tini.installer
+++ TINI_COMMIT=fec3683b971d9c3ef73f284f176672c44b448662
++ install_tini
++ echo 'Install tini version fec3683b971d9c3ef73f284f176672c44b448662'
++ git clone https://github.com/krallin/tini.git /tmp/tmp.XssqJdQiCl/tini
+Install tini version fec3683b971d9c3ef73f284f176672c44b448662
+Cloning into '/tmp/tmp.XssqJdQiCl/tini'...
++ cd /tmp/tmp.XssqJdQiCl/tini
++ git checkout -q fec3683b971d9c3ef73f284f176672c44b448662
++ cmake .
+-- The C compiler identification is GNU 6.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test HAS_BUILTIN_FORTIFY
+-- Performing Test HAS_BUILTIN_FORTIFY - Failed
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/tmp.XssqJdQiCl/tini
++ make tini-static
+Scanning dependencies of target tini-static
+[ 50%] Building C object CMakeFiles/tini-static.dir/src/tini.c.o
+[100%] Linking C executable tini-static
+[100%] Built target tini-static
++ mkdir -p /build
++ cp tini-static /build/docker-init
+Removing intermediate container f5745a544f3b
+ ---> c572a0c72d57
+Step 65/108 : FROM base AS rootlesskit
+ ---> 571694d9d1c4
+Step 66/108 : ENV INSTALL_BINARY_NAME=rootlesskit
+ ---> Running in da2f69c90fad
+Removing intermediate container da2f69c90fad
+ ---> b321251d1aab
+Step 67/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 0e8336cf3100
+Step 68/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> c9ca4b8841f3
+Step 69/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in ba09753908d4
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.0Mdz76WC5T
++ GOPATH=/tmp/tmp.0Mdz76WC5T
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=rootlesskit
++ shift
++ [[ ! -f ./rootlesskit.installer ]]
++ . ./rootlesskit.installer
+++ ROOTLESSKIT_COMMIT=77cdbed39ff42bc96fb23830065ec2e28b7767e6
+Install rootlesskit version 77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ install_rootlesskit
++ case "$1" in
++ export CGO_ENABLED=0
++ CGO_ENABLED=0
++ _install_rootlesskit
++ echo 'Install rootlesskit version 77cdbed39ff42bc96fb23830065ec2e28b7767e6'
++ git clone https://github.com/rootless-containers/rootlesskit.git /tmp/tmp.0Mdz76WC5T/src/github.com/rootless-containers/rootlesskit
+Cloning into '/tmp/tmp.0Mdz76WC5T/src/github.com/rootless-containers/rootlesskit'...
++ cd /tmp/tmp.0Mdz76WC5T/src/github.com/rootless-containers/rootlesskit
++ git checkout -q 77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ go build -ldflags= -o /build//rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit
+Removing intermediate container ba09753908d4
+ ---> 8ce0a0e1c6d6
+Step 70/108 : COPY ./contrib/dockerd-rootless.sh /build
+ ---> 116979ece845
+Step 71/108 : FROM base AS slirp4netns
+ ---> 571694d9d1c4
+Step 72/108 : RUN apt-get update && apt-get install -y automake autotools-dev libtool
+ ---> Running in 8e7c11daa99c
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:5 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5096 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
+Get:8 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
+Fetched 7664 kB in 2s (3233 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  autoconf file libltdl-dev libltdl7 libmagic-mgc libmagic1 libsigsegv2 m4
+Suggested packages:
+  autoconf-archive gnu-standards autoconf-doc gettext libtool-doc gfortran
+  | fortran95-compiler gcj-jdk m4-doc
+The following NEW packages will be installed:
+  autoconf automake autotools-dev file libltdl-dev libltdl7 libmagic-mgc
+  libmagic1 libsigsegv2 libtool m4
+0 upgraded, 11 newly installed, 0 to remove and 1 not upgraded.
+Need to get 2857 kB of archives.
+After this operation, 12.4 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libmagic-mgc ppc64el 1:5.30-1+deb9u2 [222 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libmagic1 ppc64el 1:5.30-1+deb9u2 [107 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el file ppc64el 1:5.30-1+deb9u2 [64.4 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libsigsegv2 ppc64el 2.10-5 [28.8 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el m4 ppc64el 1.4.18-1 [195 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el autoconf all 2.69-10 [338 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el autotools-dev all 20161112.1 [73.4 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el automake all 1:1.15-6 [733 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libltdl7 ppc64el 2.4.6-2 [388 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libltdl-dev ppc64el 2.4.6-2 [162 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libtool all 2.4.6-2 [545 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 2857 kB in 1s (2694 kB/s)
+Selecting previously unselected package libmagic-mgc.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
+Preparing to unpack .../00-libmagic-mgc_1%3a5.30-1+deb9u2_ppc64el.deb ...
+Unpacking libmagic-mgc (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libmagic1:ppc64el.
+Preparing to unpack .../01-libmagic1_1%3a5.30-1+deb9u2_ppc64el.deb ...
+Unpacking libmagic1:ppc64el (1:5.30-1+deb9u2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../02-file_1%3a5.30-1+deb9u2_ppc64el.deb ...
+Unpacking file (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libsigsegv2:ppc64el.
+Preparing to unpack .../03-libsigsegv2_2.10-5_ppc64el.deb ...
+Unpacking libsigsegv2:ppc64el (2.10-5) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../04-m4_1.4.18-1_ppc64el.deb ...
+Unpacking m4 (1.4.18-1) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../05-autoconf_2.69-10_all.deb ...
+Unpacking autoconf (2.69-10) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../06-autotools-dev_20161112.1_all.deb ...
+Unpacking autotools-dev (20161112.1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../07-automake_1%3a1.15-6_all.deb ...
+Unpacking automake (1:1.15-6) ...
+Selecting previously unselected package libltdl7:ppc64el.
+Preparing to unpack .../08-libltdl7_2.4.6-2_ppc64el.deb ...
+Unpacking libltdl7:ppc64el (2.4.6-2) ...
+Selecting previously unselected package libltdl-dev:ppc64el.
+Preparing to unpack .../09-libltdl-dev_2.4.6-2_ppc64el.deb ...
+Unpacking libltdl-dev:ppc64el (2.4.6-2) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../10-libtool_2.4.6-2_all.deb ...
+Unpacking libtool (2.4.6-2) ...
+Setting up libsigsegv2:ppc64el (2.10-5) ...
+Setting up m4 (1.4.18-1) ...
+Setting up libmagic-mgc (1:5.30-1+deb9u2) ...
+Setting up libmagic1:ppc64el (1:5.30-1+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up autotools-dev (20161112.1) ...
+Setting up libltdl7:ppc64el (2.4.6-2) ...
+Setting up libltdl-dev:ppc64el (2.4.6-2) ...
+Setting up autoconf (2.69-10) ...
+Setting up file (1:5.30-1+deb9u2) ...
+Setting up automake (1:1.15-6) ...
+update-alternatives: using /usr/bin/automake-1.15 to provide /usr/bin/automake (automake) in auto mode
+Setting up libtool (2.4.6-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 8e7c11daa99c
+ ---> f68dae9fc900
+Step 73/108 : ENV INSTALL_BINARY_NAME=slirp4netns
+ ---> Running in 6ca7f16d01a2
+Removing intermediate container 6ca7f16d01a2
+ ---> 04d51beeab82
+Step 74/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> eb2b10b6b300
+Step 75/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 71187064d54d
+Step 76/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in e226fd81dde7
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.BwBAblcOII
++ GOPATH=/tmp/tmp.BwBAblcOII
++ RM_GOPATH=1
+++ dirname ./install.sh
+Install docker-slirp4netns version 4a59899d79285e9962550f171f73492171aae267
++ dir=.
++ bin=slirp4netns
++ shift
++ [[ ! -f ./slirp4netns.installer ]]
++ . ./slirp4netns.installer
+++ SLIRP4NETNS_COMMIT=4a59899d79285e9962550f171f73492171aae267
++ install_slirp4netns
++ case "$1" in
++ CONFIGURE_FLAGS=LDFLAGS=-static
++ echo 'Install docker-slirp4netns version 4a59899d79285e9962550f171f73492171aae267'
++ git clone https://github.com/rootless-containers/slirp4netns.git /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns
+Cloning into '/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns'...
++ cd /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns
++ git checkout -q 4a59899d79285e9962550f171f73492171aae267
++ ./autogen.sh
+configure.ac:6: installing './compile'
+configure.ac:9: installing './install-sh'
+configure.ac:9: installing './missing'
+Makefile.am: installing './depcomp'
+parallel-tests: installing './test-driver'
++ ./configure LDFLAGS=-static
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking for ranlib... ranlib
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... no
+checking for mawk... mawk
+checking whether make sets $(MAKE)... yes
+checking for style of include used by make... GNU
+checking whether make supports nested variables... yes
+checking dependency style of gcc... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking arpa/inet.h usability... yes
+checking arpa/inet.h presence... yes
+checking for arpa/inet.h... yes
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking netdb.h usability... yes
+checking netdb.h presence... yes
+checking for netdb.h... yes
+checking netinet/in.h usability... yes
+checking netinet/in.h presence... yes
+checking for netinet/in.h... yes
+checking for stdint.h... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for string.h... (cached) yes
+checking sys/ioctl.h usability... yes
+checking sys/ioctl.h presence... yes
+checking for sys/ioctl.h... yes
+checking sys/socket.h usability... yes
+checking sys/socket.h presence... yes
+checking for sys/socket.h... yes
+checking sys/timeb.h usability... yes
+checking sys/timeb.h presence... yes
+checking for sys/timeb.h... yes
+checking for unistd.h... (cached) yes
+checking getopt.h usability... yes
+checking getopt.h presence... yes
+checking for getopt.h... yes
+checking for stdbool.h that conforms to C99... yes
+checking for _Bool... yes
+checking for inline... inline
+checking for int16_t... yes
+checking for int32_t... yes
+checking for int64_t... yes
+checking for int8_t... yes
+checking for pid_t... yes
+checking for size_t... yes
+checking for ssize_t... yes
+checking for uint16_t... yes
+checking for uint32_t... yes
+checking for uint64_t... yes
+checking for uint8_t... yes
+checking for working alloca.h... yes
+checking for alloca... yes
+checking vfork.h usability... no
+checking vfork.h presence... no
+checking for vfork.h... no
+checking for fork... yes
+checking for vfork... yes
+checking for working fork... yes
+checking for working vfork... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for GNU libc compatible malloc... yes
+checking for stdlib.h... (cached) yes
+checking for GNU libc compatible realloc... yes
+checking for atexit... yes
+checking for clock_gettime... yes
+checking for inet_ntoa... yes
+checking for memmove... yes
+checking for memset... yes
+checking for socket... yes
+checking for strchr... yes
+checking for strdup... yes
+checking for strerror... yes
+checking for strstr... yes
+checking for strtol... yes
+checking for getopt_long... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
++ make
+error: unknown option `exclude=*'
+usage: git describe [<options>] [<commit-ish>...]
+   or: git describe [<options>] --dirty
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref
+    --tags                use any tag, even unannotated
+    --long                always use long format
+    --first-parent        only follow first parent
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+    --exact-match         only output exact matches
+    --candidates <n>      consider <n> most recent tags (default: 10)
+    --match <pattern>     only consider tags matching <pattern>
+    --always              show abbreviated commit object as fallback
+    --dirty[=<mark>]      append <mark> on dirty working tree (default: "-dirty")
+
+make  all-am
+make[1]: Entering directory '/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns'
+error: unknown option `exclude=*'
+usage: git describe [<options>] [<commit-ish>...]
+   or: git describe [<options>] --dirty
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref
+    --tags                use any tag, even unannotated
+    --long                always use long format
+    --first-parent        only follow first parent
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+    --exact-match         only output exact matches
+    --candidates <n>      consider <n> most recent tags (default: 10)
+    --match <pattern>     only consider tags matching <pattern>
+    --always              show abbreviated commit object as fallback
+    --dirty[=<mark>]      append <mark> on dirty working tree (default: "-dirty")
+
+depbase=`echo qemu/slirp/arp_table.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/arp_table.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/arp_table.o qemu/slirp/arp_table.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/bootp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/bootp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/bootp.o qemu/slirp/bootp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/cksum.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/cksum.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/cksum.o qemu/slirp/cksum.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/dhcpv6.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/dhcpv6.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/dhcpv6.o qemu/slirp/dhcpv6.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/dnssearch.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/dnssearch.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/dnssearch.o qemu/slirp/dnssearch.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/if.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/if.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/if.o qemu/slirp/if.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_icmp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_icmp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_icmp.o qemu/slirp/ip6_icmp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_input.o qemu/slirp/ip6_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_output.o qemu/slirp/ip6_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_icmp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_icmp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_icmp.o qemu/slirp/ip_icmp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_input.o qemu/slirp/ip_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_output.o qemu/slirp/ip_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/mbuf.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/mbuf.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/mbuf.o qemu/slirp/mbuf.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/misc.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/misc.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/misc.o qemu/slirp/misc.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ndp_table.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ndp_table.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ndp_table.o qemu/slirp/ndp_table.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/sbuf.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/sbuf.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/sbuf.o qemu/slirp/sbuf.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/slirp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/slirp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/slirp.o qemu/slirp/slirp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/socket.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/socket.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/socket.o qemu/slirp/socket.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_input.o qemu/slirp/tcp_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_output.o qemu/slirp/tcp_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_subr.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_subr.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_subr.o qemu/slirp/tcp_subr.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_timer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_timer.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_timer.o qemu/slirp/tcp_timer.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/udp6.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/udp6.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/udp6.o qemu/slirp/udp6.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/udp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/udp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/udp.o qemu/slirp/udp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libqemu_slirp.a
+ar cru libqemu_slirp.a qemu/slirp/arp_table.o qemu/slirp/bootp.o qemu/slirp/cksum.o qemu/slirp/dhcpv6.o qemu/slirp/dnssearch.o qemu/slirp/if.o qemu/slirp/ip6_icmp.o qemu/slirp/ip6_input.o qemu/slirp/ip6_output.o qemu/slirp/ip_icmp.o qemu/slirp/ip_input.o qemu/slirp/ip_output.o qemu/slirp/mbuf.o qemu/slirp/misc.o qemu/slirp/ndp_table.o qemu/slirp/sbuf.o qemu/slirp/slirp.o qemu/slirp/socket.o qemu/slirp/tcp_input.o qemu/slirp/tcp_output.o qemu/slirp/tcp_subr.o qemu/slirp/tcp_timer.o qemu/slirp/udp6.o qemu/slirp/udp.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libqemu_slirp.a
+depbase=`echo rd235_libslirp/src/qemu2libslirp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT rd235_libslirp/src/qemu2libslirp.o -MD -MP -MF $depbase.Tpo -c -o rd235_libslirp/src/qemu2libslirp.o rd235_libslirp/src/qemu2libslirp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libslirp.a
+ar cru libslirp.a rd235_libslirp/src/qemu2libslirp.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libslirp.a
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2 -MT slirp4netns-main.o -MD -MP -MF .deps/slirp4netns-main.Tpo -c -o slirp4netns-main.o `test -f 'main.c' || echo './'`main.c
+mv -f .deps/slirp4netns-main.Tpo .deps/slirp4netns-main.Po
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2 -MT slirp4netns-slirp4netns.o -MD -MP -MF .deps/slirp4netns-slirp4netns.Tpo -c -o slirp4netns-slirp4netns.o `test -f 'slirp4netns.c' || echo './'`slirp4netns.c
+mv -f .deps/slirp4netns-slirp4netns.Tpo .deps/slirp4netns-slirp4netns.Po
+gcc -I /tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2  -static -o slirp4netns slirp4netns-main.o slirp4netns-slirp4netns.o libslirp.a libqemu_slirp.a 
+make[1]: Leaving directory '/tmp/tmp.BwBAblcOII/src/github.com/rootless-containers/slirp4netns'
++ mkdir -p /build/
++ cp slirp4netns /build//slirp4netns
++ cp COPYING /build//slirp4netns.LICENSE
+Removing intermediate container e226fd81dde7
+ ---> 9f5c4afc560b
+Step 77/108 : FROM runtime-dev AS dev
+ ---> ad2c9ab452de
+Step 78/108 : RUN groupadd -r docker
+ ---> Running in 87f5352264a5
+Removing intermediate container 87f5352264a5
+ ---> 1048735dcd79
+Step 79/108 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Running in f4a5ac20fca6
+Removing intermediate container f4a5ac20fca6
+ ---> 7f9331db6bf5
+Step 80/108 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Running in 6fd23a1cdb98
+'/root/.bashrc' -> '/go/src/github.com/docker/docker/.bashrc'
+Removing intermediate container 6fd23a1cdb98
+ ---> 244efc643851
+Step 81/108 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Running in 2b55533b3364
+Removing intermediate container 2b55533b3364
+ ---> 5a0303f79c07
+Step 82/108 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Running in 73b6f5d81c9a
+Removing intermediate container 73b6f5d81c9a
+ ---> 2cb5428d00c9
+Step 83/108 : RUN ldconfig
+ ---> Running in 1d967674bc42
+Removing intermediate container 1d967674bc42
+ ---> 79893098cb0c
+Step 84/108 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	--no-install-recommends
+ ---> Running in 5295b93c2b0f
+Hit:1 http://security.debian.org/debian-security stretch/updates InRelease
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Hit:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+Hit:4 http://cdn-fastly.deb.debian.org/debian stretch Release
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  binutils-mingw-w64-i686 binutils-mingw-w64-x86-64 btrfs-progs dh-python
+  dmsetup gcc-mingw-w64-base gcc-mingw-w64-x86-64 libaio1 libapparmor-perl
+  libdevmapper-event1.02.1 libdevmapper1.02.1 libexpat1-dev libgpm2 libip4tc0
+  libip6tc0 libiptc0 libjq1 liblzo2-2 libmpdec2 libnetfilter-conntrack3
+  libnfnetlink0 libonig4 libpcre16-3 libpcre3-dev libpcre32-3 libpcrecpp0v5
+  libpython-dev libpython2.7 libpython2.7-dev libpython3-stdlib
+  libpython3.5-minimal libpython3.5-stdlib libreadline5 libselinux1-dev
+  libsepol1-dev libxtables12 mingw-w64-common mingw-w64-x86-64-dev
+  python-chardet python-funcsigs python-pbr python-pip-whl
+  python-pkg-resources python-urllib3 python2.7-dev python3 python3-minimal
+  python3.5 python3.5-minimal vim-runtime xxd
+Suggested packages:
+  apparmor-profiles apparmor-profiles-extra apparmor-utils bzip2-doc
+  gcc-6-locales kmod gpm wine64 python-funcsigs-doc python-mock-doc
+  python-cryptography python-idna python-openssl python-socks
+  python-setuptools-doc python-ntlm python3-doc python3-tk python3-venv
+  python3.5-venv python3.5-doc binfmt-support ctags vim-doc vim-scripts
+  xfsdump acl attr quota
+Recommended packages:
+  aufs-dkms libpam-cap build-essential python-all-dev python-cryptography
+  python-idna python-ipaddress python-openssl python-keyring
+  python-keyrings.alt python-xdg unzip
+The following NEW packages will be installed:
+  apparmor aufs-tools bash-completion binutils-mingw-w64
+  binutils-mingw-w64-i686 binutils-mingw-w64-x86-64 btrfs-progs btrfs-tools
+  bzip2 dh-python dmsetup g++-mingw-w64-x86-64 gcc-mingw-w64-base
+  gcc-mingw-w64-x86-64 iptables jq libaio1 libapparmor-perl libcap2-bin
+  libdevmapper-dev libdevmapper-event1.02.1 libdevmapper1.02.1 libexpat1-dev
+  libgpm2 libip4tc0 libip6tc0 libiptc0 libjq1 liblzo2-2 libmpdec2
+  libnetfilter-conntrack3 libnfnetlink0 libonig4 libpcre16-3 libpcre3-dev
+  libpcre32-3 libpcrecpp0v5 libpython-dev libpython2.7 libpython2.7-dev
+  libpython3-stdlib libpython3.5-minimal libpython3.5-stdlib libreadline5
+  libselinux1-dev libsepol1-dev libsystemd-dev libudev-dev libxtables12
+  mingw-w64-common mingw-w64-x86-64-dev net-tools pigz
+  python-backports.ssl-match-hostname python-chardet python-dev
+  python-funcsigs python-mock python-pbr python-pip python-pip-whl
+  python-pkg-resources python-requests python-setuptools python-urllib3
+  python-websocket python-wheel python2.7-dev python3 python3-minimal
+  python3.5 python3.5-minimal thin-provisioning-tools vim vim-common
+  vim-runtime xfsprogs xxd xz-utils zip
+0 upgraded, 80 newly installed, 0 to remove and 1 not upgraded.
+Need to get 117 MB of archives.
+After this operation, 635 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el bash-completion all 1:2.1-4.3 [178 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnfnetlink0 ppc64el 1.0.1-3 [12.8 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpcrecpp0v5 ppc64el 2:8.39-3 [152 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libudev-dev ppc64el 232-25+deb9u6 [91.3 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpython3.5-minimal ppc64el 3.5.3-1+deb9u1 [574 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python3.5-minimal ppc64el 3.5.3-1+deb9u1 [1704 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python3-minimal ppc64el 3.5.3-1 [35.3 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libmpdec2 ppc64el 2.4.2-1 [81.9 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpython3.5-stdlib ppc64el 3.5.3-1+deb9u1 [2179 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python3.5 ppc64el 3.5.3-1+deb9u1 [229 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpython3-stdlib ppc64el 3.5.3-1 [18.6 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el dh-python all 2.20170125 [86.8 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python3 ppc64el 3.5.3-1 [21.6 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el pigz ppc64el 2.3.4-1 [49.4 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libip4tc0 ppc64el 1.6.0+snapshot20161117-6 [67.6 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libip6tc0 ppc64el 1.6.0+snapshot20161117-6 [67.9 kB]
+Get:17 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libiptc0 ppc64el 1.6.0+snapshot20161117-6 [57.8 kB]
+Get:18 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libxtables12 ppc64el 1.6.0+snapshot20161117-6 [74.7 kB]
+Get:19 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnetfilter-conntrack3 ppc64el 1.0.6-2 [34.7 kB]
+Get:20 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el iptables ppc64el 1.6.0+snapshot20161117-6 [278 kB]
+Get:21 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el xxd ppc64el 2:8.0.0197-4+deb9u1 [132 kB]
+Get:22 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el vim-common all 2:8.0.0197-4+deb9u1 [159 kB]
+Get:23 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el bzip2 ppc64el 1.0.6-8.1 [46.3 kB]
+Get:24 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libgpm2 ppc64el 1.20.4-6.2+b1 [33.9 kB]
+Get:25 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el xz-utils ppc64el 5.2.2-1.2+b1 [262 kB]
+Get:26 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el aufs-tools ppc64el 1:4.1+20161219-1 [102 kB]
+Get:27 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el liblzo2-2 ppc64el 2.08-1.2+b2 [51.0 kB]
+Get:28 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el btrfs-progs ppc64el 4.7.3-1 [520 kB]
+Get:29 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el btrfs-tools ppc64el 4.7.3-1 [16.9 kB]
+Get:30 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libdevmapper1.02.1 ppc64el 2:1.02.137-2 [150 kB]
+Get:31 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el dmsetup ppc64el 2:1.02.137-2 [102 kB]
+Get:32 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libonig4 ppc64el 6.1.3-2 [140 kB]
+Get:33 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libjq1 ppc64el 1.5+dfsg-1.3 [111 kB]
+Get:34 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el jq ppc64el 1.5+dfsg-1.3 [58.9 kB]
+Get:35 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libaio1 ppc64el 0.3.110-3 [9514 B]
+Get:36 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libcap2-bin ppc64el 1:2.25-1 [27.2 kB]
+Get:37 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libdevmapper-event1.02.1 ppc64el 2:1.02.137-2 [41.0 kB]
+Get:38 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libsepol1-dev ppc64el 2.6-2 [294 kB]
+Get:39 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpcre16-3 ppc64el 2:8.39-3 [239 kB]
+Get:40 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpcre32-3 ppc64el 2:8.39-3 [232 kB]
+Get:41 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpcre3-dev ppc64el 2:8.39-3 [586 kB]
+Get:42 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libselinux1-dev ppc64el 2.6-3+b3 [183 kB]
+Get:43 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libdevmapper-dev ppc64el 2:1.02.137-2 [68.6 kB]
+Get:44 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libexpat1-dev ppc64el 2.2.0-2+deb9u1 [126 kB]
+Get:45 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpython2.7 ppc64el 2.7.13-2+deb9u3 [962 kB]
+Get:46 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpython2.7-dev ppc64el 2.7.13-2+deb9u3 [28.2 MB]
+Get:47 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libpython-dev ppc64el 2.7.13-2 [20.1 kB]
+Get:48 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libreadline5 ppc64el 5.2+dfsg-3+b1 [111 kB]
+Get:49 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libsystemd-dev ppc64el 232-25+deb9u6 [1716 kB]
+Get:50 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el net-tools ppc64el 1.60+git20161116.90da8a0-1 [235 kB]
+Get:51 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-backports.ssl-match-hostname all 3.5.0.1-1 [6980 B]
+Get:52 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-pkg-resources all 33.1.1-1 [166 kB]
+Get:53 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-chardet all 2.3.0-2 [96.0 kB]
+Get:54 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python2.7-dev ppc64el 2.7.13-2+deb9u3 [288 kB]
+Get:55 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-dev ppc64el 2.7.13-2 [1126 B]
+Get:56 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-funcsigs all 1.0.2-3 [13.3 kB]
+Get:57 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-pbr all 1.10.0-1 [52.4 kB]
+Get:58 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-pip-whl all 9.0.1-2 [1406 kB]
+Get:59 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-pip all 9.0.1-2 [179 kB]
+Get:60 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-urllib3 all 1.19.1-1 [77.5 kB]
+Get:61 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-requests all 2.12.4-1 [101 kB]
+Get:62 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-setuptools all 33.1.1-1 [297 kB]
+Get:63 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-websocket all 0.37.0-2 [31.5 kB]
+Get:64 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-wheel all 0.29.0-2 [51.7 kB]
+Get:65 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el thin-provisioning-tools ppc64el 0.6.1-4+b1 [326 kB]
+Get:66 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el vim-runtime all 2:8.0.0197-4+deb9u1 [5407 kB]
+Get:67 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el vim ppc64el 2:8.0.0197-4+deb9u1 [913 kB]
+Get:68 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el xfsprogs ppc64el 4.9.0+nmu1 [729 kB]
+Get:69 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el zip ppc64el 3.0-11+b1 [223 kB]
+Get:70 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libapparmor-perl ppc64el 2.11.0-3+deb9u2 [78.9 kB]
+Get:71 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el apparmor ppc64el 2.11.0-3+deb9u2 [527 kB]
+Get:72 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el binutils-mingw-w64-i686 ppc64el 2.28-5+7.4+b4 [1957 kB]
+Get:73 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el binutils-mingw-w64-x86-64 ppc64el 2.28-5+7.4+b4 [2454 kB]
+Get:74 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el binutils-mingw-w64 all 2.27.90.20161231-1+7.4 [136 kB]
+Get:75 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el mingw-w64-common all 5.0.1-1 [4764 kB]
+Get:76 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el mingw-w64-x86-64-dev all 5.0.1-1 [3342 kB]
+Get:77 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el gcc-mingw-w64-base ppc64el 6.3.0-18+19.3+b3 [170 kB]
+Get:78 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el gcc-mingw-w64-x86-64 ppc64el 6.3.0-18+19.3+b3 [31.0 MB]
+Get:79 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el g++-mingw-w64-x86-64 ppc64el 6.3.0-18+19.3+b3 [21.6 MB]
+Get:80 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-mock all 2.0.0-3 [59.8 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 117 MB in 2s (39.2 MB/s)
+Selecting previously unselected package bash-completion.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15018 files and directories currently installed.)
+Preparing to unpack .../00-bash-completion_1%3a2.1-4.3_all.deb ...
+Unpacking bash-completion (1:2.1-4.3) ...
+Selecting previously unselected package libnfnetlink0:ppc64el.
+Preparing to unpack .../01-libnfnetlink0_1.0.1-3_ppc64el.deb ...
+Unpacking libnfnetlink0:ppc64el (1.0.1-3) ...
+Selecting previously unselected package libpcrecpp0v5:ppc64el.
+Preparing to unpack .../02-libpcrecpp0v5_2%3a8.39-3_ppc64el.deb ...
+Unpacking libpcrecpp0v5:ppc64el (2:8.39-3) ...
+Selecting previously unselected package libudev-dev:ppc64el.
+Preparing to unpack .../03-libudev-dev_232-25+deb9u6_ppc64el.deb ...
+Unpacking libudev-dev:ppc64el (232-25+deb9u6) ...
+Selecting previously unselected package libpython3.5-minimal:ppc64el.
+Preparing to unpack .../04-libpython3.5-minimal_3.5.3-1+deb9u1_ppc64el.deb ...
+Unpacking libpython3.5-minimal:ppc64el (3.5.3-1+deb9u1) ...
+Selecting previously unselected package python3.5-minimal.
+Preparing to unpack .../05-python3.5-minimal_3.5.3-1+deb9u1_ppc64el.deb ...
+Unpacking python3.5-minimal (3.5.3-1+deb9u1) ...
+Selecting previously unselected package python3-minimal.
+Preparing to unpack .../06-python3-minimal_3.5.3-1_ppc64el.deb ...
+Unpacking python3-minimal (3.5.3-1) ...
+Selecting previously unselected package libmpdec2:ppc64el.
+Preparing to unpack .../07-libmpdec2_2.4.2-1_ppc64el.deb ...
+Unpacking libmpdec2:ppc64el (2.4.2-1) ...
+Selecting previously unselected package libpython3.5-stdlib:ppc64el.
+Preparing to unpack .../08-libpython3.5-stdlib_3.5.3-1+deb9u1_ppc64el.deb ...
+Unpacking libpython3.5-stdlib:ppc64el (3.5.3-1+deb9u1) ...
+Selecting previously unselected package python3.5.
+Preparing to unpack .../09-python3.5_3.5.3-1+deb9u1_ppc64el.deb ...
+Unpacking python3.5 (3.5.3-1+deb9u1) ...
+Selecting previously unselected package libpython3-stdlib:ppc64el.
+/tmp/jenkins1506537054196822174.sh: line 11: 20786 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-powerpc:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#38050'
+Build was aborted
+Aborted by Gordon
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+Unable to find image 'docker-powerpc:77cf7a3' locally
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins2440345302289714507.sh
+docker: Error response from daemon: pull access denied for docker-powerpc, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins8039741959282679856.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+Unable to find image 'ppc64le/busybox:latest' locally
+latest: Pulling from ppc64le/busybox
+1580a7fbce05: Pulling fs layer
+1580a7fbce05: Verifying Checksum
+1580a7fbce05: Download complete
+1580a7fbce05: Pull complete
+Digest: sha256:dddeeefa525ee375a4001a37f2cd981ee8c23df49e4e9f1084c1e9a1029f1491
+Status: Downloaded newer image for ppc64le/busybox:latest
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins1206099834736718755.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
++ xargs tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

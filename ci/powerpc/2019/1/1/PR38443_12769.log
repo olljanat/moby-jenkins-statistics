@@ -1,0 +1,115 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-34 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7269422304102873256.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+chown: cannot access '/home/docker/workspace/Docker-PRs-powerpc/bundles': No such file or directory
+Failed build for hudson.tasks.Shell@39ff8a96
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision e0e9942dc5466884e7b2ef5c509a9dab33c4a01a (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e0e9942dc5466884e7b2ef5c509a9dab33c4a01a
+Commit message: "Merge pull request #38419 from thaJeztah/fix_nuke_everything"
+ > git rev-list --no-walk e0e9942dc5466884e7b2ef5c509a9dab33c4a01a # timeout=10
+Set build name.
+New build name is '#38443'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:e0e9942) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins6792372395664944545.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38443/head -> origin/pr/38443
+Merge made by the 'recursive' strategy.
+ .github/reaction.yml    | 5 +++++
+ .github/topissuebot.yml | 4 ++++
+ 2 files changed, 9 insertions(+)
+ create mode 100644 .github/reaction.yml
+ create mode 100644 .github/topissuebot.yml
+Sending build context to Docker daemon   45.1MB
+Step 1/94 : FROM golang:1.11.4 AS base
+ ---> c35b367ad4c4
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> bb43f140034e
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> ff2301fe1c7d
+Step 4/94 : FROM base AS criu
+ ---> ff2301fe1c7d
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> bb6051704031
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in 55ff4ba08a00
+Err:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:2 http://security.debian.org/debian-security stretch/updates InRelease
+  Could not resolve 'security.debian.org'
+Err:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Reading package lists...
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Failed to fetch http://security.debian.org/debian-security/dists/stretch/updates/InRelease  Could not resolve 'security.debian.org'
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch-updates/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package libnet-dev
+E: Unable to locate package libprotobuf-c0-dev
+E: Unable to locate package libprotobuf-dev
+E: Unable to locate package libnl-3-dev
+E: Unable to locate package libcap-dev
+E: Unable to locate package protobuf-compiler
+E: Unable to locate package protobuf-c-compiler
+E: Unable to locate package python-protobuf
+Removing intermediate container 55ff4ba08a00
+The command '/bin/sh -c apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu' returned a non-zero code: 100
+Unable to find image 'docker-powerpc:42eaee7' locally
+docker: Error response from daemon: pull access denied for docker-powerpc, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38443'
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins8801760151182281225.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7396046644443847976.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins3850140560601155196.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ + find bundles -namexargs *.log
+ tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Sending e-mails to: tophj@linux.vnet.ibm.com christy@linux.vnet.ibm.com
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

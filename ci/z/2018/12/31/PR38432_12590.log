@@ -1,0 +1,164 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-25 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins3865371528321293293.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+c1a6586488b4: Pulling fs layer
+c1a6586488b4: Verifying Checksum
+c1a6586488b4: Download complete
+c1a6586488b4: Pull complete
+Digest: sha256:d805cb76155a2b9c549db10998abbe2a2666c9fb45bf6da99ce15da7f348dd52
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@54493290
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision f76d6a078d881f410c00e8d900dcdfc2e026c841 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f76d6a078d881f410c00e8d900dcdfc2e026c841
+Commit message: "Merge pull request #38370 from farnasirim/36413-bind-dir-skip-copy"
+ > git rev-list --no-walk f76d6a078d881f410c00e8d900dcdfc2e026c841 # timeout=10
+Set build name.
+New build name is '#38432'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins7397341783015473219.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38432/head -> origin/pr/38432
+Merge made by the 'recursive' strategy.
+ hack/ci/windows.ps1                                |   9 +-
+ integration-cli/check_test.go                      |   3 +-
+ integration-cli/docker_api_swarm_node_test.go      |   2 -
+ integration-cli/docker_api_swarm_service_test.go   |  79 ---------
+ .../docker_api_swarm_service_unix_test.go          |  90 ++++++++++
+ integration-cli/docker_api_swarm_test.go           |   2 -
+ integration-cli/docker_cli_swarm_test.go           | 196 ---------------------
+ integration-cli/docker_cli_swarm_unix_test.go      | 195 ++++++++++++++++++++
+ internal/test/daemon/daemon.go                     |  17 +-
+ internal/test/daemon/daemon_unix.go                |   6 +
+ internal/test/daemon/daemon_windows.go             |   6 +
+ internal/test/daemon/swarm.go                      |   4 -
+ internal/test/daemon/swarm_unix.go                 |   7 +
+ internal/test/daemon/swarm_windows.go              |   7 +
+ 14 files changed, 325 insertions(+), 298 deletions(-)
+ create mode 100644 integration-cli/docker_api_swarm_service_unix_test.go
+ create mode 100644 internal/test/daemon/swarm_unix.go
+ create mode 100644 internal/test/daemon/swarm_windows.go
+Sending build context to Docker daemon  45.09MB
+Step 1/94 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+c5e4ba148bd1: Pulling fs layer
+e4ab879437b7: Pulling fs layer
+a26d08cd7690: Pulling fs layer
+05dfbcf77830: Pulling fs layer
+8c8a7e70110e: Pulling fs layer
+3455ff1f6719: Pulling fs layer
+f5c4a8ef739f: Pulling fs layer
+05dfbcf77830: Waiting
+8c8a7e70110e: Waiting
+3455ff1f6719: Waiting
+f5c4a8ef739f: Waiting
+e4ab879437b7: Verifying Checksum
+e4ab879437b7: Download complete
+a26d08cd7690: Verifying Checksum
+a26d08cd7690: Download complete
+c5e4ba148bd1: Verifying Checksum
+c5e4ba148bd1: Download complete
+05dfbcf77830: Verifying Checksum
+05dfbcf77830: Download complete
+f5c4a8ef739f: Verifying Checksum
+f5c4a8ef739f: Download complete
+3455ff1f6719: Verifying Checksum
+3455ff1f6719: Download complete
+8c8a7e70110e: Verifying Checksum
+8c8a7e70110e: Download complete
+c5e4ba148bd1: Pull complete
+e4ab879437b7: Pull complete
+a26d08cd7690: Pull complete
+05dfbcf77830: Pull complete
+8c8a7e70110e: Pull complete
+3455ff1f6719: Pull complete
+f5c4a8ef739f: Pull complete
+Digest: sha256:bc63e58480108bd3ded6da99df27d79519c493ebd7df9193ab876abbd6e9b623
+Status: Downloaded newer image for golang:1.11.4
+ ---> ee5c1a481166
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in 80b97073d668
+Removing intermediate container 80b97073d668
+ ---> 1cef3f23cd6d
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in 4ab927039b6a
+Removing intermediate container 4ab927039b6a
+ ---> 90edbf21dba0
+Step 4/94 : FROM base AS criu
+ ---> 90edbf21dba0
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Running in 61238fdc5b7d
+Removing intermediate container 61238fdc5b7d
+ ---> 1e8e73de03f4
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in 3e8ae0ba6ef7
+Err:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:3 http://security.debian.org/debian-security stretch/updates InRelease
+  Could not resolve 'security.debian.org'
+Reading package lists...
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Failed to fetch http://security.debian.org/debian-security/dists/stretch/updates/InRelease  Could not resolve 'security.debian.org'
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch-updates/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package libnet-dev
+E: Unable to locate package libprotobuf-c0-dev
+E: Unable to locate package libprotobuf-dev
+E: Unable to locate package libnl-3-dev
+E: Unable to locate package libcap-dev
+E: Unable to locate package protobuf-compiler
+E: Unable to locate package protobuf-c-compiler
+E: Unable to locate package python-protobuf
+Removing intermediate container 3e8ae0ba6ef7
+The command '/bin/sh -c apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu' returned a non-zero code: 100
+Unable to find image 'docker-s390x:e94b953' locally
+docker: Error response from daemon: pull access denied for docker-s390x, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38432'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins5750153693867992473.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins7463181982926005475.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

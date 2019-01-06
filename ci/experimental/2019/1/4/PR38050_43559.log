@@ -1,0 +1,409 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs-stable (i-0406e23a1fe0b00f9) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision de640c9f4932d851316a0a72470c4d3446f6f5ac (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f de640c9f4932d851316a0a72470c4d3446f6f5ac
+Commit message: "Merge pull request #38038 from AkihiroSuda/ubuntu-overlayfs"
+ > git rev-list --no-walk 74ad4f2d2cbe2b0d8747e52f384d9f6f8b4555cd # timeout=10
+Set build name.
+New build name is '#38050'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins1970014245956044614.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38050/head -> origin/pr/38050
+Updating de640c9..6d6982e
+Fast-forward
+ Dockerfile                                    | 14 +++++
+ cmd/dockerd/config_common_unix.go             | 23 ++++++++
+ cmd/dockerd/config_unix.go                    |  4 +-
+ cmd/dockerd/daemon.go                         | 34 +++++++++---
+ cmd/dockerd/daemon_unix.go                    | 25 ++++++++-
+ contrib/dockerd-rootless.sh                   | 36 +++++++++++++
+ daemon/config/config_unix.go                  |  6 +++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/info.go                                |  3 ++
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/oci_linux.go                           |  9 +++-
+ docs/rootless.md                              | 76 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 33 ++++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 27 ++++++++++
+ hack/make/.binary-setup                       |  3 ++
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 ++
+ opts/hosts.go                                 | 20 ++++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/doc.go                               |  2 +
+ rootless/rootless.go                          | 22 ++++++++
+ rootless/specconv/specconv_linux.go           | 38 ++++++++++++++
+ 25 files changed, 387 insertions(+), 16 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/doc.go
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+Sending build context to Docker daemon  45.13MB
+Step 1/108 : FROM golang:1.11.4 AS base
+ ---> 343df9d12b7b
+Step 2/108 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 4c20e52b5c28
+Step 3/108 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> c7ecda816c19
+Step 4/108 : FROM base AS criu
+ ---> c7ecda816c19
+Step 5/108 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> 8e78784f9cf2
+Step 6/108 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> 65cee2bca23c
+Step 7/108 : FROM base AS registry
+ ---> c7ecda816c19
+Step 8/108 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Using cache
+ ---> 31d800aefdcb
+Step 9/108 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> e91e14ff10f3
+Step 10/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 57ade4e18317
+Step 11/108 : FROM base AS docker-py
+ ---> c7ecda816c19
+Step 12/108 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Using cache
+ ---> 272ea653b51b
+Step 13/108 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> 2ed7ee20b586
+Step 14/108 : FROM base AS swagger
+ ---> c7ecda816c19
+Step 15/108 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> 2ccfa2afa753
+Step 16/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> e3262f31baad
+Step 17/108 : FROM base AS frozen-images
+ ---> c7ecda816c19
+Step 18/108 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> b34c33f16f1d
+Step 19/108 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 6580e4a2370f
+Step 20/108 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> 61f20f3ef0c2
+Step 21/108 : FROM base AS runtime-dev
+ ---> c7ecda816c19
+Step 22/108 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> c3c7b7934228
+Step 23/108 : FROM base AS tomlv
+ ---> c7ecda816c19
+Step 24/108 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> 4a9a6467f092
+Step 25/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> c4b49fc796e2
+Step 26/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> f27d13d33228
+Step 27/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 3baa12099ef1
+Step 28/108 : FROM base AS vndr
+ ---> c7ecda816c19
+Step 29/108 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> c99ec4069b5e
+Step 30/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 7c26cbbaa827
+Step 31/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> e5c8882621b0
+Step 32/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 0ceaa99e4b43
+Step 33/108 : FROM base AS containerd
+ ---> c7ecda816c19
+Step 34/108 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> ede94520b6f3
+Step 35/108 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> f0c65e9299d6
+Step 36/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> f3dac82b35bb
+Step 37/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 39e5066c9b39
+Step 38/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 99b4017ed229
+Step 39/108 : FROM base AS proxy
+ ---> c7ecda816c19
+Step 40/108 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> 37e83d6eeb8b
+Step 41/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 21171e13fa91
+Step 42/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> ce9cf9b1fe49
+Step 43/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 1f3da3bfc2fc
+Step 44/108 : FROM base AS gometalinter
+ ---> c7ecda816c19
+Step 45/108 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> b7187955e410
+Step 46/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 8dfacf25fbeb
+Step 47/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 845f4a0a0c54
+Step 48/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 34cfe6801b35
+Step 49/108 : FROM base AS dockercli
+ ---> c7ecda816c19
+Step 50/108 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> bc1e8912a25c
+Step 51/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 783bdc2f4b5c
+Step 52/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> f41b055f6cfa
+Step 53/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 8fd9866aa7c6
+Step 54/108 : FROM runtime-dev AS runc
+ ---> c3c7b7934228
+Step 55/108 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> 3add875cda37
+Step 56/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> fa67d41b0d11
+Step 57/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 7edce4fe51d7
+Step 58/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 98350ad9a49a
+Step 59/108 : FROM base AS tini
+ ---> c7ecda816c19
+Step 60/108 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> d8249d12b8bc
+Step 61/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> be4d8cff7567
+Step 62/108 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> 8ba9aed7aa68
+Step 63/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> dbb5b277328a
+Step 64/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> b640176563b6
+Step 65/108 : FROM base AS rootlesskit
+ ---> c7ecda816c19
+Step 66/108 : ENV INSTALL_BINARY_NAME=rootlesskit
+ ---> Running in a573fa95b726
+Removing intermediate container a573fa95b726
+ ---> f75482cfc400
+Step 67/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> b4a9a4850c73
+Step 68/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 4a50adc66a27
+Step 69/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 5ee711b4bb3c
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.xMJNhNk7M1
++ GOPATH=/tmp/tmp.xMJNhNk7M1
++ RM_GOPATH=1
+++ dirname ./install.sh
+Install rootlesskit version 99d60416c7076922cf78bae9f976b6295af4eb86
++ dir=.
++ bin=rootlesskit
++ shift
++ [[ ! -f ./rootlesskit.installer ]]
++ . ./rootlesskit.installer
+++ ROOTLESSKIT_COMMIT=99d60416c7076922cf78bae9f976b6295af4eb86
++ install_rootlesskit
++ case "$1" in
++ export CGO_ENABLED=0
++ CGO_ENABLED=0
++ _install_rootlesskit
++ echo 'Install rootlesskit version 99d60416c7076922cf78bae9f976b6295af4eb86'
++ git clone https://github.com/rootless-containers/rootlesskit.git /tmp/tmp.xMJNhNk7M1/src/github.com/rootless-containers/rootlesskit
+Cloning into '/tmp/tmp.xMJNhNk7M1/src/github.com/rootless-containers/rootlesskit'...
++ cd /tmp/tmp.xMJNhNk7M1/src/github.com/rootless-containers/rootlesskit
++ git checkout -q 99d60416c7076922cf78bae9f976b6295af4eb86
++ go build -ldflags= -o /build//rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit
+Removing intermediate container 5ee711b4bb3c
+ ---> 9900dd54c767
+Step 70/108 : COPY ./contrib/dockerd-rootless.sh /build
+ ---> 99bbc012cfbd
+Step 71/108 : FROM base AS slirp4netns
+ ---> c7ecda816c19
+Step 72/108 : RUN apt-get update && apt-get install -y automake autotools-dev libtool
+ ---> Running in f3d1e7bbec36
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [464 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [5152 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7089 kB]
+Fetched 7864 kB in 2s (2684 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  autoconf file libltdl-dev libltdl7 libmagic-mgc libmagic1 libsigsegv2 m4
+Suggested packages:
+  autoconf-archive gnu-standards autoconf-doc gettext libtool-doc gfortran
+  | fortran95-compiler gcj-jdk m4-doc
+The following NEW packages will be installed:
+  autoconf automake autotools-dev file libltdl-dev libltdl7 libmagic-mgc
+  libmagic1 libsigsegv2 libtool m4
+0 upgraded, 11 newly installed, 0 to remove and 1 not upgraded.
+Need to get 2868 kB of archives.
+After this operation, 12.1 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic-mgc amd64 1:5.30-1+deb9u2 [222 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic1 amd64 1:5.30-1+deb9u2 [111 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 file amd64 1:5.30-1+deb9u2 [64.1 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsigsegv2 amd64 2.10-5 [28.9 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 m4 amd64 1.4.18-1 [202 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 autoconf all 2.69-10 [338 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 autotools-dev all 20161112.1 [73.4 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 automake all 1:1.15-6 [733 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libltdl7 amd64 2.4.6-2 [389 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libltdl-dev amd64 2.4.6-2 [161 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libtool all 2.4.6-2 [545 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 2868 kB in 1s (2628 kB/s)
+Selecting previously unselected package libmagic-mgc.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15089 files and directories currently installed.)
+Preparing to unpack .../00-libmagic-mgc_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic-mgc (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libmagic1:amd64.
+Preparing to unpack .../01-libmagic1_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../02-file_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking file (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libsigsegv2:amd64.
+Preparing to unpack .../03-libsigsegv2_2.10-5_amd64.deb ...
+Unpacking libsigsegv2:amd64 (2.10-5) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../04-m4_1.4.18-1_amd64.deb ...
+Unpacking m4 (1.4.18-1) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../05-autoconf_2.69-10_all.deb ...
+Unpacking autoconf (2.69-10) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../06-autotools-dev_20161112.1_all.deb ...
+Unpacking autotools-dev (20161112.1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../07-automake_1%3a1.15-6_all.deb ...
+Unpacking automake (1:1.15-6) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../08-libltdl7_2.4.6-2_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-2) ...
+Selecting previously unselected package libltdl-dev:amd64.
+Preparing to unpack .../09-libltdl-dev_2.4.6-2_amd64.deb ...
+Unpacking libltdl-dev:amd64 (2.4.6-2) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../10-libtool_2.4.6-2_all.deb ...
+Unpacking libtool (2.4.6-2) ...
+Setting up libsigsegv2:amd64 (2.10-5) ...
+Setting up m4 (1.4.18-1) ...
+Setting up libmagic-mgc (1:5.30-1+deb9u2) ...
+Setting up libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up autotools-dev (20161112.1) ...
+Setting up libltdl7:amd64 (2.4.6-2) ...
+Setting up libltdl-dev:amd64 (2.4.6-2) ...
+Setting up autoconf (2.69-10) ...
+Setting up file (1:5.30-1+deb9u2) ...
+Setting up automake (1:1.15-6) ...
+update-alternatives: using /usr/bin/automake-1.15 to provide /usr/bin/automake (automake) in auto mode
+Setting up libtool (2.4.6-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container f3d1e7bbec36
+ ---> 73d8425e82f3
+Step 73/108 : ENV INSTALL_BINARY_NAME=slirp4netns
+ ---> Running in 06c06ebec579
+Removing intermediate container 06c06ebec579
+ ---> ed905cbc8015
+Step 74/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+Set build name.
+New build name is '#38050'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins3559576156902476138.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp43559
+/tmp/jenkins1970014245956044614.sh: line 11: 10224 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker:${GITCOMMIT}-exp .
+Error: No such container: docker-pr-exp43559
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins6109956046981415575.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

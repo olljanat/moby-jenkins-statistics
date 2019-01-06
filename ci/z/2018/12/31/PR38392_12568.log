@@ -1,0 +1,396 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-30 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins4416027321979451845.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+c1a6586488b4: Pulling fs layer
+c1a6586488b4: Verifying Checksum
+c1a6586488b4: Download complete
+c1a6586488b4: Pull complete
+Digest: sha256:d805cb76155a2b9c549db10998abbe2a2666c9fb45bf6da99ce15da7f348dd52
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@54493290
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision f76d6a078d881f410c00e8d900dcdfc2e026c841 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f76d6a078d881f410c00e8d900dcdfc2e026c841
+Commit message: "Merge pull request #38370 from farnasirim/36413-bind-dir-skip-copy"
+ > git rev-list --no-walk f76d6a078d881f410c00e8d900dcdfc2e026c841 # timeout=10
+Set build name.
+New build name is '#38392'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins2249159761742001939.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38392/head -> origin/pr/38392
+Merge made by the 'recursive' strategy.
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon  45.09MB
+Step 1/94 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+c5e4ba148bd1: Pulling fs layer
+e4ab879437b7: Pulling fs layer
+a26d08cd7690: Pulling fs layer
+05dfbcf77830: Pulling fs layer
+8c8a7e70110e: Pulling fs layer
+3455ff1f6719: Pulling fs layer
+f5c4a8ef739f: Pulling fs layer
+05dfbcf77830: Waiting
+8c8a7e70110e: Waiting
+3455ff1f6719: Waiting
+f5c4a8ef739f: Waiting
+a26d08cd7690: Verifying Checksum
+a26d08cd7690: Download complete
+e4ab879437b7: Verifying Checksum
+e4ab879437b7: Download complete
+c5e4ba148bd1: Verifying Checksum
+c5e4ba148bd1: Download complete
+05dfbcf77830: Verifying Checksum
+05dfbcf77830: Download complete
+f5c4a8ef739f: Verifying Checksum
+f5c4a8ef739f: Download complete
+8c8a7e70110e: Verifying Checksum
+8c8a7e70110e: Download complete
+3455ff1f6719: Verifying Checksum
+3455ff1f6719: Download complete
+c5e4ba148bd1: Pull complete
+e4ab879437b7: Pull complete
+a26d08cd7690: Pull complete
+05dfbcf77830: Pull complete
+8c8a7e70110e: Pull complete
+3455ff1f6719: Pull complete
+f5c4a8ef739f: Pull complete
+Digest: sha256:bc63e58480108bd3ded6da99df27d79519c493ebd7df9193ab876abbd6e9b623
+Status: Downloaded newer image for golang:1.11.4
+ ---> ee5c1a481166
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in 80fb58209563
+Removing intermediate container 80fb58209563
+ ---> 838e4a190ac0
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in 868221765bca
+Removing intermediate container 868221765bca
+ ---> c4495da12e6e
+Step 4/94 : FROM base AS criu
+ ---> c4495da12e6e
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Running in 17cd1a4944e8
+Removing intermediate container 17cd1a4944e8
+ ---> cebaa0e26561
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in 62d3dd11a4b6
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://security.debian.org/debian-security stretch/updates/main s390x Packages [447 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [5100 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6859 kB]
+Fetched 7616 kB in 2s (3165 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 0 not upgraded.
+Need to get 3476 kB of archives.
+After this operation, 20.2 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnet1 s390x 1.1.6+dfsg-3 [57.1 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libcap-dev s390x 1:2.25-1 [30.1 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnet1-dev s390x 1.1.6+dfsg-3 [114 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnl-3-200 s390x 3.2.27-2 [59.3 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnl-3-dev s390x 3.2.27-2 [96.2 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-c1 s390x 1.2.1-2 [25.1 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-c-dev s390x 1.2.1-2 [32.5 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x zlib1g-dev s390x 1:1.2.8.dfsg-5 [204 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf10 s390x 3.0.0-9 [648 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-lite10 s390x 3.0.0-9 [123 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-dev s390x 3.0.0-9 [925 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotoc10 s390x 3.0.0-9 [580 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main s390x protobuf-c-compiler s390x 1.2.1-2 [73.1 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main s390x protobuf-compiler s390x 3.0.0-9 [52.6 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main s390x python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main s390x python-protobuf s390x 3.0.0-9 [288 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 3476 kB in 0s (13.8 MB/s)
+Selecting previously unselected package libnet1:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14826 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_s390x.deb ...
+Unpacking libnet1:s390x (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:s390x.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_s390x.deb ...
+Unpacking libcap-dev:s390x (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_s390x.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:s390x.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_s390x.deb ...
+Unpacking libnl-3-200:s390x (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:s390x.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_s390x.deb ...
+Unpacking libnl-3-dev:s390x (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:s390x.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_s390x.deb ...
+Unpacking libprotobuf-c1:s390x (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:s390x.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_s390x.deb ...
+Unpacking libprotobuf-c-dev:s390x (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:s390x.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_s390x.deb ...
+Unpacking zlib1g-dev:s390x (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:s390x.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_s390x.deb ...
+Unpacking libprotobuf10:s390x (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:s390x.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_s390x.deb ...
+Unpacking libprotobuf-lite10:s390x (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:s390x.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_s390x.deb ...
+Unpacking libprotobuf-dev:s390x (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:s390x.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_s390x.deb ...
+Unpacking libprotoc10:s390x (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_s390x.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_s390x.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_s390x.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:s390x (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:s390x (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+Setting up libnet1-dev (1.1.6+dfsg-3) ...
+Setting up libprotobuf10:s390x (3.0.0-9) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up python-protobuf (3.0.0-9) ...
+Setting up libcap-dev:s390x (1:2.25-1) ...
+Setting up libprotobuf-c-dev:s390x (1.2.1-2) ...
+Setting up libnl-3-200:s390x (3.2.27-2) ...
+Setting up libprotobuf-lite10:s390x (3.0.0-9) ...
+Setting up libprotoc10:s390x (3.0.0-9) ...
+Setting up protobuf-c-compiler (1.2.1-2) ...
+Setting up zlib1g-dev:s390x (1:1.2.8.dfsg-5) ...
+Setting up protobuf-compiler (3.0.0-9) ...
+Setting up libprotobuf-dev:s390x (3.0.0-9) ...
+Setting up libnl-3-dev:s390x (3.2.27-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+fatal: Not a git repository (or any of the parent directories): .git
+  GEN      .gitid
+  GEN      criu/include/version.h
+  GEN      include/common/asm
+  PBCC     images/google/protobuf/descriptor.pb-c.c
+  PBCC     images/opts.pb-c.c
+  PBCC     images/sit.pb-c.c
+  DEP      images/google/protobuf/descriptor.pb-c.d
+  DEP      images/opts.pb-c.d
+  DEP      images/sit.pb-c.d
+  PBCC     images/macvlan.pb-c.c
+  DEP      images/macvlan.pb-c.d
+  PBCC     images/autofs.pb-c.c
+  DEP      images/autofs.pb-c.d
+  PBCC     images/sysctl.pb-c.c
+  DEP      images/sysctl.pb-c.d
+  PBCC     images/time.pb-c.c
+  DEP      images/time.pb-c.d
+  PBCC     images/binfmt-misc.pb-c.c
+  DEP      images/binfmt-misc.pb-c.d
+  PBCC     images/seccomp.pb-c.c
+  DEP      images/seccomp.pb-c.d
+  PBCC     images/userns.pb-c.c
+  DEP      images/userns.pb-c.d
+  PBCC     images/cgroup.pb-c.c
+  DEP      images/cgroup.pb-c.d
+  PBCC     images/fown.pb-c.c
+  PBCC     images/ext-file.pb-c.c
+  DEP      images/fown.pb-c.d
+  DEP      images/ext-file.pb-c.d
+  PBCC     images/rpc.pb-c.c
+  DEP      images/rpc.pb-c.d
+  PBCC     images/siginfo.pb-c.c
+  DEP      images/siginfo.pb-c.d
+  PBCC     images/pagemap.pb-c.c
+  DEP      images/pagemap.pb-c.d
+  PBCC     images/rlimit.pb-c.c
+  DEP      images/rlimit.pb-c.d
+  PBCC     images/file-lock.pb-c.c
+  DEP      images/file-lock.pb-c.d
+  PBCC     images/tty.pb-c.c
+  DEP      images/tty.pb-c.d
+  PBCC     images/tun.pb-c.c
+  PBCC     images/netdev.pb-c.c
+  DEP      images/tun.pb-c.d
+  DEP      images/netdev.pb-c.d
+  PBCC     images/vma.pb-c.c
+  DEP      images/vma.pb-c.d
+  PBCC     images/creds.pb-c.c
+  DEP      images/creds.pb-c.d
+  PBCC     images/utsns.pb-c.c
+  DEP      images/utsns.pb-c.d
+  PBCC     images/ipc-desc.pb-c.c
+  PBCC     images/ipc-sem.pb-c.c
+  DEP      images/ipc-desc.pb-c.d
+  DEP      images/ipc-sem.pb-c.d
+  PBCC     images/ipc-msg.pb-c.c
+  DEP      images/ipc-msg.pb-c.d
+  PBCC     images/ipc-shm.pb-c.c
+  DEP      images/ipc-shm.pb-c.d
+  PBCC     images/ipc-var.pb-c.c
+  DEP      images/ipc-var.pb-c.d
+  PBCC     images/sk-opts.pb-c.c
+  PBCC     images/packet-sock.pb-c.c
+  DEP      images/sk-opts.pb-c.d
+  DEP      images/packet-sock.pb-c.d
+  PBCC     images/sk-netlink.pb-c.c
+  DEP      images/sk-netlink.pb-c.d
+  PBCC     images/sk-inet.pb-c.c
+  DEP      images/sk-inet.pb-c.d
+  PBCC     images/sk-unix.pb-c.c
+  DEP      images/sk-unix.pb-c.d
+  PBCC     images/mm.pb-c.c
+  DEP      images/mm.pb-c.d
+  PBCC     images/timerfd.pb-c.c
+  DEP      images/timerfd.pb-c.d
+  PBCC     images/timer.pb-c.c
+  DEP      images/timer.pb-c.d
+  PBCC     images/sa.pb-c.c
+  DEP      images/sa.pb-c.d
+  PBCC     images/pipe-data.pb-c.c
+  DEP      images/pipe-data.pb-c.d
+  PBCC     images/mnt.pb-c.c
+  DEP      images/mnt.pb-c.d
+  PBCC     images/sk-packet.pb-c.c
+  DEP      images/sk-packet.pb-c.d
+  PBCC     images/tcp-stream.pb-c.c
+  DEP      images/tcp-stream.pb-c.d
+  PBCC     images/pipe.pb-c.c
+  DEP      images/pipe.pb-c.d
+  PBCC     images/pstree.pb-c.c
+  DEP      images/pstree.pb-c.d
+  PBCC     images/fs.pb-c.c
+  DEP      images/fs.pb-c.d
+  PBCC     images/signalfd.pb-c.c
+  DEP      images/signalfd.pb-c.d
+  PBCC     images/fh.pb-c.c
+  PBCC     images/fsnotify.pb-c.c
+  DEP      images/fh.pb-c.d
+  DEP      images/fsnotify.pb-c.d
+  PBCC     images/eventpoll.pb-c.c
+  DEP      images/eventpoll.pb-c.d
+  PBCC     images/eventfd.pb-c.c
+  DEP      images/eventfd.pb-c.d
+  PBCC     images/remap-file-path.pb-c.c
+  DEP      images/remap-file-path.pb-c.d
+  PBCC     images/fifo.pb-c.c
+  DEP      images/fifo.pb-c.d
+  PBCC     images/ghost-file.pb-c.c
+  DEP      images/ghost-file.pb-c.d
+  PBCC     images/regfile.pb-c.c
+  DEP      images/regfile.pb-c.d
+  PBCC     images/ns.pb-c.c
+  DEP      images/ns.pb-c.d
+  PBCC     images/fdinfo.pb-c.c
+  DEP      images/fdinfo.pb-c.d
+  PBCC     images/core-aarch64.pb-c.c
+  PBCC     images/core-arm.pb-c.c
+  PBCC     images/core-ppc64.pb-c.c
+  PBCC     images/core-s390.pb-c.c
+  PBCC     images/core-x86.pb-c.c
+  PBCC     images/core.pb-c.c
+  PBCC     images/inventory.pb-c.c
+  DEP      images/core-aarch64.pb-c.d
+  DEP      images/core-arm.pb-c.d
+  DEP      images/core-ppc64.pb-c.d
+  DEP      images/core-s390.pb-c.d
+  DEP      images/core-x86.pb-c.d
+  DEP      images/core.pb-c.d
+  DEP      images/inventory.pb-c.d
+  PBCC     images/cpuinfo.pb-c.c
+  DEP      images/cpuinfo.pb-c.d
+  PBCC     images/stats.pb-c.c
+  DEP      images/stats.pb-c.d
+make[1]: Nothing to be done for 'all'.
+  CC       images/stats.o
+  CC       images/core.o
+  CC       images/core-x86.o
+  CC       images/core-arm.o
+  CC       images/core-aarch64.o
+  CC       images/core-ppc64.o
+  CC       images/core-s390.o
+  CC       images/cpuinfo.o
+  CC       images/inventory.o
+  CC       images/fdinfo.o
+  CC       images/fown.o
+  CC       images/ns.o
+  CC       images/regfile.o
+  CC       images/ghost-file.o
+  CC       images/fifo.o
+  CC       images/remap-file-path.o
+  CC       images/eventfd.o
+  CC       images/eventpoll.o
+  CC       images/fh.o
+  CC       images/fsnotify.o
+  CC       images/signalfd.o
+  CC       images/fs.o
+  CC       images/pstree.o
+  CC       images/pipe.o
+/tmp/jenkins2249159761742001939.sh: line 12: 22889 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-s390x:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#38392'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+Unable to find image 'docker-s390x:908a466' locally
+docker: Error response from daemon: pull access denied for docker-s390x, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins1888421700447968842.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins5168951983176340492.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

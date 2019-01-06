@@ -1,0 +1,794 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs-stable (i-0e0e4e3cee1e7ef04) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision e0e9942dc5466884e7b2ef5c509a9dab33c4a01a (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e0e9942dc5466884e7b2ef5c509a9dab33c4a01a
+Commit message: "Merge pull request #38419 from thaJeztah/fix_nuke_everything"
+ > git rev-list --no-walk e0e9942dc5466884e7b2ef5c509a9dab33c4a01a # timeout=10
+Set build name.
+New build name is '#38467'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins8758299115849240488.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38467/head -> origin/pr/38467
+Merge made by the 'recursive' strategy.
+ api/server/httputils/errors.go      | 101 +++++++++++++++++++++++++++++++
+ api/server/httputils/errors_test.go | 116 ++++++++++++++++++++++++++++++++++++
+ client/checkpoint_create_test.go    |   4 ++
+ client/checkpoint_delete_test.go    |   4 ++
+ client/checkpoint_list_test.go      |   4 ++
+ client/config_create_test.go        |   4 ++
+ client/config_inspect_test.go       |   4 ++
+ client/config_list_test.go          |   4 ++
+ client/config_remove_test.go        |   4 ++
+ client/config_update_test.go        |   4 ++
+ client/container_commit_test.go     |   4 ++
+ client/container_copy_test.go       |  10 ++++
+ client/container_create.go          |   4 --
+ client/container_create_test.go     |   9 ++-
+ client/container_diff_test.go       |   5 +-
+ client/container_exec_test.go       |  10 ++++
+ client/container_export_test.go     |   5 ++
+ client/container_inspect_test.go    |   4 ++
+ client/container_kill_test.go       |   5 ++
+ client/container_list_test.go       |   4 ++
+ client/container_pause_test.go      |   5 ++
+ client/container_rename_test.go     |   5 ++
+ client/container_resize_test.go     |   7 +++
+ client/container_restart_test.go    |   5 ++
+ client/container_start_test.go      |   4 ++
+ client/container_stats_test.go      |   5 ++
+ client/container_stop_test.go       |   5 ++
+ client/container_top_test.go        |   4 ++
+ client/container_unpause_test.go    |   5 ++
+ client/container_update_test.go     |   4 ++
+ client/container_wait_test.go       |   4 ++
+ client/disk_usage_test.go           |   4 ++
+ client/errors.go                    |  27 +++++----
+ client/events_test.go               |   4 ++
+ client/image_build_test.go          |   4 ++
+ client/image_create_test.go         |   4 ++
+ client/image_history_test.go        |   4 ++
+ client/image_import_test.go         |   4 ++
+ client/image_inspect_test.go        |   4 ++
+ client/image_list_test.go           |   4 ++
+ client/image_load_test.go           |   5 ++
+ client/image_pull_test.go           |   4 ++
+ client/image_push_test.go           |   4 ++
+ client/image_save_test.go           |   5 ++
+ client/image_search_test.go         |   4 ++
+ client/image_tag_test.go            |   5 ++
+ client/info_test.go                 |   8 ++-
+ client/network_connect_test.go      |   4 ++
+ client/network_create_test.go       |   4 ++
+ client/network_disconnect_test.go   |   4 ++
+ client/network_list_test.go         |   4 ++
+ client/network_prune_test.go        |   4 ++
+ client/network_remove_test.go       |   5 ++
+ client/node_inspect_test.go         |   4 ++
+ client/node_list_test.go            |   4 ++
+ client/node_remove_test.go          |   4 ++
+ client/node_update_test.go          |   4 ++
+ client/ping.go                      |   6 +-
+ client/plugin_disable_test.go       |   4 ++
+ client/plugin_enable_test.go        |   4 ++
+ client/plugin_inspect_test.go       |   4 ++
+ client/plugin_list_test.go          |   4 ++
+ client/plugin_push_test.go          |   5 ++
+ client/plugin_remove_test.go        |   4 ++
+ client/plugin_set_test.go           |   5 ++
+ client/request.go                   |  18 +++---
+ client/request_test.go              |   4 ++
+ client/secret_create_test.go        |   4 ++
+ client/secret_inspect_test.go       |   4 ++
+ client/secret_list_test.go          |   4 ++
+ client/secret_remove_test.go        |   4 ++
+ client/secret_update_test.go        |   4 ++
+ client/service_create_test.go       |   4 ++
+ client/service_inspect_test.go      |   4 ++
+ client/service_list_test.go         |   4 ++
+ client/service_update_test.go       |   4 ++
+ client/swarm_init_test.go           |   4 ++
+ client/swarm_inspect_test.go        |   4 ++
+ client/swarm_join_test.go           |   4 ++
+ client/swarm_leave_test.go          |   5 ++
+ client/swarm_unlock_test.go         |   4 ++
+ client/swarm_update_test.go         |   4 ++
+ client/task_inspect_test.go         |   4 ++
+ client/task_list_test.go            |   4 ++
+ client/volume_create_test.go        |   4 ++
+ client/volume_list_test.go          |   4 ++
+ client/volume_remove_test.go        |   5 ++
+ errdefs/helpers.go                  |  55 +++++++++--------
+ 88 files changed, 638 insertions(+), 54 deletions(-)
+ create mode 100644 api/server/httputils/errors_test.go
+Sending build context to Docker daemon  45.11MB
+Step 1/94 : FROM golang:1.11.4 AS base
+ ---> 343df9d12b7b
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 500312b0dd74
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> dc39faa764c4
+Step 4/94 : FROM base AS criu
+ ---> dc39faa764c4
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> b8ae205928b7
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> 4af2431ac4e6
+Step 7/94 : FROM base AS registry
+ ---> dc39faa764c4
+Step 8/94 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Using cache
+ ---> 8645ff2750cf
+Step 9/94 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 93406184f754
+Step 10/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 2cf1607db76a
+Step 11/94 : FROM base AS docker-py
+ ---> dc39faa764c4
+Step 12/94 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Using cache
+ ---> 19d4fb940f28
+Step 13/94 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> 8aa691520f5f
+Step 14/94 : FROM base AS swagger
+ ---> dc39faa764c4
+Step 15/94 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> c60d95ab197a
+Step 16/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> baaa54dd2a69
+Step 17/94 : FROM base AS frozen-images
+ ---> dc39faa764c4
+Step 18/94 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> b63a0999b420
+Step 19/94 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 4ccb30ef47dd
+Step 20/94 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> 9d8c04823dcf
+Step 21/94 : FROM base AS runtime-dev
+ ---> dc39faa764c4
+Step 22/94 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> 994adecf8a70
+Step 23/94 : FROM base AS tomlv
+ ---> dc39faa764c4
+Step 24/94 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> 6697f0537fdc
+Step 25/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 5df69cd12d1d
+Step 26/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 37737860bc54
+Step 27/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 7587f0ffd0d8
+Step 28/94 : FROM base AS vndr
+ ---> dc39faa764c4
+Step 29/94 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> 28acb82724fd
+Step 30/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 4dfd4165e6b3
+Step 31/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> a1a93bfcd880
+Step 32/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 2c1118339b7d
+Step 33/94 : FROM base AS containerd
+ ---> dc39faa764c4
+Step 34/94 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> 968b67fb015e
+Step 35/94 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> 8db8de72866f
+Step 36/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> c455a2e771e7
+Step 37/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> b8909bdab06c
+Step 38/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 200c09624188
+Step 39/94 : FROM base AS proxy
+ ---> dc39faa764c4
+Step 40/94 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> 5ccdd5483756
+Step 41/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 0e562e631e7e
+Step 42/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> e63a9b21f9d9
+Step 43/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 4162451dbc53
+Step 44/94 : FROM base AS gometalinter
+ ---> dc39faa764c4
+Step 45/94 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> cad1023f7107
+Step 46/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 4ab30cc38528
+Step 47/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 1f070b146426
+Step 48/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> bc9932b4dbaa
+Step 49/94 : FROM base AS dockercli
+ ---> dc39faa764c4
+Step 50/94 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> d59003186f0e
+Step 51/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 56502267deb5
+Step 52/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> a14ae7dee7d8
+Step 53/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 94944ff86f94
+Step 54/94 : FROM runtime-dev AS runc
+ ---> 994adecf8a70
+Step 55/94 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> e0c3aa5c0ccc
+Step 56/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 299e55a4e557
+Step 57/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> fac6e5e3ac92
+Step 58/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> d15d045e8909
+Step 59/94 : FROM base AS tini
+ ---> dc39faa764c4
+Step 60/94 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> eb7ddd048901
+Step 61/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> f99bb9af4931
+Step 62/94 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> ab65e4b36e6d
+Step 63/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 408372365eb2
+Step 64/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> c68fbb9ed870
+Step 65/94 : FROM runtime-dev AS dev
+ ---> 994adecf8a70
+Step 66/94 : RUN groupadd -r docker
+ ---> Using cache
+ ---> c057241dcecf
+Step 67/94 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Using cache
+ ---> 77e0b56a192d
+Step 68/94 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Using cache
+ ---> 9d474df0fa11
+Step 69/94 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Using cache
+ ---> 24173bcdbc6e
+Step 70/94 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Using cache
+ ---> ea2ff8dc11bf
+Step 71/94 : RUN ldconfig
+ ---> Using cache
+ ---> 061a38dee322
+Step 72/94 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	--no-install-recommends
+ ---> Using cache
+ ---> db9311b4b784
+Step 73/94 : COPY --from=swagger /build/swagger* /usr/local/bin/
+ ---> Using cache
+ ---> ccf5d91b80ac
+Step 74/94 : COPY --from=frozen-images /build/ /docker-frozen-images
+ ---> Using cache
+ ---> c3239858dd4b
+Step 75/94 : COPY --from=gometalinter /build/ /usr/local/bin/
+ ---> Using cache
+ ---> d36654af7a37
+Step 76/94 : COPY --from=tomlv /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 2010451b1727
+Step 77/94 : COPY --from=vndr /build/ /usr/local/bin/
+ ---> Using cache
+ ---> aca002e34721
+Step 78/94 : COPY --from=tini /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 13be90056742
+Step 79/94 : COPY --from=runc /build/ /usr/local/bin/
+ ---> Using cache
+ ---> a2965a723e30
+Step 80/94 : COPY --from=containerd /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 088bbcbfd211
+Step 81/94 : COPY --from=proxy /build/ /usr/local/bin/
+ ---> Using cache
+ ---> c154e09cc0a6
+Step 82/94 : COPY --from=dockercli /build/ /usr/local/cli
+ ---> Using cache
+ ---> e329fb6a0135
+Step 83/94 : COPY --from=registry /build/registry* /usr/local/bin/
+ ---> Using cache
+ ---> 3e48b2ba6330
+Step 84/94 : COPY --from=criu /build/ /usr/local/
+ ---> Using cache
+ ---> 0fbed0d26bc1
+Step 85/94 : COPY --from=docker-py /build/ /docker-py
+ ---> Using cache
+ ---> 4c7bae5352fd
+Step 86/94 : RUN cd /docker-py 	&& pip install docker-pycreds==0.2.1 	&& pip install yamllint==1.5.0 	&& pip install -r test-requirements.txt
+ ---> Using cache
+ ---> 5c1130898f86
+Step 87/94 : ENV PATH=/usr/local/cli:$PATH
+ ---> Using cache
+ ---> 251ee5fe30b0
+Step 88/94 : ENV DOCKER_BUILDTAGS apparmor seccomp selinux
+ ---> Using cache
+ ---> 29952dff0690
+Step 89/94 : ENV GOMETALINTER_OPTS="--deadline=2m"
+ ---> Using cache
+ ---> 5b9be84e0ef6
+Step 90/94 : WORKDIR /go/src/github.com/docker/docker
+ ---> Using cache
+ ---> 2ada3291dd08
+Step 91/94 : VOLUME /var/lib/docker
+ ---> Using cache
+ ---> 07d64f9e7f61
+Step 92/94 : ENTRYPOINT ["hack/dind"]
+ ---> Using cache
+ ---> d77d0e1731f5
+Step 93/94 : FROM dev AS final
+ ---> d77d0e1731f5
+Step 94/94 : COPY . /go/src/github.com/docker/docker
+ ---> e110543048fd
+Successfully built e110543048fd
+Successfully tagged docker:463aa4f-exp
+
+Removing bundles/
+
+---> Making bundle: binary-daemon (in bundles/binary-daemon)
+Building: bundles/binary-daemon/dockerd-dev
+Created binary: bundles/binary-daemon/dockerd-dev
+Copying nested executables into bundles/binary-daemon
+
+---> Making bundle: test-integration (in bundles/test-integration)
+Building test suite binary ./integration-cli/test.main
+Building test suite binary ./integration/plugin/test.main
+Building test suite binary ./integration/plugin/authz/test.main
+Building test suite binary ./integration/plugin/logging/test.main
+Building test suite binary ./integration/plugin/logging/cmd/test.main
+Building test suite binary ./integration/plugin/logging/cmd/close_on_start/test.main
+Building test suite binary ./integration/plugin/logging/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/common/test.main
+Building test suite binary ./integration/plugin/volumes/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/graphdriver/test.main
+Building test suite binary ./integration/config/test.main
+Building test suite binary ./integration/service/test.main
+Building test suite binary ./integration/network/test.main
+Building test suite binary ./integration/network/ipvlan/test.main
+Building test suite binary ./integration/network/macvlan/test.main
+Building test suite binary ./integration/secret/test.main
+Building test suite binary ./integration/session/test.main
+Building test suite binary ./integration/container/test.main
+Building test suite binary ./integration/build/test.main
+Building test suite binary ./integration/volume/test.main
+Building test suite binary ./integration/system/test.main
+Building test suite binary ./integration/image/test.main
+---> Making bundle: .integration-daemon-start (in bundles/test-integration)
+Using test binary docker
+# DOCKER_EXPERIMENTAL is set: starting daemon with experimental features enabled! 
+/etc/init.d/apparmor: 130: /etc/init.d/apparmor: systemd-detect-virt: not found
+Starting AppArmor profiles:Warning from stdin (line 1): /sbin/apparmor_parser: cannot use or update cache, disable, or force-complain via stdin
+Warning failed to create cache: (null)
+.
+INFO: Waiting for daemon to start...
+Starting dockerd
+.
+---> Making bundle: .integration-daemon-setup (in bundles/test-integration)
+---> Making bundle: .ensure-emptyfs (in bundles/test-integration)
+Error: No such image: emptyfs
+Running integration-test (iteration 1)
+Running /go/src/github.com/docker/docker/integration/plugin
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/authz
+Loaded image: buildpack-deps:jessie
+Loaded image: busybox:latest
+Loaded image: busybox:glibc
+Loaded image: debian:jessie
+Loaded image: hello-world:latest
+INFO: Testing against a local daemon
+=== RUN   TestAuthZPluginAllowRequest
+--- PASS: TestAuthZPluginAllowRequest (5.66s)
+    daemon.go:296: [d60ef728d747f] waiting for daemon to start
+    daemon.go:328: [d60ef728d747f] daemon started
+    daemon.go:283: [d60ef728d747f] exiting daemon
+=== RUN   TestAuthZPluginTLS
+--- PASS: TestAuthZPluginTLS (2.66s)
+    daemon.go:296: [d418f7a9b82a2] waiting for daemon to start
+    daemon.go:328: [d418f7a9b82a2] daemon started
+    daemon.go:283: [d418f7a9b82a2] exiting daemon
+=== RUN   TestAuthZPluginDenyRequest
+--- PASS: TestAuthZPluginDenyRequest (2.31s)
+    daemon.go:296: [dd95bd3848a1c] waiting for daemon to start
+    daemon.go:328: [dd95bd3848a1c] daemon started
+    daemon.go:283: [dd95bd3848a1c] exiting daemon
+=== RUN   TestAuthZPluginAPIDenyResponse
+--- PASS: TestAuthZPluginAPIDenyResponse (0.52s)
+    daemon.go:296: [dddb1ae194e85] waiting for daemon to start
+    daemon.go:328: [dddb1ae194e85] daemon started
+    daemon.go:283: [dddb1ae194e85] exiting daemon
+=== RUN   TestAuthZPluginDenyResponse
+--- PASS: TestAuthZPluginDenyResponse (0.52s)
+    daemon.go:296: [d2b9b1153eb0c] waiting for daemon to start
+    daemon.go:328: [d2b9b1153eb0c] daemon started
+    daemon.go:283: [d2b9b1153eb0c] exiting daemon
+=== RUN   TestAuthZPluginAllowEventStream
+--- PASS: TestAuthZPluginAllowEventStream (1.24s)
+    daemon.go:296: [d1d924c0592f6] waiting for daemon to start
+    daemon.go:328: [d1d924c0592f6] daemon started
+    daemon.go:283: [d1d924c0592f6] exiting daemon
+=== RUN   TestAuthZPluginErrorResponse
+--- PASS: TestAuthZPluginErrorResponse (0.52s)
+    daemon.go:296: [dc3277c95cdd1] waiting for daemon to start
+    daemon.go:328: [dc3277c95cdd1] daemon started
+    daemon.go:283: [dc3277c95cdd1] exiting daemon
+=== RUN   TestAuthZPluginErrorRequest
+--- PASS: TestAuthZPluginErrorRequest (0.53s)
+    daemon.go:296: [d196ed1322dca] waiting for daemon to start
+    daemon.go:328: [d196ed1322dca] daemon started
+    daemon.go:283: [d196ed1322dca] exiting daemon
+=== RUN   TestAuthZPluginEnsureNoDuplicatePluginRegistration
+--- PASS: TestAuthZPluginEnsureNoDuplicatePluginRegistration (0.52s)
+    daemon.go:296: [d199c69109ea0] waiting for daemon to start
+    daemon.go:328: [d199c69109ea0] daemon started
+    daemon.go:283: [d199c69109ea0] exiting daemon
+=== RUN   TestAuthZPluginEnsureLoadImportWorking
+--- PASS: TestAuthZPluginEnsureLoadImportWorking (1.46s)
+    daemon.go:296: [d0aa827d86dd3] waiting for daemon to start
+    daemon.go:328: [d0aa827d86dd3] daemon started
+    daemon.go:283: [d0aa827d86dd3] exiting daemon
+=== RUN   TestAuthzPluginEnsureContainerCopyToFrom
+--- PASS: TestAuthzPluginEnsureContainerCopyToFrom (1.54s)
+    daemon.go:296: [dc93840513ac1] waiting for daemon to start
+    daemon.go:328: [dc93840513ac1] daemon started
+    daemon.go:283: [dc93840513ac1] exiting daemon
+=== RUN   TestAuthZPluginHeader
+--- PASS: TestAuthZPluginHeader (0.72s)
+    daemon.go:296: [dff85b3e59530] waiting for daemon to start
+    daemon.go:328: [dff85b3e59530] daemon started
+    daemon.go:283: [dff85b3e59530] exiting daemon
+=== RUN   TestAuthZPluginV2AllowNonVolumeRequest
+--- PASS: TestAuthZPluginV2AllowNonVolumeRequest (6.48s)
+    daemon.go:296: [df8a63ee376a8] waiting for daemon to start
+    daemon.go:328: [df8a63ee376a8] daemon started
+    daemon.go:283: [df8a63ee376a8] exiting daemon
+    daemon.go:296: [df8a63ee376a8] waiting for daemon to start
+    daemon.go:328: [df8a63ee376a8] daemon started
+    daemon.go:283: [df8a63ee376a8] exiting daemon
+=== RUN   TestAuthZPluginV2Disable
+--- PASS: TestAuthZPluginV2Disable (5.86s)
+    daemon.go:296: [db70feaedf9dc] waiting for daemon to start
+    daemon.go:328: [db70feaedf9dc] daemon started
+    daemon.go:283: [db70feaedf9dc] exiting daemon
+    daemon.go:296: [db70feaedf9dc] waiting for daemon to start
+    daemon.go:328: [db70feaedf9dc] daemon started
+    daemon.go:283: [db70feaedf9dc] exiting daemon
+=== RUN   TestAuthZPluginV2RejectVolumeRequests
+--- PASS: TestAuthZPluginV2RejectVolumeRequests (5.71s)
+    daemon.go:296: [d0b1bcc83902c] waiting for daemon to start
+    daemon.go:328: [d0b1bcc83902c] daemon started
+    daemon.go:283: [d0b1bcc83902c] exiting daemon
+    daemon.go:296: [d0b1bcc83902c] waiting for daemon to start
+    daemon.go:328: [d0b1bcc83902c] daemon started
+    daemon.go:283: [d0b1bcc83902c] exiting daemon
+=== RUN   TestAuthZPluginV2BadManifestFailsDaemonStart
+--- PASS: TestAuthZPluginV2BadManifestFailsDaemonStart (13.70s)
+    daemon.go:296: [d951741241f12] waiting for daemon to start
+    daemon.go:328: [d951741241f12] daemon started
+    daemon.go:283: [d951741241f12] exiting daemon
+    daemon.go:296: [d951741241f12] waiting for daemon to start
+    daemon.go:296: [d951741241f12] waiting for daemon to start
+    daemon.go:283: [d951741241f12] exiting daemon
+    daemon.go:296: [d951741241f12] waiting for daemon to start
+    daemon.go:328: [d951741241f12] daemon started
+    daemon.go:283: [d951741241f12] exiting daemon
+=== RUN   TestAuthZPluginV2NonexistentFailsDaemonStart
+--- PASS: TestAuthZPluginV2NonexistentFailsDaemonStart (16.53s)
+    daemon.go:296: [d934ada9f5976] waiting for daemon to start
+    daemon.go:328: [d934ada9f5976] daemon started
+    daemon.go:283: [d934ada9f5976] exiting daemon
+    daemon.go:296: [d934ada9f5976] waiting for daemon to start
+    daemon.go:296: [d934ada9f5976] waiting for daemon to start
+    daemon.go:296: [d934ada9f5976] waiting for daemon to start
+    daemon.go:328: [d934ada9f5976] daemon started
+    daemon.go:283: [d934ada9f5976] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging
+INFO: Testing against a local daemon
+=== RUN   TestContinueAfterPluginCrash
+=== PAUSE TestContinueAfterPluginCrash
+=== RUN   TestDaemonStartWithLogOpt
+=== PAUSE TestDaemonStartWithLogOpt
+=== CONT  TestContinueAfterPluginCrash
+=== CONT  TestDaemonStartWithLogOpt
+--- PASS: TestDaemonStartWithLogOpt (13.31s)
+    daemon.go:296: [d4aaf891bbdc7] waiting for daemon to start
+    daemon.go:328: [d4aaf891bbdc7] daemon started
+    daemon.go:283: [d4aaf891bbdc7] exiting daemon
+    daemon.go:296: [d4aaf891bbdc7] waiting for daemon to start
+    daemon.go:328: [d4aaf891bbdc7] daemon started
+    daemon.go:283: [d4aaf891bbdc7] exiting daemon
+--- PASS: TestContinueAfterPluginCrash (18.37s)
+    daemon.go:296: [d4ebed855a6a2] waiting for daemon to start
+    daemon.go:328: [d4ebed855a6a2] daemon started
+    daemon.go:283: [d4ebed855a6a2] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd/close_on_start
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd/dummy
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/common
+INFO: Testing against a local daemon
+=== RUN   TestPluginInvalidJSON
+=== RUN   TestPluginInvalidJSON//plugins/foobar/set
+=== PAUSE TestPluginInvalidJSON//plugins/foobar/set
+=== CONT  TestPluginInvalidJSON//plugins/foobar/set
+--- PASS: TestPluginInvalidJSON (0.01s)
+    --- PASS: TestPluginInvalidJSON//plugins/foobar/set (0.00s)
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes
+INFO: Testing against a local daemon
+=== RUN   TestPluginWithDevMounts
+=== PAUSE TestPluginWithDevMounts
+=== CONT  TestPluginWithDevMounts
+--- PASS: TestPluginWithDevMounts (1.76s)
+    daemon.go:296: [db2623e34bb03] waiting for daemon to start
+    daemon.go:328: [db2623e34bb03] daemon started
+    daemon.go:283: [db2623e34bb03] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes/cmd
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes/cmd/dummy
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/graphdriver
+INFO: Testing against a local daemon
+=== RUN   TestExternalGraphDriver
+=== RUN   TestExternalGraphDriver/json
+=== RUN   TestExternalGraphDriver/spec
+=== RUN   TestExternalGraphDriver/pull
+--- PASS: TestExternalGraphDriver (7.01s)
+    daemon.go:296: [d2bb72faa4765] waiting for daemon to start
+    daemon.go:328: [d2bb72faa4765] daemon started
+    daemon.go:283: [d2bb72faa4765] exiting daemon
+    daemon.go:296: [d2bb72faa4765] waiting for daemon to start
+    daemon.go:328: [d2bb72faa4765] daemon started
+    daemon.go:283: [d2bb72faa4765] exiting daemon
+    --- PASS: TestExternalGraphDriver/json (1.73s)
+    daemon.go:296: [d2bb72faa4765] waiting for daemon to start
+    daemon.go:328: [d2bb72faa4765] daemon started
+    daemon.go:283: [d2bb72faa4765] exiting daemon
+    daemon.go:296: [d2bb72faa4765] waiting for daemon to start
+    daemon.go:328: [d2bb72faa4765] daemon started
+    daemon.go:283: [d2bb72faa4765] exiting daemon
+    --- PASS: TestExternalGraphDriver/spec (1.70s)
+    daemon.go:296: [d2bb72faa4765] waiting for daemon to start
+    daemon.go:328: [d2bb72faa4765] daemon started
+    daemon.go:283: [d2bb72faa4765] exiting daemon
+    --- PASS: TestExternalGraphDriver/pull (3.11s)
+=== RUN   TestGraphdriverPluginV2
+--- SKIP: TestGraphdriverPluginV2 (0.33s)
+    external_test.go:411: !requirement.Overlay2Supported(testEnv.DaemonInfo.KernelVersion)
+PASS
+Running /go/src/github.com/docker/docker/integration/config
+INFO: Testing against a local daemon
+=== RUN   TestConfigList
+--- PASS: TestConfigList (2.11s)
+    daemon.go:296: [dd24633f775f0] waiting for daemon to start
+    daemon.go:328: [dd24633f775f0] daemon started
+    daemon.go:283: [dd24633f775f0] exiting daemon
+=== RUN   TestConfigsCreateAndDelete
+--- PASS: TestConfigsCreateAndDelete (2.14s)
+    daemon.go:296: [df1dd2ef34792] waiting for daemon to start
+    daemon.go:328: [df1dd2ef34792] daemon started
+    daemon.go:283: [df1dd2ef34792] exiting daemon
+=== RUN   TestConfigsUpdate
+--- PASS: TestConfigsUpdate (2.17s)
+    daemon.go:296: [d5ab06ba88a31] waiting for daemon to start
+    daemon.go:328: [d5ab06ba88a31] daemon started
+    daemon.go:283: [d5ab06ba88a31] exiting daemon
+=== RUN   TestTemplatedConfig
+--- PASS: TestTemplatedConfig (2.64s)
+    daemon.go:296: [d41f6fc74e514] waiting for daemon to start
+    daemon.go:328: [d41f6fc74e514] daemon started
+    daemon.go:283: [d41f6fc74e514] exiting daemon
+=== RUN   TestConfigInspect
+--- PASS: TestConfigInspect (2.08s)
+    daemon.go:296: [da21db84fbee3] waiting for daemon to start
+    daemon.go:328: [da21db84fbee3] daemon started
+    daemon.go:283: [da21db84fbee3] exiting daemon
+=== RUN   TestConfigCreateWithLabels
+--- PASS: TestConfigCreateWithLabels (2.14s)
+    daemon.go:296: [d499010099ade] waiting for daemon to start
+    daemon.go:328: [d499010099ade] daemon started
+    daemon.go:283: [d499010099ade] exiting daemon
+=== RUN   TestConfigCreateResolve
+--- PASS: TestConfigCreateResolve (2.16s)
+    daemon.go:296: [d3b5555c88aa1] waiting for daemon to start
+    daemon.go:328: [d3b5555c88aa1] daemon started
+    daemon.go:283: [d3b5555c88aa1] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/service
+INFO: Testing against a local daemon
+=== RUN   TestServiceCreateInit
+=== RUN   TestServiceCreateInit/daemonInitDisabled
+=== RUN   TestServiceCreateInit/daemonInitEnabled
+--- PASS: TestServiceCreateInit (8.13s)
+    --- PASS: TestServiceCreateInit/daemonInitDisabled (4.09s)
+        daemon.go:296: [dcc6b17bf7da4] waiting for daemon to start
+        daemon.go:328: [dcc6b17bf7da4] daemon started
+        daemon.go:283: [dcc6b17bf7da4] exiting daemon
+    --- PASS: TestServiceCreateInit/daemonInitEnabled (4.03s)
+        daemon.go:296: [d595e6b7c24c7] waiting for daemon to start
+        daemon.go:328: [d595e6b7c24c7] daemon started
+        daemon.go:283: [d595e6b7c24c7] exiting daemon
+=== RUN   TestCreateServiceMultipleTimes
+--- PASS: TestCreateServiceMultipleTimes (24.31s)
+    daemon.go:296: [d0ab85d9d0b77] waiting for daemon to start
+    daemon.go:328: [d0ab85d9d0b77] daemon started
+    daemon.go:283: [d0ab85d9d0b77] exiting daemon
+=== RUN   TestCreateServiceConflict
+--- PASS: TestCreateServiceConflict (2.15s)
+    daemon.go:296: [d6d744dcf0757] waiting for daemon to start
+    daemon.go:328: [d6d744dcf0757] daemon started
+    daemon.go:283: [d6d744dcf0757] exiting daemon
+=== RUN   TestCreateServiceMaxReplicas
+--- PASS: TestCreateServiceMaxReplicas (2.90s)
+    daemon.go:296: [dd6bcc70891f3] waiting for daemon to start
+    daemon.go:328: [dd6bcc70891f3] daemon started
+    daemon.go:283: [dd6bcc70891f3] exiting daemon
+=== RUN   TestCreateWithDuplicateNetworkNames
+--- PASS: TestCreateWithDuplicateNetworkNames (13.09s)
+    daemon.go:296: [dc85b44640451] waiting for daemon to start
+    daemon.go:328: [dc85b44640451] daemon started
+    daemon.go:283: [dc85b44640451] exiting daemon
+=== RUN   TestCreateServiceSecretFileMode
+--- PASS: TestCreateServiceSecretFileMode (2.64s)
+    daemon.go:296: [d17c33901ae05] waiting for daemon to start
+    daemon.go:328: [d17c33901ae05] daemon started
+    daemon.go:283: [d17c33901ae05] exiting daemon
+=== RUN   TestCreateServiceConfigFileMode
+--- PASS: TestCreateServiceConfigFileMode (2.66s)
+    daemon.go:296: [d55136fe9f680] waiting for daemon to start
+    daemon.go:328: [d55136fe9f680] daemon started
+    daemon.go:283: [d55136fe9f680] exiting daemon
+=== RUN   TestCreateServiceSysctls
+--- PASS: TestCreateServiceSysctls (3.33s)
+    daemon.go:296: [d656ec6407cc9] waiting for daemon to start
+    daemon.go:328: [d656ec6407cc9] daemon started
+    daemon.go:283: [d656ec6407cc9] exiting daemon
+=== RUN   TestInspect
+--- PASS: TestInspect (2.15s)
+    daemon.go:296: [dd9e35dd3a20c] waiting for daemon to start
+    daemon.go:328: [dd9e35dd3a20c] daemon started
+    daemon.go:283: [dd9e35dd3a20c] exiting daemon
+=== RUN   TestDockerNetworkConnectAlias
+--- PASS: TestDockerNetworkConnectAlias (4.10s)
+    daemon.go:296: [d9611e58bc071] waiting for daemon to start
+    daemon.go:328: [d9611e58bc071] daemon started
+    daemon.go:283: [d9611e58bc071] exiting daemon
+=== RUN   TestServicePlugin
+--- PASS: TestServicePlugin (35.28s)
+    daemon.go:296: [daaf3379c807f] waiting for daemon to start
+    daemon.go:328: [daaf3379c807f] daemon started
+    daemon.go:283: [daaf3379c807f] exiting daemon
+    daemon.go:296: [d221bebc9aac5] waiting for daemon to start
+    daemon.go:328: [d221bebc9aac5] daemon started
+    daemon.go:296: [d217099dc16de] waiting for daemon to start
+    daemon.go:328: [d217099dc16de] daemon started
+    daemon.go:296: [d98ac5192448e] waiting for daemon to start
+    daemon.go:328: [d98ac5192448e] daemon started
+    daemon.go:283: [d98ac5192448e] exiting daemon
+    daemon.go:283: [d217099dc16de] exiting daemon
+    daemon.go:283: [d221bebc9aac5] exiting daemon
+=== RUN   TestServiceUpdateLabel
+--- PASS: TestServiceUpdateLabel (2.16s)
+    daemon.go:296: [d88e7cfed9c29] waiting for daemon to start
+    daemon.go:328: [d88e7cfed9c29] daemon started
+    daemon.go:283: [d88e7cfed9c29] exiting daemon
+=== RUN   TestServiceUpdateSecrets
+--- FAIL: TestServiceUpdateSecrets (2.19s)
+    daemon.go:296: [d4fb3cfcb8ef4] waiting for daemon to start
+    daemon.go:328: [d4fb3cfcb8ef4] daemon started
+    update_test.go:126: assertion failed: error is not nil: Error response from daemon: rpc error: code = Unknown desc = update out of sequence
+    daemon.go:283: [d4fb3cfcb8ef4] exiting daemon
+=== RUN   TestServiceUpdateConfigs
+--- FAIL: TestServiceUpdateConfigs (2.04s)
+    daemon.go:296: [d4a204049ca53] waiting for daemon to start
+    daemon.go:328: [d4a204049ca53] daemon started
+    update_test.go:188: assertion failed: error is not nil: Error response from daemon: rpc error: code = Unknown desc = update out of sequence
+    daemon.go:283: [d4a204049ca53] exiting daemon
+FAIL
+---> Making bundle: .integration-daemon-stop (in bundles/test-integration)
+Clearing AppArmor profiles cache:.
+All profile caches have been cleared, but no profiles have been unloaded.
+Unloading profiles will leave already running processes permanently
+unconfined, which can lead to unexpected situations.
+
+To set a process to complain mode, use the command line tool
+'aa-complain'. To really tear down all profiles, run the init script
+with the 'teardown' option."
+Removing test suite binaries
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38467'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins546105903439068473.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp43495
+Error: No such container: docker-pr-exp43495
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins2617027077524929419.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

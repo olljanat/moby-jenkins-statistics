@@ -1,0 +1,122 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-23 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins4542262096203525251.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+Success build forhudson.tasks.Shell@39ff8a96
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision de640c9f4932d851316a0a72470c4d3446f6f5ac (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f de640c9f4932d851316a0a72470c4d3446f6f5ac
+Commit message: "Merge pull request #38038 from AkihiroSuda/ubuntu-overlayfs"
+ > git rev-list --no-walk 74ad4f2d2cbe2b0d8747e52f384d9f6f8b4555cd # timeout=10
+Set build name.
+New build name is '#38050'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:de640c9) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins275968632944377118.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38050/head -> origin/pr/38050
+Updating de640c9..6d6982e
+Fast-forward
+ Dockerfile                                    | 14 +++++
+ cmd/dockerd/config_common_unix.go             | 23 ++++++++
+ cmd/dockerd/config_unix.go                    |  4 +-
+ cmd/dockerd/daemon.go                         | 34 +++++++++---
+ cmd/dockerd/daemon_unix.go                    | 25 ++++++++-
+ contrib/dockerd-rootless.sh                   | 36 +++++++++++++
+ daemon/config/config_unix.go                  |  6 +++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/info.go                                |  3 ++
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/oci_linux.go                           |  9 +++-
+ docs/rootless.md                              | 76 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 33 ++++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 27 ++++++++++
+ hack/make/.binary-setup                       |  3 ++
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 ++
+ opts/hosts.go                                 | 20 ++++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/doc.go                               |  2 +
+ rootless/rootless.go                          | 22 ++++++++
+ rootless/specconv/specconv_linux.go           | 38 ++++++++++++++
+ 25 files changed, 387 insertions(+), 16 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/doc.go
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+Sending build context to Docker daemon  45.13MB
+Step 1/108 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+56fd7f7cdb66: Pulling fs layer
+9f635fa148b3: Pulling fs layer
+f8c0099cf676: Pulling fs layer
+ac453cf9be46: Pulling fs layer
+87753e667bd2: Pulling fs layer
+fd06104180c0: Pulling fs layer
+c571c0ef23fa: Pulling fs layer
+fd06104180c0: Waiting
+ac453cf9be46: Waiting
+87753e667bd2: Waiting
+c571c0ef23fa: Waiting
+f8c0099cf676: Verifying Checksum
+f8c0099cf676: Download complete
+9f635fa148b3: Verifying Checksum
+9f635fa148b3: Download complete
+/tmp/jenkins275968632944377118.sh: line 11: 16836 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-powerpc:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#38050'
+Build was aborted
+Aborted by Gordon
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+Unable to find image 'docker-powerpc:6d6982e' locally
+docker: Error response from daemon: pull access denied for docker-powerpc, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins9033378419246727352.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins2397271889085097841.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7152387159522321418.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
++ xargs tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

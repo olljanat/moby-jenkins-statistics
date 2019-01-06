@@ -1,0 +1,184 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-25 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins4265505538786639671.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+e27cb5f7cb08: Pulling fs layer
+e27cb5f7cb08: Verifying Checksum
+e27cb5f7cb08: Download complete
+e27cb5f7cb08: Pull complete
+Digest: sha256:a96ac102195557231128367b35920c085157ee8c5e378cb2842147f0b71e9d58
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@54493290
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 2ee53a42db814c513770421f1b0d48f27faeadea (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 2ee53a42db814c513770421f1b0d48f27faeadea
+Commit message: "Merge pull request #38490 from kolyshkin/test-rename-anon-ct"
+ > git rev-list --no-walk 2ee53a42db814c513770421f1b0d48f27faeadea # timeout=10
+Set build name.
+New build name is '#38050'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins2190749469625940134.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38050/head -> origin/pr/38050
+Merge made by the 'recursive' strategy.
+ Dockerfile                                    | 14 +++++
+ cli/config/configdir.go                       |  2 +
+ cmd/dockerd/config_common_unix.go             | 21 +++++++
+ cmd/dockerd/config_unix.go                    |  4 +-
+ cmd/dockerd/daemon.go                         | 43 +++++++++++--
+ cmd/dockerd/daemon_unix.go                    | 24 +++++++-
+ cmd/dockerd/options.go                        |  2 +
+ contrib/dockerd-rootless.sh                   | 69 +++++++++++++++++++++
+ daemon/config/config_unix.go                  |  6 ++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/daemon_unix.go                         |  3 -
+ daemon/info.go                                |  3 +
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/oci_linux.go                           |  9 ++-
+ docs/rootless.md                              | 88 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 34 +++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 28 +++++++++
+ hack/make/.binary-setup                       |  3 +
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 +
+ opts/hosts.go                                 | 22 ++++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/homedir/homedir_linux.go                  | 88 +++++++++++++++++++++++++++
+ pkg/homedir/homedir_others.go                 | 20 ++++++
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/doc.go                               |  2 +
+ rootless/rootless.go                          | 22 +++++++
+ rootless/specconv/specconv_linux.go           | 38 ++++++++++++
+ 30 files changed, 554 insertions(+), 19 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/doc.go
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+Sending build context to Docker daemon  45.14MB
+Step 1/108 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+c5e4ba148bd1: Pulling fs layer
+e4ab879437b7: Pulling fs layer
+a26d08cd7690: Pulling fs layer
+05dfbcf77830: Pulling fs layer
+8c8a7e70110e: Pulling fs layer
+3455ff1f6719: Pulling fs layer
+f5c4a8ef739f: Pulling fs layer
+8c8a7e70110e: Waiting
+3455ff1f6719: Waiting
+f5c4a8ef739f: Waiting
+05dfbcf77830: Waiting
+e4ab879437b7: Verifying Checksum
+e4ab879437b7: Download complete
+c5e4ba148bd1: Verifying Checksum
+c5e4ba148bd1: Download complete
+a26d08cd7690: Verifying Checksum
+a26d08cd7690: Download complete
+05dfbcf77830: Verifying Checksum
+05dfbcf77830: Download complete
+f5c4a8ef739f: Verifying Checksum
+f5c4a8ef739f: Download complete
+3455ff1f6719: Verifying Checksum
+3455ff1f6719: Download complete
+8c8a7e70110e: Verifying Checksum
+8c8a7e70110e: Download complete
+c5e4ba148bd1: Pull complete
+e4ab879437b7: Pull complete
+a26d08cd7690: Pull complete
+05dfbcf77830: Pull complete
+8c8a7e70110e: Pull complete
+3455ff1f6719: Pull complete
+f5c4a8ef739f: Pull complete
+Digest: sha256:4f1cd313c3d59faa0ca93910f9d853bd74be7afbf6f6997aee06924415ec7dc9
+Status: Downloaded newer image for golang:1.11.4
+ ---> ee5c1a481166
+Step 2/108 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in ac512f019b45
+Removing intermediate container ac512f019b45
+ ---> b9ce11c87178
+Step 3/108 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in 741c6aca47a8
+Removing intermediate container 741c6aca47a8
+ ---> 74ee46577e3e
+Step 4/108 : FROM base AS criu
+ ---> 74ee46577e3e
+Step 5/108 : ENV CRIU_VERSION 3.6
+ ---> Running in b511b130406c
+Removing intermediate container b511b130406c
+ ---> b526a655ad8c
+Step 6/108 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in b6a7339d9664
+Err:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:3 http://security.debian.org/debian-security stretch/updates InRelease
+  Could not resolve 'security.debian.org'
+Reading package lists...
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Failed to fetch http://security.debian.org/debian-security/dists/stretch/updates/InRelease  Could not resolve 'security.debian.org'
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch-updates/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package libnet-dev
+E: Unable to locate package libprotobuf-c0-dev
+E: Unable to locate package libprotobuf-dev
+E: Unable to locate package libnl-3-dev
+E: Unable to locate package libcap-dev
+E: Unable to locate package protobuf-compiler
+E: Unable to locate package protobuf-c-compiler
+E: Unable to locate package python-protobuf
+Removing intermediate container b6a7339d9664
+The command '/bin/sh -c apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu' returned a non-zero code: 100
+Unable to find image 'docker-s390x:eb663fd' locally
+docker: Error response from daemon: pull access denied for docker-s390x, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38050'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins2448648979223202727.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins3393466765447709147.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

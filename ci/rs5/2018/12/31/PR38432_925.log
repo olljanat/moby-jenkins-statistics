@@ -1,0 +1,1454 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs5-3 (windows-rs5) in workspace /gopath/src/github.com/docker/docker
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision f76d6a078d881f410c00e8d900dcdfc2e026c841 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f76d6a078d881f410c00e8d900dcdfc2e026c841
+Commit message: "Merge pull request #38370 from farnasirim/36413-bind-dir-skip-copy"
+ > git rev-list --no-walk f76d6a078d881f410c00e8d900dcdfc2e026c841 # timeout=10
+Set build name.
+New build name is '#38432'
+[docker] $ sh -xe C:\Users\jenkins\jenkins4946048741797420460.sh
++ git fetch origin +refs/pull/38432/head:refs/remotes/origin/pr/38432
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/38432/head -> origin/pr/38432
++ git merge origin/pr/38432
+Merge made by the 'recursive' strategy.
+ hack/ci/windows.ps1                                |   9 +-
+ integration-cli/check_test.go                      |   3 +-
+ integration-cli/docker_api_swarm_node_test.go      |   2 -
+ integration-cli/docker_api_swarm_service_test.go   |  79 ---------
+ .../docker_api_swarm_service_unix_test.go          |  90 ++++++++++
+ integration-cli/docker_api_swarm_test.go           |   2 -
+ integration-cli/docker_cli_swarm_test.go           | 196 ---------------------
+ integration-cli/docker_cli_swarm_unix_test.go      | 195 ++++++++++++++++++++
+ internal/test/daemon/daemon.go                     |  10 +-
+ internal/test/daemon/daemon_unix.go                |   6 +
+ internal/test/daemon/daemon_windows.go             |   6 +
+ internal/test/daemon/swarm.go                      |   4 -
+ internal/test/daemon/swarm_unix.go                 |   7 +
+ internal/test/daemon/swarm_windows.go              |   7 +
+ 14 files changed, 321 insertions(+), 295 deletions(-)
+ create mode 100644 integration-cli/docker_api_swarm_service_unix_test.go
+ create mode 100644 internal/test/daemon/swarm_unix.go
+ create mode 100644 internal/test/daemon/swarm_windows.go
+[docker] $ powershell.exe -NonInteractive -ExecutionPolicy ByPass "& 'C:\Users\jenkins\jenkins4046022692095114823.ps1'"
+
+INFO: executeCI.ps1 starting at Mon Dec 31 17:03:16 CUT 2018
+
+INFO: Script version 28-Aug-2018 09:33 PDT
+INFO: Running git version 2.18.0.windows.1
+INFO: Branch:rs5_release Build:17763.1.180914-1434
+INFO: Environment variables:
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+_                              /cygdrive/c/ProgramData/Oracle/Java/javapath/java                                       
+ALLUSERSPROFILE                C:\ProgramData                                                                          
+APPDATA                        C:\Users\jenkins\AppData\Roaming                                                        
+BASE_BRANCH                    master                                                                                  
+BUILD_CAUSE                    MANUALTRIGGER                                                                           
+BUILD_CAUSE_MANUALTRIGGER      true                                                                                    
+BUILD_DISPLAY_NAME             #38432                                                                                  
+BUILD_ID                       925                                                                                     
+BUILD_NUMBER                   925                                                                                     
+BUILD_TAG                      jenkins-Docker-PRs-WoW-RS5-Process-925                                                  
+BUILD_URL                      https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/925/                   
+CommonProgramFiles             C:\Program Files\Common Files                                                           
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files                                                     
+CommonProgramW6432             C:\Program Files\Common Files                                                           
+COMPUTERNAME                   jenkins-rs5-3                                                                           
+COMSPEC                        C:\Windows\system32\cmd.exe                                                             
+ConfigSet                      rs                                                                                      
+CYGWIN                         binmode ntsec                                                                           
+DriverData                     C:\Windows\System32\Drivers\DriverData                                                  
+EXECUTOR_NUMBER                0                                                                                       
+GIT_AUTHOR_EMAIL               janky@dockerproject.org                                                                 
+GIT_AUTHOR_NAME                Docker Jenkins                                                                          
+GIT_BASE_REPO                  moby/moby                                                                               
+GIT_BRANCH                     origin/master                                                                           
+GIT_COMMIT                     f76d6a078d881f410c00e8d900dcdfc2e026c841                                                
+GIT_COMMITTER_EMAIL            janky@dockerproject.org                                                                 
+GIT_COMMITTER_NAME             Docker Jenkins                                                                          
+GIT_HEAD_REPO                  olljanat/moby                                                                           
+GIT_PREVIOUS_COMMIT            f76d6a078d881f410c00e8d900dcdfc2e026c841                                                
+GIT_PREVIOUS_SUCCESSFUL_COMMIT f76d6a078d881f410c00e8d900dcdfc2e026c841                                                
+GIT_SHA1                       0c9ed1ad17dc3b29ff876aa561a45946911b9340                                                
+GIT_URL                        https://github.com/moby/moby.git                                                        
+GITHUB_URL                     https://github.com/moby/moby/pull/38432                                                 
+HOME                           C:\cygwin\home\jenkins                                                                  
+HOMEDRIVE                      C:                                                                                      
+HOMEPATH                       \cygwin\home\jenkins                                                                    
+HUDSON_COOKIE                  2a994b9c-13c6-4fb3-a57b-d8680423799a                                                    
+HUDSON_HOME                    /var/jenkins_home                                                                       
+HUDSON_SERVER_COOKIE           5654907fc74b1465                                                                        
+HUDSON_URL                     https://jenkins.dockerproject.org/                                                      
+INTEGRATION_TEST_NAME          DockerSwarmSuite                                                                        
+JENKINS_HOME                   /var/jenkins_home                                                                       
+JENKINS_SERVER_COOKIE          5654907fc74b1465                                                                        
+JENKINS_URL                    https://jenkins.dockerproject.org/                                                      
+JOB_BASE_NAME                  Docker-PRs-WoW-RS5-Process                                                              
+JOB_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/display/redirect       
+JOB_NAME                       Docker-PRs-WoW-RS5-Process                                                              
+JOB_URL                        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/                       
+LOCALAPPDATA                   C:\Users\jenkins\AppData\Local                                                          
+LOGNAME                        jenkins                                                                                 
+LOGONSERVER                    \\jenkins-rs5-3                                                                         
+MAIL                           /var/spool/mail//jenkins                                                                
+NODE_LABELS                    azure-windows-rs5-3 windows-rs5                                                         
+NODE_NAME                      azure-windows-rs5-3                                                                     
+NUMBER_OF_PROCESSORS           4                                                                                       
+OLDPWD                         /home/jenkins                                                                           
+OS                             Windows_NT                                                                              
+PATH                           C:\cygwin\bin;C:\ProgramData\Oracle\Java\javapath;C:\pstools;C:\Program Files\Notepad...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL                              
+PR                             38432                                                                                   
+PROCESSOR_ARCHITECTURE         AMD64                                                                                   
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 79 Stepping 1, GenuineIntel                                      
+PROCESSOR_LEVEL                6                                                                                       
+PROCESSOR_REVISION             4f01                                                                                    
+ProgramData                    C:\ProgramData                                                                          
+PROGRAMFILES                   C:\Program Files                                                                        
+ProgramFiles(x86)              C:\Program Files (x86)                                                                  
+ProgramW6432                   C:\Program Files                                                                        
+PSExecutionPolicyPreference    Bypass                                                                                  
+PSModulePath                   C:\Users\jenkins\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShe...
+PUBLIC                         C:\Users\Public                                                                         
+PWD                            /cygdrive/c/workspace                                                                   
+ROOT_BUILD_CAUSE               MANUALTRIGGER                                                                           
+ROOT_BUILD_CAUSE_MANUALTRIGGER true                                                                                    
+RUN_CHANGES_DISPLAY_URL        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/925/display/redirect...
+RUN_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/925/display/redirect   
+SHELL                          /bin/bash                                                                               
+SHLVL                          1                                                                                       
+SKIP_UNIT_TESTS                yes                                                                                     
+SKIP_VALIDATION_TESTS          yes                                                                                     
+SOURCES_DRIVE                  c                                                                                       
+SOURCES_SUBDIR                 gopath                                                                                  
+SSH_CLIENT                     52.88.204.51 61510 22                                                                   
+SSH_CONNECTION                 52.88.204.51 61510 10.0.0.22 22                                                         
+SYSTEMDRIVE                    C:                                                                                      
+SYSTEMROOT                     C:\Windows                                                                              
+TEMP                           d:\temp                                                                                 
+TESTRUN_DRIVE                  d                                                                                       
+TESTRUN_SUBDIR                 CI                                                                                      
+USER                           jenkins                                                                                 
+USERDOMAIN                     jenkins-rs5-3                                                                           
+USERNAME                       jenkins                                                                                 
+USERPROFILE                    C:\Users\jenkins                                                                        
+WINDIR                         C:\Windows                                                                              
+WORKSPACE                      /gopath/src/github.com/docker/docker                                                    
+
+
+
+INFO: PR#38432 (https://github.com/docker/docker/pull/38432)
+INFO: Sources under c:\gopath\...
+INFO: Test run under d:\CI\...
+INFO: Running in C:\gopath\src\github.com\docker\docker
+INFO: docker/docker repository was found
+INFO: Image microsoft/windowsservercore:latest is already loaded in the control daemon
+INFO: Version of microsoft/windowsservercore:latest is '10.0.17763.1'
+INFO: Docker version of control daemon
+
+Client:
+ Version:           master-dockerproject-2018-09-18
+ API version:       1.39
+ Go version:        go1.10.4
+ Git commit:        b4180e87
+ Built:             Tue Sep 18 23:49:29 2018
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          master-dockerproject-2018-09-18
+  API version:      1.39 (minimum version 1.24)
+  Go version:       go1.11
+  Git commit:       d6a7c22
+  Built:            Tue Sep 18 23:58:14 2018
+  OS/Arch:          windows/amd64
+  Experimental:     false
+
+INFO: Docker info of control daemon
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 73
+Server Version: master-dockerproject-2018-09-18
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins:
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 17763 (17763.1.amd64fre.rs5_release.180914-1434)
+Operating System: Windows Server 2019 Datacenter Version 1809 (OS Build 17763.1)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 16GiB
+Name: jenkins-rs5-3
+ID: VFNG:NZYD:MC7E:RLMT:2AKK:BC2T:AGT6:7L7P:NJJC:RIPT:SBSA:NIWO
+Docker Root Dir: D:\control
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Commit hash is 67b59451a0
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 0
+INFO: Non-base image count on control daemon to delete is 56
+INFO: Nuking d:\CI
+ERROR:  hcsshim::DestroyLayer - Win32 API call returned error r1=0x80070020 err=The process cannot access the file because it is being used by another process.id=CI flavour=0
+INFO: Location for testing is d:\CI\CI-67b59451a0
+INFO: Validating GOLang consistency in Dockerfile.windows...
+
+
+INFO: Building the image from Dockerfile.windows at 12/31/2018 17:03:20...
+
+Sending build context to Docker daemon  46.38MB
+
+Step 1/7 : FROM microsoft/windowsservercore
+ ---> e523d49b4b94
+Step 2/7 : SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+ ---> Using cache
+ ---> 33a2d1ce14ae
+Step 3/7 : ENV GO_VERSION=1.11.4     GIT_VERSION=2.11.1     GOPATH=C:\go     FROM_DOCKERFILE=1
+ ---> Using cache
+ ---> 269b72c80f07
+Step 4/7 : RUN   Function Test-Nano() {     $EditionId = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'EditionID').EditionId;     return (($EditionId -eq 'ServerStandardNano') -or ($EditionId -eq 'ServerDataCenterNano') -or ($EditionId -eq 'NanoServer'));   }    Function Download-File([string] $source, [string] $target) {     if (Test-Nano) {       $handler = New-Object System.Net.Http.HttpClientHandler;       $client = New-Object System.Net.Http.HttpClient($handler);       $client.Timeout = New-Object System.TimeSpan(0, 30, 0);       $cancelTokenSource = [System.Threading.CancellationTokenSource]::new();       $responseMsg = $client.GetAsync([System.Uri]::new($source), $cancelTokenSource.Token);       $responseMsg.Wait();       if (!$responseMsg.IsCanceled) {         $response = $responseMsg.Result;         if ($response.IsSuccessStatusCode) {           $downloadedFileStream = [System.IO.FileStream]::new($target, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write);           $copyStreamOp = $response.Content.CopyToAsync($downloadedFileStream);           $copyStreamOp.Wait();           $downloadedFileStream.Close();           if ($copyStreamOp.Exception -ne $null) { throw $copyStreamOp.Exception }         }       } else {       Throw ("Failed to download " + $source)       }    } else {       $webClient = New-Object System.Net.WebClient;       $webClient.DownloadFile($source, $target);     }   }     setx /M PATH $('C:\git\cmd;C:\git\usr\bin;'+$Env:PATH+';C:\gcc\bin;C:\go\bin');     Write-Host INFO: Downloading git...;   $location='https://www.nuget.org/api/v2/package/GitForWindows/'+$Env:GIT_VERSION;   Download-File $location C:\gitsetup.zip;     Write-Host INFO: Downloading go...;   Download-File $('https://golang.org/dl/go'+$Env:GO_VERSION+'.windows-amd64.zip') C:\go.zip;     Write-Host INFO: Downloading compiler 1 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/gcc.zip C:\gcc.zip;     Write-Host INFO: Downloading compiler 2 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/runtime.zip C:\runtime.zip;     Write-Host INFO: Downloading compiler 3 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/binutils.zip C:\binutils.zip;     Write-Host INFO: Extracting git...;   Expand-Archive C:\gitsetup.zip C:\git-tmp;   New-Item -Type Directory C:\git | Out-Null;   Move-Item C:\git-tmp\tools\* C:\git\.;   Remove-Item -Recurse -Force C:\git-tmp;     Write-Host INFO: Expanding go...;   Expand-Archive C:\go.zip -DestinationPath C:\;     Write-Host INFO: Expanding compiler 1 of 3...;   Expand-Archive C:\gcc.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 2 of 3...;   Expand-Archive C:\runtime.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 3 of 3...;   Expand-Archive C:\binutils.zip -DestinationPath C:\gcc -Force;     Write-Host INFO: Removing downloaded files...;   Remove-Item C:\gcc.zip;   Remove-Item C:\runtime.zip;   Remove-Item C:\binutils.zip;   Remove-Item C:\gitsetup.zip;     Write-Host INFO: Creating source directory...;   New-Item -ItemType Directory -Path C:\go\src\github.com\docker\docker | Out-Null;     Write-Host INFO: Configuring git core.autocrlf...;   C:\git\cmd\git config --global core.autocrlf true;     Write-Host INFO: Completed
+ ---> Using cache
+ ---> 686f463e55f4
+Step 5/7 : ENTRYPOINT ["powershell.exe"]
+ ---> Using cache
+ ---> d98835af7e35
+Step 6/7 : WORKDIR C:\go\src\github.com\docker\docker
+ ---> Using cache
+ ---> e2393c791329
+Step 7/7 : COPY . .
+ ---> 44c096d19322
+Successfully built 44c096d19322
+Successfully tagged docker:latest
+INFO: Image build ended at 12/31/2018 17:03:54. Duration:00:00:33.4199800
+
+
+INFO: Building the test binaries at 12/31/2018 17:03:54...
+INFO: make.ps1 starting at 12/31/2018 17:03:56
+INFO: Git commit (67b59451a0) assumed from DOCKER_GITCOMMIT environment variable
+INFO: Invoking autogen...
+INFO: Building daemon...
+INFO: Downloading docker/cli version 17.06.0-ce from edge...
+
+ ________   ____  __.
+ \_____  \ |    |/ _|
+ /   |   \|      <
+ /    |    \    |  \
+ \_______  /____|__ \
+         \/        \/
+
+INFO: make.ps1 ended at 12/31/2018 17:05:01
+INFO: Binaries build ended at 12/31/2018 17:05:02. Duration:00:01:07.9519663
+INFO: Copying the built daemon binary to d:\CI\CI-67b59451a0\binary\dockerd-67b59451a0.exe...
+INFO: Copying the built client binary to d:\CI\CI-67b59451a0\binary\docker-67b59451a0.exe...
+INFO: Copying dockerversion from the container...
+INFO: Copying the golang package from the container to d:\CI\CI-67b59451a0\installer\go.zip...
+INFO: Extracting go.zip to d:\CI\CI-67b59451a0\go
+INFO: Extraction ended at 12/31/2018 17:05:27. Duration:00:00:22.5272158
+INFO: Updating the golang and path environment variables
+INFO: GOPATH=c:\gopath
+INFO: go version go1.11.4 windows/amd64
+INFO: Starting a daemon under test...
+INFO: Args: -H tcp://0.0.0.0:2357 --data-root d:\CI\CI-67b59451a0\daemon --pidfile d:\CI\CI-67b59451a0\docker.pid
+INFO: Process started successfully.
+INFO: Waiting for the daemon under test to start...
+INFO: Daemon under test started and replied!
+INFO: Docker version of the daemon under test
+
+Client:
+ Version:      17.06.0-ce
+ API version:  1.30
+ Go version:   go1.8.3
+ Git commit:   02c1d87
+ Built:        Fri Jun 23 21:30:30 2017
+ OS/Arch:      windows/amd64
+
+Server:
+ Version:      0.0.0-dev
+ API version:  1.40 (minimum version 1.24)
+ Go version:   go1.11.4
+ Git commit:   67b59451a0
+ Built:        12/31/2018 17:03:57
+ OS/Arch:      windows/amd64
+ Experimental: false
+
+INFO: Docker info of the daemon under test
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 0
+Server Version: 0.0.0-dev
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins: 
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 17763 (17763.1.amd64fre.rs5_release.180914-1434)
+Operating System: Windows Server 2019 Datacenter Version 1809 (OS Build 17763.1)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 16GiB
+Name: jenkins-rs5-3
+ID: IR6Z:3EZM:SMOY:AW7Q:2FXA:4NDM:3EJ6:2QCK:32K3:ISKM:LZPI:EZGQ
+Docker Root Dir: D:\CI\CI-67b59451a0\daemon
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Docker images of the daemon under test
+
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+INFO: Base image for tests is microsoft/windowsservercore
+INFO: Loading windowsservercore .tar from disk into the daemon under test. This may take some time...
+Loaded image: microsoft/windowsservercore:10.0.17763.1
+Loaded image: microsoft/windowsservercore:latest
+INFO: docker load of windowsservercore  into daemon under test completed successfully
+INFO: Version of microsoft/windowsservercore:latest is '10.0.17763.1'
+WARN: Skipping validation tests
+WARN: Skipping unit tests
+INFO: Building busybox
+Downloading build context from remote url: https://raw.githubusercontent.com/jhowardmsft/busybox/v1.1/Dockerfile     701B
+Downloading build context from remote url: https://raw.githubusercontent.com/jhowardmsft/busybox/v1.1/Dockerfile     701B
+
+Sending build context to Docker daemon   2.56kB
+
+Step 1/6 : FROM microsoft/windowsservercore
+ ---> e523d49b4b94
+Step 2/6 : RUN mkdir C:\tmp && mkdir C:\bin
+ ---> Running in 1450602de6f2
+Removing intermediate container 1450602de6f2
+ ---> f7019efb584b
+Step 3/6 : ADD http://frippery.org/files/busybox/busybox.exe /bin/
+
+ ---> 25ec41cb767e
+Step 4/6 : RUN setx /M PATH "C:\bin;%PATH%"
+ ---> Running in dd5bfbdc18c5
+
+SUCCESS: Specified value was saved.
+Removing intermediate container dd5bfbdc18c5
+ ---> 2aacad42da68
+Step 5/6 : RUN powershell busybox.exe --list ^|%{$nul = cmd /c mklink C:\bin\$_.exe busybox.exe}
+ ---> Running in 9f29e8444007
+Cannot create a file when that file already exists.
+Removing intermediate container 9f29e8444007
+ ---> 6a476cf41496
+Step 6/6 : CMD ["sh"]
+ ---> Running in 9dadd5cd59a0
+Removing intermediate container 9dadd5cd59a0
+ ---> adfa9f2716b7
+Successfully built adfa9f2716b7
+Successfully tagged busybox:latest
+INFO: Docker images of the daemon under test
+
+REPOSITORY                    TAG                 IMAGE ID            CREATED                  SIZE
+busybox                       latest              adfa9f2716b7        Less than a second ago   3.49GB
+microsoft/windowsservercore   10.0.17763.1        e523d49b4b94        3 months ago             3.47GB
+microsoft/windowsservercore   latest              e523d49b4b94        3 months ago             3.47GB
+
+INFO: Running integration tests at 12/31/2018 17:08:25...
+WARN: Only running integration tests matching DockerSwarmSuite
+INFO: Integration tests being run from the host:
+INFO: go test "-check.v" "-check.f" "DockerSwarmSuite" "-tags" "autogen" "-check.timeout" "10m" "-test.timeout" "200m" 
+INFO: DOCKER_HOST at tcp://127.0.0.1:2357
+INFO: Windows Base image is  microsoft/windowsservercore
+INFO: Testing against a local daemon
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:883: DockerSwarmSuite.TestAPIDuplicateNetworks
+
+[d8582c7eb36e5] waiting for daemon to start
+docker_api_swarm_test.go:884:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:1010: DockerSwarmSuite.TestAPINetworkInspectWithScope
+
+[d9f4b95092158] waiting for daemon to start
+docker_api_swarm_test.go:1011:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:28: DockerSwarmSuite.TestAPIServiceUpdatePort
+
+[d5f5a5f6c7dd3] waiting for daemon to start
+docker_api_swarm_service_test.go:29:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:183: DockerSwarmSuite.TestAPISwarmCAHash
+
+[d98f6f058fc6a] waiting for daemon to start
+docker_api_swarm_test.go:184:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:867: DockerSwarmSuite.TestAPISwarmErrorHandling
+
+[d4fb7f1c787c2] waiting for daemon to start
+docker_api_swarm_test.go:871:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:538: DockerSwarmSuite.TestAPISwarmForceNewCluster
+
+[d4ed68c9bb48e] waiting for daemon to start
+docker_api_swarm_test.go:539:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+SKIP: docker_api_swarm_test.go:914: DockerSwarmSuite.TestAPISwarmHealthcheckNone (Root cause of Issue #36386 is needed)
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:33: DockerSwarmSuite.TestAPISwarmInit
+
+[dd589e99c071d] waiting for daemon to start
+docker_api_swarm_test.go:35:
+    // todo: should find a better way to verify that components are running than /info
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:520: DockerSwarmSuite.TestAPISwarmInvalidAddress
+
+[df2e8d09c3937] waiting for daemon to start
+docker_api_swarm_test.go:521:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:79: DockerSwarmSuite.TestAPISwarmJoinToken
+
+[d7a3e879a09f6] waiting for daemon to start
+docker_api_swarm_test.go:80:
+    d1 := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:294: DockerSwarmSuite.TestAPISwarmLeaderElection
+
+[dcaa30509e92a] waiting for daemon to start
+docker_api_swarm_test.go:296:
+    // Create 3 nodes
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:269: DockerSwarmSuite.TestAPISwarmLeaderProxy
+
+[d0c21e2e79215] waiting for daemon to start
+docker_api_swarm_test.go:271:
+    // add three managers, one of these is leader
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:421: DockerSwarmSuite.TestAPISwarmLeaveOnPendingJoin
+
+[d7357f5f16a3c] waiting for daemon to start
+docker_api_swarm_test.go:423:
+    s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:398: DockerSwarmSuite.TestAPISwarmLeaveRemovesContainer
+
+[daa0898813bd6] waiting for daemon to start
+docker_api_swarm_test.go:399:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_node_test.go:12: DockerSwarmSuite.TestAPISwarmListNodes
+
+[daac4102621d0] waiting for daemon to start
+docker_api_swarm_node_test.go:13:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:470: DockerSwarmSuite.TestAPISwarmManagerRestore
+
+[d7e35bd9e4b0e] waiting for daemon to start
+docker_api_swarm_test.go:471:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_node_test.go:73: DockerSwarmSuite.TestAPISwarmNodeDrainPause
+
+[d60925fb79818] waiting for daemon to start
+docker_api_swarm_node_test.go:74:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_node_test.go:44: DockerSwarmSuite.TestAPISwarmNodeRemove
+
+[d4825972ee8e7] waiting for daemon to start
+docker_api_swarm_node_test.go:46:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_node_test.go:31: DockerSwarmSuite.TestAPISwarmNodeUpdate
+
+[d5db12af15d7a] waiting for daemon to start
+docker_api_swarm_node_test.go:32:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:199: DockerSwarmSuite.TestAPISwarmPromoteDemote
+
+[d5c76858225e4] waiting for daemon to start
+docker_api_swarm_test.go:200:
+    d1 := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:357: DockerSwarmSuite.TestAPISwarmRaftQuorum
+
+[d667f1fdf6201] waiting for daemon to start
+docker_api_swarm_test.go:358:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:774: DockerSwarmSuite.TestAPISwarmRestartCluster
+
+[de4cf2a6bdcc0] waiting for daemon to start
+docker_api_swarm_test.go:779:
+    manager := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:451: DockerSwarmSuite.TestAPISwarmRestoreOnPendingJoin
+
+[d8df89786e3ea] waiting for daemon to start
+docker_api_swarm_test.go:453:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:496: DockerSwarmSuite.TestAPISwarmScaleNoRollingUpdate
+
+[d8beda3918de5] waiting for daemon to start
+docker_api_swarm_test.go:497:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:398: DockerSwarmSuite.TestAPISwarmServiceConstraintLabel
+
+[debe6091e1cac] waiting for daemon to start
+docker_api_swarm_service_test.go:402:
+    daemons[i] = s.AddDaemon(c, true, i == 0)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:346: DockerSwarmSuite.TestAPISwarmServiceConstraintRole
+
+[d91d3711fa69d] waiting for daemon to start
+docker_api_swarm_service_test.go:350:
+    daemons[i] = s.AddDaemon(c, true, i == 0)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:493: DockerSwarmSuite.TestAPISwarmServicePlacementPrefs
+
+[d347761dcee03] waiting for daemon to start
+docker_api_swarm_service_test.go:497:
+    daemons[i] = s.AddDaemon(c, true, i == 0)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:57: DockerSwarmSuite.TestAPISwarmServicesCreate
+
+[d8c5024d0c10d] waiting for daemon to start
+docker_api_swarm_service_test.go:58:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:119: DockerSwarmSuite.TestAPISwarmServicesCreateGlobal
+
+[ddd2d0a90525c] waiting for daemon to start
+docker_api_swarm_service_test.go:120:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:49: DockerSwarmSuite.TestAPISwarmServicesEmptyList
+
+[d759aad4fd38a] waiting for daemon to start
+docker_api_swarm_service_test.go:50:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:306: DockerSwarmSuite.TestAPISwarmServicesFailedUpdate
+
+[d129966765a7d] waiting for daemon to start
+docker_api_swarm_service_test.go:310:
+    daemons[i] = s.AddDaemon(c, true, i == 0)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:91: DockerSwarmSuite.TestAPISwarmServicesMultipleAgents
+
+[db00cdba92838] waiting for daemon to start
+docker_api_swarm_service_test.go:92:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:137: DockerSwarmSuite.TestAPISwarmServicesUpdate
+
+[d9c6a71ede60f] waiting for daemon to start
+docker_api_swarm_service_test.go:141:
+    daemons[i] = s.AddDaemon(c, true, i == 0)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_service_test.go:197: DockerSwarmSuite.TestAPISwarmServicesUpdateStartFirst
+
+[d6ecc5a95de09] waiting for daemon to start
+docker_api_swarm_service_test.go:198:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:839: DockerSwarmSuite.TestAPISwarmServicesUpdateWithName
+
+[d4bad7d0b92ec] waiting for daemon to start
+docker_api_swarm_test.go:840:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:859: DockerSwarmSuite.TestAPISwarmUnlockNotLocked
+
+[d1a185c312956] waiting for daemon to start
+docker_api_swarm_test.go:860:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:749: DockerSwarmSuite.TestDNSConfig
+
+[d42cca2daf8d7] waiting for daemon to start
+docker_cli_swarm_test.go:750:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:776: DockerSwarmSuite.TestDNSConfigUpdate
+
+[dfb9b5122a7cd] waiting for daemon to start
+docker_cli_swarm_test.go:777:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1216: DockerSwarmSuite.TestExtraHosts
+
+[df200157dd80f] waiting for daemon to start
+docker_cli_swarm_test.go:1217:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1410: DockerSwarmSuite.TestNetworkInspectWithDuplicateNames
+
+[d9e104e44b686] waiting for daemon to start
+docker_cli_swarm_test.go:1411:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:383: DockerSwarmSuite.TestOverlayAttachable
+
+[d00792038046a] waiting for daemon to start
+docker_cli_swarm_test.go:384:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:405: DockerSwarmSuite.TestOverlayAttachableOnSwarmLeave
+
+[dc220d0fddf62] waiting for daemon to start
+docker_cli_swarm_test.go:406:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:432: DockerSwarmSuite.TestOverlayAttachableReleaseResourcesOnFailure
+
+[d1b82331d9fef] waiting for daemon to start
+docker_cli_swarm_test.go:433:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:587: DockerSwarmSuite.TestPsListContainersFilterIsTask
+
+[d3dc158058c10] waiting for daemon to start
+docker_cli_swarm_test.go:588:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1191: DockerSwarmSuite.TestSwarmAlternateLockUnlock
+
+[dd3941c628f8d] waiting for daemon to start
+docker_cli_swarm_test.go:1192:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1770: DockerSwarmSuite.TestSwarmClusterEventsConfig
+
+[dfc709d9ff021] waiting for daemon to start
+docker_cli_swarm_test.go:1771:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1731: DockerSwarmSuite.TestSwarmClusterEventsNetwork
+
+[dede45730cb85] waiting for daemon to start
+docker_cli_swarm_test.go:1732:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1701: DockerSwarmSuite.TestSwarmClusterEventsNode
+
+[d349ef94701ad] waiting for daemon to start
+docker_cli_swarm_test.go:1702:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1617: DockerSwarmSuite.TestSwarmClusterEventsScope
+
+[d85487dab291f] waiting for daemon to start
+docker_cli_swarm_test.go:1618:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1750: DockerSwarmSuite.TestSwarmClusterEventsSecret
+
+[d23640a3252fe] waiting for daemon to start
+docker_cli_swarm_test.go:1751:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1661: DockerSwarmSuite.TestSwarmClusterEventsService
+
+[d2a686e35dfb8] waiting for daemon to start
+docker_cli_swarm_test.go:1662:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1597: DockerSwarmSuite.TestSwarmClusterEventsSource
+
+[d704ca0795f9e] waiting for daemon to start
+docker_cli_swarm_test.go:1598:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1638: DockerSwarmSuite.TestSwarmClusterEventsType
+
+[d656c7fff11a2] waiting for daemon to start
+docker_cli_swarm_test.go:1639:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1120: DockerSwarmSuite.TestSwarmClusterRotateUnlockKey
+
+[d85fc55e34233] waiting for daemon to start
+docker_cli_swarm_test.go:1121:
+    d1 := s.AddDaemon(c, true, true) // leader - don't restart this one, we don't want leader election delays
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:355: DockerSwarmSuite.TestSwarmContainerAttachByNetworkId
+
+[daa390392bd75] waiting for daemon to start
+docker_cli_swarm_test.go:356:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:308: DockerSwarmSuite.TestSwarmContainerAutoStart
+
+[da2fd1e294ee9] waiting for daemon to start
+docker_cli_swarm_test.go:309:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:330: DockerSwarmSuite.TestSwarmContainerEndpointOptions
+
+[dac5722a5730f] waiting for daemon to start
+docker_cli_swarm_test.go:331:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:510: DockerSwarmSuite.TestSwarmCreateServiceWithNoIngressNetwork
+
+[d33abdd1a2218] waiting for daemon to start
+docker_cli_swarm_test.go:511:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:135: DockerSwarmSuite.TestSwarmIncompatibleDaemon
+
+[d8e932dd3f778] waiting for daemon to start
+docker_cli_swarm_test.go:137:
+    // init swarm mode and stop a daemon
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:456: DockerSwarmSuite.TestSwarmIngressNetwork
+
+[db5695baf62dd] waiting for daemon to start
+docker_cli_swarm_test.go:457:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:73: DockerSwarmSuite.TestSwarmInit
+
+[d9aa50220630c] waiting for daemon to start
+docker_cli_swarm_test.go:74:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+SKIP: docker_cli_swarm_test.go:116: DockerSwarmSuite.TestSwarmInitIPv6 (unmatched requirement IPv6)
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:857: DockerSwarmSuite.TestSwarmInitLocked
+
+[d3b92a7cdc5cc] waiting for daemon to start
+docker_cli_swarm_test.go:858:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:128: DockerSwarmSuite.TestSwarmInitUnspecifiedAdvertiseAddr
+
+[d1b55ab1f1527] waiting for daemon to start
+docker_cli_swarm_test.go:129:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1535: DockerSwarmSuite.TestSwarmInitUnspecifiedDataPathAddr
+
+[dfd874869b7f0] waiting for daemon to start
+docker_cli_swarm_test.go:1536:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1378: DockerSwarmSuite.TestSwarmInitWithDrain
+
+[d05f2fc96964a] waiting for daemon to start
+docker_cli_swarm_test.go:1379:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1547: DockerSwarmSuite.TestSwarmJoinLeave
+
+[d94c8aeddff04] waiting for daemon to start
+docker_cli_swarm_test.go:1548:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:993: DockerSwarmSuite.TestSwarmJoinPromoteLocked
+
+[d8e7d54086adb] waiting for daemon to start
+docker_cli_swarm_test.go:994:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1350: DockerSwarmSuite.TestSwarmJoinWithDrain
+
+[d455633fff229] waiting for daemon to start
+docker_cli_swarm_test.go:1351:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:899: DockerSwarmSuite.TestSwarmLeaveLocked
+
+[db671ba3c0891] waiting for daemon to start
+docker_cli_swarm_test.go:900:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:932: DockerSwarmSuite.TestSwarmLockUnlockCluster
+
+[db414be2da99f] waiting for daemon to start
+docker_cli_swarm_test.go:933:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1239: DockerSwarmSuite.TestSwarmManagerAddress
+
+[daea32c3d69f5] waiting for daemon to start
+docker_cli_swarm_test.go:1240:
+    d1 := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1309: DockerSwarmSuite.TestSwarmNetworkCreateDup
+
+[ded1cb707dc13] waiting for daemon to start
+docker_cli_swarm_test.go:1310:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1286: DockerSwarmSuite.TestSwarmNetworkCreateIssue27866
+
+[dccc453b2573a] waiting for daemon to start
+docker_cli_swarm_test.go:1287:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1260: DockerSwarmSuite.TestSwarmNetworkIPAMOptions
+
+[dda39e8b2b086] waiting for daemon to start
+docker_cli_swarm_test.go:1261:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:218: DockerSwarmSuite.TestSwarmNodeListFilter
+
+[db13f192f9171] waiting for daemon to start
+docker_cli_swarm_test.go:219:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:237: DockerSwarmSuite.TestSwarmNodeTaskListFilter
+
+[d00d716585185] waiting for daemon to start
+docker_cli_swarm_test.go:238:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:264: DockerSwarmSuite.TestSwarmPublishAdd
+
+[da03962ca5c6e] waiting for daemon to start
+docker_cli_swarm_test.go:265:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1331: DockerSwarmSuite.TestSwarmPublishDuplicatePorts
+
+[d9f091f189f57] waiting for daemon to start
+docker_cli_swarm_test.go:1332:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+SKIP: docker_cli_swarm_test.go:1389: DockerSwarmSuite.TestSwarmReadonlyRootfs (unmatched requirement DaemonIsLinux)
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:941: DockerSwarmSuite.TestSwarmRepeatedRootRotation
+
+[d4d3f44dbc07c] waiting for daemon to start
+docker_api_swarm_test.go:942:
+    m := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1052: DockerSwarmSuite.TestSwarmRotateUnlockKey
+
+[df34bcf96e609] waiting for daemon to start
+docker_cli_swarm_test.go:1053:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:621: DockerSwarmSuite.TestSwarmServiceEnvFile
+
+[df7d5385b0bac] waiting for daemon to start
+docker_cli_swarm_test.go:622:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:177: DockerSwarmSuite.TestSwarmServiceListFilter
+
+[d61a6afb4cac6] waiting for daemon to start
+docker_cli_swarm_test.go:178:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:1504: DockerSwarmSuite.TestSwarmServiceLsFilterMode
+
+[dd2851e875611] waiting for daemon to start
+docker_cli_swarm_test.go:1505:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:710: DockerSwarmSuite.TestSwarmServiceNetworkUpdate
+
+[d0210dc66ea37] waiting for daemon to start
+docker_cli_swarm_test.go:711:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:639: DockerSwarmSuite.TestSwarmServiceTTY
+
+[d41eb83f3c54a] waiting for daemon to start
+docker_cli_swarm_test.go:640:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:687: DockerSwarmSuite.TestSwarmServiceTTYUpdate
+
+[dd62043b14fd1] waiting for daemon to start
+docker_cli_swarm_test.go:688:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:159: DockerSwarmSuite.TestSwarmServiceTemplatingHostname
+
+[d57975d17a5ce] waiting for daemon to start
+docker_cli_swarm_test.go:160:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:286: DockerSwarmSuite.TestSwarmServiceWithGroup
+
+[d97ee5986a591] waiting for daemon to start
+docker_cli_swarm_test.go:287:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+SKIP: docker_cli_swarm_test.go:1476: DockerSwarmSuite.TestSwarmStopSignal (unmatched requirement DaemonIsLinux)
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:529: DockerSwarmSuite.TestSwarmTaskListFilter
+
+[dda20d00ecc9a] waiting for daemon to start
+docker_cli_swarm_test.go:530:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:25: DockerSwarmSuite.TestSwarmUpdate
+
+[d006a9b505e7a] waiting for daemon to start
+docker_cli_swarm_test.go:26:
+    d := s.AddDaemon(c, true, true)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_cli_swarm_test.go:832: DockerSwarmSuite.TestUnlockEngineAndUnlockedSwarm
+
+[d0a4756db8293] waiting for daemon to start
+docker_cli_swarm_test.go:833:
+    d := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+
+----------------------------------------------------------------------
+FAIL: docker_api_swarm_test.go:161: DockerSwarmSuite.TestUpdateSwarmAddExternalCA
+
+[d98fc13662a0d] waiting for daemon to start
+docker_api_swarm_test.go:162:
+    d1 := s.AddDaemon(c, false, false)
+c:/gopath/src/github.com/docker/docker/internal/test/daemon/daemon.go:203:
+    t.Fatalf("failed to start daemon with arguments %v : %v", args, err)
+... Error: failed to start daemon with arguments [--swarm-default-advertise-addr=lo] : protocol not available
+
+OOPS: 0 passed, 4 skipped, 91 FAILED
+--- FAIL: Test (48.52s)
+FAIL
+exit status 1
+FAIL	github.com/docker/docker/integration-cli	48.632s
+
+
+ERROR: Failed 'ERROR: Integration tests failed at 12/31/2018 17:09:23. Duration:00:00:57.8826784' at 12/31/2018 17:09:23
+At C:\gopath\src\github.com\docker\docker\hack\ci\windows.ps1:851 char:17
++ ...             Throw "ERROR: Integration tests failed at $(Get-Date). Du ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+INFO: Tidying up at end of run
+INFO: Saving daemon under test log (d:\CI\CI-67b59451a0\dut.err) to d:\temp\CIDUT.log
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 1
+d74e0b9d62c7
+INFO: Non-base image count on control daemon to delete is 57
+INFO: Killing daemon with PID 23952
+INFO: Tidying pidfile d:\CI\CI-67b59451a0\docker.pid
+INFO: Stopping possible daemon pid 23952
+INFO: Nuking d:\CI
+ERROR:  hcsshim::DestroyLayer - Win32 API call returned error r1=0x80070005 err=Access is denied.id=CI flavour=0
+
+INFO: executeCI.ps1 exiting at Mon Dec 31 17:09:24 CUT 2018. Duration 00:06:08.0957152
+
+Process leaked file descriptors. See https://jenkins.io/redirect/troubleshooting/process-leaked-file-descriptors for more information
+Build step 'Windows PowerShell' marked build as failure
+Set build name.
+New build name is '#38432'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

@@ -1,0 +1,98 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-28 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins2158319206651136259.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+docker: Error response from daemon: unauthorized: authentication required.
+See 'docker run --help'.
+Failed build for hudson.tasks.Shell@54493290
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision e78a3dca21ea9ceb8d7a5e0252e94ee7ad05eadd (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e78a3dca21ea9ceb8d7a5e0252e94ee7ad05eadd
+Commit message: "Merge pull request #38477 from yongtang/38407-follow-up"
+ > git rev-list --no-walk e78a3dca21ea9ceb8d7a5e0252e94ee7ad05eadd # timeout=10
+Set build name.
+New build name is '#38473'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins6659065373769107372.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38473/head -> origin/pr/38473
+Merge made by the 'recursive' strategy.
+ integration/build/build_test.go            |  5 ++---
+ integration/container/create_test.go       | 10 +++++-----
+ integration/container/diff_test.go         |  3 +--
+ integration/container/exec_test.go         |  5 ++---
+ integration/container/export_test.go       |  3 +--
+ integration/container/health_test.go       |  3 +--
+ integration/container/ipcmode_test.go      |  5 ++---
+ integration/container/kill_test.go         | 12 ++++++------
+ integration/container/links_linux_test.go  |  5 ++---
+ integration/container/logs_test.go         |  3 +--
+ integration/container/mounts_linux_test.go |  7 +++----
+ integration/container/nat_test.go          | 10 ++++++----
+ integration/container/pause_test.go        |  6 +++---
+ integration/container/ps_test.go           |  3 +--
+ integration/container/remove_test.go       | 11 +++++------
+ integration/container/rename_test.go       | 15 +++++++--------
+ integration/container/resize_test.go       |  7 +++----
+ integration/container/run_linux_test.go    |  5 ++---
+ integration/container/stats_test.go        |  3 +--
+ integration/container/stop_linux_test.go   |  5 ++---
+ integration/container/stop_test.go         |  3 +--
+ integration/container/stop_windows_test.go |  3 +--
+ integration/container/update_linux_test.go |  7 ++-----
+ integration/container/update_test.go       |  5 ++---
+ integration/image/commit_test.go           |  3 +--
+ integration/image/import_test.go           |  4 ++--
+ integration/image/list_test.go             |  3 +--
+ integration/image/remove_test.go           |  3 +--
+ integration/image/tag_test.go              | 13 ++++++-------
+ integration/network/delete_test.go         | 13 +++++--------
+ integration/system/event_test.go           |  4 ++--
+ integration/system/info_linux_test.go      |  4 ++--
+ integration/system/info_test.go            |  4 ++--
+ integration/system/login_test.go           |  4 ++--
+ integration/system/version_test.go         |  4 ++--
+ integration/volume/volume_test.go          |  6 +++---
+ 36 files changed, 91 insertions(+), 118 deletions(-)
+Sending build context to Docker daemon   45.1MB
+Step 1/94 : FROM golang:1.11.4 AS base
+Get https://registry-1.docker.io/v2/library/golang/manifests/1.11.4: received unexpected HTTP status: 503 Service Unavailable
+Unable to find image 'docker-s390x:a425f22' locally
+docker: Error response from daemon: unauthorized: authentication required.
+See 'docker run --help'.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38473'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins1167090703524149458.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+docker: Error response from daemon: unauthorized: authentication required.
+See 'docker run --help'.
+Build step 'Execute Scripts' marked build as failure
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

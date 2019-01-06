@@ -1,0 +1,81 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs-stable (i-0d1600102f2190535) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision e0e9942dc5466884e7b2ef5c509a9dab33c4a01a (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e0e9942dc5466884e7b2ef5c509a9dab33c4a01a
+Commit message: "Merge pull request #38419 from thaJeztah/fix_nuke_everything"
+ > git rev-list --no-walk e0e9942dc5466884e7b2ef5c509a9dab33c4a01a # timeout=10
+Set build name.
+New build name is '#38475'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins268139177616501000.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38475/head -> origin/pr/38475
+Auto-merging hack/ci/windows.ps1
+Merge made by the 'recursive' strategy.
+ Dockerfile          | 7 +++++--
+ hack/ci/windows.ps1 | 3 +++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+Sending build context to Docker daemon   45.1MB
+Step 1/95 : FROM golang:1.11.4 AS base
+ ---> 343df9d12b7b
+Step 2/95 : ARG APT_MIRROR2=ftp.us.debian.org
+ ---> Using cache
+ ---> 4afc34441927
+Step 3/95 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR2/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 3ce0a193cd22
+Step 4/95 : FROM base AS criu
+ ---> 3ce0a193cd22
+Step 5/95 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> 3f873125b750
+Step 6/95 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> b6d3d1f5a3bd
+Step 7/95 : RUN exit 1
+ ---> Running in 066ee7f1d06d
+Removing intermediate container 066ee7f1d06d
+The command '/bin/sh -c exit 1' returned a non-zero code: 1
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38475'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins4377443338160049771.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp43529
+Error: No such container: docker-pr-exp43529
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins6311095604626057745.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log+ 
+xargs tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

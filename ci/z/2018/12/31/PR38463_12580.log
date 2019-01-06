@@ -1,0 +1,1217 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-31 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins6288656205217712013.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+c1a6586488b4: Pulling fs layer
+c1a6586488b4: Download complete
+c1a6586488b4: Pull complete
+Digest: sha256:d805cb76155a2b9c549db10998abbe2a2666c9fb45bf6da99ce15da7f348dd52
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@54493290
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision f76d6a078d881f410c00e8d900dcdfc2e026c841 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f76d6a078d881f410c00e8d900dcdfc2e026c841
+Commit message: "Merge pull request #38370 from farnasirim/36413-bind-dir-skip-copy"
+ > git rev-list --no-walk f76d6a078d881f410c00e8d900dcdfc2e026c841 # timeout=10
+Set build name.
+New build name is '#38463'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins4339825769500007087.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38463/head -> origin/pr/38463
+Updating f76d6a0..b651e32
+Fast-forward
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+Sending build context to Docker daemon  45.09MB
+Step 1/94 : FROM golang:1.11.4 AS base
+1.11.4: Pulling from library/golang
+c5e4ba148bd1: Pulling fs layer
+e4ab879437b7: Pulling fs layer
+a26d08cd7690: Pulling fs layer
+05dfbcf77830: Pulling fs layer
+8c8a7e70110e: Pulling fs layer
+3455ff1f6719: Pulling fs layer
+f5c4a8ef739f: Pulling fs layer
+05dfbcf77830: Waiting
+8c8a7e70110e: Waiting
+3455ff1f6719: Waiting
+f5c4a8ef739f: Waiting
+a26d08cd7690: Verifying Checksum
+a26d08cd7690: Download complete
+e4ab879437b7: Verifying Checksum
+e4ab879437b7: Download complete
+c5e4ba148bd1: Verifying Checksum
+c5e4ba148bd1: Download complete
+05dfbcf77830: Verifying Checksum
+05dfbcf77830: Download complete
+f5c4a8ef739f: Verifying Checksum
+f5c4a8ef739f: Download complete
+3455ff1f6719: Verifying Checksum
+3455ff1f6719: Download complete
+c5e4ba148bd1: Pull complete
+8c8a7e70110e: Verifying Checksum
+8c8a7e70110e: Download complete
+e4ab879437b7: Pull complete
+a26d08cd7690: Pull complete
+05dfbcf77830: Pull complete
+8c8a7e70110e: Pull complete
+3455ff1f6719: Pull complete
+f5c4a8ef739f: Pull complete
+Digest: sha256:bc63e58480108bd3ded6da99df27d79519c493ebd7df9193ab876abbd6e9b623
+Status: Downloaded newer image for golang:1.11.4
+ ---> ee5c1a481166
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in d194d38c2175
+Removing intermediate container d194d38c2175
+ ---> 29e00f92a245
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in d1612de1da6b
+Removing intermediate container d1612de1da6b
+ ---> c3a767e143e5
+Step 4/94 : FROM base AS criu
+ ---> c3a767e143e5
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Running in 26e9f7a36d01
+Removing intermediate container 26e9f7a36d01
+ ---> b2763ebc4674
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in c856aa13248e
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:5 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [5100 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6859 kB]
+Get:8 http://security.debian.org/debian-security stretch/updates/main s390x Packages [447 kB]
+Fetched 7616 kB in 1s (4339 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 0 not upgraded.
+Need to get 3476 kB of archives.
+After this operation, 20.2 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnet1 s390x 1.1.6+dfsg-3 [57.1 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libcap-dev s390x 1:2.25-1 [30.1 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnet1-dev s390x 1.1.6+dfsg-3 [114 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnl-3-200 s390x 3.2.27-2 [59.3 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libnl-3-dev s390x 3.2.27-2 [96.2 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-c1 s390x 1.2.1-2 [25.1 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-c-dev s390x 1.2.1-2 [32.5 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x zlib1g-dev s390x 1:1.2.8.dfsg-5 [204 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf10 s390x 3.0.0-9 [648 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-lite10 s390x 3.0.0-9 [123 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotobuf-dev s390x 3.0.0-9 [925 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libprotoc10 s390x 3.0.0-9 [580 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main s390x protobuf-c-compiler s390x 1.2.1-2 [73.1 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main s390x protobuf-compiler s390x 3.0.0-9 [52.6 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main s390x python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main s390x python-protobuf s390x 3.0.0-9 [288 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 3476 kB in 0s (18.6 MB/s)
+Selecting previously unselected package libnet1:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14826 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_s390x.deb ...
+Unpacking libnet1:s390x (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:s390x.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_s390x.deb ...
+Unpacking libcap-dev:s390x (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_s390x.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:s390x.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_s390x.deb ...
+Unpacking libnl-3-200:s390x (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:s390x.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_s390x.deb ...
+Unpacking libnl-3-dev:s390x (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:s390x.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_s390x.deb ...
+Unpacking libprotobuf-c1:s390x (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:s390x.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_s390x.deb ...
+Unpacking libprotobuf-c-dev:s390x (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:s390x.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_s390x.deb ...
+Unpacking zlib1g-dev:s390x (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:s390x.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_s390x.deb ...
+Unpacking libprotobuf10:s390x (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:s390x.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_s390x.deb ...
+Unpacking libprotobuf-lite10:s390x (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:s390x.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_s390x.deb ...
+Unpacking libprotobuf-dev:s390x (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:s390x.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_s390x.deb ...
+Unpacking libprotoc10:s390x (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_s390x.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_s390x.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_s390x.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:s390x (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:s390x (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+Setting up libnet1-dev (1.1.6+dfsg-3) ...
+Setting up libprotobuf10:s390x (3.0.0-9) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up python-protobuf (3.0.0-9) ...
+Setting up libcap-dev:s390x (1:2.25-1) ...
+Setting up libprotobuf-c-dev:s390x (1.2.1-2) ...
+Setting up libnl-3-200:s390x (3.2.27-2) ...
+Setting up libprotobuf-lite10:s390x (3.0.0-9) ...
+Setting up libprotoc10:s390x (3.0.0-9) ...
+Setting up protobuf-c-compiler (1.2.1-2) ...
+Setting up zlib1g-dev:s390x (1:1.2.8.dfsg-5) ...
+Setting up protobuf-compiler (3.0.0-9) ...
+Setting up libprotobuf-dev:s390x (3.0.0-9) ...
+Setting up libnl-3-dev:s390x (3.2.27-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+fatal: Not a git repository (or any of the parent directories): .git
+  GEN      .gitid
+  GEN      criu/include/version.h
+  GEN      include/common/asm
+  PBCC     images/google/protobuf/descriptor.pb-c.c
+  PBCC     images/opts.pb-c.c
+  PBCC     images/sit.pb-c.c
+  DEP      images/google/protobuf/descriptor.pb-c.d
+  DEP      images/opts.pb-c.d
+  DEP      images/sit.pb-c.d
+  PBCC     images/macvlan.pb-c.c
+  DEP      images/macvlan.pb-c.d
+  PBCC     images/autofs.pb-c.c
+  DEP      images/autofs.pb-c.d
+  PBCC     images/sysctl.pb-c.c
+  DEP      images/sysctl.pb-c.d
+  PBCC     images/time.pb-c.c
+  DEP      images/time.pb-c.d
+  PBCC     images/binfmt-misc.pb-c.c
+  DEP      images/binfmt-misc.pb-c.d
+  PBCC     images/seccomp.pb-c.c
+  DEP      images/seccomp.pb-c.d
+  PBCC     images/userns.pb-c.c
+  DEP      images/userns.pb-c.d
+  PBCC     images/cgroup.pb-c.c
+  DEP      images/cgroup.pb-c.d
+  PBCC     images/fown.pb-c.c
+  PBCC     images/ext-file.pb-c.c
+  DEP      images/fown.pb-c.d
+  DEP      images/ext-file.pb-c.d
+  PBCC     images/rpc.pb-c.c
+  DEP      images/rpc.pb-c.d
+  PBCC     images/siginfo.pb-c.c
+  DEP      images/siginfo.pb-c.d
+  PBCC     images/pagemap.pb-c.c
+  DEP      images/pagemap.pb-c.d
+  PBCC     images/rlimit.pb-c.c
+  DEP      images/rlimit.pb-c.d
+  PBCC     images/file-lock.pb-c.c
+  DEP      images/file-lock.pb-c.d
+  PBCC     images/tty.pb-c.c
+  DEP      images/tty.pb-c.d
+  PBCC     images/tun.pb-c.c
+  PBCC     images/netdev.pb-c.c
+  DEP      images/tun.pb-c.d
+  DEP      images/netdev.pb-c.d
+  PBCC     images/vma.pb-c.c
+  DEP      images/vma.pb-c.d
+  PBCC     images/creds.pb-c.c
+  DEP      images/creds.pb-c.d
+  PBCC     images/utsns.pb-c.c
+  DEP      images/utsns.pb-c.d
+  PBCC     images/ipc-desc.pb-c.c
+  PBCC     images/ipc-sem.pb-c.c
+  DEP      images/ipc-desc.pb-c.d
+  DEP      images/ipc-sem.pb-c.d
+  PBCC     images/ipc-msg.pb-c.c
+  DEP      images/ipc-msg.pb-c.d
+  PBCC     images/ipc-shm.pb-c.c
+  DEP      images/ipc-shm.pb-c.d
+  PBCC     images/ipc-var.pb-c.c
+  DEP      images/ipc-var.pb-c.d
+  PBCC     images/sk-opts.pb-c.c
+  PBCC     images/packet-sock.pb-c.c
+  DEP      images/sk-opts.pb-c.d
+  DEP      images/packet-sock.pb-c.d
+  PBCC     images/sk-netlink.pb-c.c
+  DEP      images/sk-netlink.pb-c.d
+  PBCC     images/sk-inet.pb-c.c
+  DEP      images/sk-inet.pb-c.d
+  PBCC     images/sk-unix.pb-c.c
+  DEP      images/sk-unix.pb-c.d
+  PBCC     images/mm.pb-c.c
+  DEP      images/mm.pb-c.d
+  PBCC     images/timerfd.pb-c.c
+  DEP      images/timerfd.pb-c.d
+  PBCC     images/timer.pb-c.c
+  DEP      images/timer.pb-c.d
+  PBCC     images/sa.pb-c.c
+  DEP      images/sa.pb-c.d
+  PBCC     images/pipe-data.pb-c.c
+  DEP      images/pipe-data.pb-c.d
+  PBCC     images/mnt.pb-c.c
+  DEP      images/mnt.pb-c.d
+  PBCC     images/sk-packet.pb-c.c
+  DEP      images/sk-packet.pb-c.d
+  PBCC     images/tcp-stream.pb-c.c
+  DEP      images/tcp-stream.pb-c.d
+  PBCC     images/pipe.pb-c.c
+  DEP      images/pipe.pb-c.d
+  PBCC     images/pstree.pb-c.c
+  DEP      images/pstree.pb-c.d
+  PBCC     images/fs.pb-c.c
+  DEP      images/fs.pb-c.d
+  PBCC     images/signalfd.pb-c.c
+  DEP      images/signalfd.pb-c.d
+  PBCC     images/fh.pb-c.c
+  PBCC     images/fsnotify.pb-c.c
+  DEP      images/fh.pb-c.d
+  DEP      images/fsnotify.pb-c.d
+  PBCC     images/eventpoll.pb-c.c
+  DEP      images/eventpoll.pb-c.d
+  PBCC     images/eventfd.pb-c.c
+  DEP      images/eventfd.pb-c.d
+  PBCC     images/remap-file-path.pb-c.c
+  DEP      images/remap-file-path.pb-c.d
+  PBCC     images/fifo.pb-c.c
+  DEP      images/fifo.pb-c.d
+  PBCC     images/ghost-file.pb-c.c
+  DEP      images/ghost-file.pb-c.d
+  PBCC     images/regfile.pb-c.c
+  DEP      images/regfile.pb-c.d
+  PBCC     images/ns.pb-c.c
+  DEP      images/ns.pb-c.d
+  PBCC     images/fdinfo.pb-c.c
+  DEP      images/fdinfo.pb-c.d
+  PBCC     images/core-aarch64.pb-c.c
+  PBCC     images/core-arm.pb-c.c
+  PBCC     images/core-ppc64.pb-c.c
+  PBCC     images/core-s390.pb-c.c
+  PBCC     images/core-x86.pb-c.c
+  PBCC     images/core.pb-c.c
+  PBCC     images/inventory.pb-c.c
+  DEP      images/core-aarch64.pb-c.d
+  DEP      images/core-arm.pb-c.d
+  DEP      images/core-ppc64.pb-c.d
+  DEP      images/core-s390.pb-c.d
+  DEP      images/core-x86.pb-c.d
+  DEP      images/core.pb-c.d
+  DEP      images/inventory.pb-c.d
+  PBCC     images/cpuinfo.pb-c.c
+  DEP      images/cpuinfo.pb-c.d
+  PBCC     images/stats.pb-c.c
+  DEP      images/stats.pb-c.d
+make[1]: Nothing to be done for 'all'.
+  CC       images/stats.o
+  CC       images/core.o
+  CC       images/core-x86.o
+  CC       images/core-arm.o
+  CC       images/core-aarch64.o
+  CC       images/core-ppc64.o
+  CC       images/core-s390.o
+  CC       images/cpuinfo.o
+  CC       images/inventory.o
+  CC       images/fdinfo.o
+  CC       images/fown.o
+  CC       images/ns.o
+  CC       images/regfile.o
+  CC       images/ghost-file.o
+  CC       images/fifo.o
+  CC       images/remap-file-path.o
+  CC       images/eventfd.o
+  CC       images/eventpoll.o
+  CC       images/fh.o
+  CC       images/fsnotify.o
+  CC       images/signalfd.o
+  CC       images/fs.o
+  CC       images/pstree.o
+  CC       images/pipe.o
+  CC       images/tcp-stream.o
+  CC       images/sk-packet.o
+  CC       images/mnt.o
+  CC       images/pipe-data.o
+  CC       images/sa.o
+  CC       images/timer.o
+  CC       images/timerfd.o
+  CC       images/mm.o
+  CC       images/sk-opts.o
+  CC       images/sk-unix.o
+  CC       images/sk-inet.o
+  CC       images/tun.o
+  CC       images/sk-netlink.o
+  CC       images/packet-sock.o
+  CC       images/ipc-var.o
+  CC       images/ipc-desc.o
+  CC       images/ipc-shm.o
+  CC       images/ipc-msg.o
+  CC       images/ipc-sem.o
+  CC       images/utsns.o
+  CC       images/creds.o
+  CC       images/vma.o
+  CC       images/netdev.o
+  CC       images/tty.o
+  CC       images/file-lock.o
+  CC       images/rlimit.o
+  CC       images/pagemap.o
+  CC       images/siginfo.o
+  CC       images/rpc.o
+  CC       images/ext-file.o
+  CC       images/cgroup.o
+  CC       images/userns.o
+  CC       images/google/protobuf/descriptor.o
+  CC       images/opts.o
+  CC       images/seccomp.o
+  CC       images/binfmt-misc.o
+  CC       images/time.o
+  CC       images/sysctl.o
+  CC       images/autofs.o
+  CC       images/macvlan.o
+  CC       images/sit.o
+  LINK     images/built-in.o
+  GEN      compel/include/asm
+  GEN      compel/include/version.h
+touch .config
+  GEN      criu/include/config.h
+  DEP      compel/arch/s390/plugins/std/syscalls/syscalls-s390.d
+  GEN      compel/plugins/include/uapi/std/syscall-codes.h
+  GEN      compel/plugins/include/uapi/std/syscall.h
+  GEN      compel/arch/s390/plugins/std/syscalls/syscalls.S
+  DEP      compel/arch/s390/plugins/std/syscalls/syscalls.d
+  DEP      compel/arch/s390/plugins/std/parasite-head.d
+  GEN      compel/plugins/include/uapi/std/asm/syscall-types.h
+  DEP      compel/plugins/std/infect.d
+  DEP      compel/plugins/std/string.d
+  DEP      compel/plugins/std/log.d
+  DEP      compel/plugins/std/fds.d
+  DEP      compel/plugins/std/std.d
+  DEP      compel/plugins/shmem/shmem.d
+  DEP      compel/plugins/fds/fds.d
+  CC       compel/plugins/std/std.o
+  CC       compel/plugins/std/fds.o
+  CC       compel/plugins/std/log.o
+  CC       compel/plugins/std/string.o
+  CC       compel/plugins/std/infect.o
+  CC       compel/arch/s390/plugins/std/parasite-head.o
+  CC       compel/arch/s390/plugins/std/syscalls/syscalls.o
+  CC       compel/arch/s390/plugins/std/syscalls/syscalls-s390.o
+  AR       compel/plugins/std.lib.a
+  CC       compel/plugins/fds/fds.o
+  AR       compel/plugins/fds.lib.a
+  HOSTDEP  compel/src/lib/log-host.d
+  HOSTDEP  compel/src/lib/handle-elf-host.d
+  HOSTDEP  compel/arch/s390/src/lib/handle-elf-host.d
+  HOSTDEP  compel/src/main-host.d
+  DEP      compel/src/main.d
+  DEP      compel/src/lib/handle-elf.d
+  DEP      compel/arch/s390/src/lib/handle-elf.d
+  DEP      compel/src/lib/ptrace.d
+  DEP      compel/src/lib/infect.d
+  DEP      compel/src/lib/infect-util.d
+  DEP      compel/src/lib/infect-rpc.d
+  DEP      compel/arch/s390/src/lib/infect.d
+  DEP      compel/arch/s390/src/lib/cpu.d
+  DEP      compel/src/lib/log.d
+  CC       compel/src/lib/log.o
+  CC       compel/arch/s390/src/lib/cpu.o
+  CC       compel/arch/s390/src/lib/infect.o
+  CC       compel/src/lib/infect-rpc.o
+  CC       compel/src/lib/infect-util.o
+  CC       compel/src/lib/infect.o
+  CC       compel/src/lib/ptrace.o
+  AR       compel/libcompel.a
+  HOSTCC   compel/src/main-host.o
+  HOSTCC   compel/arch/s390/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/log-host.o
+  HOSTLINK compel/compel-host-bin
+  DEP      soccr/soccr.d
+  CC       soccr/soccr.o
+  AR       soccr/libsoccr.a
+make[1]: 'soccr/libsoccr.a' is up to date.
+  DEP      criu/arch/s390/sigframe.d
+  DEP      criu/arch/s390/crtools.d
+  DEP      criu/arch/s390/cpu.d
+  CC       criu/arch/s390/cpu.o
+  CC       criu/arch/s390/crtools.o
+  CC       criu/arch/s390/sigframe.o
+  LINK     criu/arch/s390/crtools.built-in.o
+  DEP      criu/arch/s390/vdso-pie.d
+  DEP      criu/pie/parasite-vdso.d
+  DEP      criu/pie/util-vdso.d
+  DEP      criu/pie/util.d
+  CC       criu/pie/util.o
+  CC       criu/pie/util-vdso.o
+  CC       criu/pie/parasite-vdso.o
+  CC       criu/arch/s390/vdso-pie.o
+  AR       criu/pie/pie.lib.a
+  DEP      criu/pie/restorer.d
+  DEP      criu/arch/s390/restorer.d
+  DEP      criu/pie/parasite.d
+  CC       criu/pie/parasite.o
+  LINK     criu/pie/parasite.built-in.o
+  GEN      criu/pie/parasite-blob.h
+  CC       criu/arch/s390/restorer.o
+  CC       criu/pie/restorer.o
+  LINK     criu/pie/restorer.built-in.o
+  GEN      criu/pie/restorer-blob.h
+  DEP      criu/vdso.d
+  DEP      criu/uts_ns.d
+  DEP      criu/util.d
+  DEP      criu/uffd.d
+  DEP      criu/tun.d
+  DEP      criu/tty.d
+  DEP      criu/timerfd.d
+  DEP      criu/sysfs_parse.d
+  DEP      criu/sysctl.d
+  DEP      criu/string.d
+  DEP      criu/stats.d
+  DEP      criu/sockets.d
+  DEP      criu/sk-unix.d
+  DEP      criu/sk-tcp.d
+  DEP      criu/sk-queue.d
+  DEP      criu/sk-packet.d
+  DEP      criu/sk-netlink.d
+  DEP      criu/sk-inet.d
+  DEP      criu/signalfd.d
+  DEP      criu/sigframe.d
+  DEP      criu/shmem.d
+  DEP      criu/seize.d
+  DEP      criu/seccomp.d
+  DEP      criu/rst-malloc.d
+  DEP      criu/rbtree.d
+  DEP      criu/pstree.d
+  DEP      criu/protobuf.d
+  GEN      criu/protobuf-desc-gen.h
+  DEP      criu/protobuf-desc.d
+  DEP      criu/proc_parse.d
+  DEP      criu/plugin.d
+  DEP      criu/pipes.d
+  DEP      criu/pie-util.d
+  DEP      criu/pie-util-vdso.d
+  DEP      criu/pie-util-vdso-elf32.d
+  DEP      criu/path.d
+  DEP      criu/parasite-syscall.d
+  DEP      criu/pagemap.d
+  DEP      criu/pagemap-cache.d
+  DEP      criu/page-xfer.d
+  DEP      criu/page-pipe.d
+  DEP      criu/netfilter.d
+  DEP      criu/net.d
+  DEP      criu/namespaces.d
+  DEP      criu/mount.d
+  DEP      criu/mem.d
+  DEP      criu/lsm.d
+  DEP      criu/log.d
+  DEP      criu/libnetlink.d
+  DEP      criu/kerndat.d
+  DEP      criu/kcmp-ids.d
+  DEP      criu/irmap.d
+  DEP      criu/ipc_ns.d
+  DEP      criu/image.d
+  DEP      criu/image-desc.d
+  DEP      criu/fsnotify.d
+  DEP      criu/filesystems.d
+  DEP      criu/files.d
+  DEP      criu/files-reg.d
+  DEP      criu/files-ext.d
+  DEP      criu/file-lock.d
+  DEP      criu/file-ids.d
+  DEP      criu/fifo.d
+  DEP      criu/fdstore.d
+  DEP      criu/fault-injection.d
+  DEP      criu/external.d
+  DEP      criu/eventpoll.d
+  DEP      criu/eventfd.d
+  DEP      criu/crtools.d
+  DEP      criu/cr-service.d
+  DEP      criu/cr-restore.d
+  DEP      criu/cr-errno.d
+  DEP      criu/cr-dump.d
+  DEP      criu/cr-dedup.d
+  DEP      criu/cr-check.d
+  DEP      criu/clone-noasan.d
+  DEP      criu/cgroup.d
+  DEP      criu/cgroup-props.d
+  DEP      criu/bitmap.d
+  DEP      criu/bfd.d
+  DEP      criu/autofs.d
+  DEP      criu/aio.d
+  DEP      criu/action-scripts.d
+  CC       criu/action-scripts.o
+  CC       criu/aio.o
+  CC       criu/autofs.o
+  CC       criu/bfd.o
+  CC       criu/bitmap.o
+  CC       criu/cgroup-props.o
+  CC       criu/cgroup.o
+  CC       criu/clone-noasan.o
+  CC       criu/cr-check.o
+  CC       criu/cr-dedup.o
+  CC       criu/cr-dump.o
+  CC       criu/cr-errno.o
+  CC       criu/cr-restore.o
+  CC       criu/cr-service.o
+  CC       criu/crtools.o
+  CC       criu/eventfd.o
+  CC       criu/eventpoll.o
+  CC       criu/external.o
+  CC       criu/fault-injection.o
+  CC       criu/fdstore.o
+  CC       criu/fifo.o
+  CC       criu/file-ids.o
+  CC       criu/file-lock.o
+  CC       criu/files-ext.o
+  CC       criu/files-reg.o
+  CC       criu/files.o
+  CC       criu/filesystems.o
+  CC       criu/fsnotify.o
+  CC       criu/image-desc.o
+  CC       criu/image.o
+  CC       criu/ipc_ns.o
+  CC       criu/irmap.o
+  CC       criu/kcmp-ids.o
+  CC       criu/kerndat.o
+  CC       criu/libnetlink.o
+  CC       criu/log.o
+  CC       criu/lsm.o
+  CC       criu/mem.o
+  CC       criu/mount.o
+  CC       criu/namespaces.o
+  CC       criu/net.o
+  CC       criu/netfilter.o
+  CC       criu/page-pipe.o
+  CC       criu/page-xfer.o
+  CC       criu/pagemap-cache.o
+  CC       criu/pagemap.o
+  CC       criu/parasite-syscall.o
+  CC       criu/path.o
+  CC       criu/pie-util-vdso-elf32.o
+  CC       criu/pie-util-vdso.o
+  CC       criu/pie-util.o
+  CC       criu/pipes.o
+  CC       criu/plugin.o
+  CC       criu/proc_parse.o
+  CC       criu/protobuf-desc.o
+  CC       criu/protobuf.o
+  CC       criu/pstree.o
+  CC       criu/rbtree.o
+  CC       criu/rst-malloc.o
+  CC       criu/seccomp.o
+  CC       criu/seize.o
+  CC       criu/shmem.o
+  CC       criu/sigframe.o
+  CC       criu/signalfd.o
+  CC       criu/sk-inet.o
+  CC       criu/sk-netlink.o
+  CC       criu/sk-packet.o
+  CC       criu/sk-queue.o
+  CC       criu/sk-tcp.o
+  CC       criu/sk-unix.o
+  CC       criu/sockets.o
+  CC       criu/stats.o
+  CC       criu/string.o
+  CC       criu/sysctl.o
+  CC       criu/sysfs_parse.o
+  CC       criu/timerfd.o
+  CC       criu/tty.o
+  CC       criu/tun.o
+  CC       criu/uffd.o
+  CC       criu/util.o
+  CC       criu/uts_ns.o
+  CC       criu/vdso.o
+  LINK     criu/built-in.o
+  LINK     criu/criu
+  DEP      lib/c/criu.d
+  CC       images/rpc.pb-c.o
+  CC       lib/c/criu.o
+  LINK     lib/c/built-in.o
+  LINK     lib/c/libcriu.so
+  GEN      magic.py
+fatal: Not a git repository (or any of the parent directories): .git
+make[1]: Nothing to be done for 'all'.
+make[1]: 'images/built-in.o' is up to date.
+make[1]: 'compel/plugins/std.lib.a' is up to date.
+make[1]: 'compel/plugins/fds.lib.a' is up to date.
+make[1]: 'compel/libcompel.a' is up to date.
+make[1]: 'compel/compel-host-bin' is up to date.
+make[1]: Nothing to be done for 'all'.
+make[1]: 'soccr/libsoccr.a' is up to date.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+  INSTALL  criu/criu
+Removing intermediate container c856aa13248e
+ ---> fb602e82e8de
+Step 7/94 : FROM base AS registry
+ ---> c3a767e143e5
+Step 8/94 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Running in 99c3bbe10bec
+Removing intermediate container 99c3bbe10bec
+ ---> 8ef515322c4d
+Step 9/94 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Running in 434c356099a0
+Removing intermediate container 434c356099a0
+ ---> 30f86c071ca6
+Step 10/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Running in 00efc6cd7b9e
++ mktemp -d
++ export GOPATH=/tmp/tmp.JK2gdNcKu3
++ git clone https://github.com/docker/distribution.git /tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution
+Cloning into '/tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution'...
++ cd /tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution
++ git checkout -q 47a064d4195a9b56133891bbb13620c3ac83a827
++ GOPATH=/tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.JK2gdNcKu3 go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry
++ dpkg --print-architecture
++ cd /tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution
++ git checkout -q ec87e9b6971d831f0eff752ddb54fb64693e51cd
++ GOPATH=/tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.JK2gdNcKu3
++ go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry
++ rm -rf /tmp/tmp.JK2gdNcKu3/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.JK2gdNcKu3
+Removing intermediate container 00efc6cd7b9e
+ ---> c710104b71a5
+Step 11/94 : FROM base AS docker-py
+ ---> c3a767e143e5
+Step 12/94 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Running in 2a7c1b483e1b
+Removing intermediate container 2a7c1b483e1b
+ ---> fb2b7b9ac79a
+Step 13/94 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Running in 603660d4b38d
+Cloning into '/build'...
+Removing intermediate container 603660d4b38d
+ ---> c5a7e760a565
+Step 14/94 : FROM base AS swagger
+ ---> c3a767e143e5
+Step 15/94 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Running in 7da076b938f6
+Removing intermediate container 7da076b938f6
+ ---> b0a00c99aad3
+Step 16/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Running in 8be060272587
++ mktemp -d
++ export GOPATH=/tmp/tmp.kRgd3ztdum
++ git clone https://github.com/go-swagger/go-swagger.git /tmp/tmp.kRgd3ztdum/src/github.com/go-swagger/go-swagger
+Cloning into '/tmp/tmp.kRgd3ztdum/src/github.com/go-swagger/go-swagger'...
++ cd /tmp/tmp.kRgd3ztdum/src/github.com/go-swagger/go-swagger
++ git checkout -q c28258affb0b6251755d92489ef685af8d4ff3eb
++ go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger
++ rm -rf /tmp/tmp.kRgd3ztdum
+Removing intermediate container 8be060272587
+ ---> 01d7c76dd690
+Step 17/94 : FROM base AS frozen-images
+ ---> c3a767e143e5
+Step 18/94 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Running in 7722d37a4528
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [5100 B]
+Get:7 http://security.debian.org/debian-security stretch/updates/main s390x Packages [447 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6859 kB]
+Fetched 7616 kB in 1s (5099 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20161130+nmu1+deb9u1).
+The following additional packages will be installed:
+  libjq1 libonig4
+The following NEW packages will be installed:
+  jq libjq1 libonig4
+0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+Need to get 328 kB of archives.
+After this operation, 1263 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libonig4 s390x 6.1.3-2 [142 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libjq1 s390x 1.5+dfsg-1.3 [126 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main s390x jq s390x 1.5+dfsg-1.3 [59.2 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 328 kB in 0s (2191 kB/s)
+Selecting previously unselected package libonig4:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14826 files and directories currently installed.)
+Preparing to unpack .../libonig4_6.1.3-2_s390x.deb ...
+Unpacking libonig4:s390x (6.1.3-2) ...
+Selecting previously unselected package libjq1:s390x.
+Preparing to unpack .../libjq1_1.5+dfsg-1.3_s390x.deb ...
+Unpacking libjq1:s390x (1.5+dfsg-1.3) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../jq_1.5+dfsg-1.3_s390x.deb ...
+Unpacking jq (1.5+dfsg-1.3) ...
+Setting up libonig4:s390x (6.1.3-2) ...
+Setting up libjq1:s390x (1.5+dfsg-1.3) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up jq (1.5+dfsg-1.3) ...
+Removing intermediate container 7722d37a4528
+ ---> 682af59e54e5
+Step 19/94 : COPY contrib/download-frozen-image-v2.sh /
+ ---> 760f01fb83ae
+Step 20/94 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Running in 13f6f238ca00
+Downloading 'library/buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251' (4 layers)...
+######################################################################## 100.0%
+#######                                                                   11.1%##################                                                        25.7%#############################                                             40.3%#######################################                                   55.0%##################################################                        69.6%############################################################              84.2%#######################################################################   98.8%######################################################################## 100.0%
+######################################################################## 100.0%
+###                                                                        5.4%#############################                                             41.5%##########################################################                81.2%######################################################################## 100.0%
+######################################################################## 100.0%
+##########                                                                14.0%######################                                                    31.9%###################################                                       49.7%##########################################                                58.9%#####################################################                     73.8%#################################################################         91.6%######################################################################## 100.0%
+######################################################################## 100.0%
+###                                                                        4.7%########                                                                  11.3%############                                                              17.9%#################                                                         24.5%######################                                                    31.1%###########################                                               37.8%###############################                                           44.4%####################################                                      51.0%#########################################                                 57.6%##############################################                            64.2%###################################################                       70.8%#######################################################                   77.4%############################################################              84.1%#################################################################         90.7%######################################################################    97.3%######################################################################## 100.0%
+
+Downloading 'library/busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0' (1 layers)...
+######################################################################## 100.0%
+######################################################################## 100.0%
+
+Downloading 'library/busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6' (1 layers)...
+######################################################################## 100.0%
+######################################################################## 100.0%
+
+Downloading 'library/debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60' (1 layers)...
+skipping existing b63cc5f62c21
+
+Downloading 'library/hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c' (1 layers)...
+######################################################################## 100.0%
+######################################################################## 100.0%
+
+Download of images into '/build' complete.
+Use something like the following to load the result into a Docker daemon:
+  tar -cC '/build' . | docker load
+Removing intermediate container 13f6f238ca00
+ ---> c8dd83e93d25
+Step 21/94 : FROM base AS runtime-dev
+ ---> c3a767e143e5
+Step 22/94 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Running in 2b2092b86f21
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main s390x Packages [447 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [5100 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6859 kB]
+Fetched 7616 kB in 1s (4921 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libapparmor1 libseccomp2
+Suggested packages:
+  seccomp
+The following NEW packages will be installed:
+  libapparmor-dev libapparmor1 libseccomp-dev libseccomp2
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 301 kB of archives.
+After this operation, 1402 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libseccomp2 s390x 2.3.1-2.1+deb9u1 [41.3 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libseccomp-dev s390x 2.3.1-2.1+deb9u1 [61.6 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libapparmor1 s390x 2.11.0-3+deb9u2 [78.6 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libapparmor-dev s390x 2.11.0-3+deb9u2 [119 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 301 kB in 0s (4593 kB/s)
+Selecting previously unselected package libseccomp2:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14826 files and directories currently installed.)
+Preparing to unpack .../libseccomp2_2.3.1-2.1+deb9u1_s390x.deb ...
+Unpacking libseccomp2:s390x (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:s390x.
+Preparing to unpack .../libseccomp-dev_2.3.1-2.1+deb9u1_s390x.deb ...
+Unpacking libseccomp-dev:s390x (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libapparmor1:s390x.
+Preparing to unpack .../libapparmor1_2.11.0-3+deb9u2_s390x.deb ...
+Unpacking libapparmor1:s390x (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:s390x.
+Preparing to unpack .../libapparmor-dev_2.11.0-3+deb9u2_s390x.deb ...
+Unpacking libapparmor-dev:s390x (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up libseccomp2:s390x (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor1:s390x (2.11.0-3+deb9u2) ...
+Setting up libseccomp-dev:s390x (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor-dev:s390x (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 2b2092b86f21
+ ---> 23a44e9d3e2a
+Step 23/94 : FROM base AS tomlv
+ ---> c3a767e143e5
+Step 24/94 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Running in 548b49c82896
+Removing intermediate container 548b49c82896
+ ---> 5b771e04c2ce
+Step 25/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 66b7c8a98e57
+Step 26/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 02d7bdb32177
+Step 27/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 72f55d910cb7
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.hxAB0iD6FP
++ GOPATH=/tmp/tmp.hxAB0iD6FP
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=tomlv
++ shift
++ [[ ! -f ./tomlv.installer ]]
++ . ./tomlv.installer
+++ TOMLV_COMMIT=3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ install_tomlv
++ echo 'Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005'
+Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ git clone https://github.com/BurntSushi/toml.git /tmp/tmp.hxAB0iD6FP/src/github.com/BurntSushi/toml
+Cloning into '/tmp/tmp.hxAB0iD6FP/src/github.com/BurntSushi/toml'...
++ cd /tmp/tmp.hxAB0iD6FP/src/github.com/BurntSushi/toml
++ git checkout -q 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ go build -v -buildmode=pie -o /build/tomlv github.com/BurntSushi/toml/cmd/tomlv
+internal/race
+errors
+internal/cpu
+runtime/internal/atomic
+runtime/internal/sys
+internal/bytealg
+sync/atomic
+runtime
+math
+internal/testlog
+math/bits
+unicode/utf8
+strconv
+unicode
+encoding
+runtime/cgo
+sync
+io
+syscall
+reflect
+time
+internal/poll
+internal/syscall/unix
+os
+sort
+strings
+fmt
+bytes
+bufio
+flag
+path/filepath
+log
+io/ioutil
+path
+github.com/BurntSushi/toml
+text/tabwriter
+github.com/BurntSushi/toml/cmd/tomlv
+Removing intermediate container 72f55d910cb7
+ ---> fc305059c5bc
+Step 28/94 : FROM base AS vndr
+ ---> c3a767e143e5
+Step 29/94 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Running in 1a32a5b1bec9
+Removing intermediate container 1a32a5b1bec9
+ ---> 41a175c778ba
+Step 30/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> f7e1c313b0b4
+Step 31/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 3e4af51f02da
+Step 32/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in c935d0b22693
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.TI0aToKPUE
++ GOPATH=/tmp/tmp.TI0aToKPUE
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=vndr
++ shift
++ [[ ! -f ./vndr.installer ]]
++ . ./vndr.installer
+++ VNDR_COMMIT=81cb8916aad3c8d06193f008dba3e16f82851f52
++ install_vndr
++ echo 'Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52'
++ git clone https://github.com/LK4D4/vndr.git /tmp/tmp.TI0aToKPUE/src/github.com/LK4D4/vndr
+Cloning into '/tmp/tmp.TI0aToKPUE/src/github.com/LK4D4/vndr'...
+Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52
++ cd /tmp/tmp.TI0aToKPUE/src/github.com/LK4D4/vndr
++ git checkout -q 81cb8916aad3c8d06193f008dba3e16f82851f52
++ go build -buildmode=pie -v -o /build/vndr .
+errors
+internal/cpu
+internal/race
+runtime/internal/atomic
+internal/bytealg
+runtime/internal/sys
+sync/atomic
+unicode
+runtime
+unicode/utf8
+math
+internal/testlog
+math/bits
+strconv
+encoding
+unicode/utf16
+container/list
+crypto/internal/subtle
+crypto/subtle
+crypto/rc4
+vendor/golang_org/x/crypto/cryptobyte/asn1
+vendor/golang_org/x/net/dns/dnsmessage
+internal/nettrace
+runtime/cgo
+sync
+io
+syscall
+bytes
+bufio
+reflect
+time
+internal/poll
+internal/syscall/unix
+os
+strings
+fmt
+sort
+path/filepath
+path
+flag
+go/token
+go/scanner
+regexp/syntax
+go/ast
+regexp
+io/ioutil
+net/url
+text/template/parse
+go/parser
+log
+text/template
+encoding/binary
+encoding/base64
+encoding/json
+go/doc
+encoding/xml
+github.com/LK4D4/vndr/build
+github.com/LK4D4/vndr/godl/singleflight
+compress/flate
+hash
+hash/crc32
+context
+compress/gzip
+crypto/cipher
+math/rand
+math/big
+crypto/aes
+crypto
+crypto/des
+crypto/internal/randutil
+crypto/sha512
+crypto/hmac
+crypto/md5
+crypto/sha1
+crypto/sha256
+encoding/hex
+encoding/pem
+internal/singleflight
+net
+crypto/rand
+crypto/elliptic
+encoding/asn1
+crypto/ecdsa
+crypto/rsa
+crypto/dsa
+crypto/x509/pkix
+vendor/golang_org/x/crypto/cryptobyte
+vendor/golang_org/x/crypto/internal/chacha20
+vendor/golang_org/x/crypto/poly1305
+vendor/golang_org/x/crypto/chacha20poly1305
+vendor/golang_org/x/crypto/curve25519
+vendor/golang_org/x/text/transform
+vendor/golang_org/x/text/unicode/bidi
+vendor/golang_org/x/text/secure/bidirule
+vendor/golang_org/x/text/unicode/norm
+crypto/x509
+vendor/golang_org/x/net/idna
+net/textproto
+crypto/tls
+vendor/golang_org/x/net/http/httpguts
+vendor/golang_org/x/net/http/httpproxy
+vendor/golang_org/x/net/http2/hpack
+mime
+mime/quotedprintable
+mime/multipart
+net/http/internal
+os/exec
+net/http/httptrace
+net/http
+github.com/LK4D4/vndr/godl
+github.com/LK4D4/vndr
+Removing intermediate container c935d0b22693
+ ---> 0c31abf9b24c
+Step 33/94 : FROM base AS containerd
+ ---> c3a767e143e5
+Step 34/94 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Running in 8e398cce2e19
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main s390x Packages [447 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [5100 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6859 kB]
+Fetched 7616 kB in 1s (4539 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  btrfs-progs liblzo2-2
+The following NEW packages will be installed:
+  btrfs-progs btrfs-tools liblzo2-2
+0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+Need to get 668 kB of archives.
+After this operation, 5446 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main s390x liblzo2-2 s390x 2.08-1.2+b2 [55.8 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main s390x btrfs-progs s390x 4.7.3-1 [595 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main s390x btrfs-tools s390x 4.7.3-1 [16.9 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 668 kB in 0s (6982 kB/s)
+Selecting previously unselected package liblzo2-2:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14826 files and directories currently installed.)
+Preparing to unpack .../liblzo2-2_2.08-1.2+b2_s390x.deb ...
+Unpacking liblzo2-2:s390x (2.08-1.2+b2) ...
+Selecting previously unselected package btrfs-progs.
+Preparing to unpack .../btrfs-progs_4.7.3-1_s390x.deb ...
+Unpacking btrfs-progs (4.7.3-1) ...
+Selecting previously unselected package btrfs-tools.
+Preparing to unpack .../btrfs-tools_4.7.3-1_s390x.deb ...
+Unpacking btrfs-tools (4.7.3-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up liblzo2-2:s390x (2.08-1.2+b2) ...
+Setting up btrfs-progs (4.7.3-1) ...
+Setting up btrfs-tools (4.7.3-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 8e398cce2e19
+ ---> 57645d77627d
+Step 35/94 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Running in 6b4404a6392d
+Removing intermediate container 6b4404a6392d
+ ---> 5302db6004d5
+Step 36/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> b05d451248ea
+Step 37/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 0a16b22fafd0
+Step 38/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 3f2346f0d100
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.ywI11yysuu
++ GOPATH=/tmp/tmp.ywI11yysuu
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=containerd
++ shift
++ [[ ! -f ./containerd.installer ]]
++ . ./containerd.installer
+++ CONTAINERD_COMMIT=aa5e000c963756778ab3ebd1a12c67449c503a34
++ install_containerd
++ echo 'Install containerd version aa5e000c963756778ab3ebd1a12c67449c503a34'
++ git clone https://github.com/containerd/containerd.git /tmp/tmp.ywI11yysuu/src/github.com/containerd/containerd
+Cloning into '/tmp/tmp.ywI11yysuu/src/github.com/containerd/containerd'...
+Install containerd version aa5e000c963756778ab3ebd1a12c67449c503a34
++ cd /tmp/tmp.ywI11yysuu/src/github.com/containerd/containerd
++ git checkout -q aa5e000c963756778ab3ebd1a12c67449c503a34
++ export 'BUILDTAGS=netgo osusergo static_build'
++ BUILDTAGS='netgo osusergo static_build'
++ export EXTRA_FLAGS=-buildmode=pie
++ EXTRA_FLAGS=-buildmode=pie
++ export 'EXTRA_LDFLAGS=-extldflags "-fno-PIC -static"'
++ EXTRA_LDFLAGS='-extldflags "-fno-PIC -static"'
++ '[' '' == dynamic ']'
++ make
+🇩 bin/ctr
+🇩 bin/containerd
+🇩 bin/containerd-stress
+/tmp/jenkins4339825769500007087.sh: line 12:  2398 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-s390x:$GITCOMMIT -f Dockerfile .
+Unable to find image 'docker-s390x:b651e32' locally
+Set build name.
+New build name is '#38463'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+docker: Error response from daemon: pull access denied for docker-s390x, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins2716079235474905584.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins9118292726744929983.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

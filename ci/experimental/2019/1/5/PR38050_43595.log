@@ -1,0 +1,1163 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs-stable (i-03e24c4870650bfcb) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 2ee53a42db814c513770421f1b0d48f27faeadea (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 2ee53a42db814c513770421f1b0d48f27faeadea
+Commit message: "Merge pull request #38490 from kolyshkin/test-rename-anon-ct"
+ > git rev-list --no-walk 2ee53a42db814c513770421f1b0d48f27faeadea # timeout=10
+Set build name.
+New build name is '#38050'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins8561090803640365304.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38050/head -> origin/pr/38050
+Merge made by the 'recursive' strategy.
+ Dockerfile                                    | 14 +++++
+ cli/config/configdir.go                       |  2 +
+ cmd/dockerd/config_common_unix.go             | 21 +++++++
+ cmd/dockerd/config_unix.go                    |  4 +-
+ cmd/dockerd/daemon.go                         | 43 +++++++++++--
+ cmd/dockerd/daemon_unix.go                    | 24 +++++++-
+ cmd/dockerd/options.go                        |  2 +
+ contrib/dockerd-rootless.sh                   | 69 +++++++++++++++++++++
+ daemon/config/config_unix.go                  |  6 ++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/daemon_unix.go                         |  3 -
+ daemon/info.go                                |  3 +
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/oci_linux.go                           |  9 ++-
+ docs/rootless.md                              | 88 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 34 +++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 28 +++++++++
+ hack/make/.binary-setup                       |  3 +
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 +
+ opts/hosts.go                                 | 22 ++++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/homedir/homedir_linux.go                  | 88 +++++++++++++++++++++++++++
+ pkg/homedir/homedir_others.go                 | 20 ++++++
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/doc.go                               |  2 +
+ rootless/rootless.go                          | 22 +++++++
+ rootless/specconv/specconv_linux.go           | 38 ++++++++++++
+ 30 files changed, 554 insertions(+), 19 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/doc.go
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+Sending build context to Docker daemon  45.14MB
+Step 1/108 : FROM golang:1.11.4 AS base
+ ---> 343df9d12b7b
+Step 2/108 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> d709d9ad1293
+Step 3/108 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 92464c537755
+Step 4/108 : FROM base AS criu
+ ---> 92464c537755
+Step 5/108 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> 73608f4f6e7e
+Step 6/108 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> 8e41c14a8e1d
+Step 7/108 : FROM base AS registry
+ ---> 92464c537755
+Step 8/108 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Using cache
+ ---> 91253db2d506
+Step 9/108 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 9906b8c508a9
+Step 10/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 17b242c80042
+Step 11/108 : FROM base AS docker-py
+ ---> 92464c537755
+Step 12/108 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Using cache
+ ---> 87d5b9a9d1a8
+Step 13/108 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> c4fba7647426
+Step 14/108 : FROM base AS swagger
+ ---> 92464c537755
+Step 15/108 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> c94f95fa54ef
+Step 16/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 1660a8d906c4
+Step 17/108 : FROM base AS frozen-images
+ ---> 92464c537755
+Step 18/108 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> c59d114aba4f
+Step 19/108 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> b25a775e733b
+Step 20/108 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> cc8ebbae1f62
+Step 21/108 : FROM base AS runtime-dev
+ ---> 92464c537755
+Step 22/108 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> 4d1ce9c683c6
+Step 23/108 : FROM base AS tomlv
+ ---> 92464c537755
+Step 24/108 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> fbb28b69f241
+Step 25/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 30e278ee4e76
+Step 26/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> ecebfb6eaba8
+Step 27/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 116ab03abfdc
+Step 28/108 : FROM base AS vndr
+ ---> 92464c537755
+Step 29/108 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> d05994c491a0
+Step 30/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 233a3ff2b091
+Step 31/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 119551339203
+Step 32/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> e31933c3cb9f
+Step 33/108 : FROM base AS containerd
+ ---> 92464c537755
+Step 34/108 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> e17ad8a3a28b
+Step 35/108 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> 3a7389f36434
+Step 36/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> dba8b7264f59
+Step 37/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 11d700d6d642
+Step 38/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 0e81c6dd64b3
+Step 39/108 : FROM base AS proxy
+ ---> 92464c537755
+Step 40/108 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> 8922b3c64544
+Step 41/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> adfcb04573a6
+Step 42/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 6ccee622dabb
+Step 43/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 5548e6814e9f
+Step 44/108 : FROM base AS gometalinter
+ ---> 92464c537755
+Step 45/108 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> 72839ebd161b
+Step 46/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 56d2e9d67676
+Step 47/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 135ec3c3a851
+Step 48/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 401a8568e70b
+Step 49/108 : FROM base AS dockercli
+ ---> 92464c537755
+Step 50/108 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> 1e0e9122194f
+Step 51/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 80043ac38202
+Step 52/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> ce5557efc06d
+Step 53/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 23db7017449c
+Step 54/108 : FROM runtime-dev AS runc
+ ---> 4d1ce9c683c6
+Step 55/108 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> 37e37ba6bf68
+Step 56/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 3b020f0a9936
+Step 57/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> f8cbb504b9d8
+Step 58/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 0f78da514e9f
+Step 59/108 : FROM base AS tini
+ ---> 92464c537755
+Step 60/108 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> f65104ff44c4
+Step 61/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> a44af8f0e520
+Step 62/108 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> e7b35d75381f
+Step 63/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 57ada5f1e0d6
+Step 64/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 52296406e48d
+Step 65/108 : FROM base AS rootlesskit
+ ---> 92464c537755
+Step 66/108 : ENV INSTALL_BINARY_NAME=rootlesskit
+ ---> Running in 8aee02b0e29b
+Removing intermediate container 8aee02b0e29b
+ ---> cf84a35127da
+Step 67/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 1a7b4f99bdac
+Step 68/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> d7584b6ebef2
+Step 69/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 471e234bd21d
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.9Mlt4CItqO
++ GOPATH=/tmp/tmp.9Mlt4CItqO
++ RM_GOPATH=1
+++ dirname ./install.sh
+Install rootlesskit version 77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ dir=.
++ bin=rootlesskit
++ shift
++ [[ ! -f ./rootlesskit.installer ]]
++ . ./rootlesskit.installer
+++ ROOTLESSKIT_COMMIT=77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ install_rootlesskit
++ case "$1" in
++ export CGO_ENABLED=0
++ CGO_ENABLED=0
++ _install_rootlesskit
++ echo 'Install rootlesskit version 77cdbed39ff42bc96fb23830065ec2e28b7767e6'
++ git clone https://github.com/rootless-containers/rootlesskit.git /tmp/tmp.9Mlt4CItqO/src/github.com/rootless-containers/rootlesskit
+Cloning into '/tmp/tmp.9Mlt4CItqO/src/github.com/rootless-containers/rootlesskit'...
++ cd /tmp/tmp.9Mlt4CItqO/src/github.com/rootless-containers/rootlesskit
++ git checkout -q 77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ go build -ldflags= -o /build//rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit
+Removing intermediate container 471e234bd21d
+ ---> 74d986c2b353
+Step 70/108 : COPY ./contrib/dockerd-rootless.sh /build
+ ---> db7c9035b4a1
+Step 71/108 : FROM base AS slirp4netns
+ ---> 92464c537755
+Step 72/108 : RUN apt-get update && apt-get install -y automake autotools-dev libtool
+ ---> Running in 813f9df05e7b
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:2 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [464 kB]
+Ign:3 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [5152 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7089 kB]
+Fetched 7864 kB in 2s (2903 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  autoconf file libltdl-dev libltdl7 libmagic-mgc libmagic1 libsigsegv2 m4
+Suggested packages:
+  autoconf-archive gnu-standards autoconf-doc gettext libtool-doc gfortran
+  | fortran95-compiler gcj-jdk m4-doc
+The following NEW packages will be installed:
+  autoconf automake autotools-dev file libltdl-dev libltdl7 libmagic-mgc
+  libmagic1 libsigsegv2 libtool m4
+0 upgraded, 11 newly installed, 0 to remove and 1 not upgraded.
+Need to get 2868 kB of archives.
+After this operation, 12.1 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic-mgc amd64 1:5.30-1+deb9u2 [222 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic1 amd64 1:5.30-1+deb9u2 [111 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 file amd64 1:5.30-1+deb9u2 [64.1 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsigsegv2 amd64 2.10-5 [28.9 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 m4 amd64 1.4.18-1 [202 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 autoconf all 2.69-10 [338 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 autotools-dev all 20161112.1 [73.4 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 automake all 1:1.15-6 [733 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libltdl7 amd64 2.4.6-2 [389 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libltdl-dev amd64 2.4.6-2 [161 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libtool all 2.4.6-2 [545 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 2868 kB in 1s (2620 kB/s)
+Selecting previously unselected package libmagic-mgc.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15089 files and directories currently installed.)
+Preparing to unpack .../00-libmagic-mgc_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic-mgc (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libmagic1:amd64.
+Preparing to unpack .../01-libmagic1_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../02-file_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking file (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libsigsegv2:amd64.
+Preparing to unpack .../03-libsigsegv2_2.10-5_amd64.deb ...
+Unpacking libsigsegv2:amd64 (2.10-5) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../04-m4_1.4.18-1_amd64.deb ...
+Unpacking m4 (1.4.18-1) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../05-autoconf_2.69-10_all.deb ...
+Unpacking autoconf (2.69-10) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../06-autotools-dev_20161112.1_all.deb ...
+Unpacking autotools-dev (20161112.1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../07-automake_1%3a1.15-6_all.deb ...
+Unpacking automake (1:1.15-6) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../08-libltdl7_2.4.6-2_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-2) ...
+Selecting previously unselected package libltdl-dev:amd64.
+Preparing to unpack .../09-libltdl-dev_2.4.6-2_amd64.deb ...
+Unpacking libltdl-dev:amd64 (2.4.6-2) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../10-libtool_2.4.6-2_all.deb ...
+Unpacking libtool (2.4.6-2) ...
+Setting up libsigsegv2:amd64 (2.10-5) ...
+Setting up m4 (1.4.18-1) ...
+Setting up libmagic-mgc (1:5.30-1+deb9u2) ...
+Setting up libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up autotools-dev (20161112.1) ...
+Setting up libltdl7:amd64 (2.4.6-2) ...
+Setting up libltdl-dev:amd64 (2.4.6-2) ...
+Setting up autoconf (2.69-10) ...
+Setting up file (1:5.30-1+deb9u2) ...
+Setting up automake (1:1.15-6) ...
+update-alternatives: using /usr/bin/automake-1.15 to provide /usr/bin/automake (automake) in auto mode
+Setting up libtool (2.4.6-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 813f9df05e7b
+ ---> 8be07aa87867
+Step 73/108 : ENV INSTALL_BINARY_NAME=slirp4netns
+ ---> Running in 5e008fd0087d
+Removing intermediate container 5e008fd0087d
+ ---> 0f1f5010dcf5
+Step 74/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 7f67d456772d
+Step 75/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 6a67fe64132d
+Step 76/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 4225e4b680e5
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
+Install docker-slirp4netns version 4a59899d79285e9962550f171f73492171aae267
++ export GOPATH=/tmp/tmp.OhSauP67wP
++ GOPATH=/tmp/tmp.OhSauP67wP
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=slirp4netns
++ shift
++ [[ ! -f ./slirp4netns.installer ]]
++ . ./slirp4netns.installer
+++ SLIRP4NETNS_COMMIT=4a59899d79285e9962550f171f73492171aae267
++ install_slirp4netns
++ case "$1" in
++ CONFIGURE_FLAGS=LDFLAGS=-static
++ echo 'Install docker-slirp4netns version 4a59899d79285e9962550f171f73492171aae267'
++ git clone https://github.com/rootless-containers/slirp4netns.git /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns
+Cloning into '/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns'...
++ cd /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns
++ git checkout -q 4a59899d79285e9962550f171f73492171aae267
++ ./autogen.sh
+configure.ac:6: installing './compile'
+configure.ac:9: installing './install-sh'
+configure.ac:9: installing './missing'
+Makefile.am: installing './depcomp'
+parallel-tests: installing './test-driver'
++ ./configure LDFLAGS=-static
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking for ranlib... ranlib
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... no
+checking for mawk... mawk
+checking whether make sets $(MAKE)... yes
+checking for style of include used by make... GNU
+checking whether make supports nested variables... yes
+checking dependency style of gcc... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking arpa/inet.h usability... yes
+checking arpa/inet.h presence... yes
+checking for arpa/inet.h... yes
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking netdb.h usability... yes
+checking netdb.h presence... yes
+checking for netdb.h... yes
+checking netinet/in.h usability... yes
+checking netinet/in.h presence... yes
+checking for netinet/in.h... yes
+checking for stdint.h... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for string.h... (cached) yes
+checking sys/ioctl.h usability... yes
+checking sys/ioctl.h presence... yes
+checking for sys/ioctl.h... yes
+checking sys/socket.h usability... yes
+checking sys/socket.h presence... yes
+checking for sys/socket.h... yes
+checking sys/timeb.h usability... yes
+checking sys/timeb.h presence... yes
+checking for sys/timeb.h... yes
+checking for unistd.h... (cached) yes
+checking getopt.h usability... yes
+checking getopt.h presence... yes
+checking for getopt.h... yes
+checking for stdbool.h that conforms to C99... yes
+checking for _Bool... yes
+checking for inline... inline
+checking for int16_t... yes
+checking for int32_t... yes
+checking for int64_t... yes
+checking for int8_t... yes
+checking for pid_t... yes
+checking for size_t... yes
+checking for ssize_t... yes
+checking for uint16_t... yes
+checking for uint32_t... yes
+checking for uint64_t... yes
+checking for uint8_t... yes
+checking for working alloca.h... yes
+checking for alloca... yes
+checking vfork.h usability... no
+checking vfork.h presence... no
+checking for vfork.h... no
+checking for fork... yes
+checking for vfork... yes
+checking for working fork... yes
+checking for working vfork... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for GNU libc compatible malloc... yes
+checking for stdlib.h... (cached) yes
+checking for GNU libc compatible realloc... yes
+checking for atexit... yes
+checking for clock_gettime... yes
+checking for inet_ntoa... yes
+checking for memmove... yes
+checking for memset... yes
+checking for socket... yes
+checking for strchr... yes
+checking for strdup... yes
+checking for strerror... yes
+checking for strstr... yes
+checking for strtol... yes
+checking for getopt_long... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
++ make
+error: unknown option `exclude=*'
+usage: git describe [<options>] [<commit-ish>...]
+   or: git describe [<options>] --dirty
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref
+    --tags                use any tag, even unannotated
+    --long                always use long format
+    --first-parent        only follow first parent
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+    --exact-match         only output exact matches
+    --candidates <n>      consider <n> most recent tags (default: 10)
+    --match <pattern>     only consider tags matching <pattern>
+    --always              show abbreviated commit object as fallback
+    --dirty[=<mark>]      append <mark> on dirty working tree (default: "-dirty")
+
+make  all-am
+make[1]: Entering directory '/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns'
+error: unknown option `exclude=*'
+usage: git describe [<options>] [<commit-ish>...]
+   or: git describe [<options>] --dirty
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref
+    --tags                use any tag, even unannotated
+    --long                always use long format
+    --first-parent        only follow first parent
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+    --exact-match         only output exact matches
+    --candidates <n>      consider <n> most recent tags (default: 10)
+    --match <pattern>     only consider tags matching <pattern>
+    --always              show abbreviated commit object as fallback
+    --dirty[=<mark>]      append <mark> on dirty working tree (default: "-dirty")
+
+depbase=`echo qemu/slirp/arp_table.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/arp_table.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/arp_table.o qemu/slirp/arp_table.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/bootp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/bootp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/bootp.o qemu/slirp/bootp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/cksum.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/cksum.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/cksum.o qemu/slirp/cksum.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/dhcpv6.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/dhcpv6.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/dhcpv6.o qemu/slirp/dhcpv6.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/dnssearch.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/dnssearch.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/dnssearch.o qemu/slirp/dnssearch.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/if.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/if.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/if.o qemu/slirp/if.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_icmp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_icmp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_icmp.o qemu/slirp/ip6_icmp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_input.o qemu/slirp/ip6_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_output.o qemu/slirp/ip6_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_icmp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_icmp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_icmp.o qemu/slirp/ip_icmp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_input.o qemu/slirp/ip_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_output.o qemu/slirp/ip_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/mbuf.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/mbuf.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/mbuf.o qemu/slirp/mbuf.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/misc.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/misc.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/misc.o qemu/slirp/misc.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ndp_table.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ndp_table.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ndp_table.o qemu/slirp/ndp_table.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/sbuf.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/sbuf.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/sbuf.o qemu/slirp/sbuf.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/slirp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/slirp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/slirp.o qemu/slirp/slirp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/socket.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/socket.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/socket.o qemu/slirp/socket.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_input.o qemu/slirp/tcp_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_output.o qemu/slirp/tcp_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_subr.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_subr.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_subr.o qemu/slirp/tcp_subr.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_timer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_timer.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_timer.o qemu/slirp/tcp_timer.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/udp6.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/udp6.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/udp6.o qemu/slirp/udp6.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/udp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/udp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/udp.o qemu/slirp/udp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libqemu_slirp.a
+ar cru libqemu_slirp.a qemu/slirp/arp_table.o qemu/slirp/bootp.o qemu/slirp/cksum.o qemu/slirp/dhcpv6.o qemu/slirp/dnssearch.o qemu/slirp/if.o qemu/slirp/ip6_icmp.o qemu/slirp/ip6_input.o qemu/slirp/ip6_output.o qemu/slirp/ip_icmp.o qemu/slirp/ip_input.o qemu/slirp/ip_output.o qemu/slirp/mbuf.o qemu/slirp/misc.o qemu/slirp/ndp_table.o qemu/slirp/sbuf.o qemu/slirp/slirp.o qemu/slirp/socket.o qemu/slirp/tcp_input.o qemu/slirp/tcp_output.o qemu/slirp/tcp_subr.o qemu/slirp/tcp_timer.o qemu/slirp/udp6.o qemu/slirp/udp.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libqemu_slirp.a
+depbase=`echo rd235_libslirp/src/qemu2libslirp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT rd235_libslirp/src/qemu2libslirp.o -MD -MP -MF $depbase.Tpo -c -o rd235_libslirp/src/qemu2libslirp.o rd235_libslirp/src/qemu2libslirp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libslirp.a
+ar cru libslirp.a rd235_libslirp/src/qemu2libslirp.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libslirp.a
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2 -MT slirp4netns-main.o -MD -MP -MF .deps/slirp4netns-main.Tpo -c -o slirp4netns-main.o `test -f 'main.c' || echo './'`main.c
+mv -f .deps/slirp4netns-main.Tpo .deps/slirp4netns-main.Po
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2 -MT slirp4netns-slirp4netns.o -MD -MP -MF .deps/slirp4netns-slirp4netns.Tpo -c -o slirp4netns-slirp4netns.o `test -f 'slirp4netns.c' || echo './'`slirp4netns.c
+mv -f .deps/slirp4netns-slirp4netns.Tpo .deps/slirp4netns-slirp4netns.Po
+gcc -I /tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2  -static -o slirp4netns slirp4netns-main.o slirp4netns-slirp4netns.o libslirp.a libqemu_slirp.a 
+make[1]: Leaving directory '/tmp/tmp.OhSauP67wP/src/github.com/rootless-containers/slirp4netns'
++ mkdir -p /build/
++ cp slirp4netns /build//slirp4netns
++ cp COPYING /build//slirp4netns.LICENSE
+Removing intermediate container 4225e4b680e5
+ ---> 879a2766e2b3
+Step 77/108 : FROM runtime-dev AS dev
+ ---> 4d1ce9c683c6
+Step 78/108 : RUN groupadd -r docker
+ ---> Using cache
+ ---> bdee05c6aa89
+Step 79/108 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Using cache
+ ---> b477a0b40e00
+Step 80/108 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Using cache
+ ---> ea6df3b7ef5c
+Step 81/108 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Using cache
+ ---> 890f4e067f91
+Step 82/108 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Using cache
+ ---> 39e9b8bba8aa
+Step 83/108 : RUN ldconfig
+ ---> Using cache
+ ---> 3a15b84526c6
+Step 84/108 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	--no-install-recommends
+ ---> Using cache
+ ---> d0bfe913fa79
+Step 85/108 : COPY --from=swagger /build/swagger* /usr/local/bin/
+ ---> Using cache
+ ---> 5e340df9fa3b
+Step 86/108 : COPY --from=frozen-images /build/ /docker-frozen-images
+ ---> Using cache
+ ---> 5f4acef884c1
+Step 87/108 : COPY --from=gometalinter /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 03586e7c8dee
+Step 88/108 : COPY --from=tomlv /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 8c3c9edbb823
+Step 89/108 : COPY --from=vndr /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 5f1ca94e977c
+Step 90/108 : COPY --from=tini /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 4207e538e883
+Step 91/108 : COPY --from=runc /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 90b71a9cf6e1
+Step 92/108 : COPY --from=containerd /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 827b12b3e56c
+Step 93/108 : COPY --from=proxy /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 39b4dd0f97b0
+Step 94/108 : COPY --from=dockercli /build/ /usr/local/cli
+ ---> Using cache
+ ---> db042a8e4676
+Step 95/108 : COPY --from=registry /build/registry* /usr/local/bin/
+ ---> Using cache
+ ---> e6dadf06e221
+Step 96/108 : COPY --from=criu /build/ /usr/local/
+ ---> Using cache
+ ---> fa819bd24219
+Step 97/108 : COPY --from=docker-py /build/ /docker-py
+ ---> Using cache
+ ---> b94c097f6333
+Step 98/108 : RUN cd /docker-py 	&& pip install docker-pycreds==0.2.1 	&& pip install yamllint==1.5.0 	&& pip install -r test-requirements.txt
+ ---> Using cache
+ ---> c21fbedaa3da
+Step 99/108 : COPY --from=rootlesskit /build/ /usr/local/bin/
+ ---> 820f3080074b
+Step 100/108 : COPY --from=slirp4netns /build/ /usr/local/bin/
+ ---> 8cc5b683b4a1
+Step 101/108 : ENV PATH=/usr/local/cli:$PATH
+ ---> Running in ac504bb72a3b
+Removing intermediate container ac504bb72a3b
+ ---> eec02e22bab7
+Step 102/108 : ENV DOCKER_BUILDTAGS apparmor seccomp selinux
+ ---> Running in f6720b6fe7d0
+Removing intermediate container f6720b6fe7d0
+ ---> 70b9a44c276e
+Step 103/108 : ENV GOMETALINTER_OPTS="--deadline=2m"
+ ---> Running in 7f672f78b17f
+Removing intermediate container 7f672f78b17f
+ ---> 0bc2f958aac7
+Step 104/108 : WORKDIR /go/src/github.com/docker/docker
+ ---> Running in 837bb9752348
+Removing intermediate container 837bb9752348
+ ---> a15042a43540
+Step 105/108 : VOLUME /var/lib/docker
+ ---> Running in c2ef2d42283d
+Removing intermediate container c2ef2d42283d
+ ---> 2823c11805d6
+Step 106/108 : ENTRYPOINT ["hack/dind"]
+ ---> Running in bfb95f8f222c
+Removing intermediate container bfb95f8f222c
+ ---> 2e3656be3a81
+Step 107/108 : FROM dev AS final
+ ---> 2e3656be3a81
+Step 108/108 : COPY . /go/src/github.com/docker/docker
+ ---> e5393b159b57
+Successfully built e5393b159b57
+Successfully tagged docker:68597e8-exp
+
+Removing bundles/
+
+---> Making bundle: binary-daemon (in bundles/binary-daemon)
+Building: bundles/binary-daemon/dockerd-dev
+Created binary: bundles/binary-daemon/dockerd-dev
+Copying nested executables into bundles/binary-daemon
+
+---> Making bundle: test-integration (in bundles/test-integration)
+Building test suite binary ./integration-cli/test.main
+Building test suite binary ./integration/plugin/test.main
+Building test suite binary ./integration/plugin/authz/test.main
+Building test suite binary ./integration/plugin/logging/test.main
+Building test suite binary ./integration/plugin/logging/cmd/test.main
+Building test suite binary ./integration/plugin/logging/cmd/close_on_start/test.main
+Building test suite binary ./integration/plugin/logging/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/common/test.main
+Building test suite binary ./integration/plugin/volumes/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/graphdriver/test.main
+Building test suite binary ./integration/config/test.main
+Building test suite binary ./integration/service/test.main
+Building test suite binary ./integration/network/test.main
+Building test suite binary ./integration/network/ipvlan/test.main
+Building test suite binary ./integration/network/macvlan/test.main
+Building test suite binary ./integration/secret/test.main
+Building test suite binary ./integration/session/test.main
+Building test suite binary ./integration/container/test.main
+Building test suite binary ./integration/build/test.main
+Building test suite binary ./integration/volume/test.main
+Building test suite binary ./integration/system/test.main
+Building test suite binary ./integration/image/test.main
+---> Making bundle: .integration-daemon-start (in bundles/test-integration)
+Using test binary docker
+# DOCKER_EXPERIMENTAL is set: starting daemon with experimental features enabled! 
+/etc/init.d/apparmor: 130: /etc/init.d/apparmor: systemd-detect-virt: not found
+Starting AppArmor profiles:Warning from stdin (line 1): /sbin/apparmor_parser: cannot use or update cache, disable, or force-complain via stdin
+Warning failed to create cache: (null)
+.
+INFO: Waiting for daemon to start...
+Starting dockerd
+.
+---> Making bundle: .integration-daemon-setup (in bundles/test-integration)
+---> Making bundle: .ensure-emptyfs (in bundles/test-integration)
+Error: No such image: emptyfs
+Running integration-test (iteration 1)
+Running /go/src/github.com/docker/docker/integration/plugin
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/authz
+Loaded image: buildpack-deps:jessie
+Loaded image: busybox:latest
+Loaded image: busybox:glibc
+Loaded image: debian:jessie
+Loaded image: hello-world:latest
+INFO: Testing against a local daemon
+=== RUN   TestAuthZPluginAllowRequest
+--- PASS: TestAuthZPluginAllowRequest (3.18s)
+    daemon.go:296: [d44b6a44e2df4] waiting for daemon to start
+    daemon.go:328: [d44b6a44e2df4] daemon started
+    daemon.go:283: [d44b6a44e2df4] exiting daemon
+=== RUN   TestAuthZPluginTLS
+--- PASS: TestAuthZPluginTLS (0.53s)
+    daemon.go:296: [d7cca983a8d30] waiting for daemon to start
+    daemon.go:328: [d7cca983a8d30] daemon started
+    daemon.go:283: [d7cca983a8d30] exiting daemon
+=== RUN   TestAuthZPluginDenyRequest
+--- PASS: TestAuthZPluginDenyRequest (0.53s)
+    daemon.go:296: [dcc5702f02db1] waiting for daemon to start
+    daemon.go:328: [dcc5702f02db1] daemon started
+    daemon.go:283: [dcc5702f02db1] exiting daemon
+=== RUN   TestAuthZPluginAPIDenyResponse
+--- PASS: TestAuthZPluginAPIDenyResponse (0.52s)
+    daemon.go:296: [d6294a960585b] waiting for daemon to start
+    daemon.go:328: [d6294a960585b] daemon started
+    daemon.go:283: [d6294a960585b] exiting daemon
+=== RUN   TestAuthZPluginDenyResponse
+--- PASS: TestAuthZPluginDenyResponse (0.52s)
+    daemon.go:296: [de99cd99b0e93] waiting for daemon to start
+    daemon.go:328: [de99cd99b0e93] daemon started
+    daemon.go:283: [de99cd99b0e93] exiting daemon
+=== RUN   TestAuthZPluginAllowEventStream
+--- PASS: TestAuthZPluginAllowEventStream (1.21s)
+    daemon.go:296: [d8f63cd52fcec] waiting for daemon to start
+    daemon.go:328: [d8f63cd52fcec] daemon started
+    daemon.go:283: [d8f63cd52fcec] exiting daemon
+=== RUN   TestAuthZPluginErrorResponse
+--- PASS: TestAuthZPluginErrorResponse (0.53s)
+    daemon.go:296: [d52fddb277e7a] waiting for daemon to start
+    daemon.go:328: [d52fddb277e7a] daemon started
+    daemon.go:283: [d52fddb277e7a] exiting daemon
+=== RUN   TestAuthZPluginErrorRequest
+--- PASS: TestAuthZPluginErrorRequest (0.53s)
+    daemon.go:296: [d7107d5b6dbb3] waiting for daemon to start
+    daemon.go:328: [d7107d5b6dbb3] daemon started
+    daemon.go:283: [d7107d5b6dbb3] exiting daemon
+=== RUN   TestAuthZPluginEnsureNoDuplicatePluginRegistration
+--- PASS: TestAuthZPluginEnsureNoDuplicatePluginRegistration (2.80s)
+    daemon.go:296: [d6dd2a4623f31] waiting for daemon to start
+    daemon.go:328: [d6dd2a4623f31] daemon started
+    daemon.go:283: [d6dd2a4623f31] exiting daemon
+=== RUN   TestAuthZPluginEnsureLoadImportWorking
+--- PASS: TestAuthZPluginEnsureLoadImportWorking (6.55s)
+    daemon.go:296: [d5576c651de63] waiting for daemon to start
+    daemon.go:328: [d5576c651de63] daemon started
+    daemon.go:283: [d5576c651de63] exiting daemon
+=== RUN   TestAuthzPluginEnsureContainerCopyToFrom
+--- PASS: TestAuthzPluginEnsureContainerCopyToFrom (1.50s)
+    daemon.go:296: [d606303b1cc8d] waiting for daemon to start
+    daemon.go:328: [d606303b1cc8d] daemon started
+    daemon.go:283: [d606303b1cc8d] exiting daemon
+=== RUN   TestAuthZPluginHeader
+--- PASS: TestAuthZPluginHeader (0.73s)
+    daemon.go:296: [d4c0b3b81fac2] waiting for daemon to start
+    daemon.go:328: [d4c0b3b81fac2] daemon started
+    daemon.go:283: [d4c0b3b81fac2] exiting daemon
+=== RUN   TestAuthZPluginV2AllowNonVolumeRequest
+--- PASS: TestAuthZPluginV2AllowNonVolumeRequest (6.48s)
+    daemon.go:296: [d48b282ad2db3] waiting for daemon to start
+    daemon.go:328: [d48b282ad2db3] daemon started
+    daemon.go:283: [d48b282ad2db3] exiting daemon
+    daemon.go:296: [d48b282ad2db3] waiting for daemon to start
+    daemon.go:328: [d48b282ad2db3] daemon started
+    daemon.go:283: [d48b282ad2db3] exiting daemon
+=== RUN   TestAuthZPluginV2Disable
+--- PASS: TestAuthZPluginV2Disable (5.83s)
+    daemon.go:296: [d9c0ad7baf95e] waiting for daemon to start
+    daemon.go:328: [d9c0ad7baf95e] daemon started
+    daemon.go:283: [d9c0ad7baf95e] exiting daemon
+    daemon.go:296: [d9c0ad7baf95e] waiting for daemon to start
+    daemon.go:328: [d9c0ad7baf95e] daemon started
+    daemon.go:283: [d9c0ad7baf95e] exiting daemon
+=== RUN   TestAuthZPluginV2RejectVolumeRequests
+--- PASS: TestAuthZPluginV2RejectVolumeRequests (5.61s)
+    daemon.go:296: [df642ed8d0a7c] waiting for daemon to start
+    daemon.go:328: [df642ed8d0a7c] daemon started
+    daemon.go:283: [df642ed8d0a7c] exiting daemon
+    daemon.go:296: [df642ed8d0a7c] waiting for daemon to start
+    daemon.go:328: [df642ed8d0a7c] daemon started
+    daemon.go:283: [df642ed8d0a7c] exiting daemon
+=== RUN   TestAuthZPluginV2BadManifestFailsDaemonStart
+--- PASS: TestAuthZPluginV2BadManifestFailsDaemonStart (13.83s)
+    daemon.go:296: [daf86b7fae833] waiting for daemon to start
+    daemon.go:328: [daf86b7fae833] daemon started
+    daemon.go:283: [daf86b7fae833] exiting daemon
+    daemon.go:296: [daf86b7fae833] waiting for daemon to start
+    daemon.go:296: [daf86b7fae833] waiting for daemon to start
+    daemon.go:283: [daf86b7fae833] exiting daemon
+    daemon.go:296: [daf86b7fae833] waiting for daemon to start
+    daemon.go:328: [daf86b7fae833] daemon started
+    daemon.go:283: [daf86b7fae833] exiting daemon
+=== RUN   TestAuthZPluginV2NonexistentFailsDaemonStart
+--- PASS: TestAuthZPluginV2NonexistentFailsDaemonStart (16.54s)
+    daemon.go:296: [dad54cc066ae3] waiting for daemon to start
+    daemon.go:328: [dad54cc066ae3] daemon started
+    daemon.go:283: [dad54cc066ae3] exiting daemon
+    daemon.go:296: [dad54cc066ae3] waiting for daemon to start
+    daemon.go:296: [dad54cc066ae3] waiting for daemon to start
+    daemon.go:296: [dad54cc066ae3] waiting for daemon to start
+    daemon.go:328: [dad54cc066ae3] daemon started
+    daemon.go:283: [dad54cc066ae3] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging
+INFO: Testing against a local daemon
+=== RUN   TestContinueAfterPluginCrash
+=== PAUSE TestContinueAfterPluginCrash
+=== RUN   TestDaemonStartWithLogOpt
+=== PAUSE TestDaemonStartWithLogOpt
+=== CONT  TestContinueAfterPluginCrash
+=== CONT  TestDaemonStartWithLogOpt
+--- PASS: TestDaemonStartWithLogOpt (11.06s)
+    daemon.go:296: [dd3ebd40da589] waiting for daemon to start
+    daemon.go:328: [dd3ebd40da589] daemon started
+    daemon.go:283: [dd3ebd40da589] exiting daemon
+    daemon.go:296: [dd3ebd40da589] waiting for daemon to start
+    daemon.go:328: [dd3ebd40da589] daemon started
+    daemon.go:283: [dd3ebd40da589] exiting daemon
+--- PASS: TestContinueAfterPluginCrash (15.56s)
+    daemon.go:296: [d3cfd1969b672] waiting for daemon to start
+    daemon.go:328: [d3cfd1969b672] daemon started
+    daemon.go:283: [d3cfd1969b672] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd/close_on_start
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd/dummy
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/common
+INFO: Testing against a local daemon
+=== RUN   TestPluginInvalidJSON
+=== RUN   TestPluginInvalidJSON//plugins/foobar/set
+=== PAUSE TestPluginInvalidJSON//plugins/foobar/set
+=== CONT  TestPluginInvalidJSON//plugins/foobar/set
+--- PASS: TestPluginInvalidJSON (0.01s)
+    --- PASS: TestPluginInvalidJSON//plugins/foobar/set (0.00s)
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes
+INFO: Testing against a local daemon
+=== RUN   TestPluginWithDevMounts
+=== PAUSE TestPluginWithDevMounts
+=== CONT  TestPluginWithDevMounts
+--- PASS: TestPluginWithDevMounts (1.75s)
+    daemon.go:296: [dd5daaf2d2b39] waiting for daemon to start
+    daemon.go:328: [dd5daaf2d2b39] daemon started
+    daemon.go:283: [dd5daaf2d2b39] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes/cmd
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes/cmd/dummy
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/graphdriver
+INFO: Testing against a local daemon
+=== RUN   TestExternalGraphDriver
+=== RUN   TestExternalGraphDriver/json
+=== RUN   TestExternalGraphDriver/spec
+=== RUN   TestExternalGraphDriver/pull
+--- PASS: TestExternalGraphDriver (7.02s)
+    daemon.go:296: [d6c4cabf1fcc1] waiting for daemon to start
+    daemon.go:328: [d6c4cabf1fcc1] daemon started
+    daemon.go:283: [d6c4cabf1fcc1] exiting daemon
+    daemon.go:296: [d6c4cabf1fcc1] waiting for daemon to start
+    daemon.go:328: [d6c4cabf1fcc1] daemon started
+    daemon.go:283: [d6c4cabf1fcc1] exiting daemon
+    --- PASS: TestExternalGraphDriver/json (1.72s)
+    daemon.go:296: [d6c4cabf1fcc1] waiting for daemon to start
+    daemon.go:328: [d6c4cabf1fcc1] daemon started
+    daemon.go:283: [d6c4cabf1fcc1] exiting daemon
+    daemon.go:296: [d6c4cabf1fcc1] waiting for daemon to start
+    daemon.go:328: [d6c4cabf1fcc1] daemon started
+    daemon.go:283: [d6c4cabf1fcc1] exiting daemon
+    --- PASS: TestExternalGraphDriver/spec (1.73s)
+    daemon.go:296: [d6c4cabf1fcc1] waiting for daemon to start
+    daemon.go:328: [d6c4cabf1fcc1] daemon started
+    daemon.go:283: [d6c4cabf1fcc1] exiting daemon
+    --- PASS: TestExternalGraphDriver/pull (3.12s)
+=== RUN   TestGraphdriverPluginV2
+--- SKIP: TestGraphdriverPluginV2 (0.32s)
+    external_test.go:411: !requirement.Overlay2Supported(testEnv.DaemonInfo.KernelVersion)
+PASS
+Running /go/src/github.com/docker/docker/integration/config
+INFO: Testing against a local daemon
+=== RUN   TestConfigList
+--- PASS: TestConfigList (2.03s)
+    daemon.go:296: [db9830f885836] waiting for daemon to start
+    daemon.go:328: [db9830f885836] daemon started
+    daemon.go:283: [db9830f885836] exiting daemon
+=== RUN   TestConfigsCreateAndDelete
+--- PASS: TestConfigsCreateAndDelete (2.08s)
+    daemon.go:296: [ddf5213098382] waiting for daemon to start
+    daemon.go:328: [ddf5213098382] daemon started
+    daemon.go:283: [ddf5213098382] exiting daemon
+=== RUN   TestConfigsUpdate
+--- PASS: TestConfigsUpdate (2.07s)
+    daemon.go:296: [d6f4699eae7bc] waiting for daemon to start
+    daemon.go:328: [d6f4699eae7bc] daemon started
+    daemon.go:283: [d6f4699eae7bc] exiting daemon
+=== RUN   TestTemplatedConfig
+--- PASS: TestTemplatedConfig (2.54s)
+    daemon.go:296: [dd5e3438b3e58] waiting for daemon to start
+    daemon.go:328: [dd5e3438b3e58] daemon started
+    daemon.go:283: [dd5e3438b3e58] exiting daemon
+=== RUN   TestConfigInspect
+--- PASS: TestConfigInspect (2.06s)
+    daemon.go:296: [d8808844ab4e7] waiting for daemon to start
+    daemon.go:328: [d8808844ab4e7] daemon started
+    daemon.go:283: [d8808844ab4e7] exiting daemon
+=== RUN   TestConfigCreateWithLabels
+--- PASS: TestConfigCreateWithLabels (2.13s)
+    daemon.go:296: [d287e9cd9d39d] waiting for daemon to start
+    daemon.go:328: [d287e9cd9d39d] daemon started
+    daemon.go:283: [d287e9cd9d39d] exiting daemon
+=== RUN   TestConfigCreateResolve
+--- PASS: TestConfigCreateResolve (2.10s)
+    daemon.go:296: [df12234b333c4] waiting for daemon to start
+    daemon.go:328: [df12234b333c4] daemon started
+    daemon.go:283: [df12234b333c4] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/service
+INFO: Testing against a local daemon
+=== RUN   TestServiceCreateInit
+=== RUN   TestServiceCreateInit/daemonInitDisabled
+=== RUN   TestServiceCreateInit/daemonInitEnabled
+--- PASS: TestServiceCreateInit (7.77s)
+    --- PASS: TestServiceCreateInit/daemonInitDisabled (3.90s)
+        daemon.go:296: [dbf722d065b45] waiting for daemon to start
+        daemon.go:328: [dbf722d065b45] daemon started
+        daemon.go:283: [dbf722d065b45] exiting daemon
+    --- PASS: TestServiceCreateInit/daemonInitEnabled (3.87s)
+        daemon.go:296: [d35cd083665ba] waiting for daemon to start
+        daemon.go:328: [d35cd083665ba] daemon started
+        daemon.go:283: [d35cd083665ba] exiting daemon
+=== RUN   TestCreateServiceMultipleTimes
+--- PASS: TestCreateServiceMultipleTimes (22.57s)
+    daemon.go:296: [d2b66f8c1691d] waiting for daemon to start
+    daemon.go:328: [d2b66f8c1691d] daemon started
+    daemon.go:283: [d2b66f8c1691d] exiting daemon
+=== RUN   TestCreateServiceConflict
+--- PASS: TestCreateServiceConflict (2.05s)
+    daemon.go:296: [dead99112dd04] waiting for daemon to start
+    daemon.go:328: [dead99112dd04] daemon started
+    daemon.go:283: [dead99112dd04] exiting daemon
+=== RUN   TestCreateServiceMaxReplicas
+--- PASS: TestCreateServiceMaxReplicas (2.33s)
+    daemon.go:296: [d2d285c5b8a5f] waiting for daemon to start
+    daemon.go:328: [d2d285c5b8a5f] daemon started
+    daemon.go:283: [d2d285c5b8a5f] exiting daemon
+=== RUN   TestCreateWithDuplicateNetworkNames
+--- PASS: TestCreateWithDuplicateNetworkNames (13.15s)
+    daemon.go:296: [de23f9d7099f4] waiting for daemon to start
+    daemon.go:328: [de23f9d7099f4] daemon started
+    daemon.go:283: [de23f9d7099f4] exiting daemon
+=== RUN   TestCreateServiceSecretFileMode
+--- PASS: TestCreateServiceSecretFileMode (2.48s)
+    daemon.go:296: [dcb5bf0d8abdc] waiting for daemon to start
+    daemon.go:328: [dcb5bf0d8abdc] daemon started
+    daemon.go:283: [dcb5bf0d8abdc] exiting daemon
+=== RUN   TestCreateServiceConfigFileMode
+--- PASS: TestCreateServiceConfigFileMode (2.59s)
+    daemon.go:296: [da1f4952e1ff5] waiting for daemon to start
+    daemon.go:328: [da1f4952e1ff5] daemon started
+    daemon.go:283: [da1f4952e1ff5] exiting daemon
+=== RUN   TestCreateServiceSysctls
+--- PASS: TestCreateServiceSysctls (3.18s)
+    daemon.go:296: [ddf822797ab1f] waiting for daemon to start
+    daemon.go:328: [ddf822797ab1f] daemon started
+    daemon.go:283: [ddf822797ab1f] exiting daemon
+=== RUN   TestInspect
+--- PASS: TestInspect (2.13s)
+    daemon.go:296: [dec7f9f237d6c] waiting for daemon to start
+    daemon.go:328: [dec7f9f237d6c] daemon started
+    daemon.go:283: [dec7f9f237d6c] exiting daemon
+=== RUN   TestDockerNetworkConnectAlias
+--- PASS: TestDockerNetworkConnectAlias (3.91s)
+    daemon.go:296: [d4f4b3f368d89] waiting for daemon to start
+    daemon.go:328: [d4f4b3f368d89] daemon started
+    daemon.go:283: [d4f4b3f368d89] exiting daemon
+=== RUN   TestServicePlugin
+--- PASS: TestServicePlugin (34.78s)
+    daemon.go:296: [de75f24caa742] waiting for daemon to start
+    daemon.go:328: [de75f24caa742] daemon started
+    daemon.go:283: [de75f24caa742] exiting daemon
+    daemon.go:296: [da434dd3e45e5] waiting for daemon to start
+    daemon.go:328: [da434dd3e45e5] daemon started
+    daemon.go:296: [db8fa32250467] waiting for daemon to start
+    daemon.go:328: [db8fa32250467] daemon started
+    daemon.go:296: [df93bf5530f15] waiting for daemon to start
+    daemon.go:328: [df93bf5530f15] daemon started
+    daemon.go:283: [df93bf5530f15] exiting daemon
+    daemon.go:283: [db8fa32250467] exiting daemon
+    daemon.go:283: [da434dd3e45e5] exiting daemon
+=== RUN   TestServiceUpdateLabel
+--- PASS: TestServiceUpdateLabel (2.02s)
+    daemon.go:296: [d780a05a46eab] waiting for daemon to start
+    daemon.go:328: [d780a05a46eab] daemon started
+    daemon.go:283: [d780a05a46eab] exiting daemon
+=== RUN   TestServiceUpdateSecrets
+--- FAIL: TestServiceUpdateSecrets (31.88s)
+    daemon.go:296: [defd68d0835be] waiting for daemon to start
+    daemon.go:328: [defd68d0835be] daemon started
+    update_test.go:127: timeout hit after 30s: waiting for service zuvk98amqagkjecl9h40yzxn1 to be updated, state: updating, message: update in progress
+    daemon.go:283: [defd68d0835be] exiting daemon
+=== RUN   TestServiceUpdateConfigs
+--- FAIL: TestServiceUpdateConfigs (2.04s)
+    daemon.go:296: [dacc3f078b19c] waiting for daemon to start
+    daemon.go:328: [dacc3f078b19c] daemon started
+    update_test.go:188: assertion failed: error is not nil: Error response from daemon: rpc error: code = Unknown desc = update out of sequence
+    daemon.go:283: [dacc3f078b19c] exiting daemon
+FAIL
+---> Making bundle: .integration-daemon-stop (in bundles/test-integration)
+Clearing AppArmor profiles cache:.
+All profile caches have been cleared, but no profiles have been unloaded.
+Unloading profiles will leave already running processes permanently
+unconfined, which can lead to unexpected situations.
+
+To set a process to complain mode, use the command line tool
+'aa-complain'. To really tear down all profiles, run the init script
+with the 'teardown' option."
+Removing test suite binaries
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38050'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins560433241934544023.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp43595
+Error: No such container: docker-pr-exp43595
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins3906000054180148024.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ + find bundles -name *.log
+xargs tar -czf bundles.tar.gz
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE
