@@ -1,5 +1,4 @@
-# $LogFiles = Get-ChildItem -Path . -Filter *.log -Recurse
-$LogFiles = Get-ChildItem -Path ./ci/z/2019/1/4/ -Filter *.log -Recurse
+$LogFiles = Get-ChildItem -Path . -Filter *.log -Recurse
 ForEach ($File in $LogFiles) {
 	$Log = Get-Content -Path $File.FullName
 	$PR = ($File.Name -split "_")[0] -Replace "PR",""
