@@ -1,0 +1,58 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2-stable (i-0b3e3c33adb0268c8) (x86_64 ec2 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2-stable amd64 docker us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision c77afb700dd65276d932bdb82646e3c458dfdad8 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f c77afb700dd65276d932bdb82646e3c458dfdad8
+Commit message: "Merge pull request #38402 from thaJeztah/bump_golang_1.11.4"
+ > git rev-list --no-walk c77afb700dd65276d932bdb82646e3c458dfdad8 # timeout=10
+Set build name.
+New build name is '#38410'
+[Docker-PRs] $ /bin/bash /tmp/jenkins3183087886414576729.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38410/head -> origin/pr/38410
+Auto-merging Dockerfile.windows
+CONFLICT (content): Merge conflict in Dockerfile.windows
+Automatic merge failed; fix conflicts and then commit the result.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38410'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins6796553641001048630.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr52139
+Error: No such container: docker-pr52139
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins9206654346707792755.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log+ xargs tar -czf bundles.tar.gz
+ -o -name *.prof -o -name integration.test
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

@@ -1,0 +1,987 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2-stable (i-06fb9dcfba3e685c1) (x86_64 ec2 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2-stable amd64 docker us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision bcd817ee6b6655ea8a1300c10af66b5bdfcfaf4f (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f bcd817ee6b6655ea8a1300c10af66b5bdfcfaf4f
+Commit message: "Merge pull request #38393 from thaJeztah/refactor_container_validation"
+ > git rev-list --no-walk bcd817ee6b6655ea8a1300c10af66b5bdfcfaf4f # timeout=10
+Set build name.
+New build name is '#38406'
+[Docker-PRs] $ /bin/bash /tmp/jenkins1630842395665549351.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38406/head -> origin/pr/38406
+Updating bcd817e..904a89a
+Fast-forward
+ daemon/logger/awslogs/cloudwatchlogs.go      | 79 ++++++++++++++++++-------
+ daemon/logger/awslogs/cloudwatchlogs_test.go | 86 ++++++++++++++++++++++++----
+ 2 files changed, 133 insertions(+), 32 deletions(-)
+Sending build context to Docker daemon  45.09MB
+Step 1/93 : FROM golang:1.11.3 AS base
+ ---> bbf428bade77
+Step 2/93 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 4c1cf55f2092
+Step 3/93 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> a9af61cdafda
+Step 4/93 : FROM base AS criu
+ ---> a9af61cdafda
+Step 5/93 : ENV CRIU_VERSION 3.6
+ ---> Running in ef37d4b3306a
+Removing intermediate container ef37d4b3306a
+ ---> b9e4a22b796d
+Step 6/93 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in 8187278820c7
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [462 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [5152 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7089 kB]
+Fetched 7863 kB in 2s (3072 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 7 not upgraded.
+Need to get 3602 kB of archives.
+After this operation, 18.9 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnet1 amd64 1.1.6+dfsg-3 [60.4 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libcap-dev amd64 1:2.25-1 [29.4 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnet1-dev amd64 1.1.6+dfsg-3 [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnl-3-200 amd64 3.2.27-2 [61.5 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnl-3-dev amd64 3.2.27-2 [96.2 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-c1 amd64 1.2.1-2 [25.0 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-c-dev amd64 1.2.1-2 [32.5 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-5 [205 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf10 amd64 3.0.0-9 [681 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-lite10 amd64 3.0.0-9 [125 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-dev amd64 3.0.0-9 [954 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotoc10 amd64 3.0.0-9 [626 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 protobuf-c-compiler amd64 1.2.1-2 [78.4 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 protobuf-compiler amd64 3.0.0-9 [52.8 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 python-protobuf amd64 3.0.0-9 [292 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 3602 kB in 1s (3278 kB/s)
+Selecting previously unselected package libnet1:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15040 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_amd64.deb ...
+Unpacking libnet1:amd64 (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:amd64.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_amd64.deb ...
+Unpacking libcap-dev:amd64 (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_amd64.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:amd64.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_amd64.deb ...
+Unpacking libnl-3-200:amd64 (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:amd64.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_amd64.deb ...
+Unpacking libnl-3-dev:amd64 (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:amd64.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_amd64.deb ...
+Unpacking libprotobuf-c1:amd64 (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:amd64.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_amd64.deb ...
+Unpacking libprotobuf-c-dev:amd64 (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:amd64.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf10:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:amd64.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf-lite10:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:amd64.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf-dev:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:amd64.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_amd64.deb ...
+Unpacking libprotoc10:amd64 (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_amd64.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_amd64.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_amd64.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:amd64 (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:amd64 (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+Setting up libnet1-dev (1.1.6+dfsg-3) ...
+Setting up libprotobuf10:amd64 (3.0.0-9) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up python-protobuf (3.0.0-9) ...
+Setting up libcap-dev:amd64 (1:2.25-1) ...
+Setting up libprotobuf-c-dev:amd64 (1.2.1-2) ...
+Setting up libnl-3-200:amd64 (3.2.27-2) ...
+Setting up libprotobuf-lite10:amd64 (3.0.0-9) ...
+Setting up libprotoc10:amd64 (3.0.0-9) ...
+Setting up protobuf-c-compiler (1.2.1-2) ...
+Setting up zlib1g-dev:amd64 (1:1.2.8.dfsg-5) ...
+Setting up protobuf-compiler (3.0.0-9) ...
+Setting up libprotobuf-dev:amd64 (3.0.0-9) ...
+Setting up libnl-3-dev:amd64 (3.2.27-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Note: Building without ia32 C/R, missed ia32 support in gcc
+      That may be related to missing gcc-multilib in your
+      distribution or you may have Debian with buggy toolchain
+      (issue https://github.com/xemul/criu/issues/315)
+fatal: Not a git repository (or any of the parent directories): .git
+  GEN      .gitid
+  GEN      criu/include/version.h
+  GEN      include/common/asm
+  PBCC     images/google/protobuf/descriptor.pb-c.c
+  PBCC     images/opts.pb-c.c
+  PBCC     images/sit.pb-c.c
+  DEP      images/google/protobuf/descriptor.pb-c.d
+  DEP      images/opts.pb-c.d
+  DEP      images/sit.pb-c.d
+  PBCC     images/macvlan.pb-c.c
+  DEP      images/macvlan.pb-c.d
+  PBCC     images/autofs.pb-c.c
+  DEP      images/autofs.pb-c.d
+  PBCC     images/sysctl.pb-c.c
+  DEP      images/sysctl.pb-c.d
+  PBCC     images/time.pb-c.c
+  DEP      images/time.pb-c.d
+  PBCC     images/binfmt-misc.pb-c.c
+  DEP      images/binfmt-misc.pb-c.d
+  PBCC     images/seccomp.pb-c.c
+  DEP      images/seccomp.pb-c.d
+  PBCC     images/userns.pb-c.c
+  DEP      images/userns.pb-c.d
+  PBCC     images/cgroup.pb-c.c
+  DEP      images/cgroup.pb-c.d
+  PBCC     images/fown.pb-c.c
+  PBCC     images/ext-file.pb-c.c
+  DEP      images/fown.pb-c.d
+  DEP      images/ext-file.pb-c.d
+  PBCC     images/rpc.pb-c.c
+  DEP      images/rpc.pb-c.d
+  PBCC     images/siginfo.pb-c.c
+  DEP      images/siginfo.pb-c.d
+  PBCC     images/pagemap.pb-c.c
+  DEP      images/pagemap.pb-c.d
+  PBCC     images/rlimit.pb-c.c
+  DEP      images/rlimit.pb-c.d
+  PBCC     images/file-lock.pb-c.c
+  DEP      images/file-lock.pb-c.d
+  PBCC     images/tty.pb-c.c
+  DEP      images/tty.pb-c.d
+  PBCC     images/tun.pb-c.c
+  PBCC     images/netdev.pb-c.c
+  DEP      images/tun.pb-c.d
+  DEP      images/netdev.pb-c.d
+  PBCC     images/vma.pb-c.c
+  DEP      images/vma.pb-c.d
+  PBCC     images/creds.pb-c.c
+  DEP      images/creds.pb-c.d
+  PBCC     images/utsns.pb-c.c
+  DEP      images/utsns.pb-c.d
+  PBCC     images/ipc-desc.pb-c.c
+  PBCC     images/ipc-sem.pb-c.c
+  DEP      images/ipc-desc.pb-c.d
+  DEP      images/ipc-sem.pb-c.d
+  PBCC     images/ipc-msg.pb-c.c
+  DEP      images/ipc-msg.pb-c.d
+  PBCC     images/ipc-shm.pb-c.c
+  DEP      images/ipc-shm.pb-c.d
+  PBCC     images/ipc-var.pb-c.c
+  DEP      images/ipc-var.pb-c.d
+  PBCC     images/sk-opts.pb-c.c
+  PBCC     images/packet-sock.pb-c.c
+  DEP      images/sk-opts.pb-c.d
+  DEP      images/packet-sock.pb-c.d
+  PBCC     images/sk-netlink.pb-c.c
+  DEP      images/sk-netlink.pb-c.d
+  PBCC     images/sk-inet.pb-c.c
+  DEP      images/sk-inet.pb-c.d
+  PBCC     images/sk-unix.pb-c.c
+  DEP      images/sk-unix.pb-c.d
+  PBCC     images/mm.pb-c.c
+  DEP      images/mm.pb-c.d
+  PBCC     images/timerfd.pb-c.c
+  DEP      images/timerfd.pb-c.d
+  PBCC     images/timer.pb-c.c
+  DEP      images/timer.pb-c.d
+  PBCC     images/sa.pb-c.c
+  DEP      images/sa.pb-c.d
+  PBCC     images/pipe-data.pb-c.c
+  DEP      images/pipe-data.pb-c.d
+  PBCC     images/mnt.pb-c.c
+  DEP      images/mnt.pb-c.d
+  PBCC     images/sk-packet.pb-c.c
+  DEP      images/sk-packet.pb-c.d
+  PBCC     images/tcp-stream.pb-c.c
+  DEP      images/tcp-stream.pb-c.d
+  PBCC     images/pipe.pb-c.c
+  DEP      images/pipe.pb-c.d
+  PBCC     images/pstree.pb-c.c
+  DEP      images/pstree.pb-c.d
+  PBCC     images/fs.pb-c.c
+  DEP      images/fs.pb-c.d
+  PBCC     images/signalfd.pb-c.c
+  DEP      images/signalfd.pb-c.d
+  PBCC     images/fh.pb-c.c
+  PBCC     images/fsnotify.pb-c.c
+  DEP      images/fh.pb-c.d
+  DEP      images/fsnotify.pb-c.d
+  PBCC     images/eventpoll.pb-c.c
+  DEP      images/eventpoll.pb-c.d
+  PBCC     images/eventfd.pb-c.c
+  DEP      images/eventfd.pb-c.d
+  PBCC     images/remap-file-path.pb-c.c
+  DEP      images/remap-file-path.pb-c.d
+  PBCC     images/fifo.pb-c.c
+  DEP      images/fifo.pb-c.d
+  PBCC     images/ghost-file.pb-c.c
+  DEP      images/ghost-file.pb-c.d
+  PBCC     images/regfile.pb-c.c
+  DEP      images/regfile.pb-c.d
+  PBCC     images/ns.pb-c.c
+  DEP      images/ns.pb-c.d
+  PBCC     images/fdinfo.pb-c.c
+  DEP      images/fdinfo.pb-c.d
+  PBCC     images/core-aarch64.pb-c.c
+  PBCC     images/core-arm.pb-c.c
+  PBCC     images/core-ppc64.pb-c.c
+  PBCC     images/core-s390.pb-c.c
+  PBCC     images/core-x86.pb-c.c
+  PBCC     images/core.pb-c.c
+  PBCC     images/inventory.pb-c.c
+  DEP      images/core-aarch64.pb-c.d
+  DEP      images/core-arm.pb-c.d
+  DEP      images/core-ppc64.pb-c.d
+  DEP      images/core-s390.pb-c.d
+  DEP      images/core-x86.pb-c.d
+  DEP      images/core.pb-c.d
+  DEP      images/inventory.pb-c.d
+  PBCC     images/cpuinfo.pb-c.c
+  DEP      images/cpuinfo.pb-c.d
+  PBCC     images/stats.pb-c.c
+  DEP      images/stats.pb-c.d
+make[1]: Nothing to be done for 'all'.
+  CC       images/stats.o
+  CC       images/core.o
+  CC       images/core-x86.o
+  CC       images/core-arm.o
+  CC       images/core-aarch64.o
+  CC       images/core-ppc64.o
+  CC       images/core-s390.o
+  CC       images/cpuinfo.o
+  CC       images/inventory.o
+  CC       images/fdinfo.o
+  CC       images/fown.o
+  CC       images/ns.o
+  CC       images/regfile.o
+  CC       images/ghost-file.o
+  CC       images/fifo.o
+  CC       images/remap-file-path.o
+  CC       images/eventfd.o
+  CC       images/eventpoll.o
+  CC       images/fh.o
+  CC       images/fsnotify.o
+  CC       images/signalfd.o
+  CC       images/fs.o
+  CC       images/pstree.o
+  CC       images/pipe.o
+  CC       images/tcp-stream.o
+  CC       images/sk-packet.o
+  CC       images/mnt.o
+  CC       images/pipe-data.o
+  CC       images/sa.o
+  CC       images/timer.o
+  CC       images/timerfd.o
+  CC       images/mm.o
+  CC       images/sk-opts.o
+  CC       images/sk-unix.o
+  CC       images/sk-inet.o
+  CC       images/tun.o
+  CC       images/sk-netlink.o
+  CC       images/packet-sock.o
+  CC       images/ipc-var.o
+  CC       images/ipc-desc.o
+  CC       images/ipc-shm.o
+  CC       images/ipc-msg.o
+  CC       images/ipc-sem.o
+  CC       images/utsns.o
+  CC       images/creds.o
+  CC       images/vma.o
+  CC       images/netdev.o
+  CC       images/tty.o
+  CC       images/file-lock.o
+  CC       images/rlimit.o
+  CC       images/pagemap.o
+  CC       images/siginfo.o
+  CC       images/rpc.o
+  CC       images/ext-file.o
+  CC       images/cgroup.o
+  CC       images/userns.o
+  CC       images/google/protobuf/descriptor.o
+  CC       images/opts.o
+  CC       images/seccomp.o
+  CC       images/binfmt-misc.o
+  CC       images/time.o
+  CC       images/sysctl.o
+  CC       images/autofs.o
+  CC       images/macvlan.o
+  CC       images/sit.o
+  LINK     images/built-in.o
+  GEN      compel/include/asm
+  GEN      compel/include/version.h
+touch .config
+  GEN      criu/include/config.h
+  GEN      compel/plugins/include/uapi/std/syscall-codes-64.h
+  GEN      compel/plugins/include/uapi/std/syscall-64.h
+  GEN      compel/arch/x86/plugins/std/syscalls-64.S
+  DEP      compel/arch/x86/plugins/std/syscalls-64.d
+  DEP      compel/arch/x86/plugins/std/memcpy.d
+  DEP      compel/arch/x86/plugins/std/parasite-head.d
+  GEN      compel/plugins/include/uapi/std/syscall.h
+  GEN      compel/arch/x86/plugins/std/sys-exec-tbl-64.c
+  GEN      compel/plugins/include/uapi/std/syscall-codes.h
+  GEN      compel/plugins/include/uapi/std/asm/syscall-types.h
+  DEP      compel/plugins/std/infect.d
+  DEP      compel/plugins/std/string.d
+  DEP      compel/plugins/std/log.d
+  DEP      compel/plugins/std/fds.d
+  DEP      compel/plugins/std/std.d
+  DEP      compel/plugins/shmem/shmem.d
+  DEP      compel/plugins/fds/fds.d
+  CC       compel/plugins/std/std.o
+  CC       compel/plugins/std/fds.o
+  CC       compel/plugins/std/log.o
+  CC       compel/plugins/std/string.o
+  CC       compel/plugins/std/infect.o
+  CC       compel/arch/x86/plugins/std/parasite-head.o
+  CC       compel/arch/x86/plugins/std/memcpy.o
+  CC       compel/arch/x86/plugins/std/syscalls-64.o
+  AR       compel/plugins/std.lib.a
+  CC       compel/plugins/fds/fds.o
+  AR       compel/plugins/fds.lib.a
+  HOSTDEP  compel/src/lib/log-host.d
+  HOSTDEP  compel/src/lib/handle-elf-host.d
+  HOSTDEP  compel/arch/x86/src/lib/handle-elf-host.d
+  HOSTDEP  compel/src/main-host.d
+  DEP      compel/src/main.d
+  DEP      compel/src/lib/handle-elf.d
+  DEP      compel/arch/x86/src/lib/handle-elf.d
+  DEP      compel/src/lib/ptrace.d
+  DEP      compel/src/lib/infect.d
+  DEP      compel/src/lib/infect-util.d
+  DEP      compel/src/lib/infect-rpc.d
+  DEP      compel/arch/x86/src/lib/infect.d
+  DEP      compel/arch/x86/src/lib/cpu.d
+  DEP      compel/src/lib/log.d
+  CC       compel/src/lib/log.o
+  CC       compel/arch/x86/src/lib/cpu.o
+  CC       compel/arch/x86/src/lib/infect.o
+  CC       compel/src/lib/infect-rpc.o
+  CC       compel/src/lib/infect-util.o
+  CC       compel/src/lib/infect.o
+  CC       compel/src/lib/ptrace.o
+  AR       compel/libcompel.a
+  HOSTCC   compel/src/main-host.o
+  HOSTCC   compel/arch/x86/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/log-host.o
+  HOSTLINK compel/compel-host-bin
+  DEP      soccr/soccr.d
+  CC       soccr/soccr.o
+  AR       soccr/libsoccr.a
+make[1]: 'soccr/libsoccr.a' is up to date.
+  DEP      criu/arch/x86/sigframe.d
+  DEP      criu/arch/x86/crtools.d
+  DEP      criu/arch/x86/cpu.d
+  CC       criu/arch/x86/cpu.o
+  CC       criu/arch/x86/crtools.o
+  CC       criu/arch/x86/sigframe.o
+  LINK     criu/arch/x86/crtools.built-in.o
+  DEP      criu/arch/x86/vdso-pie.d
+  DEP      criu/pie/parasite-vdso.d
+  DEP      criu/pie/util-vdso.d
+  DEP      criu/pie/util.d
+  CC       criu/pie/util.o
+  CC       criu/pie/util-vdso.o
+  CC       criu/pie/parasite-vdso.o
+  CC       criu/arch/x86/vdso-pie.o
+  AR       criu/pie/pie.lib.a
+  DEP      criu/pie/restorer.d
+  DEP      criu/arch/x86/restorer.d
+  DEP      criu/pie/parasite.d
+  CC       criu/pie/parasite.o
+  LINK     criu/pie/parasite.built-in.o
+  GEN      criu/pie/parasite-blob.h
+  CC       criu/arch/x86/restorer.o
+  CC       criu/pie/restorer.o
+  LINK     criu/pie/restorer.built-in.o
+  GEN      criu/pie/restorer-blob.h
+  DEP      criu/vdso.d
+  DEP      criu/uts_ns.d
+  DEP      criu/util.d
+  DEP      criu/uffd.d
+  DEP      criu/tun.d
+  DEP      criu/tty.d
+  DEP      criu/timerfd.d
+  DEP      criu/sysfs_parse.d
+  DEP      criu/sysctl.d
+  DEP      criu/string.d
+  DEP      criu/stats.d
+  DEP      criu/sockets.d
+  DEP      criu/sk-unix.d
+  DEP      criu/sk-tcp.d
+  DEP      criu/sk-queue.d
+  DEP      criu/sk-packet.d
+  DEP      criu/sk-netlink.d
+  DEP      criu/sk-inet.d
+  DEP      criu/signalfd.d
+  DEP      criu/sigframe.d
+  DEP      criu/shmem.d
+  DEP      criu/seize.d
+  DEP      criu/seccomp.d
+  DEP      criu/rst-malloc.d
+  DEP      criu/rbtree.d
+  DEP      criu/pstree.d
+  DEP      criu/protobuf.d
+  GEN      criu/protobuf-desc-gen.h
+  DEP      criu/protobuf-desc.d
+  DEP      criu/proc_parse.d
+  DEP      criu/plugin.d
+  DEP      criu/pipes.d
+  DEP      criu/pie-util.d
+  DEP      criu/pie-util-vdso.d
+  DEP      criu/pie-util-vdso-elf32.d
+  DEP      criu/path.d
+  DEP      criu/parasite-syscall.d
+  DEP      criu/pagemap.d
+  DEP      criu/pagemap-cache.d
+  DEP      criu/page-xfer.d
+  DEP      criu/page-pipe.d
+  DEP      criu/netfilter.d
+  DEP      criu/net.d
+  DEP      criu/namespaces.d
+  DEP      criu/mount.d
+  DEP      criu/mem.d
+  DEP      criu/lsm.d
+  DEP      criu/log.d
+  DEP      criu/libnetlink.d
+  DEP      criu/kerndat.d
+  DEP      criu/kcmp-ids.d
+  DEP      criu/irmap.d
+  DEP      criu/ipc_ns.d
+  DEP      criu/image.d
+  DEP      criu/image-desc.d
+  DEP      criu/fsnotify.d
+  DEP      criu/filesystems.d
+  DEP      criu/files.d
+  DEP      criu/files-reg.d
+  DEP      criu/files-ext.d
+  DEP      criu/file-lock.d
+  DEP      criu/file-ids.d
+  DEP      criu/fifo.d
+  DEP      criu/fdstore.d
+  DEP      criu/fault-injection.d
+  DEP      criu/external.d
+  DEP      criu/eventpoll.d
+  DEP      criu/eventfd.d
+  DEP      criu/crtools.d
+  DEP      criu/cr-service.d
+  DEP      criu/cr-restore.d
+  DEP      criu/cr-errno.d
+  DEP      criu/cr-dump.d
+  DEP      criu/cr-dedup.d
+  DEP      criu/cr-check.d
+  DEP      criu/clone-noasan.d
+  DEP      criu/cgroup.d
+  DEP      criu/cgroup-props.d
+  DEP      criu/bitmap.d
+  DEP      criu/bfd.d
+  DEP      criu/autofs.d
+  DEP      criu/aio.d
+  DEP      criu/action-scripts.d
+  CC       criu/action-scripts.o
+  CC       criu/aio.o
+  CC       criu/autofs.o
+  CC       criu/bfd.o
+  CC       criu/bitmap.o
+  CC       criu/cgroup-props.o
+  CC       criu/cgroup.o
+  CC       criu/clone-noasan.o
+  CC       criu/cr-check.o
+  CC       criu/cr-dedup.o
+  CC       criu/cr-dump.o
+  CC       criu/cr-errno.o
+  CC       criu/cr-restore.o
+  CC       criu/cr-service.o
+  CC       criu/crtools.o
+  CC       criu/eventfd.o
+  CC       criu/eventpoll.o
+  CC       criu/external.o
+  CC       criu/fault-injection.o
+  CC       criu/fdstore.o
+  CC       criu/fifo.o
+  CC       criu/file-ids.o
+  CC       criu/file-lock.o
+  CC       criu/files-ext.o
+  CC       criu/files-reg.o
+  CC       criu/files.o
+  CC       criu/filesystems.o
+  CC       criu/fsnotify.o
+  CC       criu/image-desc.o
+  CC       criu/image.o
+  CC       criu/ipc_ns.o
+  CC       criu/irmap.o
+  CC       criu/kcmp-ids.o
+  CC       criu/kerndat.o
+  CC       criu/libnetlink.o
+  CC       criu/log.o
+  CC       criu/lsm.o
+  CC       criu/mem.o
+  CC       criu/mount.o
+  CC       criu/namespaces.o
+  CC       criu/net.o
+  CC       criu/netfilter.o
+  CC       criu/page-pipe.o
+  CC       criu/page-xfer.o
+  CC       criu/pagemap-cache.o
+  CC       criu/pagemap.o
+  CC       criu/parasite-syscall.o
+  CC       criu/path.o
+  CC       criu/pie-util-vdso-elf32.o
+  CC       criu/pie-util-vdso.o
+  CC       criu/pie-util.o
+  CC       criu/pipes.o
+  CC       criu/plugin.o
+  CC       criu/proc_parse.o
+  CC       criu/protobuf-desc.o
+  CC       criu/protobuf.o
+  CC       criu/pstree.o
+  CC       criu/rbtree.o
+  CC       criu/rst-malloc.o
+  CC       criu/seccomp.o
+  CC       criu/seize.o
+  CC       criu/shmem.o
+  CC       criu/sigframe.o
+  CC       criu/signalfd.o
+  CC       criu/sk-inet.o
+  CC       criu/sk-netlink.o
+  CC       criu/sk-packet.o
+  CC       criu/sk-queue.o
+  CC       criu/sk-tcp.o
+  CC       criu/sk-unix.o
+  CC       criu/sockets.o
+  CC       criu/stats.o
+  CC       criu/string.o
+  CC       criu/sysctl.o
+  CC       criu/sysfs_parse.o
+  CC       criu/timerfd.o
+  CC       criu/tty.o
+  CC       criu/tun.o
+  CC       criu/uffd.o
+  CC       criu/util.o
+  CC       criu/uts_ns.o
+  CC       criu/vdso.o
+  LINK     criu/built-in.o
+  LINK     criu/criu
+  DEP      lib/c/criu.d
+  CC       images/rpc.pb-c.o
+  CC       lib/c/criu.o
+  LINK     lib/c/built-in.o
+  LINK     lib/c/libcriu.so
+  GEN      magic.py
+Note: Building without ia32 C/R, missed ia32 support in gcc
+      That may be related to missing gcc-multilib in your
+      distribution or you may have Debian with buggy toolchain
+      (issue https://github.com/xemul/criu/issues/315)
+fatal: Not a git repository (or any of the parent directories): .git
+make[1]: Nothing to be done for 'all'.
+make[1]: 'images/built-in.o' is up to date.
+make[1]: 'compel/plugins/std.lib.a' is up to date.
+make[1]: 'compel/plugins/fds.lib.a' is up to date.
+make[1]: 'compel/libcompel.a' is up to date.
+make[1]: 'compel/compel-host-bin' is up to date.
+make[1]: Nothing to be done for 'all'.
+make[1]: 'soccr/libsoccr.a' is up to date.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+  INSTALL  criu/criu
+Removing intermediate container 8187278820c7
+ ---> 09944ed6f179
+Step 7/93 : FROM base AS registry
+ ---> a9af61cdafda
+Step 8/93 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Using cache
+ ---> c118c12e5497
+Step 9/93 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> b7cde832c745
+Step 10/93 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> f1774e506c02
+Step 11/93 : FROM base AS docker-py
+ ---> a9af61cdafda
+Step 12/93 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Using cache
+ ---> 8813faed99b1
+Step 13/93 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> 459c0ce81b4a
+Step 14/93 : FROM base AS swagger
+ ---> a9af61cdafda
+Step 15/93 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> 3e5a6dbb7d47
+Step 16/93 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 88f90566d139
+Step 17/93 : FROM base AS frozen-images
+ ---> a9af61cdafda
+Step 18/93 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> a6ad2e2c6158
+Step 19/93 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> f2953832b26e
+Step 20/93 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> ffabc1c53bed
+Step 21/93 : FROM base AS runtime-dev
+ ---> a9af61cdafda
+Step 22/93 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> a22e4402b9b6
+Step 23/93 : FROM base AS tomlv
+ ---> a9af61cdafda
+Step 24/93 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> 4b4a88b10752
+Step 25/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> dd256c180292
+Step 26/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 7d4e62ae47f7
+Step 27/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 10e77dc7e015
+Step 28/93 : FROM base AS vndr
+ ---> a9af61cdafda
+Step 29/93 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> cab8bc02df90
+Step 30/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 2c9f8d0248a3
+Step 31/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 68179260551d
+Step 32/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 8b0b01b5af98
+Step 33/93 : FROM base AS containerd
+ ---> a9af61cdafda
+Step 34/93 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> a7c4536e2be6
+Step 35/93 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> 20963a3a630e
+Step 36/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 6f8be181eda5
+Step 37/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> b0cc5223c9df
+Step 38/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> ed90a908908d
+Step 39/93 : FROM base AS proxy
+ ---> a9af61cdafda
+Step 40/93 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> 3dc159b311c3
+Step 41/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> f16f57dd64c1
+Step 42/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 60f7297273f4
+Step 43/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> ea699f06eed2
+Step 44/93 : FROM base AS gometalinter
+ ---> a9af61cdafda
+Step 45/93 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> 7b2368918fbd
+Step 46/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 71234d967970
+Step 47/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> e7efa64f3ad4
+Step 48/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> f0c121afff58
+Step 49/93 : FROM base AS dockercli
+ ---> a9af61cdafda
+Step 50/93 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> 7edead4bb677
+Step 51/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> cb8d6601dc53
+Step 52/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 8774d14acab9
+Step 53/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 945d159bc7ef
+Step 54/93 : FROM runtime-dev AS runc
+ ---> a22e4402b9b6
+Step 55/93 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> 78b2647bf526
+Step 56/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> fea3e9b44dd3
+Step 57/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 649d185d696c
+Step 58/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> baf96718e1a3
+Step 59/93 : FROM base AS tini
+ ---> a9af61cdafda
+Step 60/93 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> f7e2ed77c370
+Step 61/93 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 089442c70824
+Step 62/93 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> 20a88c97d5d6
+Step 63/93 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> f9a1c1ec00e3
+Step 64/93 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> b56d21f58775
+Step 65/93 : FROM runtime-dev AS dev
+ ---> a22e4402b9b6
+Step 66/93 : RUN groupadd -r docker
+ ---> Using cache
+ ---> cf6463e66a6c
+Step 67/93 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Using cache
+ ---> 6022661ca846
+Step 68/93 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Using cache
+ ---> 5ba3499a53df
+Step 69/93 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Using cache
+ ---> 3cfd4040039d
+Step 70/93 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Using cache
+ ---> 6bd4b26a20b1
+Step 71/93 : RUN ldconfig
+ ---> Using cache
+ ---> 41d81a8f80fc
+Step 72/93 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	--no-install-recommends
+ ---> Using cache
+ ---> d911dfbfcbab
+Step 73/93 : COPY --from=swagger /build/swagger* /usr/local/bin/
+ ---> Using cache
+ ---> 0388422da13a
+Step 74/93 : COPY --from=frozen-images /build/ /docker-frozen-images
+ ---> Using cache
+ ---> af988456a2ad
+Step 75/93 : COPY --from=gometalinter /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 1c633d3e2d9a
+Step 76/93 : COPY --from=tomlv /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 834b56e12cae
+Step 77/93 : COPY --from=vndr /build/ /usr/local/bin/
+ ---> Using cache
+ ---> e95ae38441e3
+Step 78/93 : COPY --from=tini /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 901b14f54811
+Step 79/93 : COPY --from=runc /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 412d1f869273
+Step 80/93 : COPY --from=containerd /build/ /usr/local/bin/
+ ---> Using cache
+ ---> e54acbc3869c
+Step 81/93 : COPY --from=proxy /build/ /usr/local/bin/
+ ---> Using cache
+ ---> d84b8fa106bc
+Step 82/93 : COPY --from=dockercli /build/ /usr/local/cli
+ ---> Using cache
+ ---> 994401cbdc99
+Step 83/93 : COPY --from=registry /build/registry* /usr/local/bin/
+ ---> Using cache
+ ---> 22cfecc0aa70
+Step 84/93 : COPY --from=criu /build/ /usr/local/
+ ---> 9c4b64e2633e
+Step 85/93 : COPY --from=docker-py /build/ /docker-py
+ ---> 27a02fd2cfb0
+Step 86/93 : RUN cd /docker-py 	&& pip install docker-pycreds==0.2.1 	&& pip install yamllint==1.5.0 	&& pip install -r test-requirements.txt
+ ---> Running in abecd0a532ef
+Collecting docker-pycreds==0.2.1
+  Downloading https://files.pythonhosted.org/packages/ff/ec/14e976222468249cc50df4a031e5922581747b52dc96a0b1d5d73fee8f0e/docker_pycreds-0.2.1-py2.py3-none-any.whl
+Requirement already satisfied: six>=1.4.0 in /usr/lib/python2.7/dist-packages (from docker-pycreds==0.2.1)
+Installing collected packages: docker-pycreds
+Successfully installed docker-pycreds-0.2.1
+Collecting yamllint==1.5.0
+  Downloading https://files.pythonhosted.org/packages/64/93/2a2e99b04f4a2f2adb26f4f543770310bf6303b3af492345c4a700d14f4e/yamllint-1.5.0-py2.py3-none-any.whl
+Collecting pyyaml (from yamllint==1.5.0)
+  Downloading https://files.pythonhosted.org/packages/9e/a3/1d13970c3f36777c583f136c136f804d70f500168edc1edea6daa7200769/PyYAML-3.13.tar.gz (270kB)
+Building wheels for collected packages: pyyaml
+  Running setup.py bdist_wheel for pyyaml: started
+  Running setup.py bdist_wheel for pyyaml: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/ad/da/0c/74eb680767247273e2cf2723482cb9c924fe70af57c334513f
+Successfully built pyyaml
+Installing collected packages: pyyaml, yamllint
+Successfully installed pyyaml-3.13 yamllint-1.5.0
+Collecting mock==1.0.1 (from -r test-requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/a2/52/7edcd94f0afb721a2d559a5b9aae8af4f8f2c79bc63fdbe8a8a6c9b23bbe/mock-1.0.1.tar.gz (818kB)
+Collecting pytest==2.9.1 (from -r test-requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/61/49/c299eeaea69ed31338a58762b5185c56044fc2e09434694742ca2306a514/pytest-2.9.1-py2.py3-none-any.whl (161kB)
+Collecting coverage==3.7.1 (from -r test-requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/09/4f/89b06c7fdc09687bca507dc411c342556ef9c5a3b26756137a4878ff19bf/coverage-3.7.1.tar.gz (284kB)
+Collecting pytest-cov==2.1.0 (from -r test-requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/f2/9b/03b7d51c74d8f7088e37043dcf4f59faed359c56e7d016e2627108072679/pytest_cov-2.1.0-py2.py3-none-any.whl
+Collecting flake8==3.4.1 (from -r test-requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/b2/d3/e80ea2616e3871ae22459c415c63d64b9bd744c92267482670fcdbcea72d/flake8-3.4.1-py2.py3-none-any.whl (68kB)
+Collecting py>=1.4.29 (from pytest==2.9.1->-r test-requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/3e/c7/3da685ef117d42ac8d71af525208759742dd235f8094221fdaafcd3dba8f/py-1.7.0-py2.py3-none-any.whl (83kB)
+Collecting pyflakes<1.6.0,>=1.5.0 (from flake8==3.4.1->-r test-requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/27/49/924098b3b85c286696f37e014475d79471ffc44509613af420645a3c12cb/pyflakes-1.5.0-py2.py3-none-any.whl (225kB)
+Collecting enum34; python_version < "3.4" (from flake8==3.4.1->-r test-requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/c5/db/e56e6b4bbac7c4a06de1c50de6fe1ef3810018ae11732a50f15f62c7d050/enum34-1.1.6-py2-none-any.whl
+Collecting configparser; python_version < "3.2" (from flake8==3.4.1->-r test-requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/7c/69/c2ce7e91c89dc073eb1aa74c0621c3eefbffe8216b3f9af9d3885265c01c/configparser-3.5.0.tar.gz
+Collecting mccabe<0.7.0,>=0.6.0 (from flake8==3.4.1->-r test-requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/87/89/479dc97e18549e21354893e4ee4ef36db1d237534982482c3681ee6e7b57/mccabe-0.6.1-py2.py3-none-any.whl
+Collecting pycodestyle<2.4.0,>=2.0.0 (from flake8==3.4.1->-r test-requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/e4/81/78fe51eb4038d1388b7217dd63770b0f428370207125047312886c923b26/pycodestyle-2.3.1-py2.py3-none-any.whl (45kB)
+Building wheels for collected packages: mock, coverage, configparser
+  Running setup.py bdist_wheel for mock: started
+  Running setup.py bdist_wheel for mock: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/7e/72/92/744b532c779242b57aab4bcba80c312b30c069bbd60025e7e6
+  Running setup.py bdist_wheel for coverage: started
+  Running setup.py bdist_wheel for coverage: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/68/58/66/f1fc9afad272df0df0fa38cdef34ee2d5d8d6a85f4eb5acab5
+  Running setup.py bdist_wheel for configparser: started
+  Running setup.py bdist_wheel for configparser: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/a3/61/79/424ef897a2f3b14684a7de5d89e8600b460b89663e6ce9d17c
+Successfully built mock coverage configparser
+Installing collected packages: mock, py, pytest, coverage, pytest-cov, pyflakes, enum34, configparser, mccabe, pycodestyle, flake8
+  Found existing installation: mock 2.0.0
+    Not uninstalling mock at /usr/lib/python2.7/dist-packages, outside environment /usr
+Successfully installed configparser-3.5.0 coverage-3.7.1 enum34-1.1.6 flake8-3.4.1 mccabe-0.6.1 mock-1.0.1 py-1.7.0 pycodestyle-2.3.1 pyflakes-1.5.0 pytest-2.9.1 pytest-cov-2.1.0
+Removing intermediate container abecd0a532ef
+ ---> 2f0f7204e4d5
+Step 87/93 : ENV PATH=/usr/local/cli:$PATH
+ ---> Running in d403446314eb
+Removing intermediate container d403446314eb
+ ---> 5b598d2b2abf
+Step 88/93 : ENV DOCKER_BUILDTAGS apparmor seccomp selinux
+ ---> Running in 902a3ce96be1
+Removing intermediate container 902a3ce96be1
+ ---> f3a3fce98cbc
+Step 89/93 : ENV GOMETALINTER_OPTS="--deadline=2m"
+ ---> Running in 89e41ccf4c5a
+Removing intermediate container 89e41ccf4c5a
+ ---> 37adfa9ed13b
+Step 90/93 : WORKDIR /go/src/github.com/docker/docker
+ ---> Running in ca0a74cfd0eb
+Removing intermediate container ca0a74cfd0eb
+ ---> 0c87149dfa47
+Step 91/93 : VOLUME /var/lib/docker
+ ---> Running in aa1ea131f2ae
+Removing intermediate container aa1ea131f2ae
+ ---> 6eef6bec296d
+Step 92/93 : ENTRYPOINT ["hack/dind"]
+ ---> Running in 4354c9e26240
+Removing intermediate container 4354c9e26240
+ ---> 05514ac813b0
+Step 93/93 : COPY . /go/src/github.com/docker/docker
+ ---> 4d9c542a975e
+Successfully built 4d9c542a975e
+Successfully tagged docker:904a89a
+Congratulations!  All commits are properly signed with the DCO!
+daemon/logger/awslogs/cloudwatchlogs_test.go:1::warning: file is not gofmted with -s (gofmt)
+daemon/logger/awslogs/cloudwatchlogs_test.go:1::warning: file is not goimported (goimports)
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38406'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins5872000235807509595.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr52115
+Error: No such container: docker-pr52115
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins2517179296382915705.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ + find bundles -name *.log -o -name *.prof -o -name integration.test
+xargs tar -czf bundles.tar.gz
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

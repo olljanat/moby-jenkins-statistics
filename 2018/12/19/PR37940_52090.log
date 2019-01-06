@@ -1,0 +1,59 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2-stable (i-042270814eae0429e) (x86_64 ec2 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2-stable amd64 docker us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision d1117e8e104060c543a8dd2147fe5c3f8686ee39 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f d1117e8e104060c543a8dd2147fe5c3f8686ee39
+Commit message: "Merge pull request #38372 from FabianKramm/fix-darwin-compile"
+ > git rev-list --no-walk d1117e8e104060c543a8dd2147fe5c3f8686ee39 # timeout=10
+Set build name.
+New build name is '#37940'
+[Docker-PRs] $ /bin/bash /tmp/jenkins5541216214488294836.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/37940/head -> origin/pr/37940
+Auto-merging integration/service/create_test.go
+CONFLICT (content): Merge conflict in integration/service/create_test.go
+Auto-merging integration/internal/swarm/service.go
+Automatic merge failed; fix conflicts and then commit the result.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#37940'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins5296375829262712425.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr52090
+Error: No such container: docker-pr52090
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins4910896153208383506.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log -o -name *.prof -o -name integration.test
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

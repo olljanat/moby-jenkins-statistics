@@ -1,0 +1,117 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2-stable (i-0850f4b9607c9f8f8) (x86_64 ec2 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2-stable amd64 docker us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision d1117e8e104060c543a8dd2147fe5c3f8686ee39 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f d1117e8e104060c543a8dd2147fe5c3f8686ee39
+Commit message: "Merge pull request #38372 from FabianKramm/fix-darwin-compile"
+ > git rev-list --no-walk d1117e8e104060c543a8dd2147fe5c3f8686ee39 # timeout=10
+Set build name.
+New build name is '#38398'
+[Docker-PRs] $ /bin/bash /tmp/jenkins9089510367352164221.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38398/head -> origin/pr/38398
+Merge made by the 'recursive' strategy.
+ pkg/jsonmessage/jsonmessage.go                     |  90 ++---
+ pkg/jsonmessage/jsonmessage_test.go                |  12 +-
+ vendor/github.com/morikuni/aec/LICENSE             |  21 ++
+ vendor/github.com/morikuni/aec/README.md           | 178 ++++++++++
+ vendor/github.com/morikuni/aec/aec.go              | 137 ++++++++
+ vendor/github.com/morikuni/aec/ansi.go             |  59 ++++
+ vendor/github.com/morikuni/aec/builder.go          | 388 +++++++++++++++++++++
+ vendor/github.com/morikuni/aec/checkansi/README.md |  15 +
+ vendor/github.com/morikuni/aec/checkansi/main.go   |  53 +++
+ .../github.com/morikuni/aec/checkansi/sample.gif   | Bin 0 -> 39046 bytes
+ vendor/github.com/morikuni/aec/sample.gif          | Bin 0 -> 12548 bytes
+ vendor/github.com/morikuni/aec/sgr.go              | 202 +++++++++++
+ 12 files changed, 1082 insertions(+), 73 deletions(-)
+ create mode 100644 vendor/github.com/morikuni/aec/LICENSE
+ create mode 100644 vendor/github.com/morikuni/aec/README.md
+ create mode 100644 vendor/github.com/morikuni/aec/aec.go
+ create mode 100644 vendor/github.com/morikuni/aec/ansi.go
+ create mode 100644 vendor/github.com/morikuni/aec/builder.go
+ create mode 100644 vendor/github.com/morikuni/aec/checkansi/README.md
+ create mode 100644 vendor/github.com/morikuni/aec/checkansi/main.go
+ create mode 100644 vendor/github.com/morikuni/aec/checkansi/sample.gif
+ create mode 100644 vendor/github.com/morikuni/aec/sample.gif
+ create mode 100644 vendor/github.com/morikuni/aec/sgr.go
+Sending build context to Docker daemon  45.16MB
+Step 1/93 : FROM golang:1.11.3 AS base
+1.11.3: Pulling from library/golang
+54f7e8ac135a: Pulling fs layer
+d6341e30912f: Pulling fs layer
+087a57faf949: Pulling fs layer
+5d71636fb824: Pulling fs layer
+f368dba6a331: Pulling fs layer
+69ffff7c9ff9: Pulling fs layer
+2613ffabce6c: Pulling fs layer
+5d71636fb824: Waiting
+f368dba6a331: Waiting
+69ffff7c9ff9: Waiting
+2613ffabce6c: Waiting
+d6341e30912f: Verifying Checksum
+d6341e30912f: Download complete
+087a57faf949: Verifying Checksum
+087a57faf949: Download complete
+54f7e8ac135a: Verifying Checksum
+54f7e8ac135a: Download complete
+5d71636fb824: Verifying Checksum
+5d71636fb824: Download complete
+2613ffabce6c: Verifying Checksum
+2613ffabce6c: Download complete
+f368dba6a331: Verifying Checksum
+f368dba6a331: Download complete
+69ffff7c9ff9: Verifying Checksum
+69ffff7c9ff9: Download complete
+Set build name.
+New build name is '#38398'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins4819403083197202309.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr52087
+/tmp/jenkins9089510367352164221.sh: line 14:  2159 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker:$GITCOMMIT .
+Error: No such container: docker-pr52087
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+90e01955edcd: Pulling fs layer
+90e01955edcd: Verifying Checksum
+90e01955edcd: Download complete
+90e01955edcd: Pull complete
+Digest: sha256:2a03a6059f21e150ae84b0973863609494aad70f0a80eaeb64bddd8d92465812
+Status: Downloaded newer image for busybox:latest
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins4415583552667048670.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log -o -name *.prof -o -name integration.test
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED
