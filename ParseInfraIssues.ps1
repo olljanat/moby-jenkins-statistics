@@ -23,6 +23,19 @@ ForEach ($File in $LogFiles) {
         }
     }
     Remove-Variable DnsIssue
+
+    [array]$AccessDeniedIssue = $Log -imatch '(Could not resolve)'
+    If ($AccessDeniedIssue.count -gt 0) {
+        [array]$AccessDeniedIssueStatistics += New-Object -TypeName PSObject -Property @{
+            "CI" = $CI
+            "Server" = $ServerName
+            "PR" = $PR
+            "Build" = $Build
+            "Error" = $AccessDeniedIssue[0]
+        }
+    }
+    Remove-Variable AccessDeniedIssue
 }
 
 $DnsIssueStatistics | Export-Csv .\DnsIssues.csv -Delimiter ";" -NoTypeInformation
+$AccessDeniedIssueStatistics | Export-Csv .\AccessDeniedIssue.csv -Delimiter ";" -NoTypeInformation
