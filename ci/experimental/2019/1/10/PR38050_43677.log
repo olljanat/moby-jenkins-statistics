@@ -1,0 +1,2702 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs-stable (i-039c90e7a74173081) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision b4842cfe88b39af42416429396aee10d1fe7c3d6 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b4842cfe88b39af42416429396aee10d1fe7c3d6
+Commit message: "Merge pull request #38354 from thaJeztah/fix_ipam_swagger"
+ > git rev-list --no-walk b4842cfe88b39af42416429396aee10d1fe7c3d6 # timeout=10
+Set build name.
+New build name is '#38050'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins7910912637124736607.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38050/head -> origin/pr/38050
+Updating b4842cf..d86e486
+Fast-forward
+ Dockerfile                                    | 14 +++++
+ cli/config/configdir.go                       |  2 +
+ cmd/dockerd/config.go                         | 15 ++++-
+ cmd/dockerd/config_common_unix.go             | 41 ++++++++++--
+ cmd/dockerd/config_unix.go                    | 11 +++-
+ cmd/dockerd/config_unix_test.go               |  3 +-
+ cmd/dockerd/config_windows.go                 | 23 ++++---
+ cmd/dockerd/daemon.go                         | 55 +++++++++++++---
+ cmd/dockerd/daemon_test.go                    | 32 +++++-----
+ cmd/dockerd/daemon_unix.go                    | 28 ++++++++-
+ cmd/dockerd/daemon_unix_test.go               | 10 +--
+ cmd/dockerd/daemon_windows.go                 |  8 ++-
+ cmd/dockerd/docker.go                         | 25 ++++++--
+ cmd/dockerd/options.go                        |  2 +
+ contrib/dockerd-rootless.sh                   | 69 ++++++++++++++++++++
+ daemon/config/config_unix.go                  |  6 ++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/daemon_unix.go                         |  3 -
+ daemon/info.go                                |  3 +
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/listeners/listeners_linux.go           |  5 ++
+ daemon/oci_linux.go                           |  9 ++-
+ docs/rootless.md                              | 90 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 34 ++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 28 +++++++++
+ hack/make/.binary-setup                       |  3 +
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 +
+ opts/hosts.go                                 | 15 ++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/homedir/homedir_linux.go                  | 88 ++++++++++++++++++++++++++
+ pkg/homedir/homedir_others.go                 | 20 ++++++
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/rootless.go                          | 26 ++++++++
+ rootless/specconv/specconv_linux.go           | 38 +++++++++++
+ 37 files changed, 667 insertions(+), 67 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+Sending build context to Docker daemon  45.13MB
+Step 1/108 : FROM golang:1.11.4 AS base
+ ---> 343df9d12b7b
+Step 2/108 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> a95c2c41ff6a
+Step 3/108 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> dcd6d028ff01
+Step 4/108 : FROM base AS criu
+ ---> dcd6d028ff01
+Step 5/108 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> 3265eab2d705
+Step 6/108 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> 35906fb2d12a
+Step 7/108 : FROM base AS registry
+ ---> dcd6d028ff01
+Step 8/108 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Using cache
+ ---> da19fcc5f18d
+Step 9/108 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> fb6ecebf5c05
+Step 10/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 705d40323292
+Step 11/108 : FROM base AS docker-py
+ ---> dcd6d028ff01
+Step 12/108 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Using cache
+ ---> 287d65468505
+Step 13/108 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> 18f091f7d855
+Step 14/108 : FROM base AS swagger
+ ---> dcd6d028ff01
+Step 15/108 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> 9c27c3bc8ee1
+Step 16/108 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 2be3064f9829
+Step 17/108 : FROM base AS frozen-images
+ ---> dcd6d028ff01
+Step 18/108 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> fb001f38d05b
+Step 19/108 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 3e3f6faaeced
+Step 20/108 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> 6d1069880fd5
+Step 21/108 : FROM base AS runtime-dev
+ ---> dcd6d028ff01
+Step 22/108 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> 5617128932f9
+Step 23/108 : FROM base AS tomlv
+ ---> dcd6d028ff01
+Step 24/108 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> fc1a052d7453
+Step 25/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 4824e06d43c6
+Step 26/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 666b38ee1b81
+Step 27/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 2df1674eab3a
+Step 28/108 : FROM base AS vndr
+ ---> dcd6d028ff01
+Step 29/108 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> 0a05d8d57457
+Step 30/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 8f2d194cf372
+Step 31/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 145485f7fe52
+Step 32/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> efdce4e75f96
+Step 33/108 : FROM base AS containerd
+ ---> dcd6d028ff01
+Step 34/108 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> 395a05669194
+Step 35/108 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> aa2942b438fe
+Step 36/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 04552872cb03
+Step 37/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 19506e248524
+Step 38/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 1d019ac61d17
+Step 39/108 : FROM base AS proxy
+ ---> dcd6d028ff01
+Step 40/108 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> da374cd10097
+Step 41/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 796b750d648c
+Step 42/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> dee8859119ff
+Step 43/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> a42e290d815f
+Step 44/108 : FROM base AS gometalinter
+ ---> dcd6d028ff01
+Step 45/108 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> f56f8c3f85f4
+Step 46/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 87d908389b92
+Step 47/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> e98792922665
+Step 48/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 76c7bd65d890
+Step 49/108 : FROM base AS dockercli
+ ---> dcd6d028ff01
+Step 50/108 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> 45c5aabe96b9
+Step 51/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 0fe3961fde79
+Step 52/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 3544ea8b306c
+Step 53/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 89e9a73742e5
+Step 54/108 : FROM runtime-dev AS runc
+ ---> 5617128932f9
+Step 55/108 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> 5322ff860bc1
+Step 56/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 560251731103
+Step 57/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 5bcfde9755bc
+Step 58/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> a4375f57d2a5
+Step 59/108 : FROM base AS tini
+ ---> dcd6d028ff01
+Step 60/108 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> ce95056d9734
+Step 61/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> a8baab8b83f6
+Step 62/108 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> f81b456f59ef
+Step 63/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> c83eb355cfd4
+Step 64/108 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 0df141c639c6
+Step 65/108 : FROM base AS rootlesskit
+ ---> dcd6d028ff01
+Step 66/108 : ENV INSTALL_BINARY_NAME=rootlesskit
+ ---> Running in 1f28dc7661e2
+Removing intermediate container 1f28dc7661e2
+ ---> 5ccaaf73f4e7
+Step 67/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> bad55d62d3e1
+Step 68/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> a1a034af853d
+Step 69/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 60de23f9dc08
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.Q7GYmYgOfs
++ GOPATH=/tmp/tmp.Q7GYmYgOfs
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=rootlesskit
++ shift
++ [[ ! -f ./rootlesskit.installer ]]
++ . ./rootlesskit.installer
+++ ROOTLESSKIT_COMMIT=77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ install_rootlesskit
++ case "$1" in
++ export CGO_ENABLED=0
++ CGO_ENABLED=0
++ _install_rootlesskit
++ echo 'Install rootlesskit version 77cdbed39ff42bc96fb23830065ec2e28b7767e6'
++ git clone https://github.com/rootless-containers/rootlesskit.git /tmp/tmp.Q7GYmYgOfs/src/github.com/rootless-containers/rootlesskit
+Install rootlesskit version 77cdbed39ff42bc96fb23830065ec2e28b7767e6
+Cloning into '/tmp/tmp.Q7GYmYgOfs/src/github.com/rootless-containers/rootlesskit'...
++ cd /tmp/tmp.Q7GYmYgOfs/src/github.com/rootless-containers/rootlesskit
++ git checkout -q 77cdbed39ff42bc96fb23830065ec2e28b7767e6
++ go build -ldflags= -o /build//rootlesskit github.com/rootless-containers/rootlesskit/cmd/rootlesskit
+Removing intermediate container 60de23f9dc08
+ ---> bd924378f82c
+Step 70/108 : COPY ./contrib/dockerd-rootless.sh /build
+ ---> f31fa3dbb5ab
+Step 71/108 : FROM base AS slirp4netns
+ ---> dcd6d028ff01
+Step 72/108 : RUN apt-get update && apt-get install -y automake autotools-dev libtool
+ ---> Running in 35a9d39d72ba
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:2 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [464 kB]
+Ign:3 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [5152 B]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7089 kB]
+Fetched 7864 kB in 2s (2996 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  autoconf file libltdl-dev libltdl7 libmagic-mgc libmagic1 libsigsegv2 m4
+Suggested packages:
+  autoconf-archive gnu-standards autoconf-doc gettext libtool-doc gfortran
+  | fortran95-compiler gcj-jdk m4-doc
+The following NEW packages will be installed:
+  autoconf automake autotools-dev file libltdl-dev libltdl7 libmagic-mgc
+  libmagic1 libsigsegv2 libtool m4
+0 upgraded, 11 newly installed, 0 to remove and 1 not upgraded.
+Need to get 2868 kB of archives.
+After this operation, 12.1 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic-mgc amd64 1:5.30-1+deb9u2 [222 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic1 amd64 1:5.30-1+deb9u2 [111 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 file amd64 1:5.30-1+deb9u2 [64.1 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsigsegv2 amd64 2.10-5 [28.9 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 m4 amd64 1.4.18-1 [202 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 autoconf all 2.69-10 [338 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 autotools-dev all 20161112.1 [73.4 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 automake all 1:1.15-6 [733 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libltdl7 amd64 2.4.6-2 [389 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libltdl-dev amd64 2.4.6-2 [161 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libtool all 2.4.6-2 [545 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 2868 kB in 1s (2636 kB/s)
+Selecting previously unselected package libmagic-mgc.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15089 files and directories currently installed.)
+Preparing to unpack .../00-libmagic-mgc_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic-mgc (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libmagic1:amd64.
+Preparing to unpack .../01-libmagic1_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../02-file_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking file (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libsigsegv2:amd64.
+Preparing to unpack .../03-libsigsegv2_2.10-5_amd64.deb ...
+Unpacking libsigsegv2:amd64 (2.10-5) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../04-m4_1.4.18-1_amd64.deb ...
+Unpacking m4 (1.4.18-1) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../05-autoconf_2.69-10_all.deb ...
+Unpacking autoconf (2.69-10) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../06-autotools-dev_20161112.1_all.deb ...
+Unpacking autotools-dev (20161112.1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../07-automake_1%3a1.15-6_all.deb ...
+Unpacking automake (1:1.15-6) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../08-libltdl7_2.4.6-2_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-2) ...
+Selecting previously unselected package libltdl-dev:amd64.
+Preparing to unpack .../09-libltdl-dev_2.4.6-2_amd64.deb ...
+Unpacking libltdl-dev:amd64 (2.4.6-2) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../10-libtool_2.4.6-2_all.deb ...
+Unpacking libtool (2.4.6-2) ...
+Setting up libsigsegv2:amd64 (2.10-5) ...
+Setting up m4 (1.4.18-1) ...
+Setting up libmagic-mgc (1:5.30-1+deb9u2) ...
+Setting up libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Setting up autotools-dev (20161112.1) ...
+Setting up libltdl7:amd64 (2.4.6-2) ...
+Setting up libltdl-dev:amd64 (2.4.6-2) ...
+Setting up autoconf (2.69-10) ...
+Setting up file (1:5.30-1+deb9u2) ...
+Setting up automake (1:1.15-6) ...
+update-alternatives: using /usr/bin/automake-1.15 to provide /usr/bin/automake (automake) in auto mode
+Setting up libtool (2.4.6-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u3) ...
+Removing intermediate container 35a9d39d72ba
+ ---> cb4957f93b91
+Step 73/108 : ENV INSTALL_BINARY_NAME=slirp4netns
+ ---> Running in 0e38f278afb0
+Removing intermediate container 0e38f278afb0
+ ---> 81b92256acb5
+Step 74/108 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 2ed177291874
+Step 75/108 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 7ea64e0f5915
+Step 76/108 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 4db06b281488
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build/
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.WEB8IS62C3
++ GOPATH=/tmp/tmp.WEB8IS62C3
++ RM_GOPATH=1
+Install docker-slirp4netns version 4a59899d79285e9962550f171f73492171aae267
+++ dirname ./install.sh
++ dir=.
++ bin=slirp4netns
++ shift
++ [[ ! -f ./slirp4netns.installer ]]
++ . ./slirp4netns.installer
+++ SLIRP4NETNS_COMMIT=4a59899d79285e9962550f171f73492171aae267
++ install_slirp4netns
++ case "$1" in
++ CONFIGURE_FLAGS=LDFLAGS=-static
++ echo 'Install docker-slirp4netns version 4a59899d79285e9962550f171f73492171aae267'
++ git clone https://github.com/rootless-containers/slirp4netns.git /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns
+Cloning into '/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns'...
++ cd /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns
++ git checkout -q 4a59899d79285e9962550f171f73492171aae267
++ ./autogen.sh
+configure.ac:6: installing './compile'
+configure.ac:9: installing './install-sh'
+configure.ac:9: installing './missing'
+Makefile.am: installing './depcomp'
+parallel-tests: installing './test-driver'
++ ./configure LDFLAGS=-static
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking for ranlib... ranlib
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... no
+checking for mawk... mawk
+checking whether make sets $(MAKE)... yes
+checking for style of include used by make... GNU
+checking whether make supports nested variables... yes
+checking dependency style of gcc... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking arpa/inet.h usability... yes
+checking arpa/inet.h presence... yes
+checking for arpa/inet.h... yes
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking netdb.h usability... yes
+checking netdb.h presence... yes
+checking for netdb.h... yes
+checking netinet/in.h usability... yes
+checking netinet/in.h presence... yes
+checking for netinet/in.h... yes
+checking for stdint.h... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for string.h... (cached) yes
+checking sys/ioctl.h usability... yes
+checking sys/ioctl.h presence... yes
+checking for sys/ioctl.h... yes
+checking sys/socket.h usability... yes
+checking sys/socket.h presence... yes
+checking for sys/socket.h... yes
+checking sys/timeb.h usability... yes
+checking sys/timeb.h presence... yes
+checking for sys/timeb.h... yes
+checking for unistd.h... (cached) yes
+checking getopt.h usability... yes
+checking getopt.h presence... yes
+checking for getopt.h... yes
+checking for stdbool.h that conforms to C99... yes
+checking for _Bool... yes
+checking for inline... inline
+checking for int16_t... yes
+checking for int32_t... yes
+checking for int64_t... yes
+checking for int8_t... yes
+checking for pid_t... yes
+checking for size_t... yes
+checking for ssize_t... yes
+checking for uint16_t... yes
+checking for uint32_t... yes
+checking for uint64_t... yes
+checking for uint8_t... yes
+checking for working alloca.h... yes
+checking for alloca... yes
+checking vfork.h usability... no
+checking vfork.h presence... no
+checking for vfork.h... no
+checking for fork... yes
+checking for vfork... yes
+checking for working fork... yes
+checking for working vfork... (cached) yes
+checking for stdlib.h... (cached) yes
+checking for GNU libc compatible malloc... yes
+checking for stdlib.h... (cached) yes
+checking for GNU libc compatible realloc... yes
+checking for atexit... yes
+checking for clock_gettime... yes
+checking for inet_ntoa... yes
+checking for memmove... yes
+checking for memset... yes
+checking for socket... yes
+checking for strchr... yes
+checking for strdup... yes
+checking for strerror... yes
+checking for strstr... yes
+checking for strtol... yes
+checking for getopt_long... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
++ make
+error: unknown option `exclude=*'
+usage: git describe [<options>] [<commit-ish>...]
+   or: git describe [<options>] --dirty
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref
+    --tags                use any tag, even unannotated
+    --long                always use long format
+    --first-parent        only follow first parent
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+    --exact-match         only output exact matches
+    --candidates <n>      consider <n> most recent tags (default: 10)
+    --match <pattern>     only consider tags matching <pattern>
+    --always              show abbreviated commit object as fallback
+    --dirty[=<mark>]      append <mark> on dirty working tree (default: "-dirty")
+
+make  all-am
+make[1]: Entering directory '/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns'
+error: unknown option `exclude=*'
+usage: git describe [<options>] [<commit-ish>...]
+   or: git describe [<options>] --dirty
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref
+    --tags                use any tag, even unannotated
+    --long                always use long format
+    --first-parent        only follow first parent
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+    --exact-match         only output exact matches
+    --candidates <n>      consider <n> most recent tags (default: 10)
+    --match <pattern>     only consider tags matching <pattern>
+    --always              show abbreviated commit object as fallback
+    --dirty[=<mark>]      append <mark> on dirty working tree (default: "-dirty")
+
+depbase=`echo qemu/slirp/arp_table.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/arp_table.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/arp_table.o qemu/slirp/arp_table.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/bootp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/bootp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/bootp.o qemu/slirp/bootp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/cksum.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/cksum.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/cksum.o qemu/slirp/cksum.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/dhcpv6.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/dhcpv6.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/dhcpv6.o qemu/slirp/dhcpv6.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/dnssearch.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/dnssearch.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/dnssearch.o qemu/slirp/dnssearch.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/if.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/if.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/if.o qemu/slirp/if.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_icmp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_icmp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_icmp.o qemu/slirp/ip6_icmp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_input.o qemu/slirp/ip6_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip6_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip6_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip6_output.o qemu/slirp/ip6_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_icmp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_icmp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_icmp.o qemu/slirp/ip_icmp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_input.o qemu/slirp/ip_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ip_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ip_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ip_output.o qemu/slirp/ip_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/mbuf.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/mbuf.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/mbuf.o qemu/slirp/mbuf.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/misc.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/misc.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/misc.o qemu/slirp/misc.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/ndp_table.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/ndp_table.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/ndp_table.o qemu/slirp/ndp_table.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/sbuf.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/sbuf.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/sbuf.o qemu/slirp/sbuf.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/slirp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/slirp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/slirp.o qemu/slirp/slirp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/socket.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/socket.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/socket.o qemu/slirp/socket.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_input.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_input.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_input.o qemu/slirp/tcp_input.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_output.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_output.o qemu/slirp/tcp_output.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_subr.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_subr.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_subr.o qemu/slirp/tcp_subr.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/tcp_timer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/tcp_timer.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/tcp_timer.o qemu/slirp/tcp_timer.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/udp6.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/udp6.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/udp6.o qemu/slirp/udp6.c &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo qemu/slirp/udp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT qemu/slirp/udp.o -MD -MP -MF $depbase.Tpo -c -o qemu/slirp/udp.o qemu/slirp/udp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libqemu_slirp.a
+ar cru libqemu_slirp.a qemu/slirp/arp_table.o qemu/slirp/bootp.o qemu/slirp/cksum.o qemu/slirp/dhcpv6.o qemu/slirp/dnssearch.o qemu/slirp/if.o qemu/slirp/ip6_icmp.o qemu/slirp/ip6_input.o qemu/slirp/ip6_output.o qemu/slirp/ip_icmp.o qemu/slirp/ip_input.o qemu/slirp/ip_output.o qemu/slirp/mbuf.o qemu/slirp/misc.o qemu/slirp/ndp_table.o qemu/slirp/sbuf.o qemu/slirp/slirp.o qemu/slirp/socket.o qemu/slirp/tcp_input.o qemu/slirp/tcp_output.o qemu/slirp/tcp_subr.o qemu/slirp/tcp_timer.o qemu/slirp/udp6.o qemu/slirp/udp.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libqemu_slirp.a
+depbase=`echo rd235_libslirp/src/qemu2libslirp.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -g -O2 -MT rd235_libslirp/src/qemu2libslirp.o -MD -MP -MF $depbase.Tpo -c -o rd235_libslirp/src/qemu2libslirp.o rd235_libslirp/src/qemu2libslirp.c &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libslirp.a
+ar cru libslirp.a rd235_libslirp/src/qemu2libslirp.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libslirp.a
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2 -MT slirp4netns-main.o -MD -MP -MF .deps/slirp4netns-main.Tpo -c -o slirp4netns-main.o `test -f 'main.c' || echo './'`main.c
+mv -f .deps/slirp4netns-main.Tpo .deps/slirp4netns-main.Po
+gcc -DHAVE_CONFIG_H -I.    -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2 -MT slirp4netns-slirp4netns.o -MD -MP -MF .deps/slirp4netns-slirp4netns.Tpo -c -o slirp4netns-slirp4netns.o `test -f 'slirp4netns.c' || echo './'`slirp4netns.c
+mv -f .deps/slirp4netns-slirp4netns.Tpo .deps/slirp4netns-slirp4netns.Po
+gcc -I /tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/rd235_libslirp/src -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/include -I/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns/qemu/slirp -DCOMMIT="\"unknown\"" -g -O2  -static -o slirp4netns slirp4netns-main.o slirp4netns-slirp4netns.o libslirp.a libqemu_slirp.a 
+make[1]: Leaving directory '/tmp/tmp.WEB8IS62C3/src/github.com/rootless-containers/slirp4netns'
++ mkdir -p /build/
++ cp slirp4netns /build//slirp4netns
++ cp COPYING /build//slirp4netns.LICENSE
+Removing intermediate container 4db06b281488
+ ---> 55022edc7f1c
+Step 77/108 : FROM runtime-dev AS dev
+ ---> 5617128932f9
+Step 78/108 : RUN groupadd -r docker
+ ---> Using cache
+ ---> d99dea3cb342
+Step 79/108 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Using cache
+ ---> 6724fc127d0f
+Step 80/108 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Using cache
+ ---> 4b688834df88
+Step 81/108 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Using cache
+ ---> 928c77408d07
+Step 82/108 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Using cache
+ ---> e7e0530554c8
+Step 83/108 : RUN ldconfig
+ ---> Using cache
+ ---> a3b21d3ca823
+Step 84/108 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	--no-install-recommends
+ ---> Using cache
+ ---> ddd3f47d3b78
+Step 85/108 : COPY --from=swagger /build/swagger* /usr/local/bin/
+ ---> Using cache
+ ---> 070c8b0c47bf
+Step 86/108 : COPY --from=frozen-images /build/ /docker-frozen-images
+ ---> Using cache
+ ---> 0236078ec7f2
+Step 87/108 : COPY --from=gometalinter /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 22a20aa8e818
+Step 88/108 : COPY --from=tomlv /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 21547bd57d82
+Step 89/108 : COPY --from=vndr /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 340f80fbd707
+Step 90/108 : COPY --from=tini /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 3e71dfbca960
+Step 91/108 : COPY --from=runc /build/ /usr/local/bin/
+ ---> Using cache
+ ---> a6c5edf23166
+Step 92/108 : COPY --from=containerd /build/ /usr/local/bin/
+ ---> Using cache
+ ---> a1117eb0e3d7
+Step 93/108 : COPY --from=proxy /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 050366de85e4
+Step 94/108 : COPY --from=dockercli /build/ /usr/local/cli
+ ---> Using cache
+ ---> 9eb8ad99dd42
+Step 95/108 : COPY --from=registry /build/registry* /usr/local/bin/
+ ---> Using cache
+ ---> 80c3b5a9c70a
+Step 96/108 : COPY --from=criu /build/ /usr/local/
+ ---> Using cache
+ ---> 0a8fcef87078
+Step 97/108 : COPY --from=docker-py /build/ /docker-py
+ ---> Using cache
+ ---> 3b65f1fc725a
+Step 98/108 : RUN cd /docker-py 	&& pip install docker-pycreds==0.2.1 	&& pip install yamllint==1.5.0 	&& pip install -r test-requirements.txt
+ ---> Using cache
+ ---> 09dff3179610
+Step 99/108 : COPY --from=rootlesskit /build/ /usr/local/bin/
+ ---> 763dce839082
+Step 100/108 : COPY --from=slirp4netns /build/ /usr/local/bin/
+ ---> 109eae207f73
+Step 101/108 : ENV PATH=/usr/local/cli:$PATH
+ ---> Running in c05fe7736216
+Removing intermediate container c05fe7736216
+ ---> bc2cbf010173
+Step 102/108 : ENV DOCKER_BUILDTAGS apparmor seccomp selinux
+ ---> Running in 3578713cb45b
+Removing intermediate container 3578713cb45b
+ ---> cd4f53e1cf13
+Step 103/108 : ENV GOMETALINTER_OPTS="--deadline=2m"
+ ---> Running in 8d3f9c8b4e8a
+Removing intermediate container 8d3f9c8b4e8a
+ ---> 6bf495acbf85
+Step 104/108 : WORKDIR /go/src/github.com/docker/docker
+ ---> Running in 9866900c7bd4
+Removing intermediate container 9866900c7bd4
+ ---> e2a3a9f8c750
+Step 105/108 : VOLUME /var/lib/docker
+ ---> Running in cc30493ba155
+Removing intermediate container cc30493ba155
+ ---> 991a7356d2f3
+Step 106/108 : ENTRYPOINT ["hack/dind"]
+ ---> Running in 03802329a189
+Removing intermediate container 03802329a189
+ ---> 32491d1e06e7
+Step 107/108 : FROM dev AS final
+ ---> 32491d1e06e7
+Step 108/108 : COPY . /go/src/github.com/docker/docker
+ ---> b8a667d96051
+Successfully built b8a667d96051
+Successfully tagged docker:d86e486-exp
+
+Removing bundles/
+
+---> Making bundle: binary-daemon (in bundles/binary-daemon)
+Building: bundles/binary-daemon/dockerd-dev
+Created binary: bundles/binary-daemon/dockerd-dev
+Copying nested executables into bundles/binary-daemon
+
+---> Making bundle: test-integration (in bundles/test-integration)
+Building test suite binary ./integration-cli/test.main
+Building test suite binary ./integration/plugin/test.main
+Building test suite binary ./integration/plugin/authz/test.main
+Building test suite binary ./integration/plugin/logging/test.main
+Building test suite binary ./integration/plugin/logging/cmd/test.main
+Building test suite binary ./integration/plugin/logging/cmd/close_on_start/test.main
+Building test suite binary ./integration/plugin/logging/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/common/test.main
+Building test suite binary ./integration/plugin/volumes/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/graphdriver/test.main
+Building test suite binary ./integration/config/test.main
+Building test suite binary ./integration/service/test.main
+Building test suite binary ./integration/network/test.main
+Building test suite binary ./integration/network/ipvlan/test.main
+Building test suite binary ./integration/network/macvlan/test.main
+Building test suite binary ./integration/secret/test.main
+Building test suite binary ./integration/session/test.main
+Building test suite binary ./integration/container/test.main
+Building test suite binary ./integration/build/test.main
+Building test suite binary ./integration/volume/test.main
+Building test suite binary ./integration/system/test.main
+Building test suite binary ./integration/image/test.main
+---> Making bundle: .integration-daemon-start (in bundles/test-integration)
+Using test binary docker
+# DOCKER_EXPERIMENTAL is set: starting daemon with experimental features enabled! 
+/etc/init.d/apparmor: 130: /etc/init.d/apparmor: systemd-detect-virt: not found
+Starting AppArmor profiles:Warning from stdin (line 1): /sbin/apparmor_parser: cannot use or update cache, disable, or force-complain via stdin
+Warning failed to create cache: (null)
+.
+Starting dockerd
+INFO: Waiting for daemon to start...
+.
+---> Making bundle: .integration-daemon-setup (in bundles/test-integration)
+---> Making bundle: .ensure-emptyfs (in bundles/test-integration)
+Error: No such image: emptyfs
+Running integration-test (iteration 1)
+Running /go/src/github.com/docker/docker/integration/plugin
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/authz
+Loaded image: buildpack-deps:jessie
+Loaded image: busybox:latest
+Loaded image: busybox:glibc
+Loaded image: debian:jessie
+Loaded image: hello-world:latest
+INFO: Testing against a local daemon
+=== RUN   TestAuthZPluginAllowRequest
+--- PASS: TestAuthZPluginAllowRequest (4.14s)
+    daemon.go:296: [d45a7599aa1c5] waiting for daemon to start
+    daemon.go:328: [d45a7599aa1c5] daemon started
+    daemon.go:283: [d45a7599aa1c5] exiting daemon
+=== RUN   TestAuthZPluginTLS
+--- PASS: TestAuthZPluginTLS (2.98s)
+    daemon.go:296: [dfd041778d914] waiting for daemon to start
+    daemon.go:328: [dfd041778d914] daemon started
+    daemon.go:283: [dfd041778d914] exiting daemon
+=== RUN   TestAuthZPluginDenyRequest
+--- PASS: TestAuthZPluginDenyRequest (2.81s)
+    daemon.go:296: [d789765964ed7] waiting for daemon to start
+    daemon.go:328: [d789765964ed7] daemon started
+    daemon.go:283: [d789765964ed7] exiting daemon
+=== RUN   TestAuthZPluginAPIDenyResponse
+--- PASS: TestAuthZPluginAPIDenyResponse (3.26s)
+    daemon.go:296: [d58a72232e088] waiting for daemon to start
+    daemon.go:328: [d58a72232e088] daemon started
+    daemon.go:283: [d58a72232e088] exiting daemon
+=== RUN   TestAuthZPluginDenyResponse
+--- PASS: TestAuthZPluginDenyResponse (0.54s)
+    daemon.go:296: [d40b2353b0579] waiting for daemon to start
+    daemon.go:328: [d40b2353b0579] daemon started
+    daemon.go:283: [d40b2353b0579] exiting daemon
+=== RUN   TestAuthZPluginAllowEventStream
+--- PASS: TestAuthZPluginAllowEventStream (1.25s)
+    daemon.go:296: [d6206318cd9b7] waiting for daemon to start
+    daemon.go:328: [d6206318cd9b7] daemon started
+    daemon.go:283: [d6206318cd9b7] exiting daemon
+=== RUN   TestAuthZPluginErrorResponse
+--- PASS: TestAuthZPluginErrorResponse (0.54s)
+    daemon.go:296: [da5fb0436dd39] waiting for daemon to start
+    daemon.go:328: [da5fb0436dd39] daemon started
+    daemon.go:283: [da5fb0436dd39] exiting daemon
+=== RUN   TestAuthZPluginErrorRequest
+--- PASS: TestAuthZPluginErrorRequest (0.52s)
+    daemon.go:296: [d67305b6a3246] waiting for daemon to start
+    daemon.go:328: [d67305b6a3246] daemon started
+    daemon.go:283: [d67305b6a3246] exiting daemon
+=== RUN   TestAuthZPluginEnsureNoDuplicatePluginRegistration
+--- PASS: TestAuthZPluginEnsureNoDuplicatePluginRegistration (0.52s)
+    daemon.go:296: [d54114d91ac4a] waiting for daemon to start
+    daemon.go:328: [d54114d91ac4a] daemon started
+    daemon.go:283: [d54114d91ac4a] exiting daemon
+=== RUN   TestAuthZPluginEnsureLoadImportWorking
+--- PASS: TestAuthZPluginEnsureLoadImportWorking (1.46s)
+    daemon.go:296: [d35f96ea95ef7] waiting for daemon to start
+    daemon.go:328: [d35f96ea95ef7] daemon started
+    daemon.go:283: [d35f96ea95ef7] exiting daemon
+=== RUN   TestAuthzPluginEnsureContainerCopyToFrom
+--- PASS: TestAuthzPluginEnsureContainerCopyToFrom (1.54s)
+    daemon.go:296: [dc01351676ed0] waiting for daemon to start
+    daemon.go:328: [dc01351676ed0] daemon started
+    daemon.go:283: [dc01351676ed0] exiting daemon
+=== RUN   TestAuthZPluginHeader
+--- PASS: TestAuthZPluginHeader (0.71s)
+    daemon.go:296: [d8be0682a4141] waiting for daemon to start
+    daemon.go:328: [d8be0682a4141] daemon started
+    daemon.go:283: [d8be0682a4141] exiting daemon
+=== RUN   TestAuthZPluginV2AllowNonVolumeRequest
+--- PASS: TestAuthZPluginV2AllowNonVolumeRequest (6.51s)
+    daemon.go:296: [dfcc966a14214] waiting for daemon to start
+    daemon.go:328: [dfcc966a14214] daemon started
+    daemon.go:283: [dfcc966a14214] exiting daemon
+    daemon.go:296: [dfcc966a14214] waiting for daemon to start
+    daemon.go:328: [dfcc966a14214] daemon started
+    daemon.go:283: [dfcc966a14214] exiting daemon
+=== RUN   TestAuthZPluginV2Disable
+--- PASS: TestAuthZPluginV2Disable (6.01s)
+    daemon.go:296: [d3ba38cfd44db] waiting for daemon to start
+    daemon.go:328: [d3ba38cfd44db] daemon started
+    daemon.go:283: [d3ba38cfd44db] exiting daemon
+    daemon.go:296: [d3ba38cfd44db] waiting for daemon to start
+    daemon.go:328: [d3ba38cfd44db] daemon started
+    daemon.go:283: [d3ba38cfd44db] exiting daemon
+=== RUN   TestAuthZPluginV2RejectVolumeRequests
+--- PASS: TestAuthZPluginV2RejectVolumeRequests (5.65s)
+    daemon.go:296: [d70d329d2c09a] waiting for daemon to start
+    daemon.go:328: [d70d329d2c09a] daemon started
+    daemon.go:283: [d70d329d2c09a] exiting daemon
+    daemon.go:296: [d70d329d2c09a] waiting for daemon to start
+    daemon.go:328: [d70d329d2c09a] daemon started
+    daemon.go:283: [d70d329d2c09a] exiting daemon
+=== RUN   TestAuthZPluginV2BadManifestFailsDaemonStart
+--- PASS: TestAuthZPluginV2BadManifestFailsDaemonStart (13.86s)
+    daemon.go:296: [dd3a3798f6703] waiting for daemon to start
+    daemon.go:328: [dd3a3798f6703] daemon started
+    daemon.go:283: [dd3a3798f6703] exiting daemon
+    daemon.go:296: [dd3a3798f6703] waiting for daemon to start
+    daemon.go:296: [dd3a3798f6703] waiting for daemon to start
+    daemon.go:283: [dd3a3798f6703] exiting daemon
+    daemon.go:296: [dd3a3798f6703] waiting for daemon to start
+    daemon.go:328: [dd3a3798f6703] daemon started
+    daemon.go:283: [dd3a3798f6703] exiting daemon
+=== RUN   TestAuthZPluginV2NonexistentFailsDaemonStart
+--- PASS: TestAuthZPluginV2NonexistentFailsDaemonStart (16.52s)
+    daemon.go:296: [dc8b7b788e900] waiting for daemon to start
+    daemon.go:328: [dc8b7b788e900] daemon started
+    daemon.go:283: [dc8b7b788e900] exiting daemon
+    daemon.go:296: [dc8b7b788e900] waiting for daemon to start
+    daemon.go:296: [dc8b7b788e900] waiting for daemon to start
+    daemon.go:296: [dc8b7b788e900] waiting for daemon to start
+    daemon.go:328: [dc8b7b788e900] daemon started
+    daemon.go:283: [dc8b7b788e900] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging
+INFO: Testing against a local daemon
+=== RUN   TestContinueAfterPluginCrash
+=== PAUSE TestContinueAfterPluginCrash
+=== RUN   TestDaemonStartWithLogOpt
+=== PAUSE TestDaemonStartWithLogOpt
+=== CONT  TestContinueAfterPluginCrash
+=== CONT  TestDaemonStartWithLogOpt
+--- PASS: TestDaemonStartWithLogOpt (14.49s)
+    daemon.go:296: [d594067de4e2d] waiting for daemon to start
+    daemon.go:328: [d594067de4e2d] daemon started
+    daemon.go:283: [d594067de4e2d] exiting daemon
+    daemon.go:296: [d594067de4e2d] waiting for daemon to start
+    daemon.go:328: [d594067de4e2d] daemon started
+    daemon.go:283: [d594067de4e2d] exiting daemon
+--- PASS: TestContinueAfterPluginCrash (15.97s)
+    daemon.go:296: [d6c39aa2b8b8e] waiting for daemon to start
+    daemon.go:328: [d6c39aa2b8b8e] daemon started
+    daemon.go:283: [d6c39aa2b8b8e] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd/close_on_start
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/logging/cmd/dummy
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/common
+INFO: Testing against a local daemon
+=== RUN   TestPluginInvalidJSON
+=== RUN   TestPluginInvalidJSON//plugins/foobar/set
+=== PAUSE TestPluginInvalidJSON//plugins/foobar/set
+=== CONT  TestPluginInvalidJSON//plugins/foobar/set
+--- PASS: TestPluginInvalidJSON (0.01s)
+    --- PASS: TestPluginInvalidJSON//plugins/foobar/set (0.00s)
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes
+INFO: Testing against a local daemon
+=== RUN   TestPluginWithDevMounts
+=== PAUSE TestPluginWithDevMounts
+=== CONT  TestPluginWithDevMounts
+--- PASS: TestPluginWithDevMounts (1.72s)
+    daemon.go:296: [d9cfbcf46aa97] waiting for daemon to start
+    daemon.go:328: [d9cfbcf46aa97] daemon started
+    daemon.go:283: [d9cfbcf46aa97] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes/cmd
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/volumes/cmd/dummy
+testing: warning: no tests to run
+PASS
+Running /go/src/github.com/docker/docker/integration/plugin/graphdriver
+INFO: Testing against a local daemon
+=== RUN   TestExternalGraphDriver
+=== RUN   TestExternalGraphDriver/json
+=== RUN   TestExternalGraphDriver/spec
+=== RUN   TestExternalGraphDriver/pull
+--- PASS: TestExternalGraphDriver (6.90s)
+    daemon.go:296: [d9fb7e184b7d3] waiting for daemon to start
+    daemon.go:328: [d9fb7e184b7d3] daemon started
+    daemon.go:283: [d9fb7e184b7d3] exiting daemon
+    daemon.go:296: [d9fb7e184b7d3] waiting for daemon to start
+    daemon.go:328: [d9fb7e184b7d3] daemon started
+    daemon.go:283: [d9fb7e184b7d3] exiting daemon
+    --- PASS: TestExternalGraphDriver/json (1.71s)
+    daemon.go:296: [d9fb7e184b7d3] waiting for daemon to start
+    daemon.go:328: [d9fb7e184b7d3] daemon started
+    daemon.go:283: [d9fb7e184b7d3] exiting daemon
+    daemon.go:296: [d9fb7e184b7d3] waiting for daemon to start
+    daemon.go:328: [d9fb7e184b7d3] daemon started
+    daemon.go:283: [d9fb7e184b7d3] exiting daemon
+    --- PASS: TestExternalGraphDriver/spec (1.72s)
+    daemon.go:296: [d9fb7e184b7d3] waiting for daemon to start
+    daemon.go:328: [d9fb7e184b7d3] daemon started
+    daemon.go:283: [d9fb7e184b7d3] exiting daemon
+    --- PASS: TestExternalGraphDriver/pull (3.03s)
+=== RUN   TestGraphdriverPluginV2
+--- SKIP: TestGraphdriverPluginV2 (0.35s)
+    external_test.go:411: !requirement.Overlay2Supported(testEnv.DaemonInfo.KernelVersion)
+PASS
+Running /go/src/github.com/docker/docker/integration/config
+INFO: Testing against a local daemon
+=== RUN   TestConfigList
+--- PASS: TestConfigList (2.19s)
+    daemon.go:296: [d8a9d7ce3b58d] waiting for daemon to start
+    daemon.go:328: [d8a9d7ce3b58d] daemon started
+    daemon.go:283: [d8a9d7ce3b58d] exiting daemon
+=== RUN   TestConfigsCreateAndDelete
+--- PASS: TestConfigsCreateAndDelete (2.02s)
+    daemon.go:296: [d352ba94fdbc3] waiting for daemon to start
+    daemon.go:328: [d352ba94fdbc3] daemon started
+    daemon.go:283: [d352ba94fdbc3] exiting daemon
+=== RUN   TestConfigsUpdate
+--- PASS: TestConfigsUpdate (2.06s)
+    daemon.go:296: [dc0852d25f83a] waiting for daemon to start
+    daemon.go:328: [dc0852d25f83a] daemon started
+    daemon.go:283: [dc0852d25f83a] exiting daemon
+=== RUN   TestTemplatedConfig
+--- PASS: TestTemplatedConfig (2.62s)
+    daemon.go:296: [d20bb78e0b109] waiting for daemon to start
+    daemon.go:328: [d20bb78e0b109] daemon started
+    daemon.go:283: [d20bb78e0b109] exiting daemon
+=== RUN   TestConfigInspect
+--- PASS: TestConfigInspect (2.09s)
+    daemon.go:296: [dadeb1e5eba49] waiting for daemon to start
+    daemon.go:328: [dadeb1e5eba49] daemon started
+    daemon.go:283: [dadeb1e5eba49] exiting daemon
+=== RUN   TestConfigCreateWithLabels
+--- PASS: TestConfigCreateWithLabels (2.03s)
+    daemon.go:296: [d256549455b72] waiting for daemon to start
+    daemon.go:328: [d256549455b72] daemon started
+    daemon.go:283: [d256549455b72] exiting daemon
+=== RUN   TestConfigCreateResolve
+--- PASS: TestConfigCreateResolve (2.04s)
+    daemon.go:296: [d7bb4ad46d7ca] waiting for daemon to start
+    daemon.go:328: [d7bb4ad46d7ca] daemon started
+    daemon.go:283: [d7bb4ad46d7ca] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/service
+INFO: Testing against a local daemon
+=== RUN   TestServiceCreateInit
+=== RUN   TestServiceCreateInit/daemonInitDisabled
+=== RUN   TestServiceCreateInit/daemonInitEnabled
+--- PASS: TestServiceCreateInit (8.18s)
+    --- PASS: TestServiceCreateInit/daemonInitDisabled (4.14s)
+        daemon.go:296: [d615d5f4cb929] waiting for daemon to start
+        daemon.go:328: [d615d5f4cb929] daemon started
+        daemon.go:283: [d615d5f4cb929] exiting daemon
+    --- PASS: TestServiceCreateInit/daemonInitEnabled (4.04s)
+        daemon.go:296: [d9214811368ab] waiting for daemon to start
+        daemon.go:328: [d9214811368ab] daemon started
+        daemon.go:283: [d9214811368ab] exiting daemon
+=== RUN   TestCreateServiceMultipleTimes
+--- PASS: TestCreateServiceMultipleTimes (24.98s)
+    daemon.go:296: [d4098179677f5] waiting for daemon to start
+    daemon.go:328: [d4098179677f5] daemon started
+    daemon.go:283: [d4098179677f5] exiting daemon
+=== RUN   TestCreateServiceConflict
+--- PASS: TestCreateServiceConflict (1.99s)
+    daemon.go:296: [daded6911bfc8] waiting for daemon to start
+    daemon.go:328: [daded6911bfc8] daemon started
+    daemon.go:283: [daded6911bfc8] exiting daemon
+=== RUN   TestCreateServiceMaxReplicas
+--- PASS: TestCreateServiceMaxReplicas (2.77s)
+    daemon.go:296: [d332523fa4d4f] waiting for daemon to start
+    daemon.go:328: [d332523fa4d4f] daemon started
+    daemon.go:283: [d332523fa4d4f] exiting daemon
+=== RUN   TestCreateWithDuplicateNetworkNames
+--- PASS: TestCreateWithDuplicateNetworkNames (12.99s)
+    daemon.go:296: [d95d03793e3b5] waiting for daemon to start
+    daemon.go:328: [d95d03793e3b5] daemon started
+    daemon.go:283: [d95d03793e3b5] exiting daemon
+=== RUN   TestCreateServiceSecretFileMode
+--- PASS: TestCreateServiceSecretFileMode (2.56s)
+    daemon.go:296: [de1826b3b1ba3] waiting for daemon to start
+    daemon.go:328: [de1826b3b1ba3] daemon started
+    daemon.go:283: [de1826b3b1ba3] exiting daemon
+=== RUN   TestCreateServiceConfigFileMode
+--- PASS: TestCreateServiceConfigFileMode (2.56s)
+    daemon.go:296: [dda406711a02d] waiting for daemon to start
+    daemon.go:328: [dda406711a02d] daemon started
+    daemon.go:283: [dda406711a02d] exiting daemon
+=== RUN   TestCreateServiceSysctls
+--- PASS: TestCreateServiceSysctls (3.19s)
+    daemon.go:296: [d70ca835178f0] waiting for daemon to start
+    daemon.go:328: [d70ca835178f0] daemon started
+    daemon.go:283: [d70ca835178f0] exiting daemon
+=== RUN   TestInspect
+--- PASS: TestInspect (2.04s)
+    daemon.go:296: [d8bc7e60b240a] waiting for daemon to start
+    daemon.go:328: [d8bc7e60b240a] daemon started
+    daemon.go:283: [d8bc7e60b240a] exiting daemon
+=== RUN   TestDockerNetworkConnectAlias
+--- PASS: TestDockerNetworkConnectAlias (4.02s)
+    daemon.go:296: [dab204db22519] waiting for daemon to start
+    daemon.go:328: [dab204db22519] daemon started
+    daemon.go:283: [dab204db22519] exiting daemon
+=== RUN   TestServicePlugin
+--- PASS: TestServicePlugin (35.35s)
+    daemon.go:296: [d4f553a7bf54b] waiting for daemon to start
+    daemon.go:328: [d4f553a7bf54b] daemon started
+    daemon.go:283: [d4f553a7bf54b] exiting daemon
+    daemon.go:296: [dee58051dfc66] waiting for daemon to start
+    daemon.go:328: [dee58051dfc66] daemon started
+    daemon.go:296: [dfe5fb82fb540] waiting for daemon to start
+    daemon.go:328: [dfe5fb82fb540] daemon started
+    daemon.go:296: [d96d7616331ad] waiting for daemon to start
+    daemon.go:328: [d96d7616331ad] daemon started
+    daemon.go:283: [d96d7616331ad] exiting daemon
+    daemon.go:283: [dfe5fb82fb540] exiting daemon
+    daemon.go:283: [dee58051dfc66] exiting daemon
+=== RUN   TestServiceUpdateLabel
+--- PASS: TestServiceUpdateLabel (2.15s)
+    daemon.go:296: [d022b044aaaa6] waiting for daemon to start
+    daemon.go:328: [d022b044aaaa6] daemon started
+    daemon.go:283: [d022b044aaaa6] exiting daemon
+=== RUN   TestServiceUpdateSecrets
+--- PASS: TestServiceUpdateSecrets (14.80s)
+    daemon.go:296: [da102f00d945e] waiting for daemon to start
+    daemon.go:328: [da102f00d945e] daemon started
+    daemon.go:283: [da102f00d945e] exiting daemon
+=== RUN   TestServiceUpdateConfigs
+--- PASS: TestServiceUpdateConfigs (14.61s)
+    daemon.go:296: [d08e4c2f5975b] waiting for daemon to start
+    daemon.go:328: [d08e4c2f5975b] daemon started
+    daemon.go:283: [d08e4c2f5975b] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/network
+INFO: Testing against a local daemon
+=== RUN   TestNetworkCreateDelete
+--- PASS: TestNetworkCreateDelete (0.11s)
+=== RUN   TestDockerNetworkDeletePreferID
+--- PASS: TestDockerNetworkDeletePreferID (0.27s)
+=== RUN   TestInspectNetwork
+--- PASS: TestInspectNetwork (23.97s)
+    daemon.go:296: [dd581c8a74a25] waiting for daemon to start
+    daemon.go:328: [dd581c8a74a25] daemon started
+    daemon.go:283: [dd581c8a74a25] exiting daemon
+=== RUN   TestRunContainerWithBridgeNone
+--- PASS: TestRunContainerWithBridgeNone (2.03s)
+    daemon.go:296: [d60c7d71c2052] waiting for daemon to start
+    daemon.go:328: [d60c7d71c2052] daemon started
+    daemon.go:283: [d60c7d71c2052] exiting daemon
+=== RUN   TestNetworkInvalidJSON
+=== RUN   TestNetworkInvalidJSON//networks/create
+=== PAUSE TestNetworkInvalidJSON//networks/create
+=== RUN   TestNetworkInvalidJSON//networks/bridge/connect
+=== PAUSE TestNetworkInvalidJSON//networks/bridge/connect
+=== RUN   TestNetworkInvalidJSON//networks/bridge/disconnect
+=== PAUSE TestNetworkInvalidJSON//networks/bridge/disconnect
+=== CONT  TestNetworkInvalidJSON//networks/create
+=== CONT  TestNetworkInvalidJSON//networks/bridge/disconnect
+=== CONT  TestNetworkInvalidJSON//networks/bridge/connect
+--- PASS: TestNetworkInvalidJSON (0.01s)
+    --- PASS: TestNetworkInvalidJSON//networks/bridge/disconnect (0.00s)
+    --- PASS: TestNetworkInvalidJSON//networks/create (0.00s)
+    --- PASS: TestNetworkInvalidJSON//networks/bridge/connect (0.00s)
+=== RUN   TestDaemonRestartWithLiveRestore
+--- PASS: TestDaemonRestartWithLiveRestore (1.03s)
+    daemon.go:296: [d1a9959dc2e97] waiting for daemon to start
+    daemon.go:328: [d1a9959dc2e97] daemon started
+    daemon.go:283: [d1a9959dc2e97] exiting daemon
+    daemon.go:296: [d1a9959dc2e97] waiting for daemon to start
+    daemon.go:328: [d1a9959dc2e97] daemon started
+    daemon.go:283: [d1a9959dc2e97] exiting daemon
+=== RUN   TestDaemonDefaultNetworkPools
+--- PASS: TestDaemonDefaultNetworkPools (0.66s)
+    daemon.go:296: [d587f2cb5062a] waiting for daemon to start
+    daemon.go:328: [d587f2cb5062a] daemon started
+    daemon.go:283: [d587f2cb5062a] exiting daemon
+=== RUN   TestDaemonRestartWithExistingNetwork
+--- PASS: TestDaemonRestartWithExistingNetwork (1.10s)
+    daemon.go:296: [decbe98875398] waiting for daemon to start
+    daemon.go:328: [decbe98875398] daemon started
+    daemon.go:283: [decbe98875398] exiting daemon
+    daemon.go:296: [decbe98875398] waiting for daemon to start
+    daemon.go:328: [decbe98875398] daemon started
+    daemon.go:283: [decbe98875398] exiting daemon
+=== RUN   TestDaemonRestartWithExistingNetworkWithDefaultPoolRange
+--- PASS: TestDaemonRestartWithExistingNetworkWithDefaultPoolRange (1.18s)
+    daemon.go:296: [dfc6ec490cf21] waiting for daemon to start
+    daemon.go:328: [dfc6ec490cf21] daemon started
+    daemon.go:283: [dfc6ec490cf21] exiting daemon
+    daemon.go:296: [dfc6ec490cf21] waiting for daemon to start
+    daemon.go:328: [dfc6ec490cf21] daemon started
+    daemon.go:283: [dfc6ec490cf21] exiting daemon
+=== RUN   TestDaemonWithBipAndDefaultNetworkPool
+--- PASS: TestDaemonWithBipAndDefaultNetworkPool (0.54s)
+    daemon.go:296: [d06721260046a] waiting for daemon to start
+    daemon.go:328: [d06721260046a] daemon started
+    daemon.go:283: [d06721260046a] exiting daemon
+=== RUN   TestServiceWithPredefinedNetwork
+--- PASS: TestServiceWithPredefinedNetwork (2.02s)
+    daemon.go:296: [d75395250be04] waiting for daemon to start
+    daemon.go:328: [d75395250be04] daemon started
+    daemon.go:283: [d75395250be04] exiting daemon
+=== RUN   TestServiceRemoveKeepsIngressNetwork
+--- PASS: TestServiceRemoveKeepsIngressNetwork (12.11s)
+    daemon.go:296: [d42cad6502ae4] waiting for daemon to start
+    daemon.go:328: [d42cad6502ae4] daemon started
+    daemon.go:283: [d42cad6502ae4] exiting daemon
+=== RUN   TestServiceWithDataPathPortInit
+--- PASS: TestServiceWithDataPathPortInit (4.30s)
+    daemon.go:296: [d9281d41902ce] waiting for daemon to start
+    daemon.go:328: [d9281d41902ce] daemon started
+    daemon.go:283: [d9281d41902ce] exiting daemon
+    daemon.go:296: [da39d331ad445] waiting for daemon to start
+    daemon.go:328: [da39d331ad445] daemon started
+    daemon.go:283: [da39d331ad445] exiting daemon
+=== RUN   TestServiceWithDefaultAddressPoolInit
+--- PASS: TestServiceWithDefaultAddressPoolInit (4.16s)
+    daemon.go:296: [d03e765746437] waiting for daemon to start
+    daemon.go:328: [d03e765746437] daemon started
+    service_test.go:420: TestServiceWithDefaultAddressPoolInit: NetworkInspect: {Name:saanvisthiraTestServiceWithDefaultAddressPoolInit ID:ze0a4emwhef9jvqrdxl4whjin Created:2019-01-10 03:06:35.005982991 +0000 UTC Scope:swarm Driver:overlay EnableIPv6:false IPAM:{Driver:default Options:map[] Config:[{Subnet:20.20.0.0/24 IPRange: Gateway:20.20.0.1 AuxAddress:map[]}]} Internal:false Attachable:false Ingress:false ConfigFrom:{Network:} ConfigOnly:false Containers:map[] Options:map[com.docker.network.driver.overlay.vxlanid_list:4097] Labels:map[] Peers:[] Services:map[]}
+    daemon.go:283: [d03e765746437] exiting daemon
+    daemon.go:296: [d589f73c858a5] waiting for daemon to start
+    daemon.go:328: [d589f73c858a5] daemon started
+    daemon.go:283: [d589f73c858a5] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/network/ipvlan
+INFO: Testing against a local daemon
+=== RUN   TestDockerNetworkIpvlanPersistance
+--- PASS: TestDockerNetworkIpvlanPersistance (1.27s)
+    daemon.go:296: [da3d20d04e700] waiting for daemon to start
+    daemon.go:328: [da3d20d04e700] daemon started
+    daemon.go:283: [da3d20d04e700] exiting daemon
+    daemon.go:296: [da3d20d04e700] waiting for daemon to start
+    daemon.go:328: [da3d20d04e700] daemon started
+    daemon.go:283: [da3d20d04e700] exiting daemon
+=== RUN   TestDockerNetworkIpvlan
+=== RUN   TestDockerNetworkIpvlan/Subinterface
+=== RUN   TestDockerNetworkIpvlan/OverlapParent
+=== RUN   TestDockerNetworkIpvlan/L2NilParent
+=== RUN   TestDockerNetworkIpvlan/L2InternalMode
+=== RUN   TestDockerNetworkIpvlan/L3NilParent
+=== RUN   TestDockerNetworkIpvlan/L3InternalMode
+=== RUN   TestDockerNetworkIpvlan/L2MultiSubnet
+=== RUN   TestDockerNetworkIpvlan/L3MultiSubnet
+=== RUN   TestDockerNetworkIpvlan/Addressing
+--- PASS: TestDockerNetworkIpvlan (110.16s)
+    daemon.go:296: [d82cae1c938a0] waiting for daemon to start
+    daemon.go:328: [d82cae1c938a0] daemon started
+    --- PASS: TestDockerNetworkIpvlan/Subinterface (0.09s)
+    daemon.go:283: [d82cae1c938a0] exiting daemon
+    daemon.go:296: [d57e227ba915a] waiting for daemon to start
+    daemon.go:328: [d57e227ba915a] daemon started
+    --- PASS: TestDockerNetworkIpvlan/OverlapParent (0.05s)
+    daemon.go:283: [d57e227ba915a] exiting daemon
+    daemon.go:296: [d32cfeebfdd3f] waiting for daemon to start
+    daemon.go:328: [d32cfeebfdd3f] daemon started
+    --- PASS: TestDockerNetworkIpvlan/L2NilParent (0.89s)
+    daemon.go:283: [d32cfeebfdd3f] exiting daemon
+    daemon.go:296: [d4707d214c2e3] waiting for daemon to start
+    daemon.go:328: [d4707d214c2e3] daemon started
+    --- PASS: TestDockerNetworkIpvlan/L2InternalMode (1.86s)
+    daemon.go:283: [d4707d214c2e3] exiting daemon
+    daemon.go:296: [ddcda2da61c50] waiting for daemon to start
+    daemon.go:328: [ddcda2da61c50] daemon started
+    --- PASS: TestDockerNetworkIpvlan/L3NilParent (15.89s)
+    daemon.go:283: [ddcda2da61c50] exiting daemon
+    daemon.go:296: [d8c343ca1fc01] waiting for daemon to start
+    daemon.go:328: [d8c343ca1fc01] daemon started
+    --- PASS: TestDockerNetworkIpvlan/L3InternalMode (16.88s)
+    daemon.go:283: [d8c343ca1fc01] exiting daemon
+    daemon.go:296: [deff7fb4409e1] waiting for daemon to start
+    daemon.go:328: [deff7fb4409e1] daemon started
+    --- PASS: TestDockerNetworkIpvlan/L2MultiSubnet (17.18s)
+    daemon.go:283: [deff7fb4409e1] exiting daemon
+    daemon.go:296: [da4bdf2172eea] waiting for daemon to start
+    daemon.go:328: [da4bdf2172eea] daemon started
+    --- PASS: TestDockerNetworkIpvlan/L3MultiSubnet (17.14s)
+    daemon.go:283: [da4bdf2172eea] exiting daemon
+    daemon.go:296: [d5925a5929375] waiting for daemon to start
+    daemon.go:328: [d5925a5929375] daemon started
+    --- PASS: TestDockerNetworkIpvlan/Addressing (31.32s)
+    daemon.go:283: [d5925a5929375] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/network/macvlan
+INFO: Testing against a local daemon
+=== RUN   TestDockerNetworkMacvlanPersistance
+--- PASS: TestDockerNetworkMacvlanPersistance (1.26s)
+    daemon.go:296: [d8e94f54b6433] waiting for daemon to start
+    daemon.go:328: [d8e94f54b6433] daemon started
+    daemon.go:283: [d8e94f54b6433] exiting daemon
+    daemon.go:296: [d8e94f54b6433] waiting for daemon to start
+    daemon.go:328: [d8e94f54b6433] daemon started
+    daemon.go:283: [d8e94f54b6433] exiting daemon
+=== RUN   TestDockerNetworkMacvlan
+=== RUN   TestDockerNetworkMacvlan/Subinterface
+=== RUN   TestDockerNetworkMacvlan/OverlapParent
+=== RUN   TestDockerNetworkMacvlan/NilParent
+=== RUN   TestDockerNetworkMacvlan/InternalMode
+=== RUN   TestDockerNetworkMacvlan/Addressing
+--- PASS: TestDockerNetworkMacvlan (22.89s)
+    daemon.go:296: [d1ee7e0ea0fff] waiting for daemon to start
+    daemon.go:328: [d1ee7e0ea0fff] daemon started
+    --- PASS: TestDockerNetworkMacvlan/Subinterface (0.06s)
+    daemon.go:283: [d1ee7e0ea0fff] exiting daemon
+    daemon.go:296: [df2489dd66f0a] waiting for daemon to start
+    daemon.go:328: [df2489dd66f0a] daemon started
+    --- PASS: TestDockerNetworkMacvlan/OverlapParent (0.07s)
+    daemon.go:283: [df2489dd66f0a] exiting daemon
+    daemon.go:296: [d647202200eb2] waiting for daemon to start
+    daemon.go:328: [d647202200eb2] daemon started
+    --- PASS: TestDockerNetworkMacvlan/NilParent (0.84s)
+    daemon.go:283: [d647202200eb2] exiting daemon
+    daemon.go:296: [d695a1fcd200e] waiting for daemon to start
+    daemon.go:328: [d695a1fcd200e] daemon started
+    --- PASS: TestDockerNetworkMacvlan/InternalMode (1.89s)
+    daemon.go:283: [d695a1fcd200e] exiting daemon
+    daemon.go:296: [d43b141a847a8] waiting for daemon to start
+    daemon.go:328: [d43b141a847a8] daemon started
+    --- PASS: TestDockerNetworkMacvlan/Addressing (15.65s)
+    daemon.go:283: [d43b141a847a8] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/secret
+INFO: Testing against a local daemon
+=== RUN   TestSecretInspect
+--- PASS: TestSecretInspect (2.14s)
+    daemon.go:296: [d5500dabccd47] waiting for daemon to start
+    daemon.go:328: [d5500dabccd47] daemon started
+    daemon.go:283: [d5500dabccd47] exiting daemon
+=== RUN   TestSecretList
+--- PASS: TestSecretList (2.11s)
+    daemon.go:296: [dad8f37367c7c] waiting for daemon to start
+    daemon.go:328: [dad8f37367c7c] daemon started
+    daemon.go:283: [dad8f37367c7c] exiting daemon
+=== RUN   TestSecretsCreateAndDelete
+--- PASS: TestSecretsCreateAndDelete (2.01s)
+    daemon.go:296: [d4cff04959ccd] waiting for daemon to start
+    daemon.go:328: [d4cff04959ccd] daemon started
+    daemon.go:283: [d4cff04959ccd] exiting daemon
+=== RUN   TestSecretsUpdate
+--- PASS: TestSecretsUpdate (2.05s)
+    daemon.go:296: [db464051e4a25] waiting for daemon to start
+    daemon.go:328: [db464051e4a25] daemon started
+    daemon.go:283: [db464051e4a25] exiting daemon
+=== RUN   TestTemplatedSecret
+--- PASS: TestTemplatedSecret (2.61s)
+    daemon.go:296: [d76f0bd237815] waiting for daemon to start
+    daemon.go:328: [d76f0bd237815] daemon started
+    daemon.go:283: [d76f0bd237815] exiting daemon
+=== RUN   TestSecretCreateResolve
+--- PASS: TestSecretCreateResolve (2.01s)
+    daemon.go:296: [d3a456a17c5ed] waiting for daemon to start
+    daemon.go:328: [d3a456a17c5ed] daemon started
+    daemon.go:283: [d3a456a17c5ed] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/session
+INFO: Testing against a local daemon
+=== RUN   TestSessionCreate
+--- PASS: TestSessionCreate (0.01s)
+=== RUN   TestSessionCreateWithBadUpgrade
+--- PASS: TestSessionCreateWithBadUpgrade (0.00s)
+PASS
+Running /go/src/github.com/docker/docker/integration/container
+INFO: Testing against a local daemon
+=== RUN   TestContainerInvalidJSON
+=== RUN   TestContainerInvalidJSON//containers/foobar/copy
+=== PAUSE TestContainerInvalidJSON//containers/foobar/copy
+=== RUN   TestContainerInvalidJSON//containers/foobar/exec
+=== PAUSE TestContainerInvalidJSON//containers/foobar/exec
+=== RUN   TestContainerInvalidJSON//exec/foobar/start
+=== PAUSE TestContainerInvalidJSON//exec/foobar/start
+=== CONT  TestContainerInvalidJSON//containers/foobar/copy
+=== CONT  TestContainerInvalidJSON//exec/foobar/start
+=== CONT  TestContainerInvalidJSON//containers/foobar/exec
+--- PASS: TestContainerInvalidJSON (0.01s)
+    --- PASS: TestContainerInvalidJSON//exec/foobar/start (0.00s)
+    --- PASS: TestContainerInvalidJSON//containers/foobar/copy (0.00s)
+    --- PASS: TestContainerInvalidJSON//containers/foobar/exec (0.00s)
+=== RUN   TestCopyFromContainerPathDoesNotExist
+--- PASS: TestCopyFromContainerPathDoesNotExist (0.08s)
+=== RUN   TestCopyFromContainerPathIsNotDir
+--- PASS: TestCopyFromContainerPathIsNotDir (0.06s)
+=== RUN   TestCopyToContainerPathDoesNotExist
+--- PASS: TestCopyToContainerPathDoesNotExist (0.06s)
+=== RUN   TestCopyToContainerPathIsNotDir
+--- PASS: TestCopyToContainerPathIsNotDir (0.06s)
+=== RUN   TestCreateFailsWhenIdentifierDoesNotExist
+=== RUN   TestCreateFailsWhenIdentifierDoesNotExist/image_and_tag
+=== PAUSE TestCreateFailsWhenIdentifierDoesNotExist/image_and_tag
+=== RUN   TestCreateFailsWhenIdentifierDoesNotExist/image_no_tag
+=== PAUSE TestCreateFailsWhenIdentifierDoesNotExist/image_no_tag
+=== RUN   TestCreateFailsWhenIdentifierDoesNotExist/digest
+=== PAUSE TestCreateFailsWhenIdentifierDoesNotExist/digest
+=== CONT  TestCreateFailsWhenIdentifierDoesNotExist/image_and_tag
+=== CONT  TestCreateFailsWhenIdentifierDoesNotExist/digest
+=== CONT  TestCreateFailsWhenIdentifierDoesNotExist/image_no_tag
+--- PASS: TestCreateFailsWhenIdentifierDoesNotExist (0.01s)
+    --- PASS: TestCreateFailsWhenIdentifierDoesNotExist/digest (0.00s)
+    --- PASS: TestCreateFailsWhenIdentifierDoesNotExist/image_and_tag (0.00s)
+    --- PASS: TestCreateFailsWhenIdentifierDoesNotExist/image_no_tag (0.00s)
+=== RUN   TestCreateWithInvalidEnv
+=== RUN   TestCreateWithInvalidEnv/0
+=== PAUSE TestCreateWithInvalidEnv/0
+=== RUN   TestCreateWithInvalidEnv/1
+=== PAUSE TestCreateWithInvalidEnv/1
+=== RUN   TestCreateWithInvalidEnv/2
+=== PAUSE TestCreateWithInvalidEnv/2
+=== CONT  TestCreateWithInvalidEnv/0
+=== CONT  TestCreateWithInvalidEnv/2
+=== CONT  TestCreateWithInvalidEnv/1
+--- PASS: TestCreateWithInvalidEnv (0.01s)
+    --- PASS: TestCreateWithInvalidEnv/0 (0.00s)
+    --- PASS: TestCreateWithInvalidEnv/2 (0.00s)
+    --- PASS: TestCreateWithInvalidEnv/1 (0.00s)
+=== RUN   TestCreateTmpfsMountsTarget
+--- PASS: TestCreateTmpfsMountsTarget (0.02s)
+=== RUN   TestCreateWithCustomMaskedPaths
+--- PASS: TestCreateWithCustomMaskedPaths (1.50s)
+=== RUN   TestCreateWithCustomReadonlyPaths
+--- PASS: TestCreateWithCustomReadonlyPaths (1.55s)
+=== RUN   TestCreateWithInvalidHealthcheckParams
+=== RUN   TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_less_than_0s
+=== PAUSE TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_less_than_0s
+=== RUN   TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_larger_than_0s_but_less_than_1ms
+=== PAUSE TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_larger_than_0s_but_less_than_1ms
+=== RUN   TestCreateWithInvalidHealthcheckParams/test_invalid_Timeout_in_Healthcheck:_less_than_1ms
+=== PAUSE TestCreateWithInvalidHealthcheckParams/test_invalid_Timeout_in_Healthcheck:_less_than_1ms
+=== RUN   TestCreateWithInvalidHealthcheckParams/test_invalid_Retries_in_Healthcheck:_less_than_0
+=== PAUSE TestCreateWithInvalidHealthcheckParams/test_invalid_Retries_in_Healthcheck:_less_than_0
+=== RUN   TestCreateWithInvalidHealthcheckParams/test_invalid_StartPeriod_in_Healthcheck:_not_0_and_less_than_1ms
+=== PAUSE TestCreateWithInvalidHealthcheckParams/test_invalid_StartPeriod_in_Healthcheck:_not_0_and_less_than_1ms
+=== CONT  TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_less_than_0s
+=== CONT  TestCreateWithInvalidHealthcheckParams/test_invalid_Retries_in_Healthcheck:_less_than_0
+=== CONT  TestCreateWithInvalidHealthcheckParams/test_invalid_StartPeriod_in_Healthcheck:_not_0_and_less_than_1ms
+=== CONT  TestCreateWithInvalidHealthcheckParams/test_invalid_Timeout_in_Healthcheck:_less_than_1ms
+=== CONT  TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_larger_than_0s_but_less_than_1ms
+--- PASS: TestCreateWithInvalidHealthcheckParams (0.01s)
+    --- PASS: TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_less_than_0s (0.01s)
+    --- PASS: TestCreateWithInvalidHealthcheckParams/test_invalid_Retries_in_Healthcheck:_less_than_0 (0.01s)
+    --- PASS: TestCreateWithInvalidHealthcheckParams/test_invalid_StartPeriod_in_Healthcheck:_not_0_and_less_than_1ms (0.01s)
+    --- PASS: TestCreateWithInvalidHealthcheckParams/test_invalid_Timeout_in_Healthcheck:_less_than_1ms (0.00s)
+    --- PASS: TestCreateWithInvalidHealthcheckParams/test_invalid_Interval_in_Healthcheck:_larger_than_0s_but_less_than_1ms (0.00s)
+=== RUN   TestContainerStartOnDaemonRestart
+=== PAUSE TestContainerStartOnDaemonRestart
+=== RUN   TestDiff
+--- PASS: TestDiff (0.50s)
+=== RUN   TestExecWithCloseStdin
+--- PASS: TestExecWithCloseStdin (0.64s)
+=== RUN   TestExec
+--- PASS: TestExec (0.67s)
+=== RUN   TestExportContainerAndImportImage
+--- PASS: TestExportContainerAndImportImage (0.66s)
+=== RUN   TestExportContainerAfterDaemonRestart
+--- PASS: TestExportContainerAfterDaemonRestart (1.28s)
+    daemon.go:296: [de7333cc84f3a] waiting for daemon to start
+    daemon.go:328: [de7333cc84f3a] daemon started
+    daemon.go:283: [de7333cc84f3a] exiting daemon
+    daemon.go:296: [de7333cc84f3a] waiting for daemon to start
+    daemon.go:328: [de7333cc84f3a] daemon started
+    daemon.go:283: [de7333cc84f3a] exiting daemon
+=== RUN   TestHealthCheckWorkdir
+--- PASS: TestHealthCheckWorkdir (0.79s)
+=== RUN   TestInspectCpusetInConfigPre120
+--- PASS: TestInspectCpusetInConfigPre120 (0.53s)
+=== RUN   TestIpcModeNone
+--- PASS: TestIpcModeNone (0.61s)
+=== RUN   TestIpcModePrivate
+--- PASS: TestIpcModePrivate (0.63s)
+    ipcmode_linux_test.go:87: [testIpcPrivateShareable] ipcmode: private, ipcdev: 0:56, shared: false, mustBeShared: false
+=== RUN   TestIpcModeShareable
+--- PASS: TestIpcModeShareable (0.62s)
+    ipcmode_linux_test.go:87: [testIpcPrivateShareable] ipcmode: shareable, ipcdev: 0:50, shared: true, mustBeShared: true
+=== RUN   TestAPIIpcModeShareableAndContainer
+--- PASS: TestAPIIpcModeShareableAndContainer (1.84s)
+=== RUN   TestAPIIpcModeHost
+--- PASS: TestAPIIpcModeHost (0.50s)
+=== RUN   TestDaemonIpcModeShareable
+--- PASS: TestDaemonIpcModeShareable (1.33s)
+    daemon.go:296: [d77e173df593a] waiting for daemon to start
+    daemon.go:328: [d77e173df593a] daemon started
+    ipcmode_linux_test.go:255: [testDaemonIpcPrivateShareable] ipcdev: 0:58, shared: true, mustBeShared: true
+    daemon.go:283: [d77e173df593a] exiting daemon
+=== RUN   TestDaemonIpcModePrivate
+--- PASS: TestDaemonIpcModePrivate (1.32s)
+    daemon.go:296: [d1c1a2e8d1869] waiting for daemon to start
+    daemon.go:328: [d1c1a2e8d1869] daemon started
+    ipcmode_linux_test.go:255: [testDaemonIpcPrivateShareable] ipcdev: 0:64, shared: false, mustBeShared: false
+    daemon.go:283: [d1c1a2e8d1869] exiting daemon
+=== RUN   TestDaemonIpcModePrivateFromConfig
+--- PASS: TestDaemonIpcModePrivateFromConfig (1.35s)
+    daemon.go:296: [d82e3125ae7a9] waiting for daemon to start
+    daemon.go:328: [d82e3125ae7a9] daemon started
+    ipcmode_linux_test.go:255: [testDaemonIpcPrivateShareable] ipcdev: 0:64, shared: false, mustBeShared: false
+    daemon.go:283: [d82e3125ae7a9] exiting daemon
+=== RUN   TestDaemonIpcModeShareableFromConfig
+--- PASS: TestDaemonIpcModeShareableFromConfig (1.36s)
+    daemon.go:296: [dd06b17774c32] waiting for daemon to start
+    daemon.go:328: [dd06b17774c32] daemon started
+    ipcmode_linux_test.go:255: [testDaemonIpcPrivateShareable] ipcdev: 0:58, shared: true, mustBeShared: true
+    daemon.go:283: [dd06b17774c32] exiting daemon
+=== RUN   TestKillContainerInvalidSignal
+--- PASS: TestKillContainerInvalidSignal (0.54s)
+=== RUN   TestKillContainer
+=== RUN   TestKillContainer/no_signal
+=== RUN   TestKillContainer/non_killing_signal
+=== RUN   TestKillContainer/killing_signal
+--- PASS: TestKillContainer (1.59s)
+    --- PASS: TestKillContainer/no_signal (0.51s)
+    --- PASS: TestKillContainer/non_killing_signal (0.33s)
+    --- PASS: TestKillContainer/killing_signal (0.50s)
+=== RUN   TestKillWithStopSignalAndRestartPolicies
+=== RUN   TestKillWithStopSignalAndRestartPolicies/same-signal-disables-restart-policy
+=== RUN   TestKillWithStopSignalAndRestartPolicies/different-signal-keep-restart-policy
+--- PASS: TestKillWithStopSignalAndRestartPolicies (1.07s)
+    --- PASS: TestKillWithStopSignalAndRestartPolicies/same-signal-disables-restart-policy (0.51s)
+    --- PASS: TestKillWithStopSignalAndRestartPolicies/different-signal-keep-restart-policy (0.34s)
+=== RUN   TestKillStoppedContainer
+--- PASS: TestKillStoppedContainer (0.07s)
+=== RUN   TestKillStoppedContainerAPIPre120
+--- PASS: TestKillStoppedContainerAPIPre120 (0.07s)
+=== RUN   TestKillDifferentUserContainer
+--- PASS: TestKillDifferentUserContainer (0.52s)
+=== RUN   TestInspectOomKilledTrue
+--- SKIP: TestInspectOomKilledTrue (0.00s)
+    kill_test.go:153: testEnv.DaemonInfo.OSType == "windows" || !testEnv.DaemonInfo.MemoryLimit || !testEnv.DaemonInfo.SwapLimit
+=== RUN   TestInspectOomKilledFalse
+--- SKIP: TestInspectOomKilledFalse (0.00s)
+    kill_test.go:171: testEnv.DaemonInfo.OSType == "windows" || !testEnv.DaemonInfo.MemoryLimit || !testEnv.DaemonInfo.SwapLimit
+=== RUN   TestLinksEtcHostsContentMatch
+--- PASS: TestLinksEtcHostsContentMatch (0.48s)
+=== RUN   TestLinksContainerNames
+--- PASS: TestLinksContainerNames (1.13s)
+=== RUN   TestLogsFollowTailEmpty
+--- PASS: TestLogsFollowTailEmpty (0.56s)
+=== RUN   TestContainerNetworkMountsNoChown
+--- PASS: TestContainerNetworkMountsNoChown (0.53s)
+=== RUN   TestMountDaemonRoot
+=== RUN   TestMountDaemonRoot/default
+=== PAUSE TestMountDaemonRoot/default
+=== RUN   TestMountDaemonRoot/private
+=== PAUSE TestMountDaemonRoot/private
+=== RUN   TestMountDaemonRoot/rprivate
+=== PAUSE TestMountDaemonRoot/rprivate
+=== RUN   TestMountDaemonRoot/slave
+=== PAUSE TestMountDaemonRoot/slave
+=== RUN   TestMountDaemonRoot/rslave
+=== PAUSE TestMountDaemonRoot/rslave
+=== RUN   TestMountDaemonRoot/shared
+=== PAUSE TestMountDaemonRoot/shared
+=== RUN   TestMountDaemonRoot/rshared
+=== PAUSE TestMountDaemonRoot/rshared
+=== CONT  TestMountDaemonRoot/default
+=== RUN   TestMountDaemonRoot/default/bind_root
+=== PAUSE TestMountDaemonRoot/default/bind_root
+=== RUN   TestMountDaemonRoot/default/bind_subpath
+=== PAUSE TestMountDaemonRoot/default/bind_subpath
+=== RUN   TestMountDaemonRoot/default/mount_root
+=== PAUSE TestMountDaemonRoot/default/mount_root
+=== RUN   TestMountDaemonRoot/default/mount_subpath
+=== PAUSE TestMountDaemonRoot/default/mount_subpath
+=== CONT  TestMountDaemonRoot/default/bind_root
+=== CONT  TestMountDaemonRoot/rshared
+=== RUN   TestMountDaemonRoot/rshared/bind_subpath
+=== PAUSE TestMountDaemonRoot/rshared/bind_subpath
+=== RUN   TestMountDaemonRoot/rshared/mount_root
+=== PAUSE TestMountDaemonRoot/rshared/mount_root
+=== RUN   TestMountDaemonRoot/rshared/mount_subpath
+=== PAUSE TestMountDaemonRoot/rshared/mount_subpath
+=== RUN   TestMountDaemonRoot/rshared/bind_root
+=== PAUSE TestMountDaemonRoot/rshared/bind_root
+=== CONT  TestMountDaemonRoot/rshared/bind_subpath
+=== CONT  TestMountDaemonRoot/shared
+=== RUN   TestMountDaemonRoot/shared/bind_root
+=== PAUSE TestMountDaemonRoot/shared/bind_root
+=== RUN   TestMountDaemonRoot/shared/bind_subpath
+=== PAUSE TestMountDaemonRoot/shared/bind_subpath
+=== RUN   TestMountDaemonRoot/shared/mount_root
+=== PAUSE TestMountDaemonRoot/shared/mount_root
+=== RUN   TestMountDaemonRoot/shared/mount_subpath
+=== PAUSE TestMountDaemonRoot/shared/mount_subpath
+=== CONT  TestMountDaemonRoot/rslave
+=== RUN   TestMountDaemonRoot/rslave/bind_root
+=== PAUSE TestMountDaemonRoot/rslave/bind_root
+=== RUN   TestMountDaemonRoot/rslave/bind_subpath
+=== PAUSE TestMountDaemonRoot/rslave/bind_subpath
+=== RUN   TestMountDaemonRoot/rslave/mount_root
+=== PAUSE TestMountDaemonRoot/rslave/mount_root
+=== RUN   TestMountDaemonRoot/rslave/mount_subpath
+=== PAUSE TestMountDaemonRoot/rslave/mount_subpath
+=== CONT  TestMountDaemonRoot/slave
+=== RUN   TestMountDaemonRoot/slave/bind_root
+=== PAUSE TestMountDaemonRoot/slave/bind_root
+=== RUN   TestMountDaemonRoot/slave/bind_subpath
+=== PAUSE TestMountDaemonRoot/slave/bind_subpath
+=== RUN   TestMountDaemonRoot/slave/mount_root
+=== PAUSE TestMountDaemonRoot/slave/mount_root
+=== RUN   TestMountDaemonRoot/slave/mount_subpath
+=== PAUSE TestMountDaemonRoot/slave/mount_subpath
+=== CONT  TestMountDaemonRoot/rprivate
+=== RUN   TestMountDaemonRoot/rprivate/bind_root
+=== PAUSE TestMountDaemonRoot/rprivate/bind_root
+=== RUN   TestMountDaemonRoot/rprivate/bind_subpath
+=== PAUSE TestMountDaemonRoot/rprivate/bind_subpath
+=== RUN   TestMountDaemonRoot/rprivate/mount_root
+=== PAUSE TestMountDaemonRoot/rprivate/mount_root
+=== RUN   TestMountDaemonRoot/rprivate/mount_subpath
+=== PAUSE TestMountDaemonRoot/rprivate/mount_subpath
+=== CONT  TestMountDaemonRoot/private
+=== RUN   TestMountDaemonRoot/private/bind_root
+=== PAUSE TestMountDaemonRoot/private/bind_root
+=== RUN   TestMountDaemonRoot/private/bind_subpath
+=== PAUSE TestMountDaemonRoot/private/bind_subpath
+=== RUN   TestMountDaemonRoot/private/mount_root
+=== PAUSE TestMountDaemonRoot/private/mount_root
+=== RUN   TestMountDaemonRoot/private/mount_subpath
+=== PAUSE TestMountDaemonRoot/private/mount_subpath
+=== CONT  TestMountDaemonRoot/default/mount_subpath
+=== CONT  TestMountDaemonRoot/default/mount_root
+=== CONT  TestMountDaemonRoot/default/bind_subpath
+=== CONT  TestMountDaemonRoot/rshared/bind_root
+=== CONT  TestMountDaemonRoot/rshared/mount_subpath
+=== CONT  TestMountDaemonRoot/rshared/mount_root
+=== CONT  TestMountDaemonRoot/shared/bind_root
+=== CONT  TestMountDaemonRoot/shared/mount_subpath
+=== CONT  TestMountDaemonRoot/shared/mount_root
+=== CONT  TestMountDaemonRoot/shared/bind_subpath
+=== CONT  TestMountDaemonRoot/rslave/bind_root
+=== CONT  TestMountDaemonRoot/rslave/mount_root
+=== CONT  TestMountDaemonRoot/rslave/mount_subpath
+=== CONT  TestMountDaemonRoot/rslave/bind_subpath
+=== CONT  TestMountDaemonRoot/slave/bind_root
+=== CONT  TestMountDaemonRoot/slave/mount_root
+=== CONT  TestMountDaemonRoot/slave/mount_subpath
+=== CONT  TestMountDaemonRoot/slave/bind_subpath
+=== CONT  TestMountDaemonRoot/rprivate/bind_root
+=== CONT  TestMountDaemonRoot/rprivate/mount_root
+=== CONT  TestMountDaemonRoot/rprivate/mount_subpath
+=== CONT  TestMountDaemonRoot/rprivate/bind_subpath
+=== CONT  TestMountDaemonRoot/private/bind_root
+=== CONT  TestMountDaemonRoot/private/mount_subpath
+=== CONT  TestMountDaemonRoot/private/mount_root
+=== CONT  TestMountDaemonRoot/private/bind_subpath
+--- PASS: TestMountDaemonRoot (0.03s)
+    --- PASS: TestMountDaemonRoot/default (0.00s)
+        --- PASS: TestMountDaemonRoot/default/bind_root (0.16s)
+        --- PASS: TestMountDaemonRoot/default/mount_subpath (0.07s)
+        --- PASS: TestMountDaemonRoot/default/mount_root (0.10s)
+        --- PASS: TestMountDaemonRoot/default/bind_subpath (0.14s)
+    --- PASS: TestMountDaemonRoot/rshared (0.00s)
+        --- PASS: TestMountDaemonRoot/rshared/bind_subpath (0.10s)
+        --- PASS: TestMountDaemonRoot/rshared/bind_root (0.11s)
+        --- PASS: TestMountDaemonRoot/rshared/mount_subpath (0.10s)
+        --- PASS: TestMountDaemonRoot/rshared/mount_root (0.09s)
+    --- PASS: TestMountDaemonRoot/shared (0.00s)
+        --- PASS: TestMountDaemonRoot/shared/bind_root (0.05s)
+        --- PASS: TestMountDaemonRoot/shared/mount_subpath (0.09s)
+        --- PASS: TestMountDaemonRoot/shared/mount_root (0.09s)
+        --- PASS: TestMountDaemonRoot/shared/bind_subpath (0.08s)
+    --- PASS: TestMountDaemonRoot/rslave (0.00s)
+        --- PASS: TestMountDaemonRoot/rslave/bind_root (0.12s)
+        --- PASS: TestMountDaemonRoot/rslave/mount_root (0.10s)
+        --- PASS: TestMountDaemonRoot/rslave/mount_subpath (0.10s)
+        --- PASS: TestMountDaemonRoot/rslave/bind_subpath (0.10s)
+    --- PASS: TestMountDaemonRoot/slave (0.00s)
+        --- PASS: TestMountDaemonRoot/slave/bind_root (0.06s)
+        --- PASS: TestMountDaemonRoot/slave/mount_root (0.08s)
+        --- PASS: TestMountDaemonRoot/slave/mount_subpath (0.08s)
+        --- PASS: TestMountDaemonRoot/slave/bind_subpath (0.06s)
+    --- PASS: TestMountDaemonRoot/rprivate (0.00s)
+        --- PASS: TestMountDaemonRoot/rprivate/bind_root (0.11s)
+        --- PASS: TestMountDaemonRoot/rprivate/mount_root (0.08s)
+        --- PASS: TestMountDaemonRoot/rprivate/mount_subpath (0.08s)
+        --- PASS: TestMountDaemonRoot/rprivate/bind_subpath (0.08s)
+    --- PASS: TestMountDaemonRoot/private (0.00s)
+        --- PASS: TestMountDaemonRoot/private/bind_root (0.06s)
+        --- PASS: TestMountDaemonRoot/private/mount_subpath (0.12s)
+        --- PASS: TestMountDaemonRoot/private/mount_root (0.08s)
+        --- PASS: TestMountDaemonRoot/private/bind_subpath (0.05s)
+=== RUN   TestContainerBindMountNonRecursive
+--- PASS: TestContainerBindMountNonRecursive (1.31s)
+=== RUN   TestNetworkNat
+--- PASS: TestNetworkNat (0.56s)
+=== RUN   TestNetworkLocalhostTCPNat
+--- PASS: TestNetworkLocalhostTCPNat (0.56s)
+=== RUN   TestNetworkLoopbackNat
+--- PASS: TestNetworkLoopbackNat (0.75s)
+=== RUN   TestPause
+--- PASS: TestPause (0.58s)
+=== RUN   TestPauseFailsOnWindowsServerContainers
+--- SKIP: TestPauseFailsOnWindowsServerContainers (0.00s)
+    pause_test.go:54: testEnv.DaemonInfo.OSType != "windows" || testEnv.DaemonInfo.Isolation != "process"
+=== RUN   TestPauseStopPausedContainer
+--- PASS: TestPauseStopPausedContainer (0.55s)
+=== RUN   TestPsFilter
+--- PASS: TestPsFilter (0.19s)
+=== RUN   TestRemoveContainerWithRemovedVolume
+--- PASS: TestRemoveContainerWithRemovedVolume (0.51s)
+=== RUN   TestRemoveContainerWithVolume
+--- PASS: TestRemoveContainerWithVolume (0.55s)
+=== RUN   TestRemoveContainerRunning
+--- PASS: TestRemoveContainerRunning (0.53s)
+=== RUN   TestRemoveContainerForceRemoveRunning
+--- PASS: TestRemoveContainerForceRemoveRunning (0.55s)
+=== RUN   TestRemoveInvalidContainer
+--- PASS: TestRemoveInvalidContainer (0.01s)
+=== RUN   TestRenameLinkedContainer
+--- PASS: TestRenameLinkedContainer (2.14s)
+=== RUN   TestRenameStoppedContainer
+--- PASS: TestRenameStoppedContainer (0.53s)
+=== RUN   TestRenameRunningContainerAndReuse
+--- PASS: TestRenameRunningContainerAndReuse (1.09s)
+=== RUN   TestRenameInvalidName
+--- PASS: TestRenameInvalidName (0.52s)
+=== RUN   TestRenameAnonymousContainer
+--- PASS: TestRenameAnonymousContainer (1.80s)
+=== RUN   TestRenameContainerWithSameName
+--- PASS: TestRenameContainerWithSameName (0.53s)
+=== RUN   TestRenameContainerWithLinkedContainer
+--- PASS: TestRenameContainerWithLinkedContainer (1.09s)
+=== RUN   TestResize
+--- PASS: TestResize (0.55s)
+=== RUN   TestResizeWithInvalidSize
+--- PASS: TestResizeWithInvalidSize (0.54s)
+=== RUN   TestResizeWhenContainerNotStarted
+--- PASS: TestResizeWhenContainerNotStarted (0.49s)
+=== RUN   TestDaemonRestartKillContainers
+=== RUN   TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/kill-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/kill-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/stop-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/stop-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/kill-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/kill-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/stop-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/stop-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/kill-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/kill-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/stop-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/stop-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/kill-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/kill-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/stop-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/stop-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/kill-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/kill-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/stop-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/stop-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/kill-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/kill-daemon
+=== RUN   TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/stop-daemon
+=== PAUSE TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/stop-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/kill-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/kill-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/stop-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/kill-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/stop-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/kill-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/stop-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/stop-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/stop-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/kill-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/kill-daemon
+=== CONT  TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/stop-daemon
+--- PASS: TestDaemonRestartKillContainers (0.00s)
+    --- PASS: TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/kill-daemon (1.59s)
+        daemon.go:296: [daf3f36b17018] waiting for daemon to start
+        daemon.go:328: [daf3f36b17018] daemon started
+        daemon.go:296: [daf3f36b17018] waiting for daemon to start
+        daemon.go:328: [daf3f36b17018] daemon started
+        daemon.go:283: [daf3f36b17018] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/kill-daemon (2.70s)
+        daemon.go:296: [d14c925c221a5] waiting for daemon to start
+        daemon.go:328: [d14c925c221a5] daemon started
+        daemon.go:296: [d14c925c221a5] waiting for daemon to start
+        daemon.go:328: [d14c925c221a5] daemon started
+        daemon.go:283: [d14c925c221a5] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/stop-daemon (2.17s)
+        daemon.go:296: [d9f03fb63caa1] waiting for daemon to start
+        daemon.go:328: [d9f03fb63caa1] daemon started
+        daemon.go:283: [d9f03fb63caa1] exiting daemon
+        daemon.go:296: [d9f03fb63caa1] waiting for daemon to start
+        daemon.go:328: [d9f03fb63caa1] daemon started
+        daemon.go:283: [d9f03fb63caa1] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=false/container_with_restart=always/kill-daemon (2.27s)
+        daemon.go:296: [d0b228abf91b1] waiting for daemon to start
+        daemon.go:328: [d0b228abf91b1] daemon started
+        daemon.go:296: [d0b228abf91b1] waiting for daemon to start
+        daemon.go:328: [d0b228abf91b1] daemon started
+        daemon.go:283: [d0b228abf91b1] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/stop-daemon (2.06s)
+        daemon.go:296: [d31d9633f426b] waiting for daemon to start
+        daemon.go:328: [d31d9633f426b] daemon started
+        daemon.go:283: [d31d9633f426b] exiting daemon
+        daemon.go:296: [d31d9633f426b] waiting for daemon to start
+        daemon.go:328: [d31d9633f426b] daemon started
+        daemon.go:283: [d31d9633f426b] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=true/container_without_restart_policy/kill-daemon (1.99s)
+        daemon.go:296: [d7627513a8bc6] waiting for daemon to start
+        daemon.go:328: [d7627513a8bc6] daemon started
+        daemon.go:296: [d7627513a8bc6] waiting for daemon to start
+        daemon.go:328: [d7627513a8bc6] daemon started
+        daemon.go:283: [d7627513a8bc6] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=false/container_without_restart_policy/stop-daemon (1.93s)
+        daemon.go:296: [d1196f2d86a06] waiting for daemon to start
+        daemon.go:328: [d1196f2d86a06] daemon started
+        daemon.go:283: [d1196f2d86a06] exiting daemon
+        daemon.go:296: [d1196f2d86a06] waiting for daemon to start
+        daemon.go:328: [d1196f2d86a06] daemon started
+        daemon.go:283: [d1196f2d86a06] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/stop-daemon (1.29s)
+        daemon.go:296: [d165d5e75d6c9] waiting for daemon to start
+        daemon.go:328: [d165d5e75d6c9] daemon started
+        daemon.go:283: [d165d5e75d6c9] exiting daemon
+        daemon.go:296: [d165d5e75d6c9] waiting for daemon to start
+        daemon.go:328: [d165d5e75d6c9] daemon started
+        daemon.go:283: [d165d5e75d6c9] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/stop-daemon (1.37s)
+        daemon.go:296: [d0a82aa088eb8] waiting for daemon to start
+        daemon.go:328: [d0a82aa088eb8] daemon started
+        daemon.go:283: [d0a82aa088eb8] exiting daemon
+        daemon.go:296: [d0a82aa088eb8] waiting for daemon to start
+        daemon.go:328: [d0a82aa088eb8] daemon started
+        daemon.go:283: [d0a82aa088eb8] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=true/container_created_should_not_be_restarted/kill-daemon (1.29s)
+        daemon.go:296: [dca0954214f51] waiting for daemon to start
+        daemon.go:328: [dca0954214f51] daemon started
+        daemon.go:296: [dca0954214f51] waiting for daemon to start
+        daemon.go:328: [dca0954214f51] daemon started
+        daemon.go:283: [dca0954214f51] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=false/container_created_should_not_be_restarted/kill-daemon (1.32s)
+        daemon.go:296: [d41c8fcb0133e] waiting for daemon to start
+        daemon.go:328: [d41c8fcb0133e] daemon started
+        daemon.go:296: [d41c8fcb0133e] waiting for daemon to start
+        daemon.go:328: [d41c8fcb0133e] daemon started
+        daemon.go:283: [d41c8fcb0133e] exiting daemon
+    --- PASS: TestDaemonRestartKillContainers/live-restore=true/container_with_restart=always/stop-daemon (1.79s)
+        daemon.go:296: [d2f903fb2e547] waiting for daemon to start
+        daemon.go:328: [d2f903fb2e547] daemon started
+        daemon.go:283: [d2f903fb2e547] exiting daemon
+        daemon.go:296: [d2f903fb2e547] waiting for daemon to start
+        daemon.go:328: [d2f903fb2e547] daemon started
+        daemon.go:283: [d2f903fb2e547] exiting daemon
+=== RUN   TestKernelTCPMemory
+--- PASS: TestKernelTCPMemory (0.64s)
+=== RUN   TestNISDomainname
+--- PASS: TestNISDomainname (0.74s)
+=== RUN   TestStats
+--- PASS: TestStats (2.01s)
+=== RUN   TestStopContainerWithTimeout
+=== RUN   TestStopContainerWithTimeout/0
+=== PAUSE TestStopContainerWithTimeout/0
+=== RUN   TestStopContainerWithTimeout/1
+=== PAUSE TestStopContainerWithTimeout/1
+=== RUN   TestStopContainerWithTimeout/3
+=== PAUSE TestStopContainerWithTimeout/3
+=== RUN   TestStopContainerWithTimeout/-1
+=== PAUSE TestStopContainerWithTimeout/-1
+=== CONT  TestStopContainerWithTimeout/0
+=== CONT  TestStopContainerWithTimeout/3
+=== CONT  TestStopContainerWithTimeout/-1
+=== CONT  TestStopContainerWithTimeout/1
+--- PASS: TestStopContainerWithTimeout (0.01s)
+    --- PASS: TestStopContainerWithTimeout/0 (0.68s)
+    --- PASS: TestStopContainerWithTimeout/3 (2.60s)
+    --- PASS: TestStopContainerWithTimeout/-1 (2.56s)
+    --- PASS: TestStopContainerWithTimeout/1 (1.52s)
+=== RUN   TestDeleteDevicemapper
+--- SKIP: TestDeleteDevicemapper (0.00s)
+    stop_linux_test.go:74: testEnv.DaemonInfo.Driver != "devicemapper"
+=== RUN   TestStopContainerWithRestartPolicyAlways
+--- PASS: TestStopContainerWithRestartPolicyAlways (1.63s)
+=== RUN   TestUpdateMemory
+--- SKIP: TestUpdateMemory (0.00s)
+    update_linux_test.go:21: !testEnv.DaemonInfo.SwapLimit
+=== RUN   TestUpdateCPUQuota
+--- PASS: TestUpdateCPUQuota (1.10s)
+=== RUN   TestUpdateRestartPolicy
+--- PASS: TestUpdateRestartPolicy (11.40s)
+=== RUN   TestUpdateRestartWithAutoRemove
+--- PASS: TestUpdateRestartWithAutoRemove (0.57s)
+=== RUN   TestWaitNonBlocked
+=== RUN   TestWaitNonBlocked/wait-nonblocking-exit-0
+=== PAUSE TestWaitNonBlocked/wait-nonblocking-exit-0
+=== RUN   TestWaitNonBlocked/wait-nonblocking-exit-random
+=== PAUSE TestWaitNonBlocked/wait-nonblocking-exit-random
+=== CONT  TestWaitNonBlocked/wait-nonblocking-exit-0
+=== CONT  TestWaitNonBlocked/wait-nonblocking-exit-random
+--- PASS: TestWaitNonBlocked (0.01s)
+    --- PASS: TestWaitNonBlocked/wait-nonblocking-exit-0 (0.68s)
+    --- PASS: TestWaitNonBlocked/wait-nonblocking-exit-random (0.75s)
+=== RUN   TestWaitBlocked
+=== RUN   TestWaitBlocked/test-wait-blocked-exit-zero
+=== PAUSE TestWaitBlocked/test-wait-blocked-exit-zero
+=== RUN   TestWaitBlocked/test-wait-blocked-exit-random
+=== PAUSE TestWaitBlocked/test-wait-blocked-exit-random
+=== CONT  TestWaitBlocked/test-wait-blocked-exit-zero
+=== CONT  TestWaitBlocked/test-wait-blocked-exit-random
+--- PASS: TestWaitBlocked (0.02s)
+    --- PASS: TestWaitBlocked/test-wait-blocked-exit-random (0.74s)
+    --- PASS: TestWaitBlocked/test-wait-blocked-exit-zero (0.77s)
+=== CONT  TestContainerStartOnDaemonRestart
+--- PASS: TestContainerStartOnDaemonRestart (2.10s)
+    daemon.go:296: [d507369b0abd9] waiting for daemon to start
+    daemon.go:328: [d507369b0abd9] daemon started
+    daemon.go:296: [d507369b0abd9] waiting for daemon to start
+    daemon.go:328: [d507369b0abd9] daemon started
+    daemon.go:283: [d507369b0abd9] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration/build
+INFO: Testing against a local daemon
+=== RUN   TestBuildWithSession
+--- PASS: TestBuildWithSession (4.43s)
+    daemon.go:296: [d0f31da2c230b] waiting for daemon to start
+    daemon.go:328: [d0f31da2c230b] daemon started
+    daemon.go:283: [d0f31da2c230b] exiting daemon
+=== RUN   TestBuildSquashParent
+--- PASS: TestBuildSquashParent (8.21s)
+    daemon.go:296: [d4b53f39939c9] waiting for daemon to start
+    daemon.go:328: [d4b53f39939c9] daemon started
+    daemon.go:283: [d4b53f39939c9] exiting daemon
+=== RUN   TestBuildWithRemoveAndForceRemove
+=== RUN   TestBuildWithRemoveAndForceRemove/successful_build_with_no_removal
+=== PAUSE TestBuildWithRemoveAndForceRemove/successful_build_with_no_removal
+=== RUN   TestBuildWithRemoveAndForceRemove/successful_build_with_remove
+=== PAUSE TestBuildWithRemoveAndForceRemove/successful_build_with_remove
+=== RUN   TestBuildWithRemoveAndForceRemove/successful_build_with_remove_and_force_remove
+=== PAUSE TestBuildWithRemoveAndForceRemove/successful_build_with_remove_and_force_remove
+=== RUN   TestBuildWithRemoveAndForceRemove/failed_build_with_no_removal
+=== PAUSE TestBuildWithRemoveAndForceRemove/failed_build_with_no_removal
+=== RUN   TestBuildWithRemoveAndForceRemove/failed_build_with_remove
+=== PAUSE TestBuildWithRemoveAndForceRemove/failed_build_with_remove
+=== RUN   TestBuildWithRemoveAndForceRemove/failed_build_with_remove_and_force_remove
+=== PAUSE TestBuildWithRemoveAndForceRemove/failed_build_with_remove_and_force_remove
+=== CONT  TestBuildWithRemoveAndForceRemove/successful_build_with_no_removal
+=== CONT  TestBuildWithRemoveAndForceRemove/failed_build_with_remove_and_force_remove
+=== CONT  TestBuildWithRemoveAndForceRemove/failed_build_with_remove
+=== CONT  TestBuildWithRemoveAndForceRemove/failed_build_with_no_removal
+=== CONT  TestBuildWithRemoveAndForceRemove/successful_build_with_remove_and_force_remove
+=== CONT  TestBuildWithRemoveAndForceRemove/successful_build_with_remove
+--- PASS: TestBuildWithRemoveAndForceRemove (0.02s)
+    --- PASS: TestBuildWithRemoveAndForceRemove/successful_build_with_no_removal (2.35s)
+    --- PASS: TestBuildWithRemoveAndForceRemove/failed_build_with_remove_and_force_remove (2.41s)
+    --- PASS: TestBuildWithRemoveAndForceRemove/failed_build_with_remove (2.08s)
+    --- PASS: TestBuildWithRemoveAndForceRemove/failed_build_with_no_removal (2.08s)
+    --- PASS: TestBuildWithRemoveAndForceRemove/successful_build_with_remove (1.85s)
+    --- PASS: TestBuildWithRemoveAndForceRemove/successful_build_with_remove_and_force_remove (1.95s)
+=== RUN   TestBuildMultiStageParentConfig
+--- PASS: TestBuildMultiStageParentConfig (4.31s)
+=== RUN   TestBuildLabelWithTargets
+--- PASS: TestBuildLabelWithTargets (8.00s)
+=== RUN   TestBuildWithEmptyLayers
+--- PASS: TestBuildWithEmptyLayers (3.00s)
+=== RUN   TestBuildMultiStageOnBuild
+--- PASS: TestBuildMultiStageOnBuild (5.02s)
+=== RUN   TestBuildUncleanTarFilenames
+--- PASS: TestBuildUncleanTarFilenames (0.74s)
+=== RUN   TestBuildMultiStageLayerLeak
+--- PASS: TestBuildMultiStageLayerLeak (4.27s)
+=== RUN   TestBuildWithHugeFile
+--- PASS: TestBuildWithHugeFile (144.85s)
+PASS
+Running /go/src/github.com/docker/docker/integration/volume
+INFO: Testing against a local daemon
+=== RUN   TestVolumesCreateAndList
+--- PASS: TestVolumesCreateAndList (0.03s)
+=== RUN   TestVolumesRemove
+--- PASS: TestVolumesRemove (0.09s)
+=== RUN   TestVolumesInspect
+--- PASS: TestVolumesInspect (0.02s)
+=== RUN   TestVolumesInvalidJSON
+=== RUN   TestVolumesInvalidJSON//volumes/create
+=== PAUSE TestVolumesInvalidJSON//volumes/create
+=== CONT  TestVolumesInvalidJSON//volumes/create
+--- PASS: TestVolumesInvalidJSON (0.02s)
+    --- PASS: TestVolumesInvalidJSON//volumes/create (0.00s)
+PASS
+Running /go/src/github.com/docker/docker/integration/system
+INFO: Testing against a local daemon
+=== RUN   TestCgroupDriverSystemdMemoryLimit
+=== PAUSE TestCgroupDriverSystemdMemoryLimit
+=== RUN   TestEventsExecDie
+--- PASS: TestEventsExecDie (0.65s)
+=== RUN   TestEventsBackwardsCompatible
+--- PASS: TestEventsBackwardsCompatible (0.08s)
+=== RUN   TestInfoBinaryCommits
+--- PASS: TestInfoBinaryCommits (0.03s)
+=== RUN   TestInfoAPIVersioned
+--- PASS: TestInfoAPIVersioned (0.01s)
+=== RUN   TestInfoAPI
+--- PASS: TestInfoAPI (0.02s)
+=== RUN   TestInfoAPIWarnings
+--- PASS: TestInfoAPIWarnings (0.71s)
+    daemon.go:296: [db9f9e12c54e6] waiting for daemon to start
+    daemon.go:328: [db9f9e12c54e6] daemon started
+    daemon.go:283: [db9f9e12c54e6] exiting daemon
+=== RUN   TestLoginFailsWithBadCredentials
+--- PASS: TestLoginFailsWithBadCredentials (1.33s)
+=== RUN   TestVersion
+--- PASS: TestVersion (0.01s)
+=== CONT  TestCgroupDriverSystemdMemoryLimit
+--- SKIP: TestCgroupDriverSystemdMemoryLimit (0.00s)
+    cgroupdriver_systemd_test.go:35: systemd not available
+PASS
+Running /go/src/github.com/docker/docker/integration/image
+INFO: Testing against a local daemon
+=== RUN   TestCommitInheritsEnv
+--- PASS: TestCommitInheritsEnv (1.50s)
+=== RUN   TestImportExtremelyLargeImageWorks
+=== PAUSE TestImportExtremelyLargeImageWorks
+=== RUN   TestImagesFilterMultiReference
+--- PASS: TestImagesFilterMultiReference (0.06s)
+=== RUN   TestRemoveImageOrphaning
+--- PASS: TestRemoveImageOrphaning (1.95s)
+=== RUN   TestTagUnprefixedRepoByNameOrName
+--- PASS: TestTagUnprefixedRepoByNameOrName (0.03s)
+=== RUN   TestTagInvalidReference
+--- PASS: TestTagInvalidReference (0.01s)
+=== RUN   TestTagValidPrefixedRepo
+--- PASS: TestTagValidPrefixedRepo (0.05s)
+=== RUN   TestTagExistedNameWithoutForce
+--- PASS: TestTagExistedNameWithoutForce (0.02s)
+=== RUN   TestTagOfficialNames
+--- PASS: TestTagOfficialNames (0.05s)
+=== RUN   TestTagMatchesDigest
+--- PASS: TestTagMatchesDigest (0.01s)
+=== CONT  TestImportExtremelyLargeImageWorks
+--- PASS: TestImportExtremelyLargeImageWorks (123.69s)
+    daemon.go:296: [dabf1bd8b46f3] waiting for daemon to start
+    daemon.go:328: [dabf1bd8b46f3] daemon started
+    daemon.go:283: [dabf1bd8b46f3] exiting daemon
+PASS
+Running /go/src/github.com/docker/docker/integration-cli
+INFO: Testing against a local daemon
+PASS: docker_api_test.go:36: DockerSuite.TestAPIClientVersionOldNotSupported	0.004s
+PASS: docker_api_network_test.go:239: DockerSuite.TestAPICreateDeletePredefinedNetworks	0.011s
+PASS: docker_api_test.go:60: DockerSuite.TestAPIErrorJSON	0.002s
+PASS: docker_api_test.go:91: DockerSuite.TestAPIErrorNotFoundJSON	0.001s
+PASS: docker_api_test.go:102: DockerSuite.TestAPIErrorNotFoundPlainText	0.001s
+PASS: docker_api_test.go:74: DockerSuite.TestAPIErrorPlainText	0.002s
+PASS: docker_api_test.go:24: DockerSuite.TestAPIGetEnabledCORS	0.001s
+PASS: docker_api_images_test.go:90: DockerSuite.TestAPIImagesDelete	1.539s
+PASS: docker_api_images_test.go:22: DockerSuite.TestAPIImagesFilter	0.067s
+PASS: docker_api_images_test.go:114: DockerSuite.TestAPIImagesHistory	0.881s
+PASS: docker_api_images_test.go:140: DockerSuite.TestAPIImagesImportBadSrc	0.334s
+PASS: docker_api_images_test.go:60: DockerSuite.TestAPIImagesSaveAndLoad	0.742s
+PASS: docker_api_images_test.go:175: DockerSuite.TestAPIImagesSearchJSONContentType	0.780s
+PASS: docker_api_images_test.go:187: DockerSuite.TestAPIImagesSizeCompatibility	0.012s
+PASS: docker_api_network_test.go:129: DockerSuite.TestAPINetworkConnectDisconnect	0.626s
+PASS: docker_api_network_test.go:29: DockerSuite.TestAPINetworkCreateCheckDuplicate	0.076s
+PASS: docker_api_network_test.go:67: DockerSuite.TestAPINetworkFilter	0.002s
+PASS: docker_api_network_test.go:20: DockerSuite.TestAPINetworkGetDefaults	0.002s
+PASS: docker_api_network_test.go:170: DockerSuite.TestAPINetworkIPAMMultipleBridgeNetworks	0.553s
+PASS: docker_api_network_test.go:73: DockerSuite.TestAPINetworkInspectBridge	0.370s
+PASS: docker_api_network_test.go:98: DockerSuite.TestAPINetworkInspectUserDefinedNetwork	0.105s
+PASS: docker_api_test.go:18: DockerSuite.TestAPIOptionsRoute	0.001s
+PASS: docker_api_stats_test.go:263: DockerSuite.TestAPIStatsContainerNotFound	0.001s
+PASS: docker_api_stats_test.go:99: DockerSuite.TestAPIStatsNetworkStats	3.737s
+PASS: docker_api_stats_test.go:166: DockerSuite.TestAPIStatsNetworkStatsVersioning	1.793s
+PASS: docker_api_stats_test.go:277: DockerSuite.TestAPIStatsNoStreamConnectedContainers	1.805s
+PASS: docker_api_stats_test.go:25: DockerSuite.TestAPIStatsNoStreamGetCpu	1.681s
+PASS: docker_api_stats_test.go:64: DockerSuite.TestAPIStatsStoppedContainerInGoroutines	0.554s
+PASS: docker_cli_run_test.go:3181: DockerSuite.TestAppArmorDeniesChmodProc	0.512s
+PASS: docker_cli_run_test.go:3159: DockerSuite.TestAppArmorDeniesPtrace	0.506s
+PASS: docker_cli_run_test.go:3171: DockerSuite.TestAppArmorTraceSelf	0.523s
+PASS: docker_cli_attach_unix_test.go:61: DockerSuite.TestAttachAfterDetach	1.475s
+PASS: docker_cli_attach_unix_test.go:18: DockerSuite.TestAttachClosedOnContainerStop	1.518s
+PASS: docker_cli_attach_unix_test.go:126: DockerSuite.TestAttachDetach	0.509s
+PASS: docker_cli_attach_test.go:135: DockerSuite.TestAttachDisconnect	0.354s
+PASS: docker_cli_attach_test.go:20: DockerSuite.TestAttachMultipleAndRestart	1.607s
+PASS: docker_cli_attach_test.go:168: DockerSuite.TestAttachPausedContainer	0.381s
+PASS: docker_cli_attach_test.go:90: DockerSuite.TestAttachTTYWithoutStdin	0.366s
+PASS: docker_api_build_test.go:160: DockerSuite.TestBuildAPIBuildGitWithF	1.231s
+PASS: docker_api_build_test.go:26: DockerSuite.TestBuildAPIDockerFileRemote	1.990s
+PASS: docker_api_build_test.go:181: DockerSuite.TestBuildAPIDoubleDockerfile	1.000s
+PASS: docker_api_build_test.go:142: DockerSuite.TestBuildAPILowerDockerfile	0.986s
+PASS: docker_api_build_test.go:57: DockerSuite.TestBuildAPIRemoteTarballContext	0.002s
+PASS: docker_api_build_test.go:88: DockerSuite.TestBuildAPIRemoteTarballContextWithCustomDockerfile	0.978s
+PASS: docker_api_build_test.go:203: DockerSuite.TestBuildAPIUnnormalizedTarPaths	1.982s
+PASS: docker_cli_build_test.go:573: DockerSuite.TestBuildAddAndCopyFileWithWhitespace	28.061s
+PASS: docker_cli_build_test.go:926: DockerSuite.TestBuildAddBadLinks	0.918s
+PASS: docker_cli_build_test.go:1006: DockerSuite.TestBuildAddBadLinksVolume	2.999s
+PASS: docker_cli_build_test.go:2885: DockerSuite.TestBuildAddBrokenTar	0.161s
+PASS: docker_api_build_test.go:479: DockerSuite.TestBuildAddCacheOnFileChange	1.799s
+PASS: docker_cli_build_unix_test.go:87: DockerSuite.TestBuildAddChangeOwnership	2.989s
+PASS: docker_cli_build_test.go:1863: DockerSuite.TestBuildAddCurrentDirWithCache	2.779s
+PASS: docker_cli_build_test.go:1910: DockerSuite.TestBuildAddCurrentDirWithoutCache	1.324s
+PASS: docker_cli_build_test.go:751: DockerSuite.TestBuildAddDirContentToExistingDir	8.832s
+PASS: docker_cli_build_test.go:737: DockerSuite.TestBuildAddDirContentToRoot	4.986s
+PASS: docker_cli_build_test.go:2189: DockerSuite.TestBuildAddFileNotFound	0.075s
+PASS: docker_cli_build_test.go:1997: DockerSuite.TestBuildAddLocalAndRemoteFilesWithAndWithoutCache	3.896s
+PASS: docker_cli_build_test.go:1807: DockerSuite.TestBuildAddMultipleLocalFileWithAndWithoutCache	6.982s
+PASS: docker_cli_build_test.go:2936: DockerSuite.TestBuildAddNonTar	1.956s
+PASS: docker_cli_build_test.go:785: DockerSuite.TestBuildAddOrCopyEtcToRootShouldNotConflict	0.436s
+PASS: docker_cli_build_test.go:797: DockerSuite.TestBuildAddPreservesFilesSpecialBits	4.491s
+PASS: docker_cli_build_test.go:1954: DockerSuite.TestBuildAddRemoteFileMTime	3.330s
+PASS: docker_cli_build_test.go:1929: DockerSuite.TestBuildAddRemoteFileWithAndWithoutCache	0.761s
+PASS: docker_api_build_test.go:364: DockerSuite.TestBuildAddRemoteNoDecompress	1.843s
+PASS: docker_cli_build_test.go:2815: DockerSuite.TestBuildAddScript	3.991s
+PASS: docker_cli_build_test.go:505: DockerSuite.TestBuildAddSingleFileToExistDir	8.979s
+PASS: docker_cli_build_test.go:722: DockerSuite.TestBuildAddSingleFileToNonExistingDir	5.989s
+PASS: docker_cli_build_test.go:466: DockerSuite.TestBuildAddSingleFileToRoot	3.979s
+PASS: docker_cli_build_test.go:482: DockerSuite.TestBuildAddSingleFileToWorkdir	0.969s
+PASS: docker_cli_build_test.go:2831: DockerSuite.TestBuildAddTar	12.989s
+PASS: docker_cli_build_test.go:2949: DockerSuite.TestBuildAddTarXz	1.968s
+PASS: docker_cli_build_test.go:2998: DockerSuite.TestBuildAddTarXzGz	1.971s
+PASS: docker_cli_build_test.go:2245: DockerSuite.TestBuildAddToSymlinkDest	4.970s
+PASS: docker_cli_build_test.go:767: DockerSuite.TestBuildAddWholeDirToRoot	7.969s
+PASS: docker_cli_build_test.go:1440: DockerSuite.TestBuildBlankName	0.233s
+PASS: docker_cli_build_test.go:4089: DockerSuite.TestBuildBuildTimeArg	3.296s
+PASS: docker_cli_build_test.go:4461: DockerSuite.TestBuildBuildTimeArgBuiltinArg	2.874s
+PASS: docker_cli_build_test.go:4183: DockerSuite.TestBuildBuildTimeArgCacheHit	1.552s
+PASS: docker_cli_build_test.go:4207: DockerSuite.TestBuildBuildTimeArgCacheMissExtraArg	2.854s
+PASS: docker_cli_build_test.go:4238: DockerSuite.TestBuildBuildTimeArgCacheMissSameArgDiffVal	1.975s
+PASS: docker_cli_build_test.go:4484: DockerSuite.TestBuildBuildTimeArgDefaultOverride	4.448s
+PASS: docker_cli_build_test.go:4623: DockerSuite.TestBuildBuildTimeArgDefinitionWithNoEnvInjection	1.453s
+PASS: docker_cli_build_test.go:4607: DockerSuite.TestBuildBuildTimeArgEmptyValVariants	5.978s
+PASS: docker_cli_build_test.go:4526: DockerSuite.TestBuildBuildTimeArgEnv	17.977s
+PASS: docker_cli_build_test.go:4319: DockerSuite.TestBuildBuildTimeArgExpansion	14.031s
+PASS: docker_cli_build_test.go:4409: DockerSuite.TestBuildBuildTimeArgExpansionOverride	5.428s
+PASS: docker_cli_build_test.go:4122: DockerSuite.TestBuildBuildTimeArgHistory	0.449s
+PASS: docker_cli_build_test.go:4263: DockerSuite.TestBuildBuildTimeArgOverrideArgDefinedBeforeEnv	2.478s
+PASS: docker_cli_build_test.go:4292: DockerSuite.TestBuildBuildTimeArgOverrideEnvDefinedBeforeArg	3.978s
+PASS: docker_cli_build_test.go:4586: DockerSuite.TestBuildBuildTimeArgQuotedValVariants	8.435s
+PASS: docker_cli_build_test.go:4510: DockerSuite.TestBuildBuildTimeArgUnconsumedArg	1.984s
+PASS: docker_cli_build_test.go:4437: DockerSuite.TestBuildBuildTimeArgUntrustedDefinedAfterUse	2.486s
+PASS: docker_cli_build_test.go:371: DockerSuite.TestBuildCacheAdd	0.478s
+PASS: docker_cli_build_test.go:4760: DockerSuite.TestBuildCacheBrokenSymlink	1.941s
+PASS: docker_cli_build_test.go:5411: DockerSuite.TestBuildCacheFrom	8.006s
+PASS: docker_cli_build_test.go:5389: DockerSuite.TestBuildCacheFromEqualDiffIDsLength	2.029s
+PASS: docker_cli_build_test.go:4872: DockerSuite.TestBuildCacheRootSource	1.846s
+PASS: docker_cli_build_unix_test.go:133: DockerSuite.TestBuildCancellationKillsSleep	0.490s
+PASS: docker_api_build_test.go:408: DockerSuite.TestBuildChownOnCopy	7.365s
+PASS: docker_cli_build_test.go:3574: DockerSuite.TestBuildChownSingleFile	3.000s
+PASS: docker_cli_build_test.go:3137: DockerSuite.TestBuildCleanupCmdOnEntrypoint	3.002s
+PASS: docker_cli_build_test.go:3156: DockerSuite.TestBuildClearCmd	1.972s
+PASS: docker_cli_build_test.go:1577: DockerSuite.TestBuildCmd	0.977s
+PASS: docker_cli_build_test.go:3240: DockerSuite.TestBuildCmdJSONNoShDashC	0.978s
+PASS: docker_cli_build_test.go:3199: DockerSuite.TestBuildCmdShDashC	0.984s
+SKIP: docker_cli_build_test.go:5339: DockerSuite.TestBuildCmdShellArgsEscaped (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:3214: DockerSuite.TestBuildCmdSpaces	3.976s
+PASS: docker_cli_build_test.go:2645: DockerSuite.TestBuildCommentsShebangs	5.974s
+PASS: docker_cli_build_test.go:1773: DockerSuite.TestBuildConditionalCache	2.086s
+PASS: docker_cli_build_test.go:5600: DockerSuite.TestBuildContChar	2.879s
+PASS: docker_cli_build_test.go:3973: DockerSuite.TestBuildContainerWithCgroupParent	0.989s
+PASS: docker_cli_build_test.go:1512: DockerSuite.TestBuildContextCleanup	0.973s
+PASS: docker_cli_build_test.go:1534: DockerSuite.TestBuildContextCleanupFailedBuild	0.497s
+PASS: docker_cli_build_test.go:2045: DockerSuite.TestBuildContextTarGzip	1.478s
+PASS: docker_cli_build_test.go:2049: DockerSuite.TestBuildContextTarNoCompression	0.989s
+PASS: docker_cli_build_test.go:521: DockerSuite.TestBuildCopyAddMultipleFiles	13.990s
+PASS: docker_api_build_test.go:438: DockerSuite.TestBuildCopyCacheOnFileChange	1.970s
+PASS: docker_cli_build_test.go:1839: DockerSuite.TestBuildCopyDirButNotFile	0.337s
+PASS: docker_cli_build_test.go:893: DockerSuite.TestBuildCopyDirContentToExistDir	3.637s
+PASS: docker_cli_build_test.go:879: DockerSuite.TestBuildCopyDirContentToRoot	4.986s
+PASS: docker_cli_build_test.go:6024: DockerSuite.TestBuildCopyFileDotWithWorkdir	2.985s
+SKIP: docker_cli_build_test.go:606: DockerSuite.TestBuildCopyFileWithWhitespaceOnWindows (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_build_test.go:5897: DockerSuite.TestBuildCopyFromForbidWindowsRelativePaths (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_build_test.go:5880: DockerSuite.TestBuildCopyFromForbidWindowsSystemPaths (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_build_test.go:5915: DockerSuite.TestBuildCopyFromWindowsIsCaseInsensitive (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:848: DockerSuite.TestBuildCopySingleFileToExistDir	4.893s
+PASS: docker_cli_build_test.go:864: DockerSuite.TestBuildCopySingleFileToNonExistDir	5.985s
+PASS: docker_cli_build_test.go:810: DockerSuite.TestBuildCopySingleFileToRoot	3.977s
+PASS: docker_cli_build_test.go:826: DockerSuite.TestBuildCopySingleFileToWorkdir	0.988s
+PASS: docker_cli_build_test.go:909: DockerSuite.TestBuildCopyWholeDirToRoot	6.968s
+PASS: docker_cli_build_test.go:636: DockerSuite.TestBuildCopyWildcard	8.080s
+PASS: docker_cli_build_test.go:696: DockerSuite.TestBuildCopyWildcardCache	0.966s
+PASS: docker_cli_build_test.go:676: DockerSuite.TestBuildCopyWildcardInName	1.882s
+PASS: docker_cli_build_test.go:5140: DockerSuite.TestBuildDeleteCommittedFile	3.973s
+PASS: docker_cli_build_test.go:2068: DockerSuite.TestBuildDockerfileStdin	1.996s
+PASS: docker_cli_build_test.go:2088: DockerSuite.TestBuildDockerfileStdinConflict	0.012s
+PASS: docker_cli_build_test.go:2102: DockerSuite.TestBuildDockerfileStdinDockerignore	1.420s
+PASS: docker_cli_build_test.go:2106: DockerSuite.TestBuildDockerfileStdinDockerignoreIgnored	0.995s
+PASS: docker_cli_build_test.go:2098: DockerSuite.TestBuildDockerfileStdinNoExtraFiles	0.928s
+PASS: docker_cli_build_test.go:2296: DockerSuite.TestBuildDockerignore	11.474s
+PASS: docker_cli_build_test.go:2334: DockerSuite.TestBuildDockerignoreCleanPaths	1.978s
+PASS: docker_cli_build_test.go:5150: DockerSuite.TestBuildDockerignoreComment	3.978s
+PASS: docker_cli_build_test.go:2348: DockerSuite.TestBuildDockerignoreExceptions	12.983s
+PASS: docker_cli_build_test.go:2445: DockerSuite.TestBuildDockerignoreTouchDockerfile	1.273s
+PASS: docker_cli_build_test.go:2521: DockerSuite.TestBuildDockerignoringBadExclusion	0.012s
+PASS: docker_cli_build_test.go:2393: DockerSuite.TestBuildDockerignoringDockerfile	5.661s
+PASS: docker_cli_build_test.go:2432: DockerSuite.TestBuildDockerignoringDockerignore	2.985s
+PASS: docker_cli_build_test.go:2504: DockerSuite.TestBuildDockerignoringOnlyDotfiles	2.973s
+PASS: docker_cli_build_test.go:2411: DockerSuite.TestBuildDockerignoringRenamedDockerfile	7.991s
+PASS: docker_cli_build_test.go:2487: DockerSuite.TestBuildDockerignoringWholeDir	2.965s
+PASS: docker_cli_build_test.go:2560: DockerSuite.TestBuildDockerignoringWildDirs	2.975s
+PASS: docker_cli_build_test.go:2538: DockerSuite.TestBuildDockerignoringWildTopDir	19.000s
+PASS: docker_cli_build_test.go:3944: DockerSuite.TestBuildDotDotFile	0.084s
+PASS: docker_cli_build_test.go:2634: DockerSuite.TestBuildEOLInLine	4.857s
+PASS: docker_cli_build_test.go:3168: DockerSuite.TestBuildEmptyCmd	0.990s
+PASS: docker_cli_build_test.go:1704: DockerSuite.TestBuildEmptyEntrypoint	0.978s
+PASS: docker_cli_build_test.go:1681: DockerSuite.TestBuildEmptyEntrypointInheritance	1.983s
+PASS: docker_cli_build_test.go:3936: DockerSuite.TestBuildEmptyScratch	0.074s
+PASS: docker_cli_build_test.go:3961: DockerSuite.TestBuildEmptyStringVolume	0.870s
+PASS: docker_cli_build_test.go:1718: DockerSuite.TestBuildEntrypoint	1.002s
+PASS: docker_cli_build_test.go:3251: DockerSuite.TestBuildEntrypointCanBeOverriddenByChild	2.489s
+PASS: docker_cli_build_test.go:3271: DockerSuite.TestBuildEntrypointCanBeOverriddenByChildInspect	1.983s
+PASS: docker_cli_build_test.go:2170: DockerSuite.TestBuildEntrypointRunCleanup	3.440s
+PASS: docker_cli_build_test.go:1469: DockerSuite.TestBuildEnv	2.979s
+PASS: docker_cli_build_test.go:302: DockerSuite.TestBuildEnvEscapes	2.500s
+PASS: docker_cli_build_test.go:319: DockerSuite.TestBuildEnvOverwrite	0.973s
+PASS: docker_cli_build_test.go:2715: DockerSuite.TestBuildEnvUsage	16.439s
+PASS: docker_cli_build_test.go:2746: DockerSuite.TestBuildEnvUsage2	46.985s
+PASS: docker_cli_build_test.go:147: DockerSuite.TestBuildEnvironmentReplacementAddCopy	7.965s
+PASS: docker_cli_build_test.go:171: DockerSuite.TestBuildEnvironmentReplacementEnv	18.994s
+PASS: docker_cli_build_test.go:102: DockerSuite.TestBuildEnvironmentReplacementExpose	3.948s
+PASS: docker_cli_build_test.go:60: DockerSuite.TestBuildEnvironmentReplacementUser	1.963s
+PASS: docker_cli_build_test.go:77: DockerSuite.TestBuildEnvironmentReplacementVolume	1.969s
+PASS: docker_cli_build_test.go:127: DockerSuite.TestBuildEnvironmentReplacementWorkdir	2.964s
+SKIP: docker_cli_build_test.go:5317: DockerSuite.TestBuildEscapeNotBackslashWordTest (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:2263: DockerSuite.TestBuildEscapeWhitespace	0.919s
+PASS: docker_cli_build_test.go:3302: DockerSuite.TestBuildExoticShellInterpolation	12.952s
+PASS: docker_cli_build_test.go:1590: DockerSuite.TestBuildExpose	0.978s
+PASS: docker_cli_build_test.go:1604: DockerSuite.TestBuildExposeMorePorts	1.027s
+PASS: docker_cli_build_test.go:1653: DockerSuite.TestBuildExposeOrder	0.964s
+PASS: docker_cli_build_test.go:1669: DockerSuite.TestBuildExposeUpperCaseProto	0.864s
+PASS: docker_cli_build_test.go:2227: DockerSuite.TestBuildFails	0.552s
+PASS: docker_cli_build_test.go:4897: DockerSuite.TestBuildFailsGitNotCallable	0.023s
+PASS: docker_cli_build_test.go:4817: DockerSuite.TestBuildFollowSymlinkToDir	1.875s
+PASS: docker_cli_build_test.go:4787: DockerSuite.TestBuildFollowSymlinkToFile	1.922s
+PASS: docker_cli_build_test.go:1170: DockerSuite.TestBuildForceRm	1.934s
+PASS: docker_cli_build_test.go:3051: DockerSuite.TestBuildFromGit	2.502s
+PASS: docker_cli_build_test.go:3070: DockerSuite.TestBuildFromGitWithContext	0.967s
+PASS: docker_cli_build_test.go:3089: DockerSuite.TestBuildFromGitWithF	0.970s
+PASS: docker_cli_build_test.go:3701: DockerSuite.TestBuildFromMixedcaseDockerfile	1.978s
+PASS: docker_cli_build_test.go:3777: DockerSuite.TestBuildFromOfficialNames	0.567s
+PASS: docker_cli_build_test.go:3102: DockerSuite.TestBuildFromRemoteTarball	0.411s
+PASS: docker_cli_build_test.go:3752: DockerSuite.TestBuildFromStdinWithF	2.971s
+PASS: docker_cli_build_test.go:3725: DockerSuite.TestBuildFromURLWithF	2.977s
+PASS: docker_cli_build_test.go:234: DockerSuite.TestBuildHandleEscapesInVolume	6.005s
+PASS: docker_cli_history_test.go:16: DockerSuite.TestBuildHistory	25.966s
+PASS: docker_cli_build_test.go:6157: DockerSuite.TestBuildIidFile	1.974s
+PASS: docker_cli_build_test.go:6182: DockerSuite.TestBuildIidFileCleanupOnFail	0.513s
+PASS: docker_cli_build_test.go:2206: DockerSuite.TestBuildInheritance	1.440s
+PASS: docker_cli_build_test.go:5954: DockerSuite.TestBuildIntermediateTarget	0.255s
+PASS: docker_cli_build_test.go:3191: DockerSuite.TestBuildInvalidTag	0.013s
+PASS: docker_cli_build_test.go:34: DockerSuite.TestBuildJSONEmptyRun	0.710s
+PASS: docker_cli_build_test.go:4923: DockerSuite.TestBuildLabel	1.939s
+PASS: docker_cli_build_test.go:4954: DockerSuite.TestBuildLabelCacheCommit	0.974s
+PASS: docker_cli_build_test.go:4975: DockerSuite.TestBuildLabelMultiple	1.983s
+PASS: docker_cli_build_test.go:4940: DockerSuite.TestBuildLabelOneNode	0.990s
+PASS: docker_cli_build_test.go:3373: DockerSuite.TestBuildLabels	1.980s
+PASS: docker_cli_build_test.go:3385: DockerSuite.TestBuildLabelsCache	2.060s
+PASS: docker_cli_build_test.go:5061: DockerSuite.TestBuildLabelsOverride	11.895s
+PASS: docker_cli_build_test.go:391: DockerSuite.TestBuildLastModified	5.438s
+PASS: docker_cli_build_test.go:2623: DockerSuite.TestBuildLineBreak	4.429s
+PASS: docker_cli_build_test.go:6086: DockerSuite.TestBuildLineErrorOnBuild	0.079s
+PASS: docker_cli_build_test.go:6097: DockerSuite.TestBuildLineErrorUnknownInstruction	0.075s
+PASS: docker_cli_build_test.go:6128: DockerSuite.TestBuildLineErrorWithComments	0.072s
+PASS: docker_cli_build_test.go:6111: DockerSuite.TestBuildLineErrorWithEmptyLines	0.068s
+PASS: docker_cli_build_test.go:1267: DockerSuite.TestBuildMaintainer	0.640s
+PASS: docker_cli_build_test.go:3891: DockerSuite.TestBuildMissingArgs	1.111s
+PASS: docker_cli_build_test.go:444: DockerSuite.TestBuildModifyFileInFolder	2.872s
+PASS: docker_cli_build_test.go:5934: DockerSuite.TestBuildMulitStageResetScratch	1.958s
+PASS: docker_cli_build_test.go:4637: DockerSuite.TestBuildMultiStageArg	6.057s
+PASS: docker_cli_build_test.go:5505: DockerSuite.TestBuildMultiStageCache	0.979s
+PASS: docker_cli_build_test.go:5684: DockerSuite.TestBuildMultiStageCopyFromErrors	2.237s
+PASS: docker_cli_build_test.go:5626: DockerSuite.TestBuildMultiStageCopyFromSyntax	15.687s
+PASS: docker_cli_build_test.go:4661: DockerSuite.TestBuildMultiStageGlobalArg	4.858s
+PASS: docker_cli_build_test.go:5764: DockerSuite.TestBuildMultiStageImplicitFrom	1.896s
+PASS: docker_cli_build_test.go:5731: DockerSuite.TestBuildMultiStageMultipleBuilds	4.003s
+SKIP: docker_cli_build_test.go:5846: DockerSuite.TestBuildMultiStageMultipleBuildsWindows (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:5821: DockerSuite.TestBuildMultiStageNameVariants	6.472s
+PASS: docker_cli_build_test.go:4686: DockerSuite.TestBuildMultiStageUnusedArg	2.848s
+PASS: docker_cli_build_test.go:4747: DockerSuite.TestBuildMultipleTags	0.503s
+PASS: docker_cli_build_test.go:5541: DockerSuite.TestBuildNetContainer	1.485s
+PASS: docker_cli_build_test.go:5529: DockerSuite.TestBuildNetNone	0.474s
+PASS: docker_cli_build_test.go:2053: DockerSuite.TestBuildNoContext	1.273s
+PASS: docker_cli_build_test.go:4001: DockerSuite.TestBuildNoDupOutput	1.467s
+PASS: docker_cli_build_test.go:4706: DockerSuite.TestBuildNoNamedVolume	1.471s
+PASS: docker_cli_build_test.go:3498: DockerSuite.TestBuildNotVerboseFailure	0.310s
+PASS: docker_cli_build_test.go:3526: DockerSuite.TestBuildNotVerboseFailureRemote	0.112s
+PASS: docker_cli_build_test.go:3477: DockerSuite.TestBuildNotVerboseFailureWithNonExistImage	2.519s
+PASS: docker_cli_build_test.go:3426: DockerSuite.TestBuildNotVerboseSuccess	0.283s
+PASS: docker_cli_build_test.go:4051: DockerSuite.TestBuildNullStringInAddCopyVolume	2.205s
+PASS: docker_cli_build_test.go:2236: DockerSuite.TestBuildOnBuild	2.987s
+PASS: docker_api_build_test.go:285: DockerSuite.TestBuildOnBuildCache	2.971s
+PASS: docker_cli_build_test.go:337: DockerSuite.TestBuildOnBuildCmdEntrypointJSON	6.486s
+PASS: docker_cli_build_test.go:354: DockerSuite.TestBuildOnBuildEntrypointJSON	3.010s
+PASS: docker_cli_build_test.go:1733: DockerSuite.TestBuildOnBuildLimitedInheritance	3.493s
+PASS: docker_cli_build_test.go:278: DockerSuite.TestBuildOnBuildLowercase	1.897s
+PASS: docker_cli_build_test.go:3181: DockerSuite.TestBuildOnBuildOutput	2.975s
+PASS: docker_api_build_test.go:260: DockerSuite.TestBuildOnBuildWithCopy	1.120s
+PASS: docker_cli_build_test.go:5992: DockerSuite.TestBuildOpaqueDirectory	3.859s
+PASS: docker_cli_build_test.go:1483: DockerSuite.TestBuildPATH	8.005s
+PASS: docker_cli_build_test.go:4029: DockerSuite.TestBuildRUNErrMsg	0.542s
+PASS: docker_cli_build_test.go:3951: DockerSuite.TestBuildRUNoneJSON	1.375s
+PASS: docker_cli_build_test.go:1401: DockerSuite.TestBuildRelativeCopy	19.991s
+PASS: docker_cli_build_test.go:1294: DockerSuite.TestBuildRelativeWorkdir	7.027s
+PASS: docker_cli_build_unix_test.go:27: DockerSuite.TestBuildResourceConstraintsAreUsed	2.427s
+PASS: docker_cli_build_test.go:1189: DockerSuite.TestBuildRm	3.451s
+PASS: docker_cli_build_test.go:3295: DockerSuite.TestBuildRunShEntrypoint	1.501s
+PASS: docker_cli_build_test.go:1751: DockerSuite.TestBuildSameDockerfileWithAndWithoutCache	5.428s
+PASS: docker_api_build_test.go:520: DockerSuite.TestBuildScratchCopy	0.952s
+PASS: docker_cli_build_test.go:6142: DockerSuite.TestBuildSetCommandWithDefinedShell	2.006s
+PASS: docker_cli_build_test.go:41: DockerSuite.TestBuildShCmdJSONEntrypoint	2.463s
+PASS: docker_cli_build_test.go:5264: DockerSuite.TestBuildShellEntrypoint	1.984s
+PASS: docker_cli_build_test.go:5279: DockerSuite.TestBuildShellInherited	1.447s
+PASS: docker_cli_build_test.go:5228: DockerSuite.TestBuildShellMultiple	6.513s
+PASS: docker_cli_build_test.go:5292: DockerSuite.TestBuildShellNotJSON	0.093s
+PASS: docker_cli_build_test.go:5211: DockerSuite.TestBuildShellUpdatesConfig	0.361s
+SKIP: docker_cli_build_test.go:5305: DockerSuite.TestBuildShellWindowsPowershell (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:3795: DockerSuite.TestBuildSpaces	0.281s
+PASS: docker_cli_build_test.go:3858: DockerSuite.TestBuildSpacesWithQuotes	0.696s
+PASS: docker_cli_build_test.go:4018: DockerSuite.TestBuildStartsFromOne	0.082s
+PASS: docker_cli_build_test.go:3556: DockerSuite.TestBuildStderr	0.850s
+PASS: docker_cli_build_test.go:5360: DockerSuite.TestBuildStepsWithProgress	4.985s
+PASS: docker_cli_build_test.go:4071: DockerSuite.TestBuildStopSignal	1.333s
+PASS: docker_cli_build_test.go:4851: DockerSuite.TestBuildSymlinkBasename	0.961s
+PASS: docker_cli_build_test.go:3598: DockerSuite.TestBuildSymlinkBreakout	1.431s
+PASS: docker_cli_build_test.go:4723: DockerSuite.TestBuildTagEvent	1.012s
+PASS: docker_cli_build_test.go:4143: DockerSuite.TestBuildTimeArgHistoryExclusions	3.077s
+PASS: docker_cli_build_test.go:1280: DockerSuite.TestBuildUser	2.881s
+PASS: docker_cli_build_test.go:554: DockerSuite.TestBuildUsernamespaceValidateRemappedRoot	5.997s
+PASS: docker_cli_build_test.go:2659: DockerSuite.TestBuildUsersAndGroups	29.969s
+PASS: docker_cli_build_test.go:3344: DockerSuite.TestBuildVerboseOut	0.978s
+PASS: docker_cli_build_test.go:2281: DockerSuite.TestBuildVerifyIntString	0.996s
+PASS: docker_cli_build_test.go:3327: DockerSuite.TestBuildVerifySingleQuoteFails	1.514s
+PASS: docker_cli_build_test.go:3878: DockerSuite.TestBuildVolumeFileExistsinContainer	1.481s
+PASS: docker_cli_build_test.go:3671: DockerSuite.TestBuildVolumesRetainContents	3.477s
+SKIP: docker_cli_build_test.go:1347: DockerSuite.TestBuildWindowsAddCopyPathProcessing (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_build_test.go:6037: DockerSuite.TestBuildWindowsEnvCaseInsensitive (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_build_test.go:6007: DockerSuite.TestBuildWindowsUser (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_build_test.go:1336: DockerSuite.TestBuildWindowsWorkdirProcessing (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:5557: DockerSuite.TestBuildWithExtraHost	2.373s
+PASS: docker_cli_build_test.go:5573: DockerSuite.TestBuildWithExtraHostInvalidFormat	0.055s
+PASS: docker_cli_build_test.go:5371: DockerSuite.TestBuildWithFailure	0.617s
+PASS: docker_cli_build_test.go:1049: DockerSuite.TestBuildWithInaccessibleFilesInContext	0.531s
+PASS: docker_cli_build_test.go:3358: DockerSuite.TestBuildWithTabs	0.739s
+PASS: docker_cli_build_test.go:5184: DockerSuite.TestBuildWithUTF8BOM	0.077s
+PASS: docker_cli_build_test.go:5194: DockerSuite.TestBuildWithUTF8BOMDockerignore	3.875s
+PASS: docker_cli_build_test.go:2150: DockerSuite.TestBuildWithVolumeOwnership	2.517s
+PASS: docker_cli_build_test.go:1232: DockerSuite.TestBuildWithVolumes	4.459s
+PASS: docker_cli_build_test.go:6072: DockerSuite.TestBuildWorkdirCmd	1.038s
+PASS: docker_cli_build_test.go:6051: DockerSuite.TestBuildWorkdirImageCmd	1.914s
+SKIP: docker_cli_build_test.go:4912: DockerSuite.TestBuildWorkdirWindowsPath (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_build_test.go:1380: DockerSuite.TestBuildWorkdirWithEnvVariables	3.973s
+PASS: docker_cli_build_test.go:3653: DockerSuite.TestBuildXZHost	3.958s
+PASS: docker_cli_proxy_test.go:12: DockerSuite.TestCLIProxyDisableProxyUnixSock	0.024s
+SKIP: docker_cli_sni_test.go:16: DockerSuite.TestClientSetsTLSServerName (Flakey test)
+PASS: docker_cli_run_test.go:3683: DockerSuite.TestCmdCannotBeInvoked	0.451s
+PASS: docker_cli_commit_test.go:12: DockerSuite.TestCommitAfterContainerIsDone	1.427s
+PASS: docker_cli_commit_test.go:106: DockerSuite.TestCommitChange	1.073s
+PASS: docker_cli_commit_test.go:156: DockerSuite.TestCommitChangeLabels	0.891s
+PASS: docker_cli_commit_test.go:67: DockerSuite.TestCommitHardlink	1.436s
+PASS: docker_cli_commit_test.go:56: DockerSuite.TestCommitNewFile	1.967s
+PASS: docker_cli_commit_test.go:42: DockerSuite.TestCommitPausedContainer	0.537s
+PASS: docker_cli_commit_test.go:87: DockerSuite.TestCommitTTY	1.192s
+PASS: docker_cli_images_test.go:103: DockerSuite.TestCommitWithFilterLabel	1.469s
+PASS: docker_cli_commit_test.go:96: DockerSuite.TestCommitWithHostBindMount	1.433s
+PASS: docker_cli_commit_test.go:26: DockerSuite.TestCommitWithoutPause	1.471s
+PASS: docker_cli_netmode_test.go:55: DockerSuite.TestConflictContainerNetworkAndLinks	0.016s
+PASS: docker_cli_netmode_test.go:62: DockerSuite.TestConflictContainerNetworkHostAndLinks	0.013s
+PASS: docker_cli_netmode_test.go:76: DockerSuite.TestConflictNetworkModeAndOptions	0.085s
+PASS: docker_cli_netmode_test.go:69: DockerSuite.TestConflictNetworkModeNetHostAndOptions	0.013s
+PASS: docker_api_containers_test.go:543: DockerSuite.TestContainerAPIBadPort	0.003s
+PASS: docker_api_containers_test.go:1289: DockerSuite.TestContainerAPIChunkedEncoding	0.040s
+PASS: docker_api_containers_test.go:489: DockerSuite.TestContainerAPICommit	1.264s
+PASS: docker_api_containers_test.go:511: DockerSuite.TestContainerAPICommitWithLabelInConfig	1.962s
+PASS: docker_api_containers_test.go:1155: DockerSuite.TestContainerAPICopyContainerNotFoundPr124	0.002s
+PASS: docker_api_containers_test.go:1070: DockerSuite.TestContainerAPICopyNotExistsAnyMore	0.518s
+PASS: docker_api_containers_test.go:1083: DockerSuite.TestContainerAPICopyPre124	0.578s
+PASS: docker_api_containers_test.go:1113: DockerSuite.TestContainerAPICopyResourcePathEmptyPre124	0.515s
+PASS: docker_api_containers_test.go:1134: DockerSuite.TestContainerAPICopyResourcePathNotFoundPre124	0.546s
+PASS: docker_api_containers_test.go:570: DockerSuite.TestContainerAPICreate	0.501s
+PASS: docker_api_containers_test.go:649: DockerSuite.TestContainerAPICreateBridgeNetworkMode	0.048s
+PASS: docker_api_containers_test.go:587: DockerSuite.TestContainerAPICreateEmptyConfig	0.002s
+PASS: docker_api_containers_test.go:1997: DockerSuite.TestContainerAPICreateMountsBindRead	0.517s
+PASS: docker_api_containers_test.go:599: DockerSuite.TestContainerAPICreateMultipleNetworksConfig	0.003s
+PASS: docker_api_containers_test.go:1409: DockerSuite.TestContainerAPICreateNoHostConfig118	0.046s
+PASS: docker_api_containers_test.go:655: DockerSuite.TestContainerAPICreateOtherNetworkModes	0.087s
+PASS: docker_api_containers_test.go:684: DockerSuite.TestContainerAPICreateWithCpuSharesCpuset	0.068s
+PASS: docker_api_containers_test.go:626: DockerSuite.TestContainerAPICreateWithHostName	0.053s
+PASS: docker_api_containers_test.go:1166: DockerSuite.TestContainerAPIDelete	0.561s
+PASS: docker_api_containers_test.go:1239: DockerSuite.TestContainerAPIDeleteConflict	0.357s
+PASS: docker_api_containers_test.go:1191: DockerSuite.TestContainerAPIDeleteForce	0.536s
+PASS: docker_api_containers_test.go:1182: DockerSuite.TestContainerAPIDeleteNotExist	0.002s
+PASS: docker_api_containers_test.go:1208: DockerSuite.TestContainerAPIDeleteRemoveLinks	0.831s
+PASS: docker_api_containers_test.go:1254: DockerSuite.TestContainerAPIDeleteRemoveVolume	0.560s
+PASS: docker_api_containers_test.go:1648: DockerSuite.TestContainerAPIDeleteWithEmptyName	0.001s
+PASS: docker_api_containers_test.go:41: DockerSuite.TestContainerAPIGetAll	0.542s
+PASS: docker_api_containers_test.go:167: DockerSuite.TestContainerAPIGetChanges	0.510s
+PASS: docker_api_containers_test.go:140: DockerSuite.TestContainerAPIGetExport	0.545s
+PASS: docker_api_containers_test.go:61: DockerSuite.TestContainerAPIGetJSONNoFieldsOmitted	0.556s
+PASS: docker_api_containers_test.go:756: DockerSuite.TestContainerAPIInvalidPortSyntax	0.002s
+PASS: docker_api_containers_test.go:957: DockerSuite.TestContainerAPIKill	0.524s
+PASS: docker_api_containers_test.go:404: DockerSuite.TestContainerAPIPause	0.412s
+PASS: docker_api_containers_test.go:1309: DockerSuite.TestContainerAPIPostContainerStop	0.562s
+PASS: docker_api_containers_test.go:872: DockerSuite.TestContainerAPIPostCreateNull	0.092s
+PASS: docker_api_containers_test.go:107: DockerSuite.TestContainerAPIPsOmitFields	0.356s
+PASS: docker_api_containers_test.go:940: DockerSuite.TestContainerAPIRename	0.402s
+PASS: docker_api_containers_test.go:972: DockerSuite.TestContainerAPIRestart	0.875s
+PASS: docker_api_containers_test.go:986: DockerSuite.TestContainerAPIRestartNotimeoutParam	0.893s
+PASS: docker_api_containers_test.go:854: DockerSuite.TestContainerAPIRestartPolicyDefaultRetryCount	0.048s
+PASS: docker_api_containers_test.go:782: DockerSuite.TestContainerAPIRestartPolicyInvalidPolicyName	0.002s
+PASS: docker_api_containers_test.go:830: DockerSuite.TestContainerAPIRestartPolicyNegativeRetryCount	0.002s
+PASS: docker_api_containers_test.go:806: DockerSuite.TestContainerAPIRestartPolicyRetryMismatch	0.003s
+PASS: docker_api_containers_test.go:1002: DockerSuite.TestContainerAPIStart	0.325s
+PASS: docker_api_containers_test.go:1657: DockerSuite.TestContainerAPIStatsWithNetworkDisabled	4.357s
+PASS: docker_api_containers_test.go:1028: DockerSuite.TestContainerAPIStop	0.540s
+PASS: docker_api_containers_test.go:435: DockerSuite.TestContainerAPITop	0.385s
+SKIP: docker_api_containers_test.go:458: DockerSuite.TestContainerAPITopWindows (unmatched requirement DaemonIsWindows)
+PASS: docker_api_containers_test.go:715: DockerSuite.TestContainerAPIVerifyHeader	0.046s
+PASS: docker_api_containers_test.go:1047: DockerSuite.TestContainerAPIWait	2.512s
+PASS: docker_api_containers_test.go:2293: DockerSuite.TestContainerKillCustomStopSignal	0.578s
+PASS: docker_cli_run_test.go:2410: DockerSuite.TestContainerNetworkMode	0.688s
+PASS: docker_cli_run_test.go:3531: DockerSuite.TestContainerRestartInMultipleNetworks	2.254s
+PASS: docker_cli_run_test.go:3563: DockerSuite.TestContainerWithConflictingHostNetworks	0.309s
+PASS: docker_cli_run_test.go:3594: DockerSuite.TestContainerWithConflictingNoneNetwork	0.772s
+PASS: docker_cli_run_test.go:3577: DockerSuite.TestContainerWithConflictingSharedNetwork	0.683s
+PASS: docker_api_containers_test.go:2028: DockerSuite.TestContainersAPICreateMountsCreate	20.669s
+PASS: docker_api_containers_test.go:2243: DockerSuite.TestContainersAPICreateMountsTmpfs	1.021s
+PASS: docker_api_containers_test.go:1706: DockerSuite.TestContainersAPICreateMountsValidation	0.401s
+PASS: docker_cli_run_test.go:3467: DockerSuite.TestContainersInMultipleNetworks	1.187s
+PASS: docker_cli_run_test.go:3459: DockerSuite.TestContainersInUserDefinedNetwork	0.966s
+PASS: docker_cli_run_test.go:3486: DockerSuite.TestContainersNetworkIsolation	1.311s
+PASS: docker_cli_cp_test.go:582: DockerSuite.TestCopyAndRestart	1.035s
+PASS: docker_cli_cp_test.go:603: DockerSuite.TestCopyCreatedContainer	0.092s
+PASS: docker_cli_cp_test.go:128: DockerSuite.TestCpAbsolutePath	0.573s
+PASS: docker_cli_cp_test.go:171: DockerSuite.TestCpAbsoluteSymlink	0.567s
+PASS: docker_cli_cp_to_container_unix_test.go:41: DockerSuite.TestCpCheckDestOwnership	0.722s
+PASS: docker_cli_cp_from_container_test.go:119: DockerSuite.TestCpFromCaseA	0.576s
+PASS: docker_cli_cp_from_container_test.go:139: DockerSuite.TestCpFromCaseB	0.579s
+PASS: docker_cli_cp_from_container_test.go:157: DockerSuite.TestCpFromCaseC	0.577s
+PASS: docker_cli_cp_from_container_test.go:182: DockerSuite.TestCpFromCaseD	0.631s
+PASS: docker_cli_cp_from_container_test.go:222: DockerSuite.TestCpFromCaseE	0.629s
+PASS: docker_cli_cp_from_container_test.go:251: DockerSuite.TestCpFromCaseF	0.577s
+PASS: docker_cli_cp_from_container_test.go:274: DockerSuite.TestCpFromCaseG	0.636s
+PASS: docker_cli_cp_from_container_test.go:313: DockerSuite.TestCpFromCaseH	0.629s
+PASS: docker_cli_cp_from_container_test.go:343: DockerSuite.TestCpFromCaseI	0.584s
+PASS: docker_cli_cp_from_container_test.go:367: DockerSuite.TestCpFromCaseJ	0.646s
+PASS: docker_cli_cp_from_container_test.go:24: DockerSuite.TestCpFromSymlinkDestination	0.801s
+PASS: docker_cli_cp_test.go:209: DockerSuite.TestCpFromSymlinkToDirectory	0.630s
+PASS: docker_cli_cp_test.go:38: DockerSuite.TestCpGarbagePath	0.559s
+PASS: docker_cli_cp_test.go:29: DockerSuite.TestCpLocalOnly	0.016s
+PASS: docker_cli_cp_test.go:562: DockerSuite.TestCpNameHasColon	0.564s
+PASS: docker_cli_cp_test.go:80: DockerSuite.TestCpRelativePath	0.561s
+PASS: docker_cli_cp_test.go:405: DockerSuite.TestCpSpecialFiles	0.650s
+PASS: docker_cli_cp_test.go:337: DockerSuite.TestCpSymlinkComponent	0.558s
+PASS: docker_cli_cp_test.go:616: DockerSuite.TestCpSymlinkFromConToHostFollowSymlink	0.700s
+PASS: docker_cli_cp_to_container_test.go:123: DockerSuite.TestCpToCaseA	1.137s
+PASS: docker_cli_cp_to_container_test.go:144: DockerSuite.TestCpToCaseB	0.554s
+PASS: docker_cli_cp_to_container_test.go:165: DockerSuite.TestCpToCaseC	1.692s
+PASS: docker_cli_cp_to_container_test.go:192: DockerSuite.TestCpToCaseD	3.357s
+PASS: docker_cli_cp_to_container_test.go:238: DockerSuite.TestCpToCaseE	2.355s
+PASS: docker_cli_cp_to_container_test.go:273: DockerSuite.TestCpToCaseF	0.574s
+PASS: docker_cli_cp_to_container_test.go:296: DockerSuite.TestCpToCaseG	3.350s
+PASS: docker_cli_cp_to_container_test.go:342: DockerSuite.TestCpToCaseH	2.339s
+PASS: docker_cli_cp_to_container_test.go:378: DockerSuite.TestCpToCaseI	0.568s
+PASS: docker_cli_cp_to_container_test.go:402: DockerSuite.TestCpToCaseJ	3.333s
+PASS: docker_cli_cp_to_container_unix_test.go:17: DockerSuite.TestCpToContainerWithPermissions	6.414s
+PASS: docker_cli_cp_test.go:521: DockerSuite.TestCpToDot	0.571s
+PASS: docker_cli_cp_to_container_test.go:445: DockerSuite.TestCpToErrReadOnlyRootfs	1.054s
+PASS: docker_cli_cp_to_container_test.go:472: DockerSuite.TestCpToErrReadOnlyVolume	1.266s
+PASS: docker_cli_cp_test.go:543: DockerSuite.TestCpToStdout	0.573s
+PASS: docker_cli_cp_to_container_test.go:22: DockerSuite.TestCpToSymlinkDestination	2.615s
+PASS: docker_cli_cp_test.go:257: DockerSuite.TestCpToSymlinkToDirectory	0.268s
+PASS: docker_cli_cp_test.go:381: DockerSuite.TestCpUnprivilegedUser	0.577s
+PASS: docker_cli_cp_test.go:452: DockerSuite.TestCpVolumePath	1.069s
+PASS: docker_cli_create_test.go:327: DockerSuite.TestCreate64ByteHexID	0.067s
+PASS: docker_cli_create_test.go:21: DockerSuite.TestCreateArgs	0.068s
+PASS: docker_cli_create_test.go:260: DockerSuite.TestCreateByImageID	1.570s
+PASS: docker_cli_create_test.go:163: DockerSuite.TestCreateEchoStdout	0.514s
+SKIP: docker_cli_create_test.go:59: DockerSuite.TestCreateGrowRootfs (unmatched requirement Devicemapper)
+PASS: docker_cli_create_test.go:83: DockerSuite.TestCreateHostConfig	0.075s
+PASS: docker_cli_create_test.go:222: DockerSuite.TestCreateHostnameWithNumber	0.508s
+PASS: docker_cli_create_test.go:205: DockerSuite.TestCreateLabelFromImage	0.741s
+PASS: docker_cli_create_test.go:192: DockerSuite.TestCreateLabels	0.068s
+PASS: docker_cli_create_test.go:250: DockerSuite.TestCreateModeIpcContainer	0.118s
+PASS: docker_cli_create_test.go:233: DockerSuite.TestCreateRM	0.163s
+SKIP: docker_cli_create_test.go:73: DockerSuite.TestCreateShrinkRootfs (unmatched requirement Devicemapper)
+PASS: docker_cli_create_test.go:293: DockerSuite.TestCreateStopSignal	0.069s
+PASS: docker_cli_create_test.go:362: DockerSuite.TestCreateStopTimeout	0.133s
+PASS: docker_cli_create_test.go:335: DockerSuite.TestCreateUnsetEntrypoint	3.806s
+PASS: docker_cli_create_test.go:173: DockerSuite.TestCreateVolumesCreated	0.077s
+PASS: docker_cli_create_test.go:316: DockerSuite.TestCreateWithInvalidLogOpts	0.028s
+PASS: docker_cli_create_test.go:134: DockerSuite.TestCreateWithLargePortRange	2.715s
+PASS: docker_cli_create_test.go:105: DockerSuite.TestCreateWithPortRange	0.071s
+PASS: docker_api_containers_test.go:916: DockerSuite.TestCreateWithTooLowMemoryLimit	0.003s
+PASS: docker_cli_create_test.go:302: DockerSuite.TestCreateWithWorkdir	0.067s
+PASS: docker_deprecated_api_v124_test.go:70: DockerSuite.TestDeprecatedContainerAPIStartDupVolumeBinds	0.042s
+PASS: docker_deprecated_api_v124_test.go:20: DockerSuite.TestDeprecatedContainerAPIStartHostConfig	0.057s
+PASS: docker_deprecated_api_v124_test.go:39: DockerSuite.TestDeprecatedContainerAPIStartVolumeBinds	0.376s
+PASS: docker_deprecated_api_v124_test.go:103: DockerSuite.TestDeprecatedContainerAPIStartVolumesFrom	0.893s
+PASS: docker_deprecated_api_v124_test.go:136: DockerSuite.TestDeprecatedPostContainerBindNormalVolume	0.428s
+PASS: docker_deprecated_api_v124_test.go:198: DockerSuite.TestDeprecatedPostContainersStartWithLinksInHostConfig	0.727s
+PASS: docker_deprecated_api_v124_test.go:216: DockerSuite.TestDeprecatedPostContainersStartWithLinksInHostConfigIdLinked	1.086s
+PASS: docker_deprecated_api_v124_test.go:181: DockerSuite.TestDeprecatedPostContainersStartWithoutLinksInHostConfig	0.372s
+PASS: docker_deprecated_api_v124_test.go:235: DockerSuite.TestDeprecatedStartWithNilDNS	0.405s
+PASS: docker_deprecated_api_v124_test.go:156: DockerSuite.TestDeprecatedStartWithTooLowMemoryLimit	0.105s
+PASS: docker_cli_run_test.go:2995: DockerSuite.TestDevicePermissions	0.529s
+PASS: docker_cli_run_test.go:3706: DockerSuite.TestDockerFails	0.018s
+PASS: docker_cli_network_unix_test.go:449: DockerSuite.TestDockerInspectMultipleNetwork	0.012s
+PASS: docker_cli_network_unix_test.go:459: DockerSuite.TestDockerInspectMultipleNetworksIncludingNonexistent	0.039s
+PASS: docker_cli_network_unix_test.go:498: DockerSuite.TestDockerInspectNetworkWithContainerName	0.826s
+PASS: docker_cli_network_unix_test.go:1622: DockerSuite.TestDockerNetworkConnectFailsNoInspectChange	0.593s
+PASS: docker_cli_network_unix_test.go:403: DockerSuite.TestDockerNetworkDeleteMultiple	0.740s
+PASS: docker_cli_network_unix_test.go:398: DockerSuite.TestDockerNetworkDeleteNotExists	0.014s
+PASS: docker_cli_network_unix_test.go:427: DockerSuite.TestDockerNetworkInspect	0.023s
+PASS: docker_cli_network_unix_test.go:438: DockerSuite.TestDockerNetworkInspectWithID	0.079s
+PASS: docker_cli_network_unix_test.go:1637: DockerSuite.TestDockerNetworkInternalMode	5.141s
+PASS: docker_cli_volume_test.go:490: DockerSuite.TestDuplicateMountpointsForVolumesFrom	2.681s
+PASS: docker_cli_volume_test.go:532: DockerSuite.TestDuplicateMountpointsForVolumesFromAndBind	1.957s
+PASS: docker_cli_volume_test.go:576: DockerSuite.TestDuplicateMountpointsForVolumesFromAndMounts	1.469s
+PASS: docker_cli_network_unix_test.go:1614: DockerSuite.TestEmbeddedDNSInvalidInput	1.747s
+PASS: docker_cli_events_test.go:479: DockerSuite.TestEventsAttach	0.630s
+PASS: docker_cli_events_test.go:410: DockerSuite.TestEventsCommit	1.131s
+PASS: docker_cli_events_test.go:84: DockerSuite.TestEventsContainerEvents	0.579s
+PASS: docker_cli_events_test.go:103: DockerSuite.TestEventsContainerEventsAttrSort	0.556s
+PASS: docker_cli_events_test.go:126: DockerSuite.TestEventsContainerEventsSinceUnixEpoch	0.602s
+PASS: docker_cli_events_unix_test.go:143: DockerSuite.TestEventsContainerFilterBeforeCreate	1.342s
+PASS: docker_cli_events_unix_test.go:129: DockerSuite.TestEventsContainerFilterByName	0.728s
+PASS: docker_cli_events_test.go:659: DockerSuite.TestEventsContainerRestart	2.383s
+PASS: docker_cli_events_unix_test.go:223: DockerSuite.TestEventsContainerWithMultiNetwork	1.865s
+PASS: docker_cli_events_test.go:427: DockerSuite.TestEventsCopy	1.032s
+PASS: docker_cli_events_test.go:372: DockerSuite.TestEventsFilterContainer	1.126s
+PASS: docker_cli_events_test.go:649: DockerSuite.TestEventsFilterImageInContainerAction	0.354s
+PASS: docker_cli_events_test.go:342: DockerSuite.TestEventsFilterImageLabels	1.174s
+PASS: docker_cli_events_test.go:287: DockerSuite.TestEventsFilterImageName	0.822s
+PASS: docker_cli_events_test.go:316: DockerSuite.TestEventsFilterLabels	0.798s
+PASS: docker_cli_events_unix_test.go:377: DockerSuite.TestEventsFilterNetworkID	0.066s
+PASS: docker_cli_events_test.go:565: DockerSuite.TestEventsFilterType	0.875s
+PASS: docker_cli_events_unix_test.go:344: DockerSuite.TestEventsFilterVolumeAndNetworkType	0.072s
+PASS: docker_cli_events_unix_test.go:363: DockerSuite.TestEventsFilterVolumeID	0.027s
+PASS: docker_cli_events_test.go:271: DockerSuite.TestEventsFilters	1.030s
+PASS: docker_cli_events_test.go:728: DockerSuite.TestEventsFormat	1.087s
+PASS: docker_cli_events_test.go:761: DockerSuite.TestEventsFormatBadField	0.017s
+PASS: docker_cli_events_test.go:751: DockerSuite.TestEventsFormatBadFunc	0.012s
+PASS: docker_cli_events_test.go:183: DockerSuite.TestEventsImageImport	0.526s
+PASS: docker_cli_events_test.go:207: DockerSuite.TestEventsImageLoad	0.239s
+PASS: docker_cli_events_test.go:164: DockerSuite.TestEventsImagePull	2.292s
+PASS: docker_cli_events_test.go:146: DockerSuite.TestEventsImageTag	1.031s
+PASS: docker_cli_events_unix_test.go:305: DockerSuite.TestEventsImageUntagDelete	0.387s
+SKIP: docker_cli_events_unix_test.go:51: DockerSuite.TestEventsOOMDisableFalse (unmatched requirement swapMemorySupport)
+SKIP: docker_cli_events_unix_test.go:81: DockerSuite.TestEventsOOMDisableTrue (unmatched requirement swapMemorySupport)
+PASS: docker_cli_events_test.go:246: DockerSuite.TestEventsPluginOps	4.474s
+PASS: docker_cli_events_unix_test.go:24: DockerSuite.TestEventsRedirectStdout	0.531s
+PASS: docker_cli_events_test.go:517: DockerSuite.TestEventsRename	0.579s
+PASS: docker_cli_events_test.go:456: DockerSuite.TestEventsResize	0.594s
+PASS: docker_cli_events_test.go:699: DockerSuite.TestEventsSinceInTheFuture	0.410s
+PASS: docker_cli_events_test.go:619: DockerSuite.TestEventsSpecialFiltersWithExecCreate	0.486s
+PASS: docker_cli_events_unix_test.go:251: DockerSuite.TestEventsStreaming	0.547s
+PASS: docker_cli_events_test.go:26: DockerSuite.TestEventsTimestampFormats	2.766s
+PASS: docker_cli_events_test.go:528: DockerSuite.TestEventsTop	0.576s
+PASS: docker_cli_events_test.go:61: DockerSuite.TestEventsUntag	2.574s
+PASS: docker_cli_events_test.go:711: DockerSuite.TestEventsUntilInThePast	0.871s
+PASS: docker_cli_exec_test.go:28: DockerSuite.TestExec	0.474s
+PASS: docker_api_exec_test.go:66: DockerSuite.TestExecAPICreateContainerPaused	0.357s
+PASS: docker_api_exec_test.go:25: DockerSuite.TestExecAPICreateNoCmd	0.350s
+PASS: docker_api_exec_test.go:43: DockerSuite.TestExecAPICreateNoValidContentType	0.366s
+PASS: docker_api_exec_test.go:87: DockerSuite.TestExecAPIStart	1.100s
+PASS: docker_api_exec_test.go:124: DockerSuite.TestExecAPIStartBackwardsCompatible	0.425s
+PASS: docker_api_exec_test.go:114: DockerSuite.TestExecAPIStartEnsureHeaders	0.432s
+PASS: docker_api_exec_test.go:196: DockerSuite.TestExecAPIStartInvalidCommand	0.436s
+PASS: docker_api_exec_test.go:139: DockerSuite.TestExecAPIStartMultipleTimesError	0.449s
+PASS: docker_api_exec_test.go:180: DockerSuite.TestExecAPIStartValidCommand	0.440s
+PASS: docker_api_exec_test.go:149: DockerSuite.TestExecAPIStartWithDetach	0.412s
+PASS: docker_cli_exec_test.go:75: DockerSuite.TestExecAfterContainerRestart	1.000s
+PASS: docker_cli_exec_test.go:256: DockerSuite.TestExecCgroup	0.970s
+PASS: docker_cli_exec_test.go:108: DockerSuite.TestExecEnv	0.480s
+PASS: docker_cli_exec_test.go:537: DockerSuite.TestExecEnvLinksHost	0.817s
+PASS: docker_cli_exec_test.go:134: DockerSuite.TestExecExitStatus	0.432s
+PASS: docker_cli_exec_test.go:309: DockerSuite.TestExecInspectID	1.671s
+PASS: docker_cli_exec_test.go:39: DockerSuite.TestExecInteractive	0.472s
+PASS: docker_cli_exec_unix_test.go:18: DockerSuite.TestExecInteractiveStdinClose	0.453s
+PASS: docker_cli_exec_test.go:493: DockerSuite.TestExecOnReadonlyContainer	0.429s
+PASS: docker_cli_exec_test.go:214: DockerSuite.TestExecParseError	0.361s
+PASS: docker_cli_exec_test.go:141: DockerSuite.TestExecPausedContainer	0.437s
+PASS: docker_api_exec_resize_test.go:18: DockerSuite.TestExecResizeAPIHeightWidthNoInt	0.345s
+PASS: docker_api_exec_resize_test.go:34: DockerSuite.TestExecResizeImmediatelyAfterExecStart	1.229s
+PASS: docker_cli_exec_test.go:123: DockerSuite.TestExecSetEnv	0.483s
+PASS: docker_cli_exec_test.go:513: DockerSuite.TestExecStartFails	0.477s
+PASS: docker_api_exec_test.go:214: DockerSuite.TestExecStateCleanup	10.841s
+PASS: docker_cli_exec_test.go:228: DockerSuite.TestExecStopNotHanging	0.592s
+PASS: docker_cli_exec_unix_test.go:47: DockerSuite.TestExecTTY	0.454s
+PASS: docker_cli_exec_test.go:156: DockerSuite.TestExecTTYCloseStdin	0.479s
+PASS: docker_cli_exec_test.go:177: DockerSuite.TestExecTTYWithoutStdin	0.345s
+PASS: docker_cli_exec_test.go:501: DockerSuite.TestExecUlimits	0.460s
+SKIP: docker_cli_exec_test.go:546: DockerSuite.TestExecWindowsOpenHandles (unmatched requirement DaemonIsWindows)
+SKIP: docker_cli_exec_test.go:527: DockerSuite.TestExecWindowsPathNotWiped (unmatched requirement DaemonIsWindows)
+PASS: docker_cli_exec_test.go:480: DockerSuite.TestExecWithImageUser	3.269s
+PASS: docker_cli_exec_unix_test.go:89: DockerSuite.TestExecWithNoTERM	0.425s
+PASS: docker_cli_exec_test.go:449: DockerSuite.TestExecWithPrivileged	0.735s
+PASS: docker_cli_exec_unix_test.go:77: DockerSuite.TestExecWithTERM	0.464s
+PASS: docker_cli_exec_test.go:436: DockerSuite.TestExecWithUser	0.559s
+PASS: docker_api_containers_test.go:190: DockerSuite.TestGetContainerStats	4.541s
+PASS: docker_api_containers_test.go:338: DockerSuite.TestGetContainerStatsNoStream	4.575s
+PASS: docker_api_containers_test.go:230: DockerSuite.TestGetContainerStatsRmRunning	1.604s
+PASS: docker_api_containers_test.go:297: DockerSuite.TestGetContainerStatsStream	4.556s
+PASS: docker_api_attach_test.go:25: DockerSuite.TestGetContainersAttachWebsocket	0.373s
+PASS: docker_api_attach_test.go:89: DockerSuite.TestGetContainersWsAttachContainerNotFound	0.001s
+PASS: docker_api_containers_test.go:378: DockerSuite.TestGetStoppedContainerStats	0.061s
+PASS: docker_cli_health_test.go:39: DockerSuite.TestHealth	23.142s
+PASS: docker_cli_history_test.go:58: DockerSuite.TestHistoryExistentImage	0.013s
+PASS: docker_cli_history_test.go:86: DockerSuite.TestHistoryHumanOptionFalse	0.013s
+PASS: docker_cli_history_test.go:104: DockerSuite.TestHistoryHumanOptionTrue	0.013s
+PASS: docker_cli_history_test.go:67: DockerSuite.TestHistoryImageWithComment	0.851s
+PASS: docker_cli_history_test.go:62: DockerSuite.TestHistoryNonExistentImage	0.013s
+PASS: docker_cli_images_test.go:225: DockerSuite.TestImagesEnsureDanglingImageOnlyListedOnce	0.992s
+PASS: docker_cli_images_test.go:20: DockerSuite.TestImagesEnsureImageIsListed	0.016s
+PASS: docker_cli_images_test.go:44: DockerSuite.TestImagesEnsureImageWithBadTagIsNotListed	0.014s
+PASS: docker_cli_images_test.go:25: DockerSuite.TestImagesEnsureImageWithTagIsListed	0.080s
+PASS: docker_cli_images_test.go:299: DockerSuite.TestImagesEnsureImagesFromBusyboxShown	0.826s
+PASS: docker_cli_images_test.go:282: DockerSuite.TestImagesEnsureImagesFromScratchShown	0.972s
+PASS: docker_cli_images_test.go:259: DockerSuite.TestImagesEnsureOnlyHeadsImagesShown	1.997s
+PASS: docker_cli_images_test.go:69: DockerSuite.TestImagesErrorWithInvalidFilterNameTest	0.012s
+PASS: docker_cli_images_test.go:75: DockerSuite.TestImagesFilterLabelMatch	2.988s
+PASS: docker_cli_images_test.go:314: DockerSuite.TestImagesFilterNameWithPort	0.056s
+PASS: docker_cli_images_test.go:115: DockerSuite.TestImagesFilterSinceAndBefore	2.985s
+PASS: docker_cli_images_test.go:185: DockerSuite.TestImagesFilterSpaceTrimCase	0.621s
+PASS: docker_cli_images_test.go:327: DockerSuite.TestImagesFormat	0.053s
+PASS: docker_cli_images_test.go:343: DockerSuite.TestImagesFormatDefaultFormat	1.151s
+PASS: docker_cli_images_test.go:49: DockerSuite.TestImagesOrderedByCreationDate	5.008s
+PASS: docker_cli_images_test.go:253: DockerSuite.TestImagesWithIncorrectFilter	0.012s
+PASS: docker_cli_import_test.go:36: DockerSuite.TestImportBadURL	0.060s
+PASS: docker_cli_import_test.go:18: DockerSuite.TestImportDisplay	1.072s
+PASS: docker_cli_import_test.go:47: DockerSuite.TestImportFile	1.207s
+PASS: docker_cli_import_test.go:122: DockerSuite.TestImportFileNonExistentFile	0.016s
+PASS: docker_cli_import_test.go:91: DockerSuite.TestImportFileWithMessage	1.186s
+PASS: docker_cli_import_test.go:68: DockerSuite.TestImportGzipped	1.306s
+PASS: docker_cli_import_test.go:127: DockerSuite.TestImportWithQuotedChanges	1.180s
+PASS: docker_cli_info_test.go:177: DockerSuite.TestInfoDebug	0.533s
+PASS: docker_cli_info_test.go:106: DockerSuite.TestInfoDiscoveryAdvertiseInterfaceName	0.932s
+PASS: docker_cli_info_test.go:72: DockerSuite.TestInfoDiscoveryBackend	0.537s
+PASS: docker_cli_info_test.go:89: DockerSuite.TestInfoDiscoveryInvalidAdvertise	0.094s
+PASS: docker_cli_info_test.go:143: DockerSuite.TestInfoDisplaysPausedContainers	0.403s
+PASS: docker_cli_info_test.go:130: DockerSuite.TestInfoDisplaysRunningContainers	0.409s
+PASS: docker_cli_info_test.go:160: DockerSuite.TestInfoDisplaysStoppedContainers	0.591s
+PASS: docker_cli_info_test.go:16: DockerSuite.TestInfoEnsureSucceeds	0.032s
+PASS: docker_cli_info_test.go:60: DockerSuite.TestInfoFormat	0.040s
+PASS: docker_cli_info_unix_test.go:10: DockerSuite.TestInfoSecurityOptions	0.020s
+PASS: docker_cli_info_test.go:195: DockerSuite.TestInsecureRegistries	0.532s
+PASS: docker_api_inspect_test.go:147: DockerSuite.TestInspectAPIBridgeNetworkSettings120	0.353s
+PASS: docker_api_inspect_test.go:164: DockerSuite.TestInspectAPIBridgeNetworkSettings121	0.358s
+PASS: docker_api_inspect_test.go:17: DockerSuite.TestInspectAPIContainerResponse	0.353s
+PASS: docker_api_inspect_test.go:84: DockerSuite.TestInspectAPIContainerVolumeDriver	0.342s
+PASS: docker_api_inspect_test.go:61: DockerSuite.TestInspectAPIContainerVolumeDriverLegacy	0.378s
+PASS: docker_api_inspect_test.go:123: DockerSuite.TestInspectAPIEmptyFieldsInConfigPre121	0.365s
+PASS: docker_api_inspect_test.go:108: DockerSuite.TestInspectAPIImageResponse	0.032s
+PASS: docker_cli_network_unix_test.go:1035: DockerSuite.TestInspectAPIMultipleNetworks	0.614s
+PASS: docker_cli_inspect_test.go:413: DockerSuite.TestInspectAmpersand	0.510s
+PASS: docker_cli_inspect_test.go:206: DockerSuite.TestInspectBindMountPoint	0.385s
+PASS: docker_cli_inspect_test.go:341: DockerSuite.TestInspectByPrefix	0.045s
+PASS: docker_cli_inspect_test.go:141: DockerSuite.TestInspectContainerFilterInt	0.402s
+SKIP: docker_cli_inspect_test.go:181: DockerSuite.TestInspectContainerGraphDriver (unmatched requirement Devicemapper)
+PASS: docker_cli_inspect_test.go:391: DockerSuite.TestInspectContainerNetworkCustom	0.462s
+PASS: docker_cli_inspect_test.go:379: DockerSuite.TestInspectContainerNetworkDefault	0.387s
+PASS: docker_cli_inspect_test.go:44: DockerSuite.TestInspectDefault	0.361s
+PASS: docker_cli_inspect_test.go:371: DockerSuite.TestInspectHistory	1.091s
+PASS: docker_cli_inspect_test.go:24: DockerSuite.TestInspectImage	0.013s
+PASS: docker_cli_inspect_test.go:125: DockerSuite.TestInspectImageFilterInt	0.024s
+SKIP: docker_cli_inspect_test.go:163: DockerSuite.TestInspectImageGraphDriver (unmatched requirement Devicemapper)
+PASS: docker_cli_inspect_test.go:38: DockerSuite.TestInspectInt64	0.353s
+PASS: docker_cli_inspect_test.go:333: DockerSuite.TestInspectJSONFields	0.366s
+PASS: docker_cli_inspect_test.go:283: DockerSuite.TestInspectLogConfigNoType	0.078s
+PASS: docker_cli_inspect_test.go:238: DockerSuite.TestInspectNamedMountPoint	0.359s
+PASS: docker_cli_inspect_test.go:296: DockerSuite.TestInspectNoSizeFlagContainer	0.363s
+PASS: docker_cli_inspect_test.go:423: DockerSuite.TestInspectPlugin	4.443s
+PASS: docker_cli_inspect_test.go:402: DockerSuite.TestInspectRootFS	0.018s
+PASS: docker_cli_inspect_test.go:308: DockerSuite.TestInspectSizeFlagContainer	0.361s
+PASS: docker_cli_inspect_test.go:55: DockerSuite.TestInspectStatus	0.632s
+PASS: docker_cli_inspect_test.go:352: DockerSuite.TestInspectStopWhenNotFound	0.697s
+PASS: docker_cli_inspect_test.go:319: DockerSuite.TestInspectTemplateError	0.370s
+PASS: docker_cli_inspect_test.go:262: DockerSuite.TestInspectTimesAsRFC3339Nano	0.568s
+PASS: docker_cli_inspect_test.go:80: DockerSuite.TestInspectTypeFlagContainer	0.344s
+PASS: docker_cli_inspect_test.go:102: DockerSuite.TestInspectTypeFlagWithImage	0.375s
+PASS: docker_cli_inspect_test.go:113: DockerSuite.TestInspectTypeFlagWithInvalidValue	0.353s
+PASS: docker_cli_inspect_test.go:90: DockerSuite.TestInspectTypeFlagWithNoContainer	0.353s
+PASS: docker_cli_inspect_test.go:454: DockerSuite.TestInspectUnknownObject	0.022s
+PASS: docker_cli_run_unix_test.go:1157: DockerSuite.TestLegacyRunNoNewPrivSetuid	6.536s
+PASS: docker_cli_links_test.go:200: DockerSuite.TestLinkShortDefinition	0.722s
+PASS: docker_cli_links_test.go:191: DockerSuite.TestLinksEnvs	0.863s
+PASS: docker_cli_links_test.go:227: DockerSuite.TestLinksEtcHostsRegularFile	0.334s
+PASS: docker_cli_links_test.go:140: DockerSuite.TestLinksHostsFilesInject	0.941s
+PASS: docker_cli_links_test.go:93: DockerSuite.TestLinksInspectLinksStarted	1.065s
+PASS: docker_cli_links_test.go:112: DockerSuite.TestLinksInspectLinksStopped	1.045s
+PASS: docker_cli_links_test.go:24: DockerSuite.TestLinksInvalidContainerTarget	0.063s
+PASS: docker_cli_links_test.go:234: DockerSuite.TestLinksMultipleWithSameName	1.234s
+PASS: docker_cli_links_test.go:216: DockerSuite.TestLinksNetworkHostContainer	0.299s
+PASS: docker_cli_links_test.go:132: DockerSuite.TestLinksNotStartedParentNotFail	0.390s
+Set build name.
+New build name is '#38050'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+/tmp/jenkins7910912637124736607.sh: line 21: 16710 Terminated              docker run --rm -t --privileged -v "$WORKSPACE/bundles:/go/src/github.com/docker/docker/bundles" -e DOCKER_EXPERIMENTAL=y --name docker-pr-exp$BUILD_NUMBER -e DOCKER_GITCOMMIT=${GITCOMMIT} -e DOCKER_GRAPHDRIVER=vfs -e DOCKER_EXECDRIVER=native docker:${GITCOMMIT}-exp hack/ci/experimental
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins1614964728510841551.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp43677
+docker-pr-exp43677
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins8610824220537208208.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

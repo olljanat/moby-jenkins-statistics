@@ -1,0 +1,367 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-8 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision 156b2abd0c29f57d83a8d496c3f572a4beb4e396 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 156b2abd0c29f57d83a8d496c3f572a4beb4e396
+Commit message: "Merge pull request #38472 from thaJeztah/remove_debugging_code"
+ > git rev-list --no-walk 156b2abd0c29f57d83a8d496c3f572a4beb4e396 # timeout=10
+Set build name.
+New build name is '#38050'
+[docker] $ sh -xe C:\Users\jenkins\jenkins884690961847400556.sh
++ git fetch origin +refs/pull/38050/head:refs/remotes/origin/pr/38050
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/38050/head -> origin/pr/38050
++ git merge origin/pr/38050
+Updating 156b2abd0c..42bc6db317
+Fast-forward
+ Dockerfile                                    | 14 +++++
+ cli/config/configdir.go                       |  2 +
+ cmd/dockerd/config.go                         | 15 ++++-
+ cmd/dockerd/config_common_unix.go             | 41 ++++++++++--
+ cmd/dockerd/config_unix.go                    | 11 +++-
+ cmd/dockerd/config_unix_test.go               |  3 +-
+ cmd/dockerd/config_windows.go                 | 22 ++++---
+ cmd/dockerd/daemon.go                         | 51 ++++++++++++---
+ cmd/dockerd/daemon_test.go                    | 16 +++--
+ cmd/dockerd/daemon_unix.go                    | 28 ++++++++-
+ cmd/dockerd/daemon_windows.go                 | 10 +--
+ cmd/dockerd/docker.go                         | 25 ++++++--
+ cmd/dockerd/options.go                        |  2 +
+ contrib/dockerd-rootless.sh                   | 69 ++++++++++++++++++++
+ daemon/config/config_unix.go                  |  6 ++
+ daemon/config/config_windows.go               |  5 ++
+ daemon/daemon.go                              |  1 +
+ daemon/daemon_unix.go                         |  3 -
+ daemon/info.go                                |  3 +
+ daemon/info_unix.go                           |  4 ++
+ daemon/info_windows.go                        |  4 ++
+ daemon/listeners/listeners_linux.go           |  5 ++
+ daemon/oci_linux.go                           |  9 ++-
+ docs/rootless.md                              | 90 +++++++++++++++++++++++++++
+ hack/dockerfile/install/rootlesskit.installer | 34 ++++++++++
+ hack/dockerfile/install/slirp4netns.installer | 28 +++++++++
+ hack/make/.binary-setup                       |  3 +
+ hack/make/binary-daemon                       |  3 +-
+ hack/make/install-binary                      |  3 +
+ opts/hosts.go                                 | 15 ++++-
+ opts/hosts_test.go                            |  4 +-
+ pkg/homedir/homedir_linux.go                  | 88 ++++++++++++++++++++++++++
+ pkg/homedir/homedir_others.go                 | 20 ++++++
+ pkg/sysinfo/sysinfo_linux.go                  |  4 +-
+ rootless/rootless.go                          | 26 ++++++++
+ rootless/specconv/specconv_linux.go           | 38 +++++++++++
+ 36 files changed, 650 insertions(+), 55 deletions(-)
+ create mode 100755 contrib/dockerd-rootless.sh
+ create mode 100644 docs/rootless.md
+ create mode 100755 hack/dockerfile/install/rootlesskit.installer
+ create mode 100755 hack/dockerfile/install/slirp4netns.installer
+ create mode 100644 rootless/rootless.go
+ create mode 100644 rootless/specconv/specconv_linux.go
+[docker] $ powershell.exe -NonInteractive -ExecutionPolicy ByPass "& 'C:\Users\jenkins\jenkins1083600469236746454.ps1'"
+NEW entrypoint
+
+INFO: executeCI.ps1 starting at Wed Jan  9 10:37:56 CUT 2019
+
+INFO: Script version 28-Aug-2018 09:33 PDT
+INFO: Running git version 2.18.0.windows.1
+INFO: Branch:rs1_release Build:14393.2312.180607-1919
+INFO: Environment variables:
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+_                              /cygdrive/c/ProgramData/Oracle/Java/javapath/java                                       
+ALLUSERSPROFILE                C:\ProgramData                                                                          
+APPDATA                        C:\Users\jenkins\AppData\Roaming                                                        
+BASE_BRANCH                    master                                                                                  
+BUILD_CAUSE                    MANUALTRIGGER                                                                           
+BUILD_CAUSE_MANUALTRIGGER      true                                                                                    
+BUILD_DISPLAY_NAME             #38050                                                                                  
+BUILD_ID                       23607                                                                                   
+BUILD_NUMBER                   23607                                                                                   
+BUILD_TAG                      jenkins-Docker-PRs-WoW-RS1-23607                                                        
+BUILD_URL                      https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23607/                         
+CommonProgramFiles             C:\Program Files\Common Files                                                           
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files                                                     
+CommonProgramW6432             C:\Program Files\Common Files                                                           
+COMPUTERNAME                   jenkins-rs1-8                                                                           
+COMSPEC                        C:\Windows\system32\cmd.exe                                                             
+ConfigSet                      rs                                                                                      
+CYGWIN                         binmode ntsec                                                                           
+EXECUTOR_NUMBER                0                                                                                       
+GIT_AUTHOR_EMAIL               janky@dockerproject.org                                                                 
+GIT_AUTHOR_NAME                Docker Jenkins                                                                          
+GIT_BASE_REPO                  moby/moby                                                                               
+GIT_BRANCH                     origin/master                                                                           
+GIT_COMMIT                     156b2abd0c29f57d83a8d496c3f572a4beb4e396                                                
+GIT_COMMITTER_EMAIL            janky@dockerproject.org                                                                 
+GIT_COMMITTER_NAME             Docker Jenkins                                                                          
+GIT_HEAD_REPO                  AkihiroSuda/docker                                                                      
+GIT_PREVIOUS_COMMIT            156b2abd0c29f57d83a8d496c3f572a4beb4e396                                                
+GIT_PREVIOUS_SUCCESSFUL_COMMIT 77df18c24acf62778f132d30a058d559a0b8b2ba                                                
+GIT_SHA1                       42bc6db3171c9dff4bb92280bbe409cf9ec7c909                                                
+GIT_URL                        https://github.com/moby/moby.git                                                        
+GITHUB_URL                     https://github.com/moby/moby/pull/38050                                                 
+HOME                           C:\cygwin\home\jenkins                                                                  
+HOMEDRIVE                      C:                                                                                      
+HOMEPATH                       \cygwin\home\jenkins                                                                    
+HUDSON_COOKIE                  217b39ab-1e64-4e39-8f91-dd9202e921af                                                    
+HUDSON_HOME                    /var/jenkins_home                                                                       
+HUDSON_SERVER_COOKIE           5654907fc74b1465                                                                        
+HUDSON_URL                     https://jenkins.dockerproject.org/                                                      
+JENKINS_HOME                   /var/jenkins_home                                                                       
+JENKINS_SERVER_COOKIE          5654907fc74b1465                                                                        
+JENKINS_URL                    https://jenkins.dockerproject.org/                                                      
+JOB_BASE_NAME                  Docker-PRs-WoW-RS1                                                                      
+JOB_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/display/redirect               
+JOB_NAME                       Docker-PRs-WoW-RS1                                                                      
+JOB_URL                        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/                               
+LOCALAPPDATA                   C:\Users\jenkins\AppData\Local                                                          
+LOGNAME                        jenkins                                                                                 
+LOGONSERVER                    \\jenkins-rs1-8                                                                         
+MAIL                           /var/spool/mail//jenkins                                                                
+NODE_LABELS                    azure-windows-rs1-8 windows-rs1                                                         
+NODE_NAME                      azure-windows-rs1-8                                                                     
+NUMBER_OF_PROCESSORS           4                                                                                       
+OLDPWD                         /home/jenkins                                                                           
+OS                             Windows_NT                                                                              
+PATH                           C:\cygwin\bin;C:\ProgramData\Oracle\Java\javapath;C:\pstools;C:\Program Files\Notepad...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL                              
+PR                             38050                                                                                   
+PROCESSOR_ARCHITECTURE         AMD64                                                                                   
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 79 Stepping 1, GenuineIntel                                      
+PROCESSOR_LEVEL                6                                                                                       
+PROCESSOR_REVISION             4f01                                                                                    
+ProgramData                    C:\ProgramData                                                                          
+PROGRAMFILES                   C:\Program Files                                                                        
+ProgramFiles(x86)              C:\Program Files (x86)                                                                  
+ProgramW6432                   C:\Program Files                                                                        
+PSExecutionPolicyPreference    Bypass                                                                                  
+PSModulePath                   C:\Users\jenkins\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShe...
+PUBLIC                         C:\Users\Public                                                                         
+PWD                            /cygdrive/c/workspace                                                                   
+ROOT_BUILD_CAUSE               MANUALTRIGGER                                                                           
+ROOT_BUILD_CAUSE_MANUALTRIGGER true                                                                                    
+RUN_CHANGES_DISPLAY_URL        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23607/display/redirect?page=...
+RUN_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23607/display/redirect         
+SHELL                          /bin/bash                                                                               
+SHLVL                          1                                                                                       
+SOURCES_DRIVE                  c                                                                                       
+SOURCES_SUBDIR                 gopath                                                                                  
+SSH_CLIENT                     52.88.204.51 57075 22                                                                   
+SSH_CONNECTION                 52.88.204.51 57075 10.0.0.14 22                                                         
+SYSTEMDRIVE                    C:                                                                                      
+SYSTEMROOT                     C:\Windows                                                                              
+TEMP                           d:\temp                                                                                 
+TESTRUN_DRIVE                  d                                                                                       
+TESTRUN_SUBDIR                 CI                                                                                      
+USER                           jenkins                                                                                 
+USERDOMAIN                     jenkins-rs1-8                                                                           
+USERNAME                       jenkins                                                                                 
+USERPROFILE                    C:\Users\jenkins                                                                        
+WINDIR                         C:\Windows                                                                              
+WORKSPACE                      /gopath/src/github.com/docker/docker                                                    
+
+
+
+INFO: PR#38050 (https://github.com/docker/docker/pull/38050)
+INFO: Sources under c:\gopath\...
+INFO: Test run under d:\CI\...
+INFO: Running in C:\gopath\src\github.com\docker\docker
+INFO: docker/docker repository was found
+INFO: Image microsoft/windowsservercore:latest is already loaded in the control daemon
+INFO: Version of microsoft/windowsservercore:latest is '10.0.14393.2312'
+INFO: Docker version of control daemon
+
+Client:
+ Version:           master-dockerproject-2018-10-09
+ API version:       1.39
+ Go version:        go1.10.4
+ Git commit:        ab50c2f2
+ Built:             Tue Oct  9 23:49:39 2018
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          master-dockerproject-2018-10-09
+  API version:      1.39 (minimum version 1.24)
+  Go version:       go1.11.1
+  Git commit:       82a4797
+  Built:            Tue Oct  9 23:58:23 2018
+  OS/Arch:          windows/amd64
+  Experimental:     false
+
+INFO: Docker info of control daemon
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 7
+Server Version: master-dockerproject-2018-10-09
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins:
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 14393 (14393.2312.amd64fre.rs1_release.180607-1919)
+Operating System: Windows Server 2016 Datacenter Version 1607 (OS Build 14393.2312)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 14GiB
+Name: jenkins-rs1-8
+ID: ZMZN:J5EJ:R2N2:JXXY:ZS7X:ZNHC:RBRB:NFFK:XUVA:ITCL:GP5Y:RX4I
+Docker Root Dir: D:\control
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Commit hash is 42bc6db317
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 0
+INFO: Nuking d:\CI
+INFO: Zapped successfully
+INFO: Location for testing is d:\CI\CI-42bc6db317
+INFO: Validating GOLang consistency in Dockerfile.windows...
+
+
+INFO: Building the image from Dockerfile.windows at 01/09/2019 10:37:57...
+
+Sending build context to Docker daemon  46.43MB
+
+Step 1/7 : FROM microsoft/windowsservercore
+ ---> eb1805404161
+Step 2/7 : SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+ ---> Using cache
+ ---> 2ee68bc47118
+Step 3/7 : ENV GO_VERSION=1.11.4     GIT_VERSION=2.11.1     GOPATH=C:\go     FROM_DOCKERFILE=1
+ ---> Running in a6fca1bc93b9
+Removing intermediate container a6fca1bc93b9
+ ---> 6fa7de2197ae
+Step 4/7 : RUN   Function Test-Nano() {     $EditionId = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'EditionID').EditionId;     return (($EditionId -eq 'ServerStandardNano') -or ($EditionId -eq 'ServerDataCenterNano') -or ($EditionId -eq 'NanoServer'));   }    Function Download-File([string] $source, [string] $target) {     if (Test-Nano) {       $handler = New-Object System.Net.Http.HttpClientHandler;       $client = New-Object System.Net.Http.HttpClient($handler);       $client.Timeout = New-Object System.TimeSpan(0, 30, 0);       $cancelTokenSource = [System.Threading.CancellationTokenSource]::new();       $responseMsg = $client.GetAsync([System.Uri]::new($source), $cancelTokenSource.Token);       $responseMsg.Wait();       if (!$responseMsg.IsCanceled) {         $response = $responseMsg.Result;         if ($response.IsSuccessStatusCode) {           $downloadedFileStream = [System.IO.FileStream]::new($target, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write);           $copyStreamOp = $response.Content.CopyToAsync($downloadedFileStream);           $copyStreamOp.Wait();           $downloadedFileStream.Close();           if ($copyStreamOp.Exception -ne $null) { throw $copyStreamOp.Exception }         }       } else {       Throw ("Failed to download " + $source)       }    } else {       $webClient = New-Object System.Net.WebClient;       $webClient.DownloadFile($source, $target);     }   }     setx /M PATH $('C:\git\cmd;C:\git\usr\bin;'+$Env:PATH+';C:\gcc\bin;C:\go\bin');     Write-Host INFO: Downloading git...;   $location='https://www.nuget.org/api/v2/package/GitForWindows/'+$Env:GIT_VERSION;   Download-File $location C:\gitsetup.zip;     Write-Host INFO: Downloading go...;   Download-File $('https://golang.org/dl/go'+$Env:GO_VERSION+'.windows-amd64.zip') C:\go.zip;     Write-Host INFO: Downloading compiler 1 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/gcc.zip C:\gcc.zip;     Write-Host INFO: Downloading compiler 2 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/runtime.zip C:\runtime.zip;     Write-Host INFO: Downloading compiler 3 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/binutils.zip C:\binutils.zip;     Write-Host INFO: Extracting git...;   Expand-Archive C:\gitsetup.zip C:\git-tmp;   New-Item -Type Directory C:\git | Out-Null;   Move-Item C:\git-tmp\tools\* C:\git\.;   Remove-Item -Recurse -Force C:\git-tmp;     Write-Host INFO: Expanding go...;   Expand-Archive C:\go.zip -DestinationPath C:\;     Write-Host INFO: Expanding compiler 1 of 3...;   Expand-Archive C:\gcc.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 2 of 3...;   Expand-Archive C:\runtime.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 3 of 3...;   Expand-Archive C:\binutils.zip -DestinationPath C:\gcc -Force;     Write-Host INFO: Removing downloaded files...;   Remove-Item C:\gcc.zip;   Remove-Item C:\runtime.zip;   Remove-Item C:\binutils.zip;   Remove-Item C:\gitsetup.zip;     Write-Host INFO: Creating source directory...;   New-Item -ItemType Directory -Path C:\go\src\github.com\docker\docker | Out-Null;     Write-Host INFO: Configuring git core.autocrlf...;   C:\git\cmd\git config --global core.autocrlf true;     Write-Host INFO: Completed
+ ---> Running in a1450eaa8d0b
+
+SUCCESS: Specified value was saved.
+INFO: Downloading git...
+INFO: Downloading go...
+INFO: Downloading compiler 1 of 3...
+INFO: Downloading compiler 2 of 3...
+INFO: Downloading compiler 3 of 3...
+INFO: Extracting git...
+INFO: Expanding go...
+INFO: Expanding compiler 1 of 3...
+INFO: Expanding compiler 2 of 3...
+INFO: Expanding compiler 3 of 3...
+INFO: Removing downloaded files...
+INFO: Creating source directory...
+INFO: Configuring git core.autocrlf...
+INFO: Completed
+Removing intermediate container a1450eaa8d0b
+ ---> 56a6b924c68f
+Step 5/7 : ENTRYPOINT ["powershell.exe"]
+ ---> Running in 2c09864c225a
+Removing intermediate container 2c09864c225a
+ ---> aeb2fa4e3293
+Step 6/7 : WORKDIR C:\go\src\github.com\docker\docker
+ ---> Running in 2325e62c55c0
+Removing intermediate container 2325e62c55c0
+ ---> 77d113512416
+Step 7/7 : COPY . .
+ ---> 34136fd09151
+Successfully built 34136fd09151
+Successfully tagged docker:latest
+INFO: Image build ended at 01/09/2019 10:40:41. Duration:00:02:44.0085031
+
+
+INFO: Building the test binaries at 01/09/2019 10:40:41...
+INFO: make.ps1 starting at 01/09/2019 10:40:58
+INFO: Git commit (42bc6db317) assumed from DOCKER_GITCOMMIT environment variable
+INFO: Invoking autogen...
+INFO: Building daemon...
+# github.com/docker/docker/cmd/dockerd
+.\config_windows.go:34:1: missing return at end of function
+.\docker.go:39:34: undefined: getDefaultDaemonConfigFile
+
+ERROR: make.ps1 failed:
+Failed to compile daemon
+At C:\go\src\github.com\docker\docker\hack\make.ps1:189 char:32
++     if ($LASTEXITCODE -ne 0) { Throw "Failed to compile $type" }
++                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+___________      .__.__             .___
+\_   _____/____  |__|  |   ____   __| _/
+ |    __) \__  \ |  |  | _/ __ \ / __ | 
+ |     \   / __ \|  |  |_\  ___// /_/ | 
+ \___  /  (____  /__|____/\___  >____ | 
+     \/        \/             \/     \/ 
+
+INFO: make.ps1 ended at 01/09/2019 10:41:42
+Failed to compile daemon
+At C:\go\src\github.com\docker\docker\hack\make.ps1:189 char:32
++     if ($LASTEXITCODE -ne 0) { Throw "Failed to compile $type" }
++                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Failed to compile daemon:Stri 
+   ng) [], RuntimeException
+    + FullyQualifiedErrorId : Failed to compile daemon
+ 
+
+
+ERROR: Failed 'ERROR: Failed to build binary' at 01/09/2019 10:41:44
+At C:\gopath\src\github.com\docker\docker\hack\ci\windows.ps1:491 char:13
++             Throw "ERROR: Failed to build binary"
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+INFO: Tidying up at end of run
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 1
+51c411312bba
+INFO: Non-base image count on control daemon to delete is 1
+Deleted: sha256:6dc39e59ffa81c19186a89eb34f0a3b05f678ca54d7752e77881a46256cafea8
+Deleted: sha256:c4353f0d4705bafdd82f555f8091f464e1551df895e18f61f60ff57d04d00cee
+Deleted: sha256:846c7d1ef4e9d341a6a494fed3cd581d6429d78e34337fb6132016e13b3c0506
+Deleted: sha256:138cbe741e9533af657c3cb81e50c4b99f339d981d1870fe50d1e1b92f722900
+Deleted: sha256:38eb692cd82be73563ac3a7f8dcfa142a6a17ce3270cddcc2a0c6d7e0b8c056a
+Deleted: sha256:2c6cf1815fa40abc1eafe42f499a4826c002466577453d4c6895d12ecdbb05d9
+Deleted: sha256:963c301e45fddb9973e291adcd05d4f52c8f75e5dcfc97bc3dd97442b02a585e
+Deleted: sha256:46a7c4acd5ce10f46762cb7783bd85ad555c844176ef488cff9b65459fd88ea6
+Deleted: sha256:1eb68b9603e096e2e2b0b0bbfb613b4b192903a901c98baf1f621be93757b4fb
+Deleted: sha256:a4a8d79ae681a5d38ccd19e5e30752ba99d27dde948fda4ed9ee6b68063d9331
+INFO: Nuking d:\CI
+INFO: Zapped successfully
+
+INFO: executeCI.ps1 exiting at Wed Jan  9 10:41:52 CUT 2019. Duration 00:03:55.7498459
+
+Build step 'Windows PowerShell' marked build as failure
+Set build name.
+New build name is '#38050'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

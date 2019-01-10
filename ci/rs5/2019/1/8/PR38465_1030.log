@@ -1,0 +1,617 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs5-2 (windows-rs5) in workspace /gopath/src/github.com/docker/docker
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision 77df18c24acf62778f132d30a058d559a0b8b2ba (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 77df18c24acf62778f132d30a058d559a0b8b2ba
+Commit message: "Merge pull request #38509 from thaJeztah/bump_containerd_v1.2.2"
+ > git rev-list --no-walk 77df18c24acf62778f132d30a058d559a0b8b2ba # timeout=10
+Set build name.
+New build name is '#38465'
+[docker] $ sh -xe C:\Users\jenkins\jenkins6997995236418303891.sh
++ git fetch origin +refs/pull/38465/head:refs/remotes/origin/pr/38465
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/38465/head -> origin/pr/38465
++ git merge origin/pr/38465
+Updating 77df18c24a..a3c5775e99
+Fast-forward
+ volume/mounts/lcow_parser.go    |   4 +-
+ volume/mounts/parser_test.go    | 180 ++++++++++++++++++++--------------------
+ volume/mounts/validate.go       |   5 ++
+ volume/mounts/windows_parser.go |  53 +++++++-----
+ 4 files changed, 129 insertions(+), 113 deletions(-)
+[docker] $ powershell.exe -NonInteractive -ExecutionPolicy ByPass "& 'C:\Users\jenkins\jenkins1258238310269048027.ps1'"
+
+INFO: executeCI.ps1 starting at Tue Jan  8 13:54:00 CUT 2019
+
+INFO: Script version 28-Aug-2018 09:33 PDT
+INFO: Running git version 2.18.0.windows.1
+INFO: Branch:rs5_release_svc_prod1 Build:17763.253.181231-1749
+INFO: Environment variables:
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+_                              /cygdrive/c/ProgramData/Oracle/Java/javapath/java                                       
+ALLUSERSPROFILE                C:\ProgramData                                                                          
+APPDATA                        C:\Users\jenkins\AppData\Roaming                                                        
+BASE_BRANCH                    master                                                                                  
+BUILD_CAUSE                    MANUALTRIGGER                                                                           
+BUILD_CAUSE_MANUALTRIGGER      true                                                                                    
+BUILD_DISPLAY_NAME             #38465                                                                                  
+BUILD_ID                       1030                                                                                    
+BUILD_NUMBER                   1030                                                                                    
+BUILD_TAG                      jenkins-Docker-PRs-WoW-RS5-Process-1030                                                 
+BUILD_URL                      https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/1030/                  
+CommonProgramFiles             C:\Program Files\Common Files                                                           
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files                                                     
+CommonProgramW6432             C:\Program Files\Common Files                                                           
+COMPUTERNAME                   jenkins-rs5-2                                                                           
+COMSPEC                        C:\Windows\system32\cmd.exe                                                             
+ConfigSet                      rs                                                                                      
+CYGWIN                         binmode ntsec                                                                           
+DriverData                     C:\Windows\System32\Drivers\DriverData                                                  
+EXECUTOR_NUMBER                0                                                                                       
+GIT_AUTHOR_EMAIL               janky@dockerproject.org                                                                 
+GIT_AUTHOR_NAME                Docker Jenkins                                                                          
+GIT_BASE_REPO                  moby/moby                                                                               
+GIT_BRANCH                     origin/master                                                                           
+GIT_COMMIT                     77df18c24acf62778f132d30a058d559a0b8b2ba                                                
+GIT_COMMITTER_EMAIL            janky@dockerproject.org                                                                 
+GIT_COMMITTER_NAME             Docker Jenkins                                                                          
+GIT_HEAD_REPO                  steveazz/moby                                                                           
+GIT_PREVIOUS_COMMIT            77df18c24acf62778f132d30a058d559a0b8b2ba                                                
+GIT_PREVIOUS_SUCCESSFUL_COMMIT 77df18c24acf62778f132d30a058d559a0b8b2ba                                                
+GIT_SHA1                       a3c5775e99f3b8d2b5e49f4b4a981c6bea4c8997                                                
+GIT_URL                        https://github.com/moby/moby.git                                                        
+GITHUB_URL                     https://github.com/moby/moby/pull/38465                                                 
+HOME                           C:\cygwin\home\jenkins                                                                  
+HOMEDRIVE                      C:                                                                                      
+HOMEPATH                       \cygwin\home\jenkins                                                                    
+HUDSON_COOKIE                  b0c62dac-fae1-429c-b6a2-988c00de10a1                                                    
+HUDSON_HOME                    /var/jenkins_home                                                                       
+HUDSON_SERVER_COOKIE           5654907fc74b1465                                                                        
+HUDSON_URL                     https://jenkins.dockerproject.org/                                                      
+JENKINS_HOME                   /var/jenkins_home                                                                       
+JENKINS_SERVER_COOKIE          5654907fc74b1465                                                                        
+JENKINS_URL                    https://jenkins.dockerproject.org/                                                      
+JOB_BASE_NAME                  Docker-PRs-WoW-RS5-Process                                                              
+JOB_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/display/redirect       
+JOB_NAME                       Docker-PRs-WoW-RS5-Process                                                              
+JOB_URL                        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/                       
+LOCALAPPDATA                   C:\Users\jenkins\AppData\Local                                                          
+LOGNAME                        jenkins                                                                                 
+LOGONSERVER                    \\jenkins-rs5-2                                                                         
+MAIL                           /var/spool/mail//jenkins                                                                
+NODE_LABELS                    azure-windows-rs5-2 windows-rs5                                                         
+NODE_NAME                      azure-windows-rs5-2                                                                     
+NUMBER_OF_PROCESSORS           4                                                                                       
+OLDPWD                         /home/jenkins                                                                           
+OS                             Windows_NT                                                                              
+PATH                           C:\cygwin\bin;C:\ProgramData\Oracle\Java\javapath;C:\pstools;C:\Program Files\Notepad...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL                              
+PR                             38465                                                                                   
+PROCESSOR_ARCHITECTURE         AMD64                                                                                   
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 79 Stepping 1, GenuineIntel                                      
+PROCESSOR_LEVEL                6                                                                                       
+PROCESSOR_REVISION             4f01                                                                                    
+ProgramData                    C:\ProgramData                                                                          
+PROGRAMFILES                   C:\Program Files                                                                        
+ProgramFiles(x86)              C:\Program Files (x86)                                                                  
+ProgramW6432                   C:\Program Files                                                                        
+PSExecutionPolicyPreference    Bypass                                                                                  
+PSModulePath                   C:\Users\jenkins\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShe...
+PUBLIC                         C:\Users\Public                                                                         
+PWD                            /cygdrive/c/workspace                                                                   
+ROOT_BUILD_CAUSE               MANUALTRIGGER                                                                           
+ROOT_BUILD_CAUSE_MANUALTRIGGER true                                                                                    
+RUN_CHANGES_DISPLAY_URL        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/1030/display/redirec...
+RUN_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS5-Process/1030/display/redirect  
+SHELL                          /bin/bash                                                                               
+SHLVL                          1                                                                                       
+SOURCES_DRIVE                  c                                                                                       
+SOURCES_SUBDIR                 gopath                                                                                  
+SSH_CLIENT                     52.88.204.51 14519 22                                                                   
+SSH_CONNECTION                 52.88.204.51 14519 10.0.0.21 22                                                         
+SYSTEMDRIVE                    C:                                                                                      
+SYSTEMROOT                     C:\Windows                                                                              
+TEMP                           d:\temp                                                                                 
+TESTRUN_DRIVE                  d                                                                                       
+TESTRUN_SUBDIR                 CI                                                                                      
+USER                           jenkins                                                                                 
+USERDOMAIN                     jenkins-rs5-2                                                                           
+USERNAME                       jenkins                                                                                 
+USERPROFILE                    C:\Users\jenkins                                                                        
+WINDIR                         C:\Windows                                                                              
+WORKSPACE                      /gopath/src/github.com/docker/docker                                                    
+
+
+
+INFO: PR#38465 (https://github.com/docker/docker/pull/38465)
+INFO: Sources under c:\gopath\...
+INFO: Test run under d:\CI\...
+INFO: Running in C:\gopath\src\github.com\docker\docker
+INFO: docker/docker repository was found
+INFO: Image microsoft/windowsservercore:latest is already loaded in the control daemon
+INFO: Version of microsoft/windowsservercore:latest is '10.0.17763.253'
+INFO: Docker version of control daemon
+
+Client:
+ Version:           master-dockerproject-2019-01-02
+ API version:       1.40
+ Go version:        go1.11.2
+ Git commit:        4eab3cd1
+ Built:             Wed Jan  2 23:50:37 2019
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          master-dockerproject-2019-01-02
+  API version:      1.40 (minimum version 1.24)
+  Go version:       go1.11.4
+  Git commit:       e0e9942
+  Built:            Wed Jan  2 23:58:00 2019
+  OS/Arch:          windows/amd64
+  Experimental:     false
+
+INFO: Docker info of control daemon
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 7
+Server Version: master-dockerproject-2019-01-02
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins:
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 17763 (17763.253.amd64fre.rs5_release_svc_prod1.181231-1749)
+Operating System: Windows Server 2019 Datacenter Version 1809 (OS Build 17763.253)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 16GiB
+Name: jenkins-rs5-2
+ID: GCV6:RAZX:OMQO:Y3MN:PCJN:B2DS:UA7O:SGDE:QMS3:SZ34:5HGV:76WS
+Docker Root Dir: D:\control
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Commit hash is a3c5775e99
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 0
+INFO: Nuking d:\CI
+INFO: Zapped successfully
+INFO: Location for testing is d:\CI\CI-a3c5775e99
+INFO: Validating GOLang consistency in Dockerfile.windows...
+
+
+INFO: Building the image from Dockerfile.windows at 01/08/2019 13:54:01...
+
+Sending build context to Docker daemon   46.4MB
+
+Step 1/7 : FROM microsoft/windowsservercore
+ ---> cb8e2ee630a3
+Step 2/7 : SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+ ---> Using cache
+ ---> 9c418afb6b72
+Step 3/7 : ENV GO_VERSION=1.11.4     GIT_VERSION=2.11.1     GOPATH=C:\go     FROM_DOCKERFILE=1
+ ---> Using cache
+ ---> 5ffe17bcb2ef
+Step 4/7 : RUN   Function Test-Nano() {     $EditionId = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'EditionID').EditionId;     return (($EditionId -eq 'ServerStandardNano') -or ($EditionId -eq 'ServerDataCenterNano') -or ($EditionId -eq 'NanoServer'));   }    Function Download-File([string] $source, [string] $target) {     if (Test-Nano) {       $handler = New-Object System.Net.Http.HttpClientHandler;       $client = New-Object System.Net.Http.HttpClient($handler);       $client.Timeout = New-Object System.TimeSpan(0, 30, 0);       $cancelTokenSource = [System.Threading.CancellationTokenSource]::new();       $responseMsg = $client.GetAsync([System.Uri]::new($source), $cancelTokenSource.Token);       $responseMsg.Wait();       if (!$responseMsg.IsCanceled) {         $response = $responseMsg.Result;         if ($response.IsSuccessStatusCode) {           $downloadedFileStream = [System.IO.FileStream]::new($target, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write);           $copyStreamOp = $response.Content.CopyToAsync($downloadedFileStream);           $copyStreamOp.Wait();           $downloadedFileStream.Close();           if ($copyStreamOp.Exception -ne $null) { throw $copyStreamOp.Exception }         }       } else {       Throw ("Failed to download " + $source)       }    } else {       $webClient = New-Object System.Net.WebClient;       $webClient.DownloadFile($source, $target);     }   }     setx /M PATH $('C:\git\cmd;C:\git\usr\bin;'+$Env:PATH+';C:\gcc\bin;C:\go\bin');     Write-Host INFO: Downloading git...;   $location='https://www.nuget.org/api/v2/package/GitForWindows/'+$Env:GIT_VERSION;   Download-File $location C:\gitsetup.zip;     Write-Host INFO: Downloading go...;   Download-File $('https://golang.org/dl/go'+$Env:GO_VERSION+'.windows-amd64.zip') C:\go.zip;     Write-Host INFO: Downloading compiler 1 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/gcc.zip C:\gcc.zip;     Write-Host INFO: Downloading compiler 2 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/runtime.zip C:\runtime.zip;     Write-Host INFO: Downloading compiler 3 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/binutils.zip C:\binutils.zip;     Write-Host INFO: Extracting git...;   Expand-Archive C:\gitsetup.zip C:\git-tmp;   New-Item -Type Directory C:\git | Out-Null;   Move-Item C:\git-tmp\tools\* C:\git\.;   Remove-Item -Recurse -Force C:\git-tmp;     Write-Host INFO: Expanding go...;   Expand-Archive C:\go.zip -DestinationPath C:\;     Write-Host INFO: Expanding compiler 1 of 3...;   Expand-Archive C:\gcc.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 2 of 3...;   Expand-Archive C:\runtime.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 3 of 3...;   Expand-Archive C:\binutils.zip -DestinationPath C:\gcc -Force;     Write-Host INFO: Removing downloaded files...;   Remove-Item C:\gcc.zip;   Remove-Item C:\runtime.zip;   Remove-Item C:\binutils.zip;   Remove-Item C:\gitsetup.zip;     Write-Host INFO: Creating source directory...;   New-Item -ItemType Directory -Path C:\go\src\github.com\docker\docker | Out-Null;     Write-Host INFO: Configuring git core.autocrlf...;   C:\git\cmd\git config --global core.autocrlf true;     Write-Host INFO: Completed
+ ---> Using cache
+ ---> 7428941c1779
+Step 5/7 : ENTRYPOINT ["powershell.exe"]
+ ---> Using cache
+ ---> bf3f611d134e
+Step 6/7 : WORKDIR C:\go\src\github.com\docker\docker
+ ---> Using cache
+ ---> 5efc061fa454
+Step 7/7 : COPY . .
+ ---> 8591a65a875a
+Successfully built 8591a65a875a
+Successfully tagged docker:latest
+INFO: Image build ended at 01/08/2019 13:54:29. Duration:00:00:28.2246712
+
+
+INFO: Building the test binaries at 01/08/2019 13:54:29...
+INFO: make.ps1 starting at 01/08/2019 13:54:31
+INFO: Git commit (a3c5775e99) assumed from DOCKER_GITCOMMIT environment variable
+INFO: Invoking autogen...
+INFO: Building daemon...
+INFO: Downloading docker/cli version 17.06.0-ce from edge...
+
+ ________   ____  __.
+ \_____  \ |    |/ _|
+ /   |   \|      <
+ /    |    \    |  \
+ \_______  /____|__ \
+         \/        \/
+
+INFO: make.ps1 ended at 01/08/2019 13:55:30
+INFO: Binaries build ended at 01/08/2019 13:55:32. Duration:00:01:02.7148701
+INFO: Copying the built daemon binary to d:\CI\CI-a3c5775e99\binary\dockerd-a3c5775e99.exe...
+INFO: Copying the built client binary to d:\CI\CI-a3c5775e99\binary\docker-a3c5775e99.exe...
+INFO: Copying dockerversion from the container...
+INFO: Copying the golang package from the container to d:\CI\CI-a3c5775e99\installer\go.zip...
+INFO: Extracting go.zip to d:\CI\CI-a3c5775e99\go
+INFO: Extraction ended at 01/08/2019 13:55:55. Duration:00:00:19.7277288
+INFO: Updating the golang and path environment variables
+INFO: GOPATH=c:\gopath
+INFO: go version go1.11.4 windows/amd64
+INFO: Starting a daemon under test...
+INFO: Args: -H tcp://0.0.0.0:2357 --data-root d:\CI\CI-a3c5775e99\daemon --pidfile d:\CI\CI-a3c5775e99\docker.pid
+INFO: Process started successfully.
+INFO: Waiting for the daemon under test to start...
+INFO: Daemon under test started and replied!
+INFO: Docker version of the daemon under test
+
+Client:
+ Version:      17.06.0-ce
+ API version:  1.30
+ Go version:   go1.8.3
+ Git commit:   02c1d87
+ Built:        Fri Jun 23 21:30:30 2017
+ OS/Arch:      windows/amd64
+
+Server:
+ Version:      0.0.0-dev
+ API version:  1.40 (minimum version 1.24)
+ Go version:   go1.11.4
+ Git commit:   a3c5775e99
+ Built:        01/08/2019 13:54:32
+ OS/Arch:      windows/amd64
+ Experimental: false
+
+INFO: Docker info of the daemon under test
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 0
+Server Version: 0.0.0-dev
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins: 
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 17763 (17763.253.amd64fre.rs5_release_svc_prod1.181231-1749)
+Operating System: Windows Server 2019 Datacenter Version 1809 (OS Build 17763.253)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 16GiB
+Name: jenkins-rs5-2
+ID: 6TZG:RTIE:5IPL:OYOC:I7AF:4KQV:IMIJ:F5VI:WQSY:KRYD:JVXE:U3WT
+Docker Root Dir: D:\CI\CI-a3c5775e99\daemon
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Docker images of the daemon under test
+
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+INFO: Base image for tests is microsoft/windowsservercore
+INFO: Loading windowsservercore .tar from disk into the daemon under test. This may take some time...
+Loaded image: microsoft/windowsservercore:10.0.17763.253
+Loaded image: microsoft/windowsservercore:latest
+INFO: docker load of windowsservercore  into daemon under test completed successfully
+INFO: Version of microsoft/windowsservercore:latest is '10.0.17763.253'
+INFO: Running validation tests at 01/08/2019 13:58:11...
+INFO: make.ps1 starting at 01/08/2019 13:58:11
+INFO: Validating Developer Certificate of Origin...
+Congratulations!  All commits are properly signed with the DCO!
+INFO: Validating go formatting on changed files...
+Checking volume\mounts\lcow_parser.go
+Checking volume\mounts\parser_test.go
+Checking volume\mounts\validate.go
+Checking volume\mounts\windows_parser.go
+Congratulations!  All Go source files are properly formatted.
+INFO: Validating pkg import isolation...
+Congratulations!  ".\pkg\*.go" is safely isolated from internal code.
+INFO: make.ps1 ended at 01/08/2019 13:58:13
+INFO: Validation tests ended at 01/08/2019 13:58:13. Duration:00:00:01.5205973
+INFO: Running unit tests at 01/08/2019 13:58:13...
+INFO: make.ps1 starting at 01/08/2019 13:58:15
+INFO: Git commit (a3c5775e99) assumed from DOCKER_GITCOMMIT environment variable
+INFO: Invoking autogen...
+INFO: Running unit tests...
+?   	github.com/docker/docker/api	[no test files]
+ok  	github.com/docker/docker/api/server	0.079s	coverage: 7.9% of statements
+?   	github.com/docker/docker/api/server/backend/build	[no test files]
+ok  	github.com/docker/docker/api/server/httputils	0.068s	coverage: 11.1% of statements
+ok  	github.com/docker/docker/api/server/middleware	0.070s	coverage: 43.4% of statements
+?   	github.com/docker/docker/api/server/router	[no test files]
+?   	github.com/docker/docker/api/server/router/build	[no test files]
+?   	github.com/docker/docker/api/server/router/checkpoint	[no test files]
+?   	github.com/docker/docker/api/server/router/container	[no test files]
+?   	github.com/docker/docker/api/server/router/debug	[no test files]
+?   	github.com/docker/docker/api/server/router/distribution	[no test files]
+?   	github.com/docker/docker/api/server/router/image	[no test files]
+?   	github.com/docker/docker/api/server/router/network	[no test files]
+?   	github.com/docker/docker/api/server/router/plugin	[no test files]
+?   	github.com/docker/docker/api/server/router/session	[no test files]
+?   	github.com/docker/docker/api/server/router/swarm	[no test files]
+?   	github.com/docker/docker/api/server/router/system	[no test files]
+?   	github.com/docker/docker/api/server/router/volume	[no test files]
+?   	github.com/docker/docker/api/types	[no test files]
+?   	github.com/docker/docker/api/types/backend	[no test files]
+?   	github.com/docker/docker/api/types/blkiodev	[no test files]
+?   	github.com/docker/docker/api/types/container	[no test files]
+?   	github.com/docker/docker/api/types/events	[no test files]
+ok  	github.com/docker/docker/api/types/filters	0.057s	coverage: 94.2% of statements
+?   	github.com/docker/docker/api/types/image	[no test files]
+?   	github.com/docker/docker/api/types/mount	[no test files]
+?   	github.com/docker/docker/api/types/network	[no test files]
+?   	github.com/docker/docker/api/types/plugins/logdriver	[no test files]
+?   	github.com/docker/docker/api/types/registry	[no test files]
+ok  	github.com/docker/docker/api/types/strslice	0.063s	coverage: 90.0% of statements
+?   	github.com/docker/docker/api/types/swarm	[no test files]
+?   	github.com/docker/docker/api/types/swarm/runtime	[no test files]
+ok  	github.com/docker/docker/api/types/time	0.341s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/api/types/versions	0.043s	coverage: 75.0% of statements
+?   	github.com/docker/docker/api/types/versions/v1p19	[no test files]
+?   	github.com/docker/docker/api/types/versions/v1p20	[no test files]
+?   	github.com/docker/docker/api/types/volume	[no test files]
+?   	github.com/docker/docker/autogen/winresources/docker	[no test files]
+?   	github.com/docker/docker/autogen/winresources/dockerd	[no test files]
+?   	github.com/docker/docker/builder	[no test files]
+?   	github.com/docker/docker/builder/builder-next	[no test files]
+?   	github.com/docker/docker/builder/builder-next/adapters/containerimage	[no test files]
+?   	github.com/docker/docker/builder/builder-next/adapters/snapshot	[no test files]
+?   	github.com/docker/docker/builder/builder-next/exporter	[no test files]
+?   	github.com/docker/docker/builder/builder-next/imagerefchecker	[no test files]
+?   	github.com/docker/docker/builder/builder-next/worker	[no test files]
+ok  	github.com/docker/docker/builder/dockerfile	0.175s	coverage: 43.2% of statements
+ok  	github.com/docker/docker/builder/dockerignore	0.040s	coverage: 96.8% of statements
+ok  	github.com/docker/docker/builder/fscache	0.678s	coverage: 69.2% of statements
+ok  	github.com/docker/docker/builder/remotecontext	0.356s	coverage: 9.3% of statements
+ok  	github.com/docker/docker/builder/remotecontext/git	26.457s	coverage: 78.8% of statements
+?   	github.com/docker/docker/cli	[no test files]
+?   	github.com/docker/docker/cli/config	[no test files]
+ok  	github.com/docker/docker/cli/debug	0.056s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/client	0.300s	coverage: 75.0% of statements
+ok  	github.com/docker/docker/cmd/dockerd	0.175s	coverage: 18.0% of statements
+ok  	github.com/docker/docker/container	0.311s	coverage: 42.8% of statements
+?   	github.com/docker/docker/container/stream	[no test files]
+?   	github.com/docker/docker/contrib/apparmor	[no test files]
+?   	github.com/docker/docker/contrib/docker-device-tool	[no test files]
+?   	github.com/docker/docker/contrib/httpserver	[no test files]
+ok  	github.com/docker/docker/daemon	2.678s	coverage: 8.3% of statements
+ok  	github.com/docker/docker/daemon/cluster	0.291s	coverage: 0.5% of statements
+ok  	github.com/docker/docker/daemon/cluster/controllers/plugin	0.156s	coverage: 65.3% of statements
+ok  	github.com/docker/docker/daemon/cluster/convert	0.254s	coverage: 28.0% of statements
+?   	github.com/docker/docker/daemon/cluster/executor	[no test files]
+ok  	github.com/docker/docker/daemon/cluster/executor/container	0.738s	coverage: 9.9% of statements
+?   	github.com/docker/docker/daemon/cluster/provider	[no test files]
+ok  	github.com/docker/docker/daemon/config	0.261s	coverage: 81.8% of statements
+ok  	github.com/docker/docker/daemon/discovery	0.064s	coverage: 30.4% of statements
+ok  	github.com/docker/docker/daemon/events	0.318s	coverage: 50.0% of statements
+?   	github.com/docker/docker/daemon/events/testutils	[no test files]
+?   	github.com/docker/docker/daemon/exec	[no test files]
+ok  	github.com/docker/docker/daemon/graphdriver	0.398s	coverage: 2.3% of statements
+?   	github.com/docker/docker/daemon/graphdriver/btrfs	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/devmapper	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/graphtest	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/lcow	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/overlay	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/overlay2	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/quota	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/register	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/vfs	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/windows	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/zfs	[no test files]
+ok  	github.com/docker/docker/daemon/images	0.168s	coverage: 4.9% of statements
+?   	github.com/docker/docker/daemon/initlayer	[no test files]
+ok  	github.com/docker/docker/daemon/links	0.055s	coverage: 93.0% of statements
+?   	github.com/docker/docker/daemon/listeners	[no test files]
+ok  	github.com/docker/docker/daemon/logger	0.277s	coverage: 44.0% of statements
+ok  	github.com/docker/docker/daemon/logger/awslogs	0.357s	coverage: 78.2% of statements
+?   	github.com/docker/docker/daemon/logger/etwlogs	[no test files]
+?   	github.com/docker/docker/daemon/logger/fluentd	[no test files]
+?   	github.com/docker/docker/daemon/logger/gcplogs	[no test files]
+?   	github.com/docker/docker/daemon/logger/gelf	[no test files]
+?   	github.com/docker/docker/daemon/logger/journald	[no test files]
+ok  	github.com/docker/docker/daemon/logger/jsonfilelog	0.354s	coverage: 62.1% of statements
+ok  	github.com/docker/docker/daemon/logger/jsonfilelog/jsonlog	0.175s	coverage: 88.3% of statements
+ok  	github.com/docker/docker/daemon/logger/local	0.259s	coverage: 74.7% of statements
+?   	github.com/docker/docker/daemon/logger/logentries	[no test files]
+ok  	github.com/docker/docker/daemon/logger/loggerutils	0.108s	coverage: 18.1% of statements
+ok  	github.com/docker/docker/daemon/logger/splunk	2.212s	coverage: 84.5% of statements
+ok  	github.com/docker/docker/daemon/logger/syslog	0.229s	coverage: 47.8% of statements
+ok  	github.com/docker/docker/daemon/logger/templates	0.038s	coverage: 8.3% of statements
+?   	github.com/docker/docker/daemon/names	[no test files]
+?   	github.com/docker/docker/daemon/network	[no test files]
+?   	github.com/docker/docker/daemon/stats	[no test files]
+ok  	github.com/docker/docker/distribution	1.226s	coverage: 15.6% of statements
+ok  	github.com/docker/docker/distribution/metadata	0.931s	coverage: 48.2% of statements
+?   	github.com/docker/docker/distribution/utils	[no test files]
+ok  	github.com/docker/docker/distribution/xfer	1.715s	coverage: 62.2% of statements
+?   	github.com/docker/docker/dockerversion	[no test files]
+ok  	github.com/docker/docker/errdefs	0.035s	coverage: 76.0% of statements
+ok  	github.com/docker/docker/hack/integration-cli-on-swarm/agent/master	0.040s	coverage: 11.3% of statements
+?   	github.com/docker/docker/hack/integration-cli-on-swarm/agent/types	[no test files]
+?   	github.com/docker/docker/hack/integration-cli-on-swarm/agent/worker	[no test files]
+ok  	github.com/docker/docker/hack/integration-cli-on-swarm/host	0.063s	coverage: 3.6% of statements
+ok  	github.com/docker/docker/image	0.693s	coverage: 86.3% of statements
+ok  	github.com/docker/docker/image/cache	0.101s	coverage: 19.2% of statements
+?   	github.com/docker/docker/image/tarexport	[no test files]
+ok  	github.com/docker/docker/image/v1	0.126s	coverage: 25.0% of statements
+?   	github.com/docker/docker/internal/test	[no test files]
+?   	github.com/docker/docker/internal/test/daemon	[no test files]
+?   	github.com/docker/docker/internal/test/environment	[no test files]
+?   	github.com/docker/docker/internal/test/fakecontext	[no test files]
+?   	github.com/docker/docker/internal/test/fakegit	[no test files]
+?   	github.com/docker/docker/internal/test/fakestorage	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/load	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/plugin	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/plugin/basic	[no test files]
+?   	github.com/docker/docker/internal/test/registry	[no test files]
+?   	github.com/docker/docker/internal/test/request	[no test files]
+ok  	github.com/docker/docker/internal/testutil	0.249s	coverage: 62.5% of statements
+ok  	github.com/docker/docker/layer	0.274s	coverage: 28.2% of statements
+ok  	github.com/docker/docker/libcontainerd	0.111s	coverage: 3.7% of statements
+?   	github.com/docker/docker/libcontainerd/supervisor	[no test files]
+?   	github.com/docker/docker/oci	[no test files]
+?   	github.com/docker/docker/oci/caps	[no test files]
+ok  	github.com/docker/docker/opts	0.067s	coverage: 68.7% of statements
+ok  	github.com/docker/docker/pkg/aaparser	0.031s	coverage: 50.0% of statements
+ok  	github.com/docker/docker/pkg/archive	8.693s	coverage: 62.2% of statements
+ok  	github.com/docker/docker/pkg/authorization	0.710s	coverage: 26.2% of statements
+ok  	github.com/docker/docker/pkg/broadcaster	0.042s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/chrootarchive	0.163s	coverage: 13.3% of statements
+?   	github.com/docker/docker/pkg/containerfs	[no test files]
+?   	github.com/docker/docker/pkg/devicemapper	[no test files]
+ok  	github.com/docker/docker/pkg/directory	0.048s	coverage: 80.0% of statements
+ok  	github.com/docker/docker/pkg/discovery	0.054s	coverage: 58.3% of statements
+ok  	github.com/docker/docker/pkg/discovery/file	0.057s	coverage: 92.9% of statements
+ok  	github.com/docker/docker/pkg/discovery/kv	3.282s	coverage: 84.1% of statements
+ok  	github.com/docker/docker/pkg/discovery/memory	0.051s	coverage: 92.3% of statements
+ok  	github.com/docker/docker/pkg/discovery/nodes	0.046s	coverage: 93.8% of statements
+ok  	github.com/docker/docker/pkg/filenotify	0.038s	coverage: 38.2% of statements
+ok  	github.com/docker/docker/pkg/fileutils	0.081s	coverage: 87.7% of statements
+ok  	github.com/docker/docker/pkg/homedir	0.035s	coverage: 75.0% of statements
+?   	github.com/docker/docker/pkg/idtools	[no test files]
+ok  	github.com/docker/docker/pkg/ioutils	0.566s	coverage: 69.1% of statements
+ok  	github.com/docker/docker/pkg/jsonmessage	0.180s	coverage: 88.3% of statements
+ok  	github.com/docker/docker/pkg/locker	0.053s	coverage: 88.9% of statements
+ok  	github.com/docker/docker/pkg/longpath	0.056s	coverage: 100.0% of statements
+?   	github.com/docker/docker/pkg/mount	[no test files]
+ok  	github.com/docker/docker/pkg/namesgenerator	0.044s	coverage: 85.7% of statements
+?   	github.com/docker/docker/pkg/namesgenerator/cmd/names-generator	[no test files]
+ok  	github.com/docker/docker/pkg/parsers	0.091s	coverage: 97.0% of statements
+?   	github.com/docker/docker/pkg/parsers/kernel	[no test files]
+?   	github.com/docker/docker/pkg/parsers/operatingsystem	[no test files]
+ok  	github.com/docker/docker/pkg/pidfile	0.049s	coverage: 82.6% of statements
+?   	github.com/docker/docker/pkg/platform	[no test files]
+?   	github.com/docker/docker/pkg/plugingetter	[no test files]
+ok  	github.com/docker/docker/pkg/plugins	34.929s	coverage: 73.6% of statements
+ok  	github.com/docker/docker/pkg/plugins/pluginrpc-gen	0.048s	coverage: 56.8% of statements
+?   	github.com/docker/docker/pkg/plugins/pluginrpc-gen/fixtures	[no test files]
+?   	github.com/docker/docker/pkg/plugins/pluginrpc-gen/fixtures/otherfixture	[no test files]
+ok  	github.com/docker/docker/pkg/plugins/transport	0.043s	coverage: 85.7% of statements
+ok  	github.com/docker/docker/pkg/pools	0.034s	coverage: 87.9% of statements
+ok  	github.com/docker/docker/pkg/progress	0.042s	coverage: 75.9% of statements
+ok  	github.com/docker/docker/pkg/pubsub	1.118s	coverage: 72.7% of statements
+ok  	github.com/docker/docker/pkg/reexec	0.090s	coverage: 82.4% of statements
+ok  	github.com/docker/docker/pkg/signal	0.035s	coverage: 20.3% of statements
+?   	github.com/docker/docker/pkg/signal/testfiles	[no test files]
+ok  	github.com/docker/docker/pkg/stdcopy	0.029s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/streamformatter	0.039s	coverage: 66.2% of statements
+ok  	github.com/docker/docker/pkg/stringid	0.033s	coverage: 76.0% of statements
+?   	github.com/docker/docker/pkg/symlink	[no test files]
+ok  	github.com/docker/docker/pkg/sysinfo	0.032s	coverage: 38.2% of statements
+ok  	github.com/docker/docker/pkg/system	0.045s	coverage: 12.7% of statements
+ok  	github.com/docker/docker/pkg/tailfile	0.079s	coverage: 88.6% of statements
+ok  	github.com/docker/docker/pkg/tarsum	0.121s	coverage: 89.3% of statements
+ok  	github.com/docker/docker/pkg/term	0.042s	coverage: 30.8% of statements
+ok  	github.com/docker/docker/pkg/term/windows	0.028s	coverage: 0.0% of statements [no tests to run]
+ok  	github.com/docker/docker/pkg/truncindex	0.135s	coverage: 91.5% of statements
+ok  	github.com/docker/docker/pkg/urlutil	0.036s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/useragent	0.052s	coverage: 88.9% of statements
+ok  	github.com/docker/docker/plugin	0.085s	coverage: 12.0% of statements
+ok  	github.com/docker/docker/plugin/executor/containerd	0.059s	coverage: 33.3% of statements
+ok  	github.com/docker/docker/plugin/v2	0.041s	coverage: 20.1% of statements
+ok  	github.com/docker/docker/reference	0.116s	coverage: 84.4% of statements
+ok  	github.com/docker/docker/registry	0.213s	coverage: 51.3% of statements
+ok  	github.com/docker/docker/registry/resumable	0.386s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/restartmanager	0.033s	coverage: 49.0% of statements
+ok  	github.com/docker/docker/runconfig	0.051s	coverage: 54.5% of statements
+?   	github.com/docker/docker/runconfig/opts	[no test files]
+?   	github.com/docker/docker/volume	[no test files]
+ok  	github.com/docker/docker/volume/drivers	0.047s	coverage: 36.1% of statements
+ok  	github.com/docker/docker/volume/local	0.067s	coverage: 37.7% of statements
+--- FAIL: TestParseMountRaw (0.03s)
+    parser_test.go:311: ParseMountRaw(`"\\\\.\\pipe\\foo:/foo"`) error should contain "Linux containers on Windows do not support named pipe mounts", got invalid volume specification: '\\.\pipe\foo:/foo': invalid mount config for type "npipe": '/foo' is not a valid pipe path
+FAIL
+coverage: 65.9% of statements
+FAIL	github.com/docker/docker/volume/mounts	0.101s
+ok  	github.com/docker/docker/volume/service	0.280s	coverage: 70.3% of statements
+?   	github.com/docker/docker/volume/service/opts	[no test files]
+?   	github.com/docker/docker/volume/testutils	[no test files]
+
+ERROR: make.ps1 failed:
+Unit tests failed
+At C:\go\src\github.com\docker\docker\hack\make.ps1:320 char:32
++     if ($LASTEXITCODE -ne 0) { Throw "Unit tests failed" }
++                                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+___________      .__.__             .___
+\_   _____/____  |__|  |   ____   __| _/
+ |    __) \__  \ |  |  | _/ __ \ / __ | 
+ |     \   / __ \|  |  |_\  ___// /_/ | 
+ \___  /  (____  /__|____/\___  >____ | 
+     \/        \/             \/     \/ 
+
+INFO: make.ps1 ended at 01/08/2019 14:01:21
+
+
+ERROR: Failed 'ERROR: Unit tests failed' at 01/08/2019 14:01:23
+At C:\gopath\src\github.com\docker\docker\hack\ci\windows.ps1:748 char:17
++                 Throw "ERROR: Unit tests failed"
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+INFO: Tidying up at end of run
+INFO: Saving daemon under test log (d:\CI\CI-a3c5775e99\dut.err) to d:\temp\CIDUT.log
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 2
+b951b7c3b3b2
+b16c20cb156c
+INFO: Non-base image count on control daemon to delete is 1
+Deleted: sha256:df88260137d19e6de40421e791255d53ed0c9773ace8138384e2e6fc3ad88313
+Deleted: sha256:6cb9ccc5f66d56b378226c03455008741762c6479284e01b30eb3e3d14aa4302
+INFO: Killing daemon with PID 5952
+INFO: Tidying pidfile d:\CI\CI-a3c5775e99\docker.pid
+INFO: Stopping possible daemon pid 5952
+INFO: Nuking d:\CI
+INFO: Zapped successfully
+
+INFO: executeCI.ps1 exiting at Tue Jan  8 14:01:33 CUT 2019. Duration 00:07:33.6090061
+
+Build step 'Windows PowerShell' marked build as failure
+Set build name.
+New build name is '#38465'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

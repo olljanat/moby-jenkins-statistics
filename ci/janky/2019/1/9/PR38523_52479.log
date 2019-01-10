@@ -1,0 +1,946 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2-stable (i-040a46de0a23be42a) (x86_64 ec2 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2-stable amd64 docker us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 3f2ecb5452bf59650c426bb4a5d5407136a71d87 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 3f2ecb5452bf59650c426bb4a5d5407136a71d87
+Commit message: "Merge pull request #38515 from yongtang/01082019-oll.WaitOn"
+ > git rev-list --no-walk 3f2ecb5452bf59650c426bb4a5d5407136a71d87 # timeout=10
+Set build name.
+New build name is '#38523'
+[Docker-PRs] $ /bin/bash /tmp/jenkins4241003646053097090.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38523/head -> origin/pr/38523
+Updating 3f2ecb5..a503265
+Fast-forward
+ Makefile                         |  3 +++
+ hack/ci/janky                    |  1 +
+ hack/make/test-integration-flaky | 33 +++++++++++++++++++++++++++++++++
+ 3 files changed, 37 insertions(+)
+ create mode 100644 hack/make/test-integration-flaky
+Sending build context to Docker daemon  45.11MB
+Step 1/94 : FROM golang:1.11.4 AS base
+ ---> 343df9d12b7b
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 8af720da772f
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 990c357bbc09
+Step 4/94 : FROM base AS criu
+ ---> 990c357bbc09
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> 2cda769455a8
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> a6edea95994c
+Step 7/94 : FROM base AS registry
+ ---> 990c357bbc09
+Step 8/94 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
+ ---> Using cache
+ ---> 31f83415ff8e
+Step 9/94 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> e8b5eb7f52be
+Step 10/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 6cd795d94659
+Step 11/94 : FROM base AS docker-py
+ ---> 990c357bbc09
+Step 12/94 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
+ ---> Using cache
+ ---> 6c8e0a939867
+Step 13/94 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> edc146fe7ca3
+Step 14/94 : FROM base AS swagger
+ ---> 990c357bbc09
+Step 15/94 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> 0d2f91b50be2
+Step 16/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> 66a009297cc7
+Step 17/94 : FROM base AS frozen-images
+ ---> 990c357bbc09
+Step 18/94 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> 373eecd92f7a
+Step 19/94 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 92c84e6628db
+Step 20/94 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> 2de63600726f
+Step 21/94 : FROM base AS runtime-dev
+ ---> 990c357bbc09
+Step 22/94 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> bef1f3497056
+Step 23/94 : FROM base AS tomlv
+ ---> 990c357bbc09
+Step 24/94 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> 6b6a1193171e
+Step 25/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 1d9dec955d6b
+Step 26/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 4b1bbaee5b2a
+Step 27/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 0035536d7523
+Step 28/94 : FROM base AS vndr
+ ---> 990c357bbc09
+Step 29/94 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> 545d4d0870ba
+Step 30/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 44f4e8ea8ba9
+Step 31/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 6d607fbe3fc9
+Step 32/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> f49e39d5d243
+Step 33/94 : FROM base AS containerd
+ ---> 990c357bbc09
+Step 34/94 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> f3f1210c0387
+Step 35/94 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> f6e53b128a26
+Step 36/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> e7e7a23d0f7c
+Step 37/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 1b352166de11
+Step 38/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 33116775f952
+Step 39/94 : FROM base AS proxy
+ ---> 990c357bbc09
+Step 40/94 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> c42a4254c108
+Step 41/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 68fcdde861b8
+Step 42/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 57903d1da269
+Step 43/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 1b83a9d894f8
+Step 44/94 : FROM base AS gometalinter
+ ---> 990c357bbc09
+Step 45/94 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> 8b59290ebfe8
+Step 46/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> f27ba4fd2b56
+Step 47/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 4652497cda39
+Step 48/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 1043c85e63fd
+Step 49/94 : FROM base AS dockercli
+ ---> 990c357bbc09
+Step 50/94 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> 52b60abebd30
+Step 51/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 0f1855451bb8
+Step 52/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> f9b5aec9c015
+Step 53/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> ac837c19da85
+Step 54/94 : FROM runtime-dev AS runc
+ ---> bef1f3497056
+Step 55/94 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> f38ac6ada129
+Step 56/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> ea5d484b5cab
+Step 57/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 0752feeaa241
+Step 58/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 65b0e4f079f2
+Step 59/94 : FROM base AS tini
+ ---> 990c357bbc09
+Step 60/94 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> 474c24eed497
+Step 61/94 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 14e901ac5c38
+Step 62/94 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> acef2ab6f656
+Step 63/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> b439f347ccee
+Step 64/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 9b0ba57f3aff
+Step 65/94 : FROM runtime-dev AS dev
+ ---> bef1f3497056
+Step 66/94 : RUN groupadd -r docker
+ ---> Using cache
+ ---> cdceb769dc8f
+Step 67/94 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Using cache
+ ---> 64de1f1b0549
+Step 68/94 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Using cache
+ ---> e416d2ea0d79
+Step 69/94 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Using cache
+ ---> 987a5e211f34
+Step 70/94 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Using cache
+ ---> c738f970c68e
+Step 71/94 : RUN ldconfig
+ ---> Using cache
+ ---> dc25f558a30b
+Step 72/94 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	--no-install-recommends
+ ---> Using cache
+ ---> 67b8cbeb5a37
+Step 73/94 : COPY --from=swagger /build/swagger* /usr/local/bin/
+ ---> Using cache
+ ---> 927b0b4a28ef
+Step 74/94 : COPY --from=frozen-images /build/ /docker-frozen-images
+ ---> Using cache
+ ---> c6b47c73aa55
+Step 75/94 : COPY --from=gometalinter /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 4837a9a39e72
+Step 76/94 : COPY --from=tomlv /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 46081c16ca91
+Step 77/94 : COPY --from=vndr /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 0e22bac7925e
+Step 78/94 : COPY --from=tini /build/ /usr/local/bin/
+ ---> Using cache
+ ---> fc3b83fe8b9a
+Step 79/94 : COPY --from=runc /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 971bbffee3bf
+Step 80/94 : COPY --from=containerd /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 0037233fea17
+Step 81/94 : COPY --from=proxy /build/ /usr/local/bin/
+ ---> Using cache
+ ---> a606913f6376
+Step 82/94 : COPY --from=dockercli /build/ /usr/local/cli
+ ---> Using cache
+ ---> 81a4e1637f99
+Step 83/94 : COPY --from=registry /build/registry* /usr/local/bin/
+ ---> Using cache
+ ---> 69523289e677
+Step 84/94 : COPY --from=criu /build/ /usr/local/
+ ---> Using cache
+ ---> c46ba22328fd
+Step 85/94 : COPY --from=docker-py /build/ /docker-py
+ ---> Using cache
+ ---> ed6c269c3114
+Step 86/94 : RUN cd /docker-py 	&& pip install docker-pycreds==0.2.1 	&& pip install yamllint==1.5.0 	&& pip install -r test-requirements.txt
+ ---> Using cache
+ ---> 2c565fbe80d3
+Step 87/94 : ENV PATH=/usr/local/cli:$PATH
+ ---> Using cache
+ ---> 5413d7576de8
+Step 88/94 : ENV DOCKER_BUILDTAGS apparmor seccomp selinux
+ ---> Using cache
+ ---> 6703bb406d73
+Step 89/94 : ENV GOMETALINTER_OPTS="--deadline=2m"
+ ---> Using cache
+ ---> 9025d399436c
+Step 90/94 : WORKDIR /go/src/github.com/docker/docker
+ ---> Using cache
+ ---> f44118f35d6f
+Step 91/94 : VOLUME /var/lib/docker
+ ---> Using cache
+ ---> 418b7984d9c5
+Step 92/94 : ENTRYPOINT ["hack/dind"]
+ ---> Using cache
+ ---> c6de69f957be
+Step 93/94 : FROM dev AS final
+ ---> c6de69f957be
+Step 94/94 : COPY . /go/src/github.com/docker/docker
+ ---> aed0d0d8c7cf
+Successfully built aed0d0d8c7cf
+Successfully tagged docker:a503265
+Congratulations!  All commits are properly signed with the DCO!
+Congratulations!  "./pkg/..." is safely isolated from internal code.
+No api/types/ or api/swagger.yaml changes in diff.
+Congratulations!  No testing.T found.
+Congratulations!  All toml source files changed here have valid syntax.
+Congratulations!  Changelog CHANGELOG.md is well-formed.
+Congratulations!  Changelog CHANGELOG.md dates are in descending order.
+Congratulations!  No new tests added to integration-cli.
+?   	github.com/docker/docker/api	[no test files]
+ok  	github.com/docker/docker/api/server	0.004s	coverage: 7.9% of statements
+?   	github.com/docker/docker/api/server/backend/build	[no test files]
+ok  	github.com/docker/docker/api/server/httputils	0.003s	coverage: 11.1% of statements
+ok  	github.com/docker/docker/api/server/middleware	0.004s	coverage: 43.4% of statements
+?   	github.com/docker/docker/api/server/router	[no test files]
+?   	github.com/docker/docker/api/server/router/build	[no test files]
+?   	github.com/docker/docker/api/server/router/checkpoint	[no test files]
+?   	github.com/docker/docker/api/server/router/container	[no test files]
+?   	github.com/docker/docker/api/server/router/debug	[no test files]
+?   	github.com/docker/docker/api/server/router/distribution	[no test files]
+?   	github.com/docker/docker/api/server/router/image	[no test files]
+?   	github.com/docker/docker/api/server/router/network	[no test files]
+?   	github.com/docker/docker/api/server/router/plugin	[no test files]
+?   	github.com/docker/docker/api/server/router/session	[no test files]
+?   	github.com/docker/docker/api/server/router/swarm	[no test files]
+?   	github.com/docker/docker/api/server/router/system	[no test files]
+?   	github.com/docker/docker/api/server/router/volume	[no test files]
+?   	github.com/docker/docker/api/types	[no test files]
+?   	github.com/docker/docker/api/types/backend	[no test files]
+?   	github.com/docker/docker/api/types/blkiodev	[no test files]
+?   	github.com/docker/docker/api/types/container	[no test files]
+?   	github.com/docker/docker/api/types/events	[no test files]
+ok  	github.com/docker/docker/api/types/filters	0.003s	coverage: 94.2% of statements
+?   	github.com/docker/docker/api/types/image	[no test files]
+?   	github.com/docker/docker/api/types/mount	[no test files]
+?   	github.com/docker/docker/api/types/network	[no test files]
+?   	github.com/docker/docker/api/types/plugins/logdriver	[no test files]
+?   	github.com/docker/docker/api/types/registry	[no test files]
+ok  	github.com/docker/docker/api/types/strslice	0.002s	coverage: 90.0% of statements
+?   	github.com/docker/docker/api/types/swarm	[no test files]
+?   	github.com/docker/docker/api/types/swarm/runtime	[no test files]
+ok  	github.com/docker/docker/api/types/time	0.002s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/api/types/versions	0.002s	coverage: 75.0% of statements
+?   	github.com/docker/docker/api/types/versions/v1p19	[no test files]
+?   	github.com/docker/docker/api/types/versions/v1p20	[no test files]
+?   	github.com/docker/docker/api/types/volume	[no test files]
+?   	github.com/docker/docker/builder	[no test files]
+?   	github.com/docker/docker/builder/builder-next	[no test files]
+?   	github.com/docker/docker/builder/builder-next/adapters/containerimage	[no test files]
+?   	github.com/docker/docker/builder/builder-next/adapters/snapshot	[no test files]
+?   	github.com/docker/docker/builder/builder-next/exporter	[no test files]
+?   	github.com/docker/docker/builder/builder-next/imagerefchecker	[no test files]
+?   	github.com/docker/docker/builder/builder-next/worker	[no test files]
+ok  	github.com/docker/docker/builder/dockerfile	0.400s	coverage: 45.4% of statements
+ok  	github.com/docker/docker/builder/dockerignore	0.003s	coverage: 96.8% of statements
+ok  	github.com/docker/docker/builder/fscache	0.112s	coverage: 69.2% of statements
+ok  	github.com/docker/docker/builder/remotecontext	0.164s	coverage: 13.7% of statements
+ok  	github.com/docker/docker/builder/remotecontext/git	0.620s	coverage: 78.8% of statements
+?   	github.com/docker/docker/cli	[no test files]
+?   	github.com/docker/docker/cli/config	[no test files]
+ok  	github.com/docker/docker/cli/debug	0.002s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/client	0.099s	coverage: 75.6% of statements
+ok  	github.com/docker/docker/cmd/dockerd	0.041s	coverage: 31.4% of statements
+ok  	github.com/docker/docker/cmd/dockerd/hack	0.002s	coverage: 72.9% of statements
+ok  	github.com/docker/docker/container	0.114s	coverage: 35.6% of statements
+?   	github.com/docker/docker/container/stream	[no test files]
+?   	github.com/docker/docker/contrib/apparmor	[no test files]
+?   	github.com/docker/docker/contrib/docker-device-tool	[no test files]
+?   	github.com/docker/docker/contrib/httpserver	[no test files]
+ok  	github.com/docker/docker/daemon	12.127s	coverage: 17.1% of statements
+ok  	github.com/docker/docker/daemon/cluster	0.031s	coverage: 0.5% of statements
+ok  	github.com/docker/docker/daemon/cluster/controllers/plugin	0.009s	coverage: 65.3% of statements
+ok  	github.com/docker/docker/daemon/cluster/convert	0.007s	coverage: 28.0% of statements
+?   	github.com/docker/docker/daemon/cluster/executor	[no test files]
+ok  	github.com/docker/docker/daemon/cluster/executor/container	3.433s	coverage: 12.7% of statements
+?   	github.com/docker/docker/daemon/cluster/provider	[no test files]
+ok  	github.com/docker/docker/daemon/config	0.025s	coverage: 84.8% of statements
+ok  	github.com/docker/docker/daemon/discovery	0.004s	coverage: 30.4% of statements
+ok  	github.com/docker/docker/daemon/events	0.057s	coverage: 50.0% of statements
+?   	github.com/docker/docker/daemon/events/testutils	[no test files]
+?   	github.com/docker/docker/daemon/exec	[no test files]
+ok  	github.com/docker/docker/daemon/graphdriver	0.004s	coverage: 2.2% of statements
+ok  	github.com/docker/docker/daemon/graphdriver/aufs	5.395s	coverage: 73.6% of statements
+ok  	github.com/docker/docker/daemon/graphdriver/btrfs	0.005s	coverage: 2.9% of statements
+ok  	github.com/docker/docker/daemon/graphdriver/copy	0.181s	coverage: 57.0% of statements
+ok  	github.com/docker/docker/daemon/graphdriver/devmapper	2.196s	coverage: 46.1% of statements
+?   	github.com/docker/docker/daemon/graphdriver/graphtest	[no test files]
+ok  	github.com/docker/docker/daemon/graphdriver/overlay	0.744s	coverage: 50.8% of statements
+ok  	github.com/docker/docker/daemon/graphdriver/overlay2	2.014s	coverage: 56.8% of statements
+?   	github.com/docker/docker/daemon/graphdriver/overlayutils	[no test files]
+ok  	github.com/docker/docker/daemon/graphdriver/quota	0.278s	coverage: 75.2% of statements
+?   	github.com/docker/docker/daemon/graphdriver/register	[no test files]
+ok  	github.com/docker/docker/daemon/graphdriver/vfs	0.006s	coverage: 70.5% of statements
+ok  	github.com/docker/docker/daemon/graphdriver/zfs	0.005s	coverage: 3.0% of statements
+ok  	github.com/docker/docker/daemon/images	0.011s	coverage: 4.9% of statements
+?   	github.com/docker/docker/daemon/initlayer	[no test files]
+ok  	github.com/docker/docker/daemon/links	0.002s	coverage: 93.0% of statements
+?   	github.com/docker/docker/daemon/listeners	[no test files]
+ok  	github.com/docker/docker/daemon/logger	0.215s	coverage: 43.7% of statements
+ok  	github.com/docker/docker/daemon/logger/awslogs	0.115s	coverage: 78.6% of statements
+?   	github.com/docker/docker/daemon/logger/fluentd	[no test files]
+?   	github.com/docker/docker/daemon/logger/gcplogs	[no test files]
+ok  	github.com/docker/docker/daemon/logger/gelf	0.005s	coverage: 68.2% of statements
+ok  	github.com/docker/docker/daemon/logger/journald	0.004s	coverage: 26.2% of statements
+ok  	github.com/docker/docker/daemon/logger/jsonfilelog	0.006s	coverage: 62.1% of statements
+ok  	github.com/docker/docker/daemon/logger/jsonfilelog/jsonlog	0.003s	coverage: 88.3% of statements
+ok  	github.com/docker/docker/daemon/logger/local	0.011s	coverage: 74.7% of statements
+?   	github.com/docker/docker/daemon/logger/logentries	[no test files]
+ok  	github.com/docker/docker/daemon/logger/loggerutils	0.007s	coverage: 18.6% of statements
+ok  	github.com/docker/docker/daemon/logger/splunk	1.490s	coverage: 84.5% of statements
+ok  	github.com/docker/docker/daemon/logger/syslog	0.004s	coverage: 47.8% of statements
+ok  	github.com/docker/docker/daemon/logger/templates	0.002s	coverage: 8.3% of statements
+?   	github.com/docker/docker/daemon/names	[no test files]
+ok  	github.com/docker/docker/daemon/network	0.003s	coverage: 57.1% of statements
+?   	github.com/docker/docker/daemon/stats	[no test files]
+ok  	github.com/docker/docker/distribution	1.090s	coverage: 16.8% of statements
+ok  	github.com/docker/docker/distribution/metadata	0.027s	coverage: 48.2% of statements
+?   	github.com/docker/docker/distribution/utils	[no test files]
+ok  	github.com/docker/docker/distribution/xfer	1.432s	coverage: 83.9% of statements
+?   	github.com/docker/docker/dockerversion	[no test files]
+ok  	github.com/docker/docker/errdefs	0.003s	coverage: 76.0% of statements
+ok  	github.com/docker/docker/image	0.017s	coverage: 86.3% of statements
+ok  	github.com/docker/docker/image/cache	0.007s	coverage: 19.2% of statements
+?   	github.com/docker/docker/image/tarexport	[no test files]
+ok  	github.com/docker/docker/image/v1	0.007s	coverage: 25.0% of statements
+ok  	github.com/docker/docker/internal/procfs	0.003s	coverage: 78.4% of statements
+?   	github.com/docker/docker/internal/test	[no test files]
+?   	github.com/docker/docker/internal/test/daemon	[no test files]
+?   	github.com/docker/docker/internal/test/environment	[no test files]
+?   	github.com/docker/docker/internal/test/fakecontext	[no test files]
+?   	github.com/docker/docker/internal/test/fakegit	[no test files]
+?   	github.com/docker/docker/internal/test/fakestorage	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/load	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/plugin	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/plugin/basic	[no test files]
+?   	github.com/docker/docker/internal/test/registry	[no test files]
+?   	github.com/docker/docker/internal/test/request	[no test files]
+ok  	github.com/docker/docker/internal/testutil	0.002s	coverage: 62.5% of statements
+ok  	github.com/docker/docker/layer	7.209s	coverage: 71.4% of statements
+ok  	github.com/docker/docker/libcontainerd	0.029s	coverage: 3.4% of statements
+?   	github.com/docker/docker/libcontainerd/supervisor	[no test files]
+?   	github.com/docker/docker/oci	[no test files]
+?   	github.com/docker/docker/oci/caps	[no test files]
+ok  	github.com/docker/docker/opts	0.017s	coverage: 68.4% of statements
+ok  	github.com/docker/docker/pkg/aaparser	0.002s	coverage: 50.0% of statements
+ok  	github.com/docker/docker/pkg/archive	0.392s	coverage: 77.1% of statements
+ok  	github.com/docker/docker/pkg/authorization	0.356s	coverage: 66.7% of statements
+ok  	github.com/docker/docker/pkg/broadcaster	0.002s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/chrootarchive	2.821s	coverage: 37.0% of statements
+?   	github.com/docker/docker/pkg/containerfs	[no test files]
+?   	github.com/docker/docker/pkg/devicemapper	[no test files]
+ok  	github.com/docker/docker/pkg/directory	0.003s	coverage: 80.0% of statements
+ok  	github.com/docker/docker/pkg/discovery	0.004s	coverage: 58.3% of statements
+ok  	github.com/docker/docker/pkg/discovery/file	0.004s	coverage: 92.9% of statements
+ok  	github.com/docker/docker/pkg/discovery/kv	3.066s	coverage: 84.1% of statements
+ok  	github.com/docker/docker/pkg/discovery/memory	0.003s	coverage: 92.3% of statements
+ok  	github.com/docker/docker/pkg/discovery/nodes	0.003s	coverage: 93.8% of statements
+ok  	github.com/docker/docker/pkg/dmesg	0.003s	coverage: 83.3% of statements
+ok  	github.com/docker/docker/pkg/filenotify	0.603s	coverage: 66.3% of statements
+ok  	github.com/docker/docker/pkg/fileutils	0.007s	coverage: 89.5% of statements
+ok  	github.com/docker/docker/pkg/fsutils	0.155s	coverage: 85.1% of statements
+ok  	github.com/docker/docker/pkg/homedir	0.003s	coverage: 41.7% of statements
+ok  	github.com/docker/docker/pkg/idtools	0.289s	coverage: 70.2% of statements
+ok  	github.com/docker/docker/pkg/ioutils	0.385s	coverage: 69.1% of statements
+ok  	github.com/docker/docker/pkg/jsonmessage	0.003s	coverage: 88.3% of statements
+ok  	github.com/docker/docker/pkg/locker	0.012s	coverage: 88.9% of statements
+ok  	github.com/docker/docker/pkg/longpath	0.002s	coverage: 100.0% of statements
+?   	github.com/docker/docker/pkg/loopback	[no test files]
+ok  	github.com/docker/docker/pkg/mount	0.471s	coverage: 68.6% of statements
+ok  	github.com/docker/docker/pkg/namesgenerator	0.002s	coverage: 85.7% of statements
+?   	github.com/docker/docker/pkg/namesgenerator/cmd/names-generator	[no test files]
+ok  	github.com/docker/docker/pkg/parsers	0.003s	coverage: 97.0% of statements
+ok  	github.com/docker/docker/pkg/parsers/kernel	0.002s	coverage: 60.0% of statements
+ok  	github.com/docker/docker/pkg/parsers/operatingsystem	0.002s	coverage: 90.0% of statements
+ok  	github.com/docker/docker/pkg/pidfile	0.002s	coverage: 82.4% of statements
+?   	github.com/docker/docker/pkg/platform	[no test files]
+?   	github.com/docker/docker/pkg/plugingetter	[no test files]
+ok  	github.com/docker/docker/pkg/plugins	33.618s	coverage: 76.8% of statements
+ok  	github.com/docker/docker/pkg/plugins/pluginrpc-gen	0.009s	coverage: 56.8% of statements
+?   	github.com/docker/docker/pkg/plugins/pluginrpc-gen/fixtures	[no test files]
+?   	github.com/docker/docker/pkg/plugins/pluginrpc-gen/fixtures/otherfixture	[no test files]
+ok  	github.com/docker/docker/pkg/plugins/transport	0.003s	coverage: 85.7% of statements
+ok  	github.com/docker/docker/pkg/pools	0.002s	coverage: 87.9% of statements
+ok  	github.com/docker/docker/pkg/progress	0.002s	coverage: 75.9% of statements
+ok  	github.com/docker/docker/pkg/pubsub	1.038s	coverage: 72.7% of statements
+ok  	github.com/docker/docker/pkg/reexec	0.008s	coverage: 82.4% of statements
+ok  	github.com/docker/docker/pkg/signal	2.371s	coverage: 61.0% of statements
+?   	github.com/docker/docker/pkg/signal/testfiles	[no test files]
+ok  	github.com/docker/docker/pkg/stdcopy	0.003s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/streamformatter	0.003s	coverage: 66.2% of statements
+ok  	github.com/docker/docker/pkg/stringid	0.003s	coverage: 76.0% of statements
+ok  	github.com/docker/docker/pkg/symlink	0.007s	coverage: 87.7% of statements
+ok  	github.com/docker/docker/pkg/sysinfo	0.004s	coverage: 75.8% of statements
+ok  	github.com/docker/docker/pkg/system	0.017s	coverage: 36.1% of statements
+ok  	github.com/docker/docker/pkg/tailfile	0.017s	coverage: 88.6% of statements
+ok  	github.com/docker/docker/pkg/tarsum	0.047s	coverage: 89.3% of statements
+ok  	github.com/docker/docker/pkg/term	0.003s	coverage: 84.8% of statements
+ok  	github.com/docker/docker/pkg/term/windows	0.002s	coverage: 0.0% of statements [no tests to run]
+ok  	github.com/docker/docker/pkg/truncindex	0.102s	coverage: 91.5% of statements
+ok  	github.com/docker/docker/pkg/urlutil	0.002s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/useragent	0.002s	coverage: 88.9% of statements
+ok  	github.com/docker/docker/plugin	0.532s	coverage: 27.3% of statements
+ok  	github.com/docker/docker/plugin/executor/containerd	0.007s	coverage: 33.3% of statements
+ok  	github.com/docker/docker/plugin/v2	0.003s	coverage: 14.5% of statements
+?   	github.com/docker/docker/profiles/apparmor	[no test files]
+ok  	github.com/docker/docker/profiles/seccomp	0.004s	coverage: 79.4% of statements
+ok  	github.com/docker/docker/reference	0.006s	coverage: 84.4% of statements
+ok  	github.com/docker/docker/registry	0.110s	coverage: 57.0% of statements
+ok  	github.com/docker/docker/registry/resumable	0.016s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/restartmanager	0.002s	coverage: 49.0% of statements
+ok  	github.com/docker/docker/runconfig	0.007s	coverage: 68.2% of statements
+?   	github.com/docker/docker/runconfig/opts	[no test files]
+?   	github.com/docker/docker/volume	[no test files]
+ok  	github.com/docker/docker/volume/drivers	0.005s	coverage: 36.1% of statements
+ok  	github.com/docker/docker/volume/local	0.013s	coverage: 73.0% of statements
+ok  	github.com/docker/docker/volume/mounts	0.026s	coverage: 66.8% of statements
+ok  	github.com/docker/docker/volume/service	0.013s	coverage: 73.0% of statements
+?   	github.com/docker/docker/volume/service/opts	[no test files]
+?   	github.com/docker/docker/volume/testutils	[no test files]
+
+  _____          _
+ / ____|        | |
+| |     ___   __| | ___  ___ _____   __
+| |    / _ \ / _` |/ _ \/ __/ _ \ \ / /
+| |___| (_) | (_| |  __/ (_| (_) \ V /
+ \_____\___/ \__,_|\___|\___\___/ \_/
+                              Bash-8a28df4
+
+
+x> No CI provider detected.
+    Testing inside Docker? http://docs.codecov.io/docs/testing-with-docker
+    Testing with Tox? https://docs.codecov.io/docs/python#section-testing-with-tox
+    project root: .
+--> token set from env
+    Yaml found at: codecov.yml
+    -> Found 1 reports
+==> Detecting git/mercurial file structure
+==> Reading reports
+    + coverage.txt bytes=1668851
+==> Appending adjustments
+    http://docs.codecov.io/docs/fixing-reports
+    + Found adjustments
+==> Gzipping contents
+==> Uploading reports
+    url: https://codecov.io
+    query: branch=&commit=a503265308d9f27c483887fa341eeed0b1ce1e14&build=&build_url=&name=&tag=&slug=moby%2Fmoby&service=&flags=&pr=&job=
+    -> Pinging Codecov
+https://codecov.io/upload/v4?package=bash-8a28df4&token=e6d53b86-8efe-4b59-adb0-c205a735b39e&branch=&commit=a503265308d9f27c483887fa341eeed0b1ce1e14&build=&build_url=&name=&tag=&slug=moby%2Fmoby&service=&flags=&pr=&job=
+    -> Uploading
+    -> View reports at https://codecov.io/github/moby/moby/commit/a503265308d9f27c483887fa341eeed0b1ce1e14
+
+Removing bundles/
+
+---> Making bundle: binary-daemon (in bundles/binary-daemon)
+Building: bundles/binary-daemon/dockerd-dev
+Created binary: bundles/binary-daemon/dockerd-dev
+Copying nested executables into bundles/binary-daemon
+
+---> Making bundle: dynbinary (in bundles/dynbinary)
+Building: bundles/dynbinary-daemon/dockerd-dev
+Created binary: bundles/dynbinary-daemon/dockerd-dev
+
+---> Making bundle: test-docker-py (in bundles/test-docker-py)
+---> Making bundle: .integration-daemon-start (in bundles/test-docker-py)
+Using test binary docker
+/etc/init.d/apparmor: 130: /etc/init.d/apparmor: systemd-detect-virt: not found
+Starting AppArmor profiles:Warning from stdin (line 1): /sbin/apparmor_parser: cannot use or update cache, disable, or force-complain via stdin
+Warning failed to create cache: (null)
+.
+INFO: Waiting for daemon to start...
+Starting dockerd
+.
+============================= test session starts ==============================
+platform linux2 -- Python 2.7.13, pytest-2.9.1, py-1.7.0, pluggy-0.3.1
+rootdir: /docker-py, inifile: pytest.ini
+plugins: cov-2.1.0
+collected 338 items
+
+../../../../../docker-py/tests/integration/api_build_test.py ....s..s........
+../../../../../docker-py/tests/integration/api_client_test.py .......
+../../../../../docker-py/tests/integration/api_config_test.py .....
+../../../../../docker-py/tests/integration/api_container_test.py ....x....x.......x............................................................
+../../../../../docker-py/tests/integration/api_exec_test.py .............
+../../../../../docker-py/tests/integration/api_healthcheck_test.py ....
+../../../../../docker-py/tests/integration/api_image_test.py ...s........s....
+../../../../../docker-py/tests/integration/api_network_test.py ...........................
+../../../../../docker-py/tests/integration/api_plugin_test.py ...........
+../../../../../docker-py/tests/integration/api_secret_test.py .....
+../../../../../docker-py/tests/integration/api_service_test.py ......................................................
+../../../../../docker-py/tests/integration/api_swarm_test.py ..s...x......
+../../../../../docker-py/tests/integration/api_volume_test.py .........
+../../../../../docker-py/tests/integration/client_test.py ....
+../../../../../docker-py/tests/integration/errors_test.py .
+../../../../../docker-py/tests/integration/models_containers_test.py ..............................
+../../../../../docker-py/tests/integration/models_images_test.py .............
+../../../../../docker-py/tests/integration/models_networks_test.py ....
+../../../../../docker-py/tests/integration/models_nodes_test.py .
+../../../../../docker-py/tests/integration/models_resources_test.py .
+../../../../../docker-py/tests/integration/models_services_test.py ..............X.
+../../../../../docker-py/tests/integration/models_swarm_test.py .
+../../../../../docker-py/tests/integration/models_volumes_test.py ..
+../../../../../docker-py/tests/integration/regression_test.py ......
+
+ generated xml file: /go/src/github.com/docker/docker/bundles/test-docker-py/results.xml 
+=========================== short test summary info ============================
+XFAIL ../../../../../docker-py/tests/integration/api_container_test.py::CreateContainerTest::test_create_with_cpu_rt_options
+  CONFIG_RT_GROUP_SCHED isn't enabled
+XFAIL ../../../../../docker-py/tests/integration/api_container_test.py::CreateContainerTest::test_create_with_init_path
+  init-path removed in 17.05.0
+XFAIL ../../../../../docker-py/tests/integration/api_container_test.py::CreateContainerTest::test_create_with_storage_opt
+  Not supported on most drivers
+XFAIL ../../../../../docker-py/tests/integration/api_swarm_test.py::SwarmTest::test_init_swarm_with_log_driver
+  This doesn't seem to be taken into account by the engine
+SKIP [1] tests/integration/api_image_test.py:289: Doesn't work inside a container - FIXME
+SKIP [1] /docker-py/tests/integration/api_swarm_test.py:31: Test stalls the engine on 1.12.0
+SKIP [3] /docker-py/tests/helpers.py:69: Feature requires Docker Engine experimental mode
+======== 328 passed, 5 skipped, 4 xfailed, 1 xpassed in 353.39 seconds =========
+---> Making bundle: .integration-daemon-stop (in bundles/test-docker-py)
+Clearing AppArmor profiles cache:.
+All profile caches have been cleared, but no profiles have been unloaded.
+Unloading profiles will leave already running processes permanently
+unconfined, which can lead to unexpected situations.
+
+To set a process to complain mode, use the command line tool
+'aa-complain'. To really tear down all profiles, run the init script
+with the 'teardown' option."
+
+---> Making bundle: test-integration-flaky (in bundles/test-integration-flaky)
+No new tests added to integration.
+[Docker-PRs] $ /bin/bash /tmp/jenkins6080486697205124442.sh
+Building e2e image
+Sending build context to Docker daemon  45.11MB
+Step 1/28 : FROM golang:1.11.4-alpine3.8 as builder
+1.11.4-alpine3.8: Pulling from library/golang
+cd784148e348: Pulling fs layer
+7e273b0dfc44: Pulling fs layer
+952c3806fd1a: Pulling fs layer
+ee1f873f86f9: Pulling fs layer
+7172cd197d12: Pulling fs layer
+ee1f873f86f9: Waiting
+7172cd197d12: Waiting
+7e273b0dfc44: Verifying Checksum
+7e273b0dfc44: Download complete
+cd784148e348: Verifying Checksum
+cd784148e348: Download complete
+952c3806fd1a: Verifying Checksum
+952c3806fd1a: Download complete
+cd784148e348: Pull complete
+7e273b0dfc44: Pull complete
+952c3806fd1a: Pull complete
+7172cd197d12: Verifying Checksum
+7172cd197d12: Download complete
+ee1f873f86f9: Verifying Checksum
+ee1f873f86f9: Download complete
+ee1f873f86f9: Pull complete
+7172cd197d12: Pull complete
+Digest: sha256:198cb8c94b9ee6941ce6d58f29aadb855f64600918ce602cdeacb018ad77d647
+Status: Downloaded newer image for golang:1.11.4-alpine3.8
+ ---> f56365ec0638
+Step 2/28 : RUN apk --no-cache add     bash     btrfs-progs-dev     build-base     curl     lvm2-dev     jq
+ ---> Running in 1ce66891a453
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/44) Installing ncurses-terminfo-base (6.1_p20180818-r1)
+(2/44) Installing ncurses-terminfo (6.1_p20180818-r1)
+(3/44) Installing ncurses-libs (6.1_p20180818-r1)
+(4/44) Installing readline (7.0.003-r0)
+(5/44) Installing bash (4.4.19-r1)
+Executing bash-4.4.19-r1.post-install
+(6/44) Installing linux-headers (4.4.6-r2)
+(7/44) Installing libuuid (2.32-r0)
+(8/44) Installing btrfs-progs-libs (4.17-r1)
+(9/44) Installing btrfs-progs-dev (4.17-r1)
+(10/44) Installing binutils (2.30-r5)
+(11/44) Installing libmagic (5.32-r0)
+(12/44) Installing file (5.32-r0)
+(13/44) Installing gmp (6.1.2-r1)
+(14/44) Installing isl (0.18-r0)
+(15/44) Installing libgomp (6.4.0-r9)
+(16/44) Installing libatomic (6.4.0-r9)
+(17/44) Installing pkgconf (1.5.3-r0)
+(18/44) Installing libgcc (6.4.0-r9)
+(19/44) Installing mpfr3 (3.1.5-r1)
+(20/44) Installing mpc1 (1.0.3-r1)
+(21/44) Installing libstdc++ (6.4.0-r9)
+(22/44) Installing gcc (6.4.0-r9)
+(23/44) Installing musl-dev (1.1.19-r10)
+(24/44) Installing libc-dev (0.7.1-r0)
+(25/44) Installing g++ (6.4.0-r9)
+(26/44) Installing make (4.2.1-r2)
+(27/44) Installing fortify-headers (0.9-r0)
+(28/44) Installing build-base (0.5-r1)
+(29/44) Installing nghttp2-libs (1.32.0-r0)
+(30/44) Installing libssh2 (1.8.0-r3)
+(31/44) Installing libcurl (7.61.1-r1)
+(32/44) Installing curl (7.61.1-r1)
+(33/44) Installing oniguruma (6.8.2-r0)
+(34/44) Installing jq (1.6_rc1-r1)
+(35/44) Installing device-mapper-libs (2.02.178-r0)
+(36/44) Installing device-mapper-event-libs (2.02.178-r0)
+(37/44) Installing libaio (0.3.111-r0)
+(38/44) Installing libblkid (2.32-r0)
+(39/44) Installing lvm2-libs (2.02.178-r0)
+(40/44) Installing libfdisk (2.32-r0)
+(41/44) Installing libmount (2.32-r0)
+(42/44) Installing libsmartcols (2.32-r0)
+(43/44) Installing util-linux-dev (2.32-r0)
+(44/44) Installing lvm2-dev (2.02.178-r0)
+Executing busybox-1.28.4-r2.trigger
+OK: 190 MiB in 58 packages
+Removing intermediate container 1ce66891a453
+ ---> e8f98857a31f
+Step 3/28 : RUN mkdir -p /go/src/github.com/docker/docker/
+ ---> Running in 1161e21ffb0b
+Removing intermediate container 1161e21ffb0b
+ ---> cfa174b21713
+Step 4/28 : WORKDIR /go/src/github.com/docker/docker/
+ ---> Running in 94426c27d9a0
+Removing intermediate container 94426c27d9a0
+ ---> 462ec03f0b22
+Step 5/28 : COPY contrib/download-frozen-image-v2.sh contrib/download-frozen-image-v2.sh
+ ---> 576f2a2094e9
+Step 6/28 : RUN contrib/download-frozen-image-v2.sh /output/docker-frozen-images 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Running in 8935e0c06673
+Downloading 'library/buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251' (4 layers)...
+#=#=#                                                                         ######################################################################## 100.0%
+                                                                           1.0%##########                                                                14.4%##################                                                        25.9%############################                                              39.6%####################################                                      50.3%############################################                              61.2%######################################################                    76.2%###############################################################           87.6%####################################################################      95.5%######################################################################## 100.0%
+#=#=#                                                                         ######################################################################## 100.0%
+########                                                                  12.3%##############################                                            42.5%#######################################################                   77.2%######################################################################## 100.0%
+#=#=#                                                                         ######################################################################## 100.0%
+                                                                           0.0%######                                                                     9.4%##################                                                        26.1%###############################                                           44.1%#########################################                                 57.7%######################################################                    75.6%####################################################################      94.8%######################################################################## 100.0%
+#=#=#                                                                         ######################################################################## 100.0%
+                                                                           0.9%####                                                                       5.9%########                                                                  11.3%###########                                                               15.8%##############                                                            20.3%#################                                                         24.0%####################                                                      28.6%########################                                                  34.1%###########################                                               38.5%###############################                                           44.3%###################################                                       49.0%########################################                                  55.8%###########################################                               60.3%###############################################                           65.3%###################################################                       70.9%######################################################                    76.0%##########################################################                80.8%###########################################################               83.2%############################################################              84.6%##############################################################            87.3%###############################################################           88.0%#################################################################         91.2%#####################################################################     96.0%######################################################################## 100.0%
+
+Downloading 'library/busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0' (1 layers)...
+#=#=#                                                                         ######################################################################## 100.0%
+######################################################################## 100.0%
+
+Downloading 'library/busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6' (1 layers)...
+#=#=#                                                                         ######################################################################## 100.0%
+###############################################                           66.4%######################################################################## 100.0%
+
+Downloading 'library/debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60' (1 layers)...
+skipping existing 1849cc453dee
+
+Downloading 'library/hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c' (1 layers)...
+#=#=#                                                                         ######################################################################## 100.0%
+######################################################################## 100.0%
+
+Download of images into '/output/docker-frozen-images' complete.
+Use something like the following to load the result into a Docker daemon:
+  tar -cC '/output/docker-frozen-images' . | docker load
+Removing intermediate container 8935e0c06673
+ ---> 4996f24c3722
+Step 7/28 : COPY hack/dockerfile/install hack/dockerfile/install
+ ---> f64278f783d1
+Step 8/28 : RUN ./hack/dockerfile/install/install.sh dockercli
+ ---> Running in 517163b07e17
++ RM_GOPATH=0
++ TMP_GOPATH=
++ : /usr/local/bin
++ [[ -z '' ]]
+++ mktemp -d
++ export GOPATH=/tmp/tmp.cfkoJI
++ GOPATH=/tmp/tmp.cfkoJI
++ RM_GOPATH=1
+++ dirname ./hack/dockerfile/install/install.sh
++ dir=./hack/dockerfile/install
++ bin=dockercli
++ shift
++ [[ ! -f ./hack/dockerfile/install/dockercli.installer ]]
++ . ./hack/dockerfile/install/dockercli.installer
+++ DOCKERCLI_CHANNEL=edge
+++ DOCKERCLI_VERSION=17.06.0-ce
++ install_dockercli
+Install docker/cli version 17.06.0-ce from edge
++ echo 'Install docker/cli version 17.06.0-ce from edge'
+++ uname -m
++ arch=x86_64
++ '[' x86_64 '!=' x86_64 ']'
++ url=https://download.docker.com/linux/static
++ curl -Ls https://download.docker.com/linux/static/edge/x86_64/docker-17.06.0-ce.tgz
++ tar -xz docker/docker
++ mkdir -p /usr/local/bin
++ mv docker/docker /usr/local/bin/
++ rmdir docker
+Removing intermediate container 517163b07e17
+ ---> 05397b4e66e9
+Step 9/28 : ARG DOCKER_GITCOMMIT
+ ---> Running in ab6d27221063
+Removing intermediate container ab6d27221063
+ ---> 111370880dab
+Step 10/28 : ENV DOCKER_GITCOMMIT=${DOCKER_GITCOMMIT:-undefined}
+ ---> Running in fb353dc97486
+Removing intermediate container fb353dc97486
+ ---> 934cf57aa4b8
+Step 11/28 : ADD . .
+ ---> fb1a6b4d4549
+Step 12/28 : RUN CGO_ENABLED=0 go build -buildmode=pie -o /output/httpserver github.com/docker/docker/contrib/httpserver
+ ---> Running in 6124fd866478
+# github.com/docker/docker/contrib/httpserver
+loadinternal: cannot find runtime/cgo
+Removing intermediate container 6124fd866478
+ ---> fab503a20dcd
+Step 13/28 : RUN hack/make.sh build-integration-test-binary
+ ---> Running in 8dff344eb4ec
+
+Removing bundles/
+
+---> Making bundle: build-integration-test-binary (in bundles/build-integration-test-binary)
+Building test suite binary ./integration-cli/test.main
+Building test suite binary ./integration/plugin/test.main
+Building test suite binary ./integration/plugin/authz/test.main
+Building test suite binary ./integration/plugin/logging/test.main
+Building test suite binary ./integration/plugin/logging/cmd/test.main
+Building test suite binary ./integration/plugin/logging/cmd/close_on_start/test.main
+Building test suite binary ./integration/plugin/logging/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/common/test.main
+Building test suite binary ./integration/plugin/volumes/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/test.main
+Building test suite binary ./integration/plugin/volumes/cmd/dummy/test.main
+Building test suite binary ./integration/plugin/graphdriver/test.main
+Building test suite binary ./integration/config/test.main
+Building test suite binary ./integration/service/test.main
+Building test suite binary ./integration/network/test.main
+Building test suite binary ./integration/network/ipvlan/test.main
+Building test suite binary ./integration/network/macvlan/test.main
+Building test suite binary ./integration/secret/test.main
+Building test suite binary ./integration/session/test.main
+Building test suite binary ./integration/container/test.main
+Building test suite binary ./integration/build/test.main
+Building test suite binary ./integration/volume/test.main
+Building test suite binary ./integration/system/test.main
+Building test suite binary ./integration/image/test.main
+
+Removing intermediate container 8dff344eb4ec
+ ---> 2d203fc70b6b
+Step 14/28 : RUN mkdir -p /output/tests && find . -name test.main -exec cp --parents '{}' /output/tests \;
+ ---> Running in af8223eaac51
+Removing intermediate container af8223eaac51
+ ---> 615c258f6b4b
+Step 15/28 : FROM alpine:3.8 as runner
+3.8: Pulling from library/alpine
+cd784148e348: Already exists
+Digest: sha256:46e71df1e5191ab8b8034c5189e325258ec44ea739bba1e5645cff83c9048ff1
+Status: Downloaded newer image for alpine:3.8
+ ---> 3f53bb00af94
+Step 16/28 : RUN apk --no-cache add     bash     ca-certificates     g++     git     iptables     pigz     tar     xz
+ ---> Running in 14c57067797f
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/34) Installing ncurses-terminfo-base (6.1_p20180818-r1)
+(2/34) Installing ncurses-terminfo (6.1_p20180818-r1)
+(3/34) Installing ncurses-libs (6.1_p20180818-r1)
+(4/34) Installing readline (7.0.003-r0)
+(5/34) Installing bash (4.4.19-r1)
+Executing bash-4.4.19-r1.post-install
+(6/34) Installing ca-certificates (20171114-r3)
+(7/34) Installing libgcc (6.4.0-r9)
+(8/34) Installing libstdc++ (6.4.0-r9)
+(9/34) Installing binutils (2.30-r5)
+(10/34) Installing gmp (6.1.2-r1)
+(11/34) Installing isl (0.18-r0)
+(12/34) Installing libgomp (6.4.0-r9)
+(13/34) Installing libatomic (6.4.0-r9)
+(14/34) Installing pkgconf (1.5.3-r0)
+(15/34) Installing mpfr3 (3.1.5-r1)
+(16/34) Installing mpc1 (1.0.3-r1)
+(17/34) Installing gcc (6.4.0-r9)
+(18/34) Installing musl-dev (1.1.19-r10)
+(19/34) Installing libc-dev (0.7.1-r0)
+(20/34) Installing g++ (6.4.0-r9)
+(21/34) Installing nghttp2-libs (1.32.0-r0)
+(22/34) Installing libssh2 (1.8.0-r3)
+(23/34) Installing libcurl (7.61.1-r1)
+(24/34) Installing expat (2.2.5-r0)
+(25/34) Installing pcre2 (10.31-r0)
+(26/34) Installing git (2.18.1-r0)
+(27/34) Installing libmnl (1.0.4-r0)
+(28/34) Installing jansson (2.11-r0)
+(29/34) Installing libnftnl-libs (1.1.1-r0)
+(30/34) Installing iptables (1.6.2-r0)
+(31/34) Installing pigz (2.4-r0)
+(32/34) Installing tar (1.30-r0)
+(33/34) Installing xz-libs (5.2.4-r0)
+(34/34) Installing xz (5.2.4-r0)
+Executing busybox-1.28.4-r2.trigger
+Executing ca-certificates-20171114-r3.trigger
+OK: 186 MiB in 47 packages
+Removing intermediate container 14c57067797f
+ ---> 0a6caef696c4
+Step 17/28 : RUN addgroup docker && adduser -D -G docker unprivilegeduser -s /bin/ash
+ ---> Running in 4e53e8cee023
+Removing intermediate container 4e53e8cee023
+ ---> d1c5ab93d863
+Step 18/28 : COPY contrib/httpserver/Dockerfile /tests/contrib/httpserver/Dockerfile
+ ---> 7ee84a44943e
+Step 19/28 : COPY contrib/syscall-test /tests/contrib/syscall-test
+ ---> 718923e6101b
+Step 20/28 : COPY integration-cli/fixtures /tests/integration-cli/fixtures
+ ---> e6170dd1d5a9
+Step 21/28 : COPY hack/test/e2e-run.sh /scripts/run.sh
+ ---> f9aa32acd283
+Step 22/28 : COPY hack/make/.ensure-emptyfs /scripts/ensure-emptyfs.sh
+ ---> 27c7eb3dd2c8
+Step 23/28 : COPY --from=builder /output/docker-frozen-images /docker-frozen-images
+ ---> 1483c33abf9a
+Step 24/28 : COPY --from=builder /output/httpserver /tests/contrib/httpserver/httpserver
+ ---> 93612caa7ed2
+Step 25/28 : COPY --from=builder /output/tests /tests
+ ---> 96d2dcff2f33
+Step 26/28 : COPY --from=builder /usr/local/bin/docker /usr/bin/docker
+ ---> 73eb57a3904a
+Step 27/28 : ENV DOCKER_REMOTE_DAEMON=1 DOCKER_INTEGRATION_DAEMON_DEST=/
+ ---> Running in 3e1c7eb326a1
+Removing intermediate container 3e1c7eb326a1
+ ---> 30cc0f9cf389
+Step 28/28 : ENTRYPOINT ["/scripts/run.sh"]
+ ---> Running in 9fd95dd2ee23
+Removing intermediate container 9fd95dd2ee23
+ ---> ca22a307aa64
+Successfully built ca22a307aa64
+Successfully tagged moby-e2e-test:latest
+Set build name.
+New build name is '#38523'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins3638347104724589063.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr52479
+Error: No such container: docker-pr52479
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins4092414476099583509.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log -o -name *.prof -o -name integration.test
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: SUCCESS

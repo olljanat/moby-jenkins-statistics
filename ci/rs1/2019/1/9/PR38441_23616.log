@@ -1,0 +1,33 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-3 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision cb501886db2b46594a66cc2f54e81b53097e5fd8 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f cb501886db2b46594a66cc2f54e81b53097e5fd8
+Commit message: "Merge pull request #38456 from thaJeztah/make_errdefs_idempotent"
+ > git rev-list --no-walk cb501886db2b46594a66cc2f54e81b53097e5fd8 # timeout=10
+Set build name.
+New build name is '#38441'
+[docker] $ sh -xe C:\Users\jenkins\jenkins9007608646851219977.sh
++ git fetch origin +refs/pull/38441/head:refs/remotes/origin/pr/38441
+Set build name.
+New build name is '#38441'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

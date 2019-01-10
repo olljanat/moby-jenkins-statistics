@@ -1,0 +1,46 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2-stable (i-0d56f8b151aae3643) (x86_64 ec2 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2-stable amd64 docker us-west-2) in workspace /home/ubuntu/workspace/Docker-PRs
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins206076273734210850.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr52442
+Error: No such container: docker-pr52442
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+57c14dd66db0: Pulling fs layer
+57c14dd66db0: Verifying Checksum
+57c14dd66db0: Download complete
+57c14dd66db0: Pull complete
+Digest: sha256:7964ad52e396a6e045c39b5a44438424ac52e12e4d5a25d94895f2058cb863a0
+Status: Downloaded newer image for busybox:latest
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins7277903948413395556.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log -o -name *.prof -o -name integration.test
++ xargs tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

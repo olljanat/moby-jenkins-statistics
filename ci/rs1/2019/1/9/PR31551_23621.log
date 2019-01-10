@@ -1,0 +1,1748 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-7 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision 3f2ecb5452bf59650c426bb4a5d5407136a71d87 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 3f2ecb5452bf59650c426bb4a5d5407136a71d87
+Commit message: "Merge pull request #38515 from yongtang/01082019-oll.WaitOn"
+ > git rev-list --no-walk cb501886db2b46594a66cc2f54e81b53097e5fd8 # timeout=10
+Set build name.
+New build name is '#31551'
+[docker] $ sh -xe C:\Users\jenkins\jenkins6583383335839611222.sh
++ git fetch origin +refs/pull/31551/head:refs/remotes/origin/pr/31551
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/31551/head -> origin/pr/31551
++ git merge origin/pr/31551
+Merge made by the 'recursive' strategy.
+ api/types/network/network.go  | 13 +++++++------
+ daemon/network/filter.go      | 38 ++++++++++++++++++++++++++++++++++++++
+ daemon/network/filter_test.go | 16 ++++++++++++++++
+ 3 files changed, 61 insertions(+), 6 deletions(-)
+[docker] $ powershell.exe -NonInteractive -ExecutionPolicy ByPass "& 'C:\Users\jenkins\jenkins6076295313984823479.ps1'"
+NEW entrypoint
+
+INFO: executeCI.ps1 starting at Wed Jan  9 15:27:10 CUT 2019
+
+INFO: Script version 28-Aug-2018 09:33 PDT
+INFO: Running git version 2.18.0.windows.1
+INFO: Branch:rs1_release Build:14393.2312.180607-1919
+INFO: Environment variables:
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+_                              /cygdrive/c/ProgramData/Oracle/Java/javapath/java                                       
+ALLUSERSPROFILE                C:\ProgramData                                                                          
+APPDATA                        C:\Users\jenkins\AppData\Roaming                                                        
+BASE_BRANCH                    master                                                                                  
+BUILD_CAUSE                    MANUALTRIGGER                                                                           
+BUILD_CAUSE_MANUALTRIGGER      true                                                                                    
+BUILD_DISPLAY_NAME             #31551                                                                                  
+BUILD_ID                       23621                                                                                   
+BUILD_NUMBER                   23621                                                                                   
+BUILD_TAG                      jenkins-Docker-PRs-WoW-RS1-23621                                                        
+BUILD_URL                      https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23621/                         
+CommonProgramFiles             C:\Program Files\Common Files                                                           
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files                                                     
+CommonProgramW6432             C:\Program Files\Common Files                                                           
+COMPUTERNAME                   jenkins-rs1-7                                                                           
+COMSPEC                        C:\Windows\system32\cmd.exe                                                             
+ConfigSet                      rs                                                                                      
+CYGWIN                         binmode ntsec                                                                           
+EXECUTOR_NUMBER                0                                                                                       
+GIT_AUTHOR_EMAIL               janky@dockerproject.org                                                                 
+GIT_AUTHOR_NAME                Docker Jenkins                                                                          
+GIT_BASE_REPO                  moby/moby                                                                               
+GIT_BRANCH                     origin/master                                                                           
+GIT_COMMIT                     3f2ecb5452bf59650c426bb4a5d5407136a71d87                                                
+GIT_COMMITTER_EMAIL            janky@dockerproject.org                                                                 
+GIT_COMMITTER_NAME             Docker Jenkins                                                                          
+GIT_HEAD_REPO                  KarthikNayak/docker                                                                     
+GIT_PREVIOUS_COMMIT            cb501886db2b46594a66cc2f54e81b53097e5fd8                                                
+GIT_PREVIOUS_SUCCESSFUL_COMMIT cb501886db2b46594a66cc2f54e81b53097e5fd8                                                
+GIT_SHA1                       03dc2fad6416980ab60844cc81cdcb8a21990ee0                                                
+GIT_URL                        https://github.com/moby/moby.git                                                        
+GITHUB_URL                     https://github.com/moby/moby/pull/31551                                                 
+HOME                           C:\cygwin\home\jenkins                                                                  
+HOMEDRIVE                      C:                                                                                      
+HOMEPATH                       \cygwin\home\jenkins                                                                    
+HUDSON_COOKIE                  bd83bf01-447b-4d01-ad24-3d9797d92160                                                    
+HUDSON_HOME                    /var/jenkins_home                                                                       
+HUDSON_SERVER_COOKIE           5654907fc74b1465                                                                        
+HUDSON_URL                     https://jenkins.dockerproject.org/                                                      
+JENKINS_HOME                   /var/jenkins_home                                                                       
+JENKINS_SERVER_COOKIE          5654907fc74b1465                                                                        
+JENKINS_URL                    https://jenkins.dockerproject.org/                                                      
+JOB_BASE_NAME                  Docker-PRs-WoW-RS1                                                                      
+JOB_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/display/redirect               
+JOB_NAME                       Docker-PRs-WoW-RS1                                                                      
+JOB_URL                        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/                               
+LOCALAPPDATA                   C:\Users\jenkins\AppData\Local                                                          
+LOGNAME                        jenkins                                                                                 
+LOGONSERVER                    \\jenkins-rs1-7                                                                         
+MAIL                           /var/spool/mail//jenkins                                                                
+NODE_LABELS                    azure-windows-rs1-7 windows-rs1                                                         
+NODE_NAME                      azure-windows-rs1-7                                                                     
+NUMBER_OF_PROCESSORS           4                                                                                       
+OLDPWD                         /home/jenkins                                                                           
+OS                             Windows_NT                                                                              
+PATH                           C:\cygwin\bin;C:\ProgramData\Oracle\Java\javapath;C:\pstools;C:\Program Files\Notepad...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL                              
+PR                             31551                                                                                   
+PROCESSOR_ARCHITECTURE         AMD64                                                                                   
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 79 Stepping 1, GenuineIntel                                      
+PROCESSOR_LEVEL                6                                                                                       
+PROCESSOR_REVISION             4f01                                                                                    
+ProgramData                    C:\ProgramData                                                                          
+PROGRAMFILES                   C:\Program Files                                                                        
+ProgramFiles(x86)              C:\Program Files (x86)                                                                  
+ProgramW6432                   C:\Program Files                                                                        
+PSExecutionPolicyPreference    Bypass                                                                                  
+PSModulePath                   C:\Users\jenkins\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShe...
+PUBLIC                         C:\Users\Public                                                                         
+PWD                            /cygdrive/c/workspace                                                                   
+ROOT_BUILD_CAUSE               MANUALTRIGGER                                                                           
+ROOT_BUILD_CAUSE_MANUALTRIGGER true                                                                                    
+RUN_CHANGES_DISPLAY_URL        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23621/display/redirect?page=...
+RUN_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/23621/display/redirect         
+SHELL                          /bin/bash                                                                               
+SHLVL                          1                                                                                       
+SOURCES_DRIVE                  c                                                                                       
+SOURCES_SUBDIR                 gopath                                                                                  
+SSH_CLIENT                     52.88.204.51 9308 22                                                                    
+SSH_CONNECTION                 52.88.204.51 9308 10.0.0.10 22                                                          
+SYSTEMDRIVE                    C:                                                                                      
+SYSTEMROOT                     C:\Windows                                                                              
+TEMP                           d:\temp                                                                                 
+TESTRUN_DRIVE                  d                                                                                       
+TESTRUN_SUBDIR                 CI                                                                                      
+USER                           jenkins                                                                                 
+USERDOMAIN                     jenkins-rs1-7                                                                           
+USERNAME                       jenkins                                                                                 
+USERPROFILE                    C:\Users\jenkins                                                                        
+WINDIR                         C:\Windows                                                                              
+WORKSPACE                      /gopath/src/github.com/docker/docker                                                    
+
+
+
+INFO: PR#31551 (https://github.com/docker/docker/pull/31551)
+INFO: Sources under c:\gopath\...
+INFO: Test run under d:\CI\...
+INFO: Running in C:\gopath\src\github.com\docker\docker
+INFO: docker/docker repository was found
+INFO: Image microsoft/windowsservercore:latest is already loaded in the control daemon
+INFO: Version of microsoft/windowsservercore:latest is '10.0.14393.2312'
+INFO: Docker version of control daemon
+
+Client:
+ Version:           master-dockerproject-2018-10-09
+ API version:       1.39
+ Go version:        go1.10.4
+ Git commit:        ab50c2f2
+ Built:             Tue Oct  9 23:49:39 2018
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          master-dockerproject-2018-10-09
+  API version:      1.39 (minimum version 1.24)
+  Go version:       go1.11.1
+  Git commit:       82a4797
+  Built:            Tue Oct  9 23:58:23 2018
+  OS/Arch:          windows/amd64
+  Experimental:     false
+
+INFO: Docker info of control daemon
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 7
+Server Version: master-dockerproject-2018-10-09
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins:
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 14393 (14393.2312.amd64fre.rs1_release.180607-1919)
+Operating System: Windows Server 2016 Datacenter Version 1607 (OS Build 14393.2312)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 14GiB
+Name: jenkins-rs1-7
+ID: VZ4X:H24D:QJ3I:LTUC:HZF5:YCM7:NSVS:OZLH:APYR:PMUF:BH6T:QIGR
+Docker Root Dir: D:\control
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Commit hash is 44bc101c3e
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 0
+INFO: Nuking d:\CI
+INFO: Zapped successfully
+INFO: Location for testing is d:\CI\CI-44bc101c3e
+INFO: Validating GOLang consistency in Dockerfile.windows...
+
+
+INFO: Building the image from Dockerfile.windows at 01/09/2019 15:27:11...
+
+Sending build context to Docker daemon   46.4MB
+
+Step 1/7 : FROM microsoft/windowsservercore
+ ---> eb1805404161
+Step 2/7 : SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+ ---> Using cache
+ ---> 1101ec9124a7
+Step 3/7 : ENV GO_VERSION=1.11.4     GIT_VERSION=2.11.1     GOPATH=C:\go     FROM_DOCKERFILE=1
+ ---> Using cache
+ ---> 43b819c1f612
+Step 4/7 : RUN   Function Test-Nano() {     $EditionId = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'EditionID').EditionId;     return (($EditionId -eq 'ServerStandardNano') -or ($EditionId -eq 'ServerDataCenterNano') -or ($EditionId -eq 'NanoServer'));   }    Function Download-File([string] $source, [string] $target) {     if (Test-Nano) {       $handler = New-Object System.Net.Http.HttpClientHandler;       $client = New-Object System.Net.Http.HttpClient($handler);       $client.Timeout = New-Object System.TimeSpan(0, 30, 0);       $cancelTokenSource = [System.Threading.CancellationTokenSource]::new();       $responseMsg = $client.GetAsync([System.Uri]::new($source), $cancelTokenSource.Token);       $responseMsg.Wait();       if (!$responseMsg.IsCanceled) {         $response = $responseMsg.Result;         if ($response.IsSuccessStatusCode) {           $downloadedFileStream = [System.IO.FileStream]::new($target, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write);           $copyStreamOp = $response.Content.CopyToAsync($downloadedFileStream);           $copyStreamOp.Wait();           $downloadedFileStream.Close();           if ($copyStreamOp.Exception -ne $null) { throw $copyStreamOp.Exception }         }       } else {       Throw ("Failed to download " + $source)       }    } else {       $webClient = New-Object System.Net.WebClient;       $webClient.DownloadFile($source, $target);     }   }     setx /M PATH $('C:\git\cmd;C:\git\usr\bin;'+$Env:PATH+';C:\gcc\bin;C:\go\bin');     Write-Host INFO: Downloading git...;   $location='https://www.nuget.org/api/v2/package/GitForWindows/'+$Env:GIT_VERSION;   Download-File $location C:\gitsetup.zip;     Write-Host INFO: Downloading go...;   Download-File $('https://golang.org/dl/go'+$Env:GO_VERSION+'.windows-amd64.zip') C:\go.zip;     Write-Host INFO: Downloading compiler 1 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/gcc.zip C:\gcc.zip;     Write-Host INFO: Downloading compiler 2 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/runtime.zip C:\runtime.zip;     Write-Host INFO: Downloading compiler 3 of 3...;   Download-File https://raw.githubusercontent.com/jhowardmsft/docker-tdmgcc/master/binutils.zip C:\binutils.zip;     Write-Host INFO: Extracting git...;   Expand-Archive C:\gitsetup.zip C:\git-tmp;   New-Item -Type Directory C:\git | Out-Null;   Move-Item C:\git-tmp\tools\* C:\git\.;   Remove-Item -Recurse -Force C:\git-tmp;     Write-Host INFO: Expanding go...;   Expand-Archive C:\go.zip -DestinationPath C:\;     Write-Host INFO: Expanding compiler 1 of 3...;   Expand-Archive C:\gcc.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 2 of 3...;   Expand-Archive C:\runtime.zip -DestinationPath C:\gcc -Force;   Write-Host INFO: Expanding compiler 3 of 3...;   Expand-Archive C:\binutils.zip -DestinationPath C:\gcc -Force;     Write-Host INFO: Removing downloaded files...;   Remove-Item C:\gcc.zip;   Remove-Item C:\runtime.zip;   Remove-Item C:\binutils.zip;   Remove-Item C:\gitsetup.zip;     Write-Host INFO: Creating source directory...;   New-Item -ItemType Directory -Path C:\go\src\github.com\docker\docker | Out-Null;     Write-Host INFO: Configuring git core.autocrlf...;   C:\git\cmd\git config --global core.autocrlf true;     Write-Host INFO: Completed
+ ---> Using cache
+ ---> a494a07a43bc
+Step 5/7 : ENTRYPOINT ["powershell.exe"]
+ ---> Using cache
+ ---> 8f136b80cbd1
+Step 6/7 : WORKDIR C:\go\src\github.com\docker\docker
+ ---> Using cache
+ ---> 8829eb734e59
+Step 7/7 : COPY . .
+ ---> fc00fac7a486
+Successfully built fc00fac7a486
+Successfully tagged docker:latest
+INFO: Image build ended at 01/09/2019 15:27:45. Duration:00:00:33.2933409
+
+
+INFO: Building the test binaries at 01/09/2019 15:27:45...
+INFO: make.ps1 starting at 01/09/2019 15:28:00
+INFO: Git commit (44bc101c3e) assumed from DOCKER_GITCOMMIT environment variable
+INFO: Invoking autogen...
+INFO: Building daemon...
+INFO: Downloading docker/cli version 17.06.0-ce from edge...
+
+ ________   ____  __.
+ \_____  \ |    |/ _|
+ /   |   \|      <
+ /    |    \    |  \
+ \_______  /____|__ \
+         \/        \/
+
+INFO: make.ps1 ended at 01/09/2019 15:28:49
+INFO: Binaries build ended at 01/09/2019 15:28:50. Duration:00:01:05.4931524
+INFO: Copying the built daemon binary to d:\CI\CI-44bc101c3e\binary\dockerd-44bc101c3e.exe...
+INFO: Copying the built client binary to d:\CI\CI-44bc101c3e\binary\docker-44bc101c3e.exe...
+INFO: Copying dockerversion from the container...
+INFO: Copying the golang package from the container to d:\CI\CI-44bc101c3e\installer\go.zip...
+INFO: Extracting go.zip to d:\CI\CI-44bc101c3e\go
+INFO: Extraction ended at 01/09/2019 15:29:13. Duration:00:00:21.2868047
+INFO: Updating the golang and path environment variables
+INFO: GOPATH=c:\gopath
+INFO: go version go1.11.4 windows/amd64
+INFO: Starting a daemon under test...
+INFO: Args: -H tcp://0.0.0.0:2357 --data-root d:\CI\CI-44bc101c3e\daemon --pidfile d:\CI\CI-44bc101c3e\docker.pid
+INFO: Process started successfully.
+INFO: Waiting for the daemon under test to start...
+INFO: Daemon under test started and replied!
+INFO: Docker version of the daemon under test
+
+Client:
+ Version:      17.06.0-ce
+ API version:  1.30
+ Go version:   go1.8.3
+ Git commit:   02c1d87
+ Built:        Fri Jun 23 21:30:30 2017
+ OS/Arch:      windows/amd64
+
+Server:
+ Version:      0.0.0-dev
+ API version:  1.40 (minimum version 1.24)
+ Go version:   go1.11.4
+ Git commit:   44bc101c3e
+ Built:        01/09/2019 15:28:00
+ OS/Arch:      windows/amd64
+ Experimental: false
+
+INFO: Docker info of the daemon under test
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 0
+Server Version: 0.0.0-dev
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins: 
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 14393 (14393.2312.amd64fre.rs1_release.180607-1919)
+Operating System: Windows Server 2016 Datacenter Version 1607 (OS Build 14393.2312)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 14GiB
+Name: jenkins-rs1-7
+ID: NRYL:ZNNY:PDX2:YDFT:QX3F:KS5N:647W:EKHT:FTCB:ZNLR:7CZT:QYE5
+Docker Root Dir: D:\CI\CI-44bc101c3e\daemon
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Docker images of the daemon under test
+
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+INFO: Base image for tests is microsoft/windowsservercore
+INFO: Loading windowsservercore .tar from disk into the daemon under test. This may take some time...
+Loaded image: microsoft/windowsservercore:10.0.14393.2312
+Loaded image: microsoft/windowsservercore:latest
+INFO: docker load of windowsservercore  into daemon under test completed successfully
+INFO: Version of microsoft/windowsservercore:latest is '10.0.14393.2312'
+INFO: Running validation tests at 01/09/2019 15:32:15...
+INFO: make.ps1 starting at 01/09/2019 15:32:15
+INFO: Validating Developer Certificate of Origin...
+Congratulations!  All commits are properly signed with the DCO!
+INFO: Validating go formatting on changed files...
+Checking api\types\network\network.go
+Checking daemon\network\filter.go
+Checking daemon\network\filter_test.go
+Congratulations!  All Go source files are properly formatted.
+INFO: Validating pkg import isolation...
+Congratulations!  ".\pkg\*.go" is safely isolated from internal code.
+INFO: make.ps1 ended at 01/09/2019 15:32:17
+INFO: Validation tests ended at 01/09/2019 15:32:17. Duration:00:00:01.2587639
+INFO: Running unit tests at 01/09/2019 15:32:17...
+INFO: make.ps1 starting at 01/09/2019 15:32:31
+INFO: Git commit (44bc101c3e) assumed from DOCKER_GITCOMMIT environment variable
+INFO: Invoking autogen...
+INFO: Running unit tests...
+?   	github.com/docker/docker/api	[no test files]
+ok  	github.com/docker/docker/api/server	0.071s	coverage: 7.9% of statements
+?   	github.com/docker/docker/api/server/backend/build	[no test files]
+ok  	github.com/docker/docker/api/server/httputils	0.076s	coverage: 11.1% of statements
+ok  	github.com/docker/docker/api/server/middleware	0.087s	coverage: 43.4% of statements
+?   	github.com/docker/docker/api/server/router	[no test files]
+?   	github.com/docker/docker/api/server/router/build	[no test files]
+?   	github.com/docker/docker/api/server/router/checkpoint	[no test files]
+?   	github.com/docker/docker/api/server/router/container	[no test files]
+?   	github.com/docker/docker/api/server/router/debug	[no test files]
+?   	github.com/docker/docker/api/server/router/distribution	[no test files]
+?   	github.com/docker/docker/api/server/router/image	[no test files]
+?   	github.com/docker/docker/api/server/router/network	[no test files]
+?   	github.com/docker/docker/api/server/router/plugin	[no test files]
+?   	github.com/docker/docker/api/server/router/session	[no test files]
+?   	github.com/docker/docker/api/server/router/swarm	[no test files]
+?   	github.com/docker/docker/api/server/router/system	[no test files]
+?   	github.com/docker/docker/api/server/router/volume	[no test files]
+?   	github.com/docker/docker/api/types	[no test files]
+?   	github.com/docker/docker/api/types/backend	[no test files]
+?   	github.com/docker/docker/api/types/blkiodev	[no test files]
+?   	github.com/docker/docker/api/types/container	[no test files]
+?   	github.com/docker/docker/api/types/events	[no test files]
+ok  	github.com/docker/docker/api/types/filters	0.046s	coverage: 94.2% of statements
+?   	github.com/docker/docker/api/types/image	[no test files]
+?   	github.com/docker/docker/api/types/mount	[no test files]
+?   	github.com/docker/docker/api/types/network	[no test files]
+?   	github.com/docker/docker/api/types/plugins/logdriver	[no test files]
+?   	github.com/docker/docker/api/types/registry	[no test files]
+ok  	github.com/docker/docker/api/types/strslice	0.062s	coverage: 90.0% of statements
+?   	github.com/docker/docker/api/types/swarm	[no test files]
+?   	github.com/docker/docker/api/types/swarm/runtime	[no test files]
+ok  	github.com/docker/docker/api/types/time	0.188s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/api/types/versions	0.058s	coverage: 75.0% of statements
+?   	github.com/docker/docker/api/types/versions/v1p19	[no test files]
+?   	github.com/docker/docker/api/types/versions/v1p20	[no test files]
+?   	github.com/docker/docker/api/types/volume	[no test files]
+?   	github.com/docker/docker/autogen/winresources/docker	[no test files]
+?   	github.com/docker/docker/autogen/winresources/dockerd	[no test files]
+?   	github.com/docker/docker/builder	[no test files]
+?   	github.com/docker/docker/builder/builder-next	[no test files]
+?   	github.com/docker/docker/builder/builder-next/adapters/containerimage	[no test files]
+?   	github.com/docker/docker/builder/builder-next/adapters/snapshot	[no test files]
+?   	github.com/docker/docker/builder/builder-next/exporter	[no test files]
+?   	github.com/docker/docker/builder/builder-next/imagerefchecker	[no test files]
+?   	github.com/docker/docker/builder/builder-next/worker	[no test files]
+ok  	github.com/docker/docker/builder/dockerfile	0.201s	coverage: 43.2% of statements
+ok  	github.com/docker/docker/builder/dockerignore	0.043s	coverage: 96.8% of statements
+ok  	github.com/docker/docker/builder/fscache	0.336s	coverage: 69.2% of statements
+ok  	github.com/docker/docker/builder/remotecontext	0.297s	coverage: 9.3% of statements
+ok  	github.com/docker/docker/builder/remotecontext/git	55.504s	coverage: 78.8% of statements
+?   	github.com/docker/docker/cli	[no test files]
+?   	github.com/docker/docker/cli/config	[no test files]
+ok  	github.com/docker/docker/cli/debug	0.070s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/client	0.247s	coverage: 75.0% of statements
+ok  	github.com/docker/docker/cmd/dockerd	0.174s	coverage: 18.0% of statements
+ok  	github.com/docker/docker/container	0.319s	coverage: 42.5% of statements
+?   	github.com/docker/docker/container/stream	[no test files]
+?   	github.com/docker/docker/contrib/apparmor	[no test files]
+?   	github.com/docker/docker/contrib/docker-device-tool	[no test files]
+?   	github.com/docker/docker/contrib/httpserver	[no test files]
+ok  	github.com/docker/docker/daemon	2.318s	coverage: 8.3% of statements
+ok  	github.com/docker/docker/daemon/cluster	0.128s	coverage: 0.5% of statements
+ok  	github.com/docker/docker/daemon/cluster/controllers/plugin	0.173s	coverage: 65.3% of statements
+ok  	github.com/docker/docker/daemon/cluster/convert	0.193s	coverage: 28.0% of statements
+?   	github.com/docker/docker/daemon/cluster/executor	[no test files]
+ok  	github.com/docker/docker/daemon/cluster/executor/container	0.573s	coverage: 9.9% of statements
+?   	github.com/docker/docker/daemon/cluster/provider	[no test files]
+ok  	github.com/docker/docker/daemon/config	0.211s	coverage: 81.8% of statements
+ok  	github.com/docker/docker/daemon/discovery	0.083s	coverage: 30.4% of statements
+ok  	github.com/docker/docker/daemon/events	0.176s	coverage: 50.0% of statements
+?   	github.com/docker/docker/daemon/events/testutils	[no test files]
+?   	github.com/docker/docker/daemon/exec	[no test files]
+ok  	github.com/docker/docker/daemon/graphdriver	0.128s	coverage: 2.3% of statements
+?   	github.com/docker/docker/daemon/graphdriver/btrfs	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/devmapper	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/graphtest	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/lcow	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/overlay	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/overlay2	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/quota	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/register	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/vfs	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/windows	[no test files]
+?   	github.com/docker/docker/daemon/graphdriver/zfs	[no test files]
+ok  	github.com/docker/docker/daemon/images	0.244s	coverage: 4.9% of statements
+?   	github.com/docker/docker/daemon/initlayer	[no test files]
+ok  	github.com/docker/docker/daemon/links	0.067s	coverage: 93.0% of statements
+?   	github.com/docker/docker/daemon/listeners	[no test files]
+ok  	github.com/docker/docker/daemon/logger	0.332s	coverage: 44.0% of statements
+ok  	github.com/docker/docker/daemon/logger/awslogs	0.267s	coverage: 78.6% of statements
+?   	github.com/docker/docker/daemon/logger/etwlogs	[no test files]
+?   	github.com/docker/docker/daemon/logger/fluentd	[no test files]
+?   	github.com/docker/docker/daemon/logger/gcplogs	[no test files]
+?   	github.com/docker/docker/daemon/logger/gelf	[no test files]
+?   	github.com/docker/docker/daemon/logger/journald	[no test files]
+ok  	github.com/docker/docker/daemon/logger/jsonfilelog	0.210s	coverage: 62.1% of statements
+ok  	github.com/docker/docker/daemon/logger/jsonfilelog/jsonlog	0.218s	coverage: 88.3% of statements
+ok  	github.com/docker/docker/daemon/logger/local	0.192s	coverage: 74.7% of statements
+?   	github.com/docker/docker/daemon/logger/logentries	[no test files]
+ok  	github.com/docker/docker/daemon/logger/loggerutils	0.112s	coverage: 18.1% of statements
+ok  	github.com/docker/docker/daemon/logger/splunk	1.808s	coverage: 84.5% of statements
+ok  	github.com/docker/docker/daemon/logger/syslog	0.079s	coverage: 47.8% of statements
+ok  	github.com/docker/docker/daemon/logger/templates	0.065s	coverage: 8.3% of statements
+?   	github.com/docker/docker/daemon/names	[no test files]
+?   	github.com/docker/docker/daemon/network	[no test files]
+?   	github.com/docker/docker/daemon/stats	[no test files]
+ok  	github.com/docker/docker/distribution	2.674s	coverage: 15.6% of statements
+ok  	github.com/docker/docker/distribution/metadata	1.128s	coverage: 48.2% of statements
+?   	github.com/docker/docker/distribution/utils	[no test files]
+ok  	github.com/docker/docker/distribution/xfer	1.744s	coverage: 62.2% of statements
+?   	github.com/docker/docker/dockerversion	[no test files]
+ok  	github.com/docker/docker/errdefs	0.137s	coverage: 76.0% of statements
+ok  	github.com/docker/docker/hack/integration-cli-on-swarm/agent/master	0.056s	coverage: 11.3% of statements
+?   	github.com/docker/docker/hack/integration-cli-on-swarm/agent/types	[no test files]
+?   	github.com/docker/docker/hack/integration-cli-on-swarm/agent/worker	[no test files]
+ok  	github.com/docker/docker/hack/integration-cli-on-swarm/host	0.088s	coverage: 3.6% of statements
+ok  	github.com/docker/docker/image	0.424s	coverage: 86.3% of statements
+ok  	github.com/docker/docker/image/cache	0.095s	coverage: 19.2% of statements
+?   	github.com/docker/docker/image/tarexport	[no test files]
+ok  	github.com/docker/docker/image/v1	0.103s	coverage: 25.0% of statements
+?   	github.com/docker/docker/internal/test	[no test files]
+?   	github.com/docker/docker/internal/test/daemon	[no test files]
+?   	github.com/docker/docker/internal/test/environment	[no test files]
+?   	github.com/docker/docker/internal/test/fakecontext	[no test files]
+?   	github.com/docker/docker/internal/test/fakegit	[no test files]
+?   	github.com/docker/docker/internal/test/fakestorage	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/load	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/plugin	[no test files]
+?   	github.com/docker/docker/internal/test/fixtures/plugin/basic	[no test files]
+?   	github.com/docker/docker/internal/test/registry	[no test files]
+?   	github.com/docker/docker/internal/test/request	[no test files]
+ok  	github.com/docker/docker/internal/testutil	0.057s	coverage: 62.5% of statements
+ok  	github.com/docker/docker/layer	0.300s	coverage: 28.2% of statements
+ok  	github.com/docker/docker/libcontainerd	0.100s	coverage: 3.7% of statements
+?   	github.com/docker/docker/libcontainerd/supervisor	[no test files]
+?   	github.com/docker/docker/oci	[no test files]
+?   	github.com/docker/docker/oci/caps	[no test files]
+ok  	github.com/docker/docker/opts	0.062s	coverage: 68.7% of statements
+ok  	github.com/docker/docker/pkg/aaparser	0.090s	coverage: 50.0% of statements
+ok  	github.com/docker/docker/pkg/archive	6.905s	coverage: 62.2% of statements
+ok  	github.com/docker/docker/pkg/authorization	0.225s	coverage: 26.2% of statements
+ok  	github.com/docker/docker/pkg/broadcaster	0.115s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/chrootarchive	0.131s	coverage: 13.3% of statements
+?   	github.com/docker/docker/pkg/containerfs	[no test files]
+?   	github.com/docker/docker/pkg/devicemapper	[no test files]
+ok  	github.com/docker/docker/pkg/directory	0.095s	coverage: 80.0% of statements
+ok  	github.com/docker/docker/pkg/discovery	0.081s	coverage: 58.3% of statements
+ok  	github.com/docker/docker/pkg/discovery/file	0.072s	coverage: 92.9% of statements
+ok  	github.com/docker/docker/pkg/discovery/kv	3.152s	coverage: 84.1% of statements
+ok  	github.com/docker/docker/pkg/discovery/memory	0.107s	coverage: 92.3% of statements
+ok  	github.com/docker/docker/pkg/discovery/nodes	0.075s	coverage: 93.8% of statements
+ok  	github.com/docker/docker/pkg/filenotify	0.054s	coverage: 38.2% of statements
+ok  	github.com/docker/docker/pkg/fileutils	0.068s	coverage: 87.7% of statements
+ok  	github.com/docker/docker/pkg/homedir	0.057s	coverage: 75.0% of statements
+?   	github.com/docker/docker/pkg/idtools	[no test files]
+ok  	github.com/docker/docker/pkg/ioutils	0.384s	coverage: 69.1% of statements
+ok  	github.com/docker/docker/pkg/jsonmessage	0.130s	coverage: 88.3% of statements
+ok  	github.com/docker/docker/pkg/locker	0.139s	coverage: 88.9% of statements
+ok  	github.com/docker/docker/pkg/longpath	0.046s	coverage: 100.0% of statements
+?   	github.com/docker/docker/pkg/mount	[no test files]
+ok  	github.com/docker/docker/pkg/namesgenerator	0.053s	coverage: 85.7% of statements
+?   	github.com/docker/docker/pkg/namesgenerator/cmd/names-generator	[no test files]
+ok  	github.com/docker/docker/pkg/parsers	0.073s	coverage: 97.0% of statements
+?   	github.com/docker/docker/pkg/parsers/kernel	[no test files]
+?   	github.com/docker/docker/pkg/parsers/operatingsystem	[no test files]
+ok  	github.com/docker/docker/pkg/pidfile	0.068s	coverage: 82.6% of statements
+?   	github.com/docker/docker/pkg/platform	[no test files]
+?   	github.com/docker/docker/pkg/plugingetter	[no test files]
+ok  	github.com/docker/docker/pkg/plugins	34.841s	coverage: 73.6% of statements
+ok  	github.com/docker/docker/pkg/plugins/pluginrpc-gen	0.061s	coverage: 56.8% of statements
+?   	github.com/docker/docker/pkg/plugins/pluginrpc-gen/fixtures	[no test files]
+?   	github.com/docker/docker/pkg/plugins/pluginrpc-gen/fixtures/otherfixture	[no test files]
+ok  	github.com/docker/docker/pkg/plugins/transport	0.068s	coverage: 85.7% of statements
+ok  	github.com/docker/docker/pkg/pools	0.050s	coverage: 87.9% of statements
+ok  	github.com/docker/docker/pkg/progress	0.051s	coverage: 75.9% of statements
+ok  	github.com/docker/docker/pkg/pubsub	1.081s	coverage: 72.7% of statements
+ok  	github.com/docker/docker/pkg/reexec	0.119s	coverage: 82.4% of statements
+ok  	github.com/docker/docker/pkg/signal	0.064s	coverage: 20.3% of statements
+?   	github.com/docker/docker/pkg/signal/testfiles	[no test files]
+ok  	github.com/docker/docker/pkg/stdcopy	0.038s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/streamformatter	0.076s	coverage: 66.2% of statements
+ok  	github.com/docker/docker/pkg/stringid	0.047s	coverage: 76.0% of statements
+?   	github.com/docker/docker/pkg/symlink	[no test files]
+ok  	github.com/docker/docker/pkg/sysinfo	0.055s	coverage: 38.2% of statements
+ok  	github.com/docker/docker/pkg/system	0.060s	coverage: 12.7% of statements
+ok  	github.com/docker/docker/pkg/tailfile	0.091s	coverage: 88.6% of statements
+ok  	github.com/docker/docker/pkg/tarsum	0.119s	coverage: 89.3% of statements
+ok  	github.com/docker/docker/pkg/term	0.048s	coverage: 30.8% of statements
+ok  	github.com/docker/docker/pkg/term/windows	0.038s	coverage: 0.0% of statements [no tests to run]
+ok  	github.com/docker/docker/pkg/truncindex	0.144s	coverage: 91.5% of statements
+ok  	github.com/docker/docker/pkg/urlutil	0.061s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/pkg/useragent	0.044s	coverage: 88.9% of statements
+ok  	github.com/docker/docker/plugin	0.098s	coverage: 12.0% of statements
+ok  	github.com/docker/docker/plugin/executor/containerd	0.056s	coverage: 33.3% of statements
+ok  	github.com/docker/docker/plugin/v2	0.063s	coverage: 20.1% of statements
+ok  	github.com/docker/docker/reference	0.106s	coverage: 84.4% of statements
+ok  	github.com/docker/docker/registry	0.200s	coverage: 51.3% of statements
+ok  	github.com/docker/docker/registry/resumable	0.143s	coverage: 100.0% of statements
+ok  	github.com/docker/docker/restartmanager	0.045s	coverage: 47.1% of statements
+ok  	github.com/docker/docker/runconfig	0.056s	coverage: 54.5% of statements
+?   	github.com/docker/docker/runconfig/opts	[no test files]
+?   	github.com/docker/docker/volume	[no test files]
+ok  	github.com/docker/docker/volume/drivers	0.057s	coverage: 36.1% of statements
+ok  	github.com/docker/docker/volume/local	0.085s	coverage: 37.7% of statements
+ok  	github.com/docker/docker/volume/mounts	0.070s	coverage: 66.3% of statements
+ok  	github.com/docker/docker/volume/service	0.407s	coverage: 70.3% of statements
+?   	github.com/docker/docker/volume/service/opts	[no test files]
+?   	github.com/docker/docker/volume/testutils	[no test files]
+INFO: make.ps1 ended at 01/09/2019 15:35:25
+INFO: Unit tests ended at 01/09/2019 15:35:26. Duration:00:03:09.8434725
+INFO: Building busybox
+Downloading build context from remote url: https://raw.githubusercontent.com/jhowardmsft/busybox/v1.1/Dockerfile     701B
+Downloading build context from remote url: https://raw.githubusercontent.com/jhowardmsft/busybox/v1.1/Dockerfile     701B
+
+Sending build context to Docker daemon   2.56kB
+
+Step 1/6 : FROM microsoft/windowsservercore
+ ---> eb1805404161
+Step 2/6 : RUN mkdir C:\tmp && mkdir C:\bin
+ ---> Running in 721fd203e857
+Removing intermediate container 721fd203e857
+ ---> 2dc33c045825
+Step 3/6 : ADD http://frippery.org/files/busybox/busybox.exe /bin/
+
+ ---> d5a631710600
+Step 4/6 : RUN setx /M PATH "C:\bin;%PATH%"
+ ---> Running in 7314d21770ed
+
+SUCCESS: Specified value was saved.
+Removing intermediate container 7314d21770ed
+ ---> cf349457a2df
+Step 5/6 : RUN powershell busybox.exe --list ^|%{$nul = cmd /c mklink C:\bin\$_.exe busybox.exe}
+ ---> Running in 188786653d43
+Cannot create a file when that file already exists.
+Removing intermediate container 188786653d43
+ ---> e330d6920de8
+Step 6/6 : CMD ["sh"]
+ ---> Running in 62279dc6ba83
+Removing intermediate container 62279dc6ba83
+ ---> 3729525b94f2
+Successfully built 3729525b94f2
+Successfully tagged busybox:latest
+INFO: Docker images of the daemon under test
+
+REPOSITORY                    TAG                 IMAGE ID            CREATED                  SIZE
+busybox                       latest              3729525b94f2        Less than a second ago   7.19GB
+microsoft/windowsservercore   10.0.14393.2312     eb1805404161        7 months ago             7.15GB
+microsoft/windowsservercore   latest              eb1805404161        7 months ago             7.15GB
+
+INFO: Running integration tests at 01/09/2019 15:36:25...
+INFO: Integration tests being run from the host:
+INFO: go test "-check.v" "-tags" "autogen" "-check.timeout" "10m" "-test.timeout" "200m" 
+INFO: DOCKER_HOST at tcp://127.0.0.1:2357
+INFO: Windows Base image is  microsoft/windowsservercore
+INFO: Testing against a local daemon
+PASS: docker_api_test.go:36: DockerSuite.TestAPIClientVersionOldNotSupported	0.001s
+SKIP: docker_api_network_test.go:239: DockerSuite.TestAPICreateDeletePredefinedNetworks (unmatched requirement DaemonIsLinux)
+PASS: docker_api_test.go:60: DockerSuite.TestAPIErrorJSON	0.003s
+PASS: docker_api_test.go:91: DockerSuite.TestAPIErrorNotFoundJSON	0.000s
+PASS: docker_api_test.go:102: DockerSuite.TestAPIErrorNotFoundPlainText	0.001s
+SKIP: docker_api_test.go:74: DockerSuite.TestAPIErrorPlainText (unmatched requirement DaemonIsLinux)
+PASS: docker_api_test.go:24: DockerSuite.TestAPIGetEnabledCORS	0.001s
+PASS: docker_api_images_test.go:90: DockerSuite.TestAPIImagesDelete	1.032s
+PASS: docker_api_images_test.go:22: DockerSuite.TestAPIImagesFilter	0.229s
+PASS: docker_api_images_test.go:114: DockerSuite.TestAPIImagesHistory	0.833s
+PASS: docker_api_images_test.go:140: DockerSuite.TestAPIImagesImportBadSrc	0.433s
+PASS: docker_api_images_test.go:60: DockerSuite.TestAPIImagesSaveAndLoad	201.326s
+PASS: docker_api_images_test.go:175: DockerSuite.TestAPIImagesSearchJSONContentType	0.776s
+PASS: docker_api_images_test.go:187: DockerSuite.TestAPIImagesSizeCompatibility	0.010s
+SKIP: docker_api_network_test.go:129: DockerSuite.TestAPINetworkConnectDisconnect (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_network_test.go:29: DockerSuite.TestAPINetworkCreateCheckDuplicate (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_network_test.go:67: DockerSuite.TestAPINetworkFilter (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_network_test.go:20: DockerSuite.TestAPINetworkGetDefaults (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_network_test.go:170: DockerSuite.TestAPINetworkIPAMMultipleBridgeNetworks (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_network_test.go:73: DockerSuite.TestAPINetworkInspectBridge (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_network_test.go:98: DockerSuite.TestAPINetworkInspectUserDefinedNetwork (unmatched requirement DaemonIsLinux)
+PASS: docker_api_test.go:18: DockerSuite.TestAPIOptionsRoute	0.000s
+SKIP: docker_api_stats_test.go:263: DockerSuite.TestAPIStatsContainerNotFound (unmatched requirement DaemonIsLinux)
+PASS: docker_api_stats_test.go:99: DockerSuite.TestAPIStatsNetworkStats	14.467s
+SKIP: docker_api_stats_test.go:166: DockerSuite.TestAPIStatsNetworkStatsVersioning (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_stats_test.go:277: DockerSuite.TestAPIStatsNoStreamConnectedContainers (unmatched requirement DaemonIsLinux)
+PASS: docker_api_stats_test.go:25: DockerSuite.TestAPIStatsNoStreamGetCpu	11.921s
+PASS: docker_api_stats_test.go:64: DockerSuite.TestAPIStatsStoppedContainerInGoroutines	10.822s
+SKIP: docker_cli_run_test.go:3181: DockerSuite.TestAppArmorDeniesChmodProc (unmatched requirement Apparmor)
+SKIP: docker_cli_run_test.go:3159: DockerSuite.TestAppArmorDeniesPtrace (unmatched requirement Apparmor)
+SKIP: docker_cli_run_test.go:3171: DockerSuite.TestAppArmorTraceSelf (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_attach_test.go:135: DockerSuite.TestAttachDisconnect (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_attach_test.go:20: DockerSuite.TestAttachMultipleAndRestart	12.013s
+SKIP: docker_cli_attach_test.go:168: DockerSuite.TestAttachPausedContainer (unmatched requirement IsPausable)
+SKIP: docker_cli_attach_test.go:90: DockerSuite.TestAttachTTYWithoutStdin (unmatched requirement DaemonIsLinux)
+PASS: docker_api_build_test.go:160: DockerSuite.TestBuildAPIBuildGitWithF	16.809s
+PASS: docker_api_build_test.go:26: DockerSuite.TestBuildAPIDockerFileRemote	101.436s
+SKIP: docker_api_build_test.go:181: DockerSuite.TestBuildAPIDoubleDockerfile (unmatched requirement UnixCli)
+PASS: docker_api_build_test.go:142: DockerSuite.TestBuildAPILowerDockerfile	16.575s
+PASS: docker_api_build_test.go:57: DockerSuite.TestBuildAPIRemoteTarballContext	0.006s
+PASS: docker_api_build_test.go:88: DockerSuite.TestBuildAPIRemoteTarballContextWithCustomDockerfile	14.967s
+PASS: docker_api_build_test.go:203: DockerSuite.TestBuildAPIUnnormalizedTarPaths	1.363s
+SKIP: docker_cli_build_test.go:573: DockerSuite.TestBuildAddAndCopyFileWithWhitespace (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:926: DockerSuite.TestBuildAddBadLinks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1006: DockerSuite.TestBuildAddBadLinksVolume (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:2885: DockerSuite.TestBuildAddBrokenTar	0.176s
+PASS: docker_api_build_test.go:479: DockerSuite.TestBuildAddCacheOnFileChange	1.381s
+PASS: docker_cli_build_test.go:1863: DockerSuite.TestBuildAddCurrentDirWithCache	4.293s
+PASS: docker_cli_build_test.go:1910: DockerSuite.TestBuildAddCurrentDirWithoutCache	2.415s
+SKIP: docker_cli_build_test.go:751: DockerSuite.TestBuildAddDirContentToExistingDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:737: DockerSuite.TestBuildAddDirContentToRoot (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:2189: DockerSuite.TestBuildAddFileNotFound	0.069s
+PASS: docker_cli_build_test.go:1997: DockerSuite.TestBuildAddLocalAndRemoteFilesWithAndWithoutCache	4.538s
+PASS: docker_cli_build_test.go:1807: DockerSuite.TestBuildAddMultipleLocalFileWithAndWithoutCache	35.360s
+PASS: docker_cli_build_test.go:2936: DockerSuite.TestBuildAddNonTar	16.305s
+PASS: docker_cli_build_test.go:785: DockerSuite.TestBuildAddOrCopyEtcToRootShouldNotConflict	1.593s
+SKIP: docker_cli_build_test.go:797: DockerSuite.TestBuildAddPreservesFilesSpecialBits (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1954: DockerSuite.TestBuildAddRemoteFileMTime	3.811s
+PASS: docker_cli_build_test.go:1929: DockerSuite.TestBuildAddRemoteFileWithAndWithoutCache	2.748s
+PASS: docker_api_build_test.go:364: DockerSuite.TestBuildAddRemoteNoDecompress	16.027s
+SKIP: docker_cli_build_test.go:2815: DockerSuite.TestBuildAddScript (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:505: DockerSuite.TestBuildAddSingleFileToExistDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:722: DockerSuite.TestBuildAddSingleFileToNonExistingDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:466: DockerSuite.TestBuildAddSingleFileToRoot (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:482: DockerSuite.TestBuildAddSingleFileToWorkdir	0.751s
+PASS: docker_cli_build_test.go:2831: DockerSuite.TestBuildAddTar	113.733s
+SKIP: docker_cli_build_test.go:2949: DockerSuite.TestBuildAddTarXz (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:2998: DockerSuite.TestBuildAddTarXzGz (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:2245: DockerSuite.TestBuildAddToSymlinkDest	62.108s
+SKIP: docker_cli_build_test.go:767: DockerSuite.TestBuildAddWholeDirToRoot (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1440: DockerSuite.TestBuildBlankName	0.187s
+PASS: docker_cli_build_test.go:4089: DockerSuite.TestBuildBuildTimeArg	28.008s
+SKIP: docker_cli_build_test.go:4461: DockerSuite.TestBuildBuildTimeArgBuiltinArg (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4183: DockerSuite.TestBuildBuildTimeArgCacheHit	14.693s
+PASS: docker_cli_build_test.go:4207: DockerSuite.TestBuildBuildTimeArgCacheMissExtraArg	30.379s
+PASS: docker_cli_build_test.go:4238: DockerSuite.TestBuildBuildTimeArgCacheMissSameArgDiffVal	29.360s
+SKIP: docker_cli_build_test.go:4484: DockerSuite.TestBuildBuildTimeArgDefaultOverride (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4623: DockerSuite.TestBuildBuildTimeArgDefinitionWithNoEnvInjection	16.245s
+SKIP: docker_cli_build_test.go:4607: DockerSuite.TestBuildBuildTimeArgEmptyValVariants (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:4526: DockerSuite.TestBuildBuildTimeArgEnv (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4319: DockerSuite.TestBuildBuildTimeArgExpansion	10.451s
+SKIP: docker_cli_build_test.go:4409: DockerSuite.TestBuildBuildTimeArgExpansionOverride (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4122: DockerSuite.TestBuildBuildTimeArgHistory	0.847s
+SKIP: docker_cli_build_test.go:4263: DockerSuite.TestBuildBuildTimeArgOverrideArgDefinedBeforeEnv (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:4292: DockerSuite.TestBuildBuildTimeArgOverrideEnvDefinedBeforeArg (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4586: DockerSuite.TestBuildBuildTimeArgQuotedValVariants	79.195s
+PASS: docker_cli_build_test.go:4510: DockerSuite.TestBuildBuildTimeArgUnconsumedArg	15.906s
+SKIP: docker_cli_build_test.go:4437: DockerSuite.TestBuildBuildTimeArgUntrustedDefinedAfterUse (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:371: DockerSuite.TestBuildCacheAdd (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4760: DockerSuite.TestBuildCacheBrokenSymlink	1.544s
+SKIP: docker_cli_build_test.go:5411: DockerSuite.TestBuildCacheFrom (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:5389: DockerSuite.TestBuildCacheFromEqualDiffIDsLength	16.201s
+PASS: docker_cli_build_test.go:4872: DockerSuite.TestBuildCacheRootSource	1.590s
+SKIP: docker_api_build_test.go:408: DockerSuite.TestBuildChownOnCopy (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:3574: DockerSuite.TestBuildChownSingleFile (unmatched requirement UnixCli)
+PASS: docker_cli_build_test.go:3137: DockerSuite.TestBuildCleanupCmdOnEntrypoint	2.369s
+PASS: docker_cli_build_test.go:3156: DockerSuite.TestBuildClearCmd	1.537s
+PASS: docker_cli_build_test.go:1577: DockerSuite.TestBuildCmd	0.822s
+PASS: docker_cli_build_test.go:3240: DockerSuite.TestBuildCmdJSONNoShDashC	0.830s
+PASS: docker_cli_build_test.go:3199: DockerSuite.TestBuildCmdShDashC	0.832s
+PASS: docker_cli_build_test.go:5339: DockerSuite.TestBuildCmdShellArgsEscaped	14.246s
+PASS: docker_cli_build_test.go:3214: DockerSuite.TestBuildCmdSpaces	3.385s
+SKIP: docker_cli_build_test.go:2645: DockerSuite.TestBuildCommentsShebangs (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1773: DockerSuite.TestBuildConditionalCache	1.813s
+PASS: docker_cli_build_test.go:5600: DockerSuite.TestBuildContChar	44.640s
+SKIP: docker_cli_build_test.go:3973: DockerSuite.TestBuildContainerWithCgroupParent (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1512: DockerSuite.TestBuildContextCleanup	0.793s
+PASS: docker_cli_build_test.go:1534: DockerSuite.TestBuildContextCleanupFailedBuild	12.846s
+PASS: docker_cli_build_test.go:2045: DockerSuite.TestBuildContextTarGzip	1.477s
+PASS: docker_cli_build_test.go:2049: DockerSuite.TestBuildContextTarNoCompression	0.768s
+SKIP: docker_cli_build_test.go:521: DockerSuite.TestBuildCopyAddMultipleFiles (unmatched requirement DaemonIsLinux)
+PASS: docker_api_build_test.go:438: DockerSuite.TestBuildCopyCacheOnFileChange	1.415s
+PASS: docker_cli_build_test.go:1839: DockerSuite.TestBuildCopyDirButNotFile	1.040s
+SKIP: docker_cli_build_test.go:893: DockerSuite.TestBuildCopyDirContentToExistDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:879: DockerSuite.TestBuildCopyDirContentToRoot (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:6024: DockerSuite.TestBuildCopyFileDotWithWorkdir	16.905s
+PASS: docker_cli_build_test.go:606: DockerSuite.TestBuildCopyFileWithWhitespaceOnWindows	120.795s
+PASS: docker_cli_build_test.go:5897: DockerSuite.TestBuildCopyFromForbidWindowsRelativePaths	0.798s
+PASS: docker_cli_build_test.go:5880: DockerSuite.TestBuildCopyFromForbidWindowsSystemPaths	0.649s
+PASS: docker_cli_build_test.go:5915: DockerSuite.TestBuildCopyFromWindowsIsCaseInsensitive	16.688s
+SKIP: docker_cli_build_test.go:848: DockerSuite.TestBuildCopySingleFileToExistDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:864: DockerSuite.TestBuildCopySingleFileToNonExistDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:810: DockerSuite.TestBuildCopySingleFileToRoot (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:826: DockerSuite.TestBuildCopySingleFileToWorkdir	0.762s
+SKIP: docker_cli_build_test.go:909: DockerSuite.TestBuildCopyWholeDirToRoot (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:636: DockerSuite.TestBuildCopyWildcard	76.416s
+PASS: docker_cli_build_test.go:696: DockerSuite.TestBuildCopyWildcardCache	0.956s
+SKIP: docker_cli_build_test.go:676: DockerSuite.TestBuildCopyWildcardInName (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:5140: DockerSuite.TestBuildDeleteCommittedFile	62.205s
+PASS: docker_cli_build_test.go:2068: DockerSuite.TestBuildDockerfileStdin	1.529s
+PASS: docker_cli_build_test.go:2088: DockerSuite.TestBuildDockerfileStdinConflict	0.067s
+PASS: docker_cli_build_test.go:2102: DockerSuite.TestBuildDockerfileStdinDockerignore	13.399s
+PASS: docker_cli_build_test.go:2106: DockerSuite.TestBuildDockerfileStdinDockerignoreIgnored	13.684s
+PASS: docker_cli_build_test.go:2098: DockerSuite.TestBuildDockerfileStdinNoExtraFiles	13.593s
+PASS: docker_cli_build_test.go:2296: DockerSuite.TestBuildDockerignore	171.332s
+PASS: docker_cli_build_test.go:2334: DockerSuite.TestBuildDockerignoreCleanPaths	17.105s
+SKIP: docker_cli_build_test.go:5150: DockerSuite.TestBuildDockerignoreComment (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:2348: DockerSuite.TestBuildDockerignoreExceptions	187.006s
+PASS: docker_cli_build_test.go:2445: DockerSuite.TestBuildDockerignoreTouchDockerfile	1.269s
+PASS: docker_cli_build_test.go:2521: DockerSuite.TestBuildDockerignoringBadExclusion	0.068s
+PASS: docker_cli_build_test.go:2393: DockerSuite.TestBuildDockerignoringDockerfile	62.490s
+PASS: docker_cli_build_test.go:2432: DockerSuite.TestBuildDockerignoringDockerignore	31.808s
+PASS: docker_cli_build_test.go:2504: DockerSuite.TestBuildDockerignoringOnlyDotfiles	30.876s
+PASS: docker_cli_build_test.go:2411: DockerSuite.TestBuildDockerignoringRenamedDockerfile	95.161s
+PASS: docker_cli_build_test.go:2487: DockerSuite.TestBuildDockerignoringWholeDir	30.886s
+PASS: docker_cli_build_test.go:2560: DockerSuite.TestBuildDockerignoringWildDirs	31.427s
+PASS: docker_cli_build_test.go:2538: DockerSuite.TestBuildDockerignoringWildTopDir	259.956s
+PASS: docker_cli_build_test.go:3944: DockerSuite.TestBuildDotDotFile	0.079s
+SKIP: docker_cli_build_test.go:2634: DockerSuite.TestBuildEOLInLine (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:3168: DockerSuite.TestBuildEmptyCmd (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1704: DockerSuite.TestBuildEmptyEntrypoint	0.838s
+PASS: docker_cli_build_test.go:1681: DockerSuite.TestBuildEmptyEntrypointInheritance	1.656s
+SKIP: docker_cli_build_test.go:3936: DockerSuite.TestBuildEmptyScratch (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:3961: DockerSuite.TestBuildEmptyStringVolume	0.726s
+PASS: docker_cli_build_test.go:1718: DockerSuite.TestBuildEntrypoint	0.829s
+PASS: docker_cli_build_test.go:3251: DockerSuite.TestBuildEntrypointCanBeOverriddenByChild	26.681s
+PASS: docker_cli_build_test.go:3271: DockerSuite.TestBuildEntrypointCanBeOverriddenByChildInspect	14.736s
+PASS: docker_cli_build_test.go:2170: DockerSuite.TestBuildEntrypointRunCleanup	16.726s
+SKIP: docker_cli_build_test.go:1469: DockerSuite.TestBuildEnv (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:302: DockerSuite.TestBuildEnvEscapes (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:319: DockerSuite.TestBuildEnvOverwrite (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:2715: DockerSuite.TestBuildEnvUsage (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:2746: DockerSuite.TestBuildEnvUsage2 (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:147: DockerSuite.TestBuildEnvironmentReplacementAddCopy	6.405s
+SKIP: docker_cli_build_test.go:171: DockerSuite.TestBuildEnvironmentReplacementEnv (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:102: DockerSuite.TestBuildEnvironmentReplacementExpose (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:60: DockerSuite.TestBuildEnvironmentReplacementUser (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:77: DockerSuite.TestBuildEnvironmentReplacementVolume	1.553s
+PASS: docker_cli_build_test.go:127: DockerSuite.TestBuildEnvironmentReplacementWorkdir	16.923s
+PASS: docker_cli_build_test.go:5317: DockerSuite.TestBuildEscapeNotBackslashWordTest	36.385s
+PASS: docker_cli_build_test.go:2263: DockerSuite.TestBuildEscapeWhitespace	0.849s
+SKIP: docker_cli_build_test.go:3302: DockerSuite.TestBuildExoticShellInterpolation (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1590: DockerSuite.TestBuildExpose (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1604: DockerSuite.TestBuildExposeMorePorts (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1653: DockerSuite.TestBuildExposeOrder (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1669: DockerSuite.TestBuildExposeUpperCaseProto (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:2227: DockerSuite.TestBuildFails	12.973s
+PASS: docker_cli_build_test.go:4897: DockerSuite.TestBuildFailsGitNotCallable	0.089s
+PASS: docker_cli_build_test.go:4817: DockerSuite.TestBuildFollowSymlinkToDir	27.494s
+PASS: docker_cli_build_test.go:4787: DockerSuite.TestBuildFollowSymlinkToFile	27.104s
+PASS: docker_cli_build_test.go:1170: DockerSuite.TestBuildForceRm	28.140s
+PASS: docker_cli_build_test.go:3051: DockerSuite.TestBuildFromGit	18.269s
+PASS: docker_cli_build_test.go:3070: DockerSuite.TestBuildFromGitWithContext	1.784s
+PASS: docker_cli_build_test.go:3089: DockerSuite.TestBuildFromGitWithF	15.885s
+SKIP: docker_cli_build_test.go:3701: DockerSuite.TestBuildFromMixedcaseDockerfile (unmatched requirement UnixCli)
+PASS: docker_cli_build_test.go:3777: DockerSuite.TestBuildFromOfficialNames	0.797s
+PASS: docker_cli_build_test.go:3102: DockerSuite.TestBuildFromRemoteTarball	0.854s
+SKIP: docker_cli_build_test.go:3752: DockerSuite.TestBuildFromStdinWithF (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:3725: DockerSuite.TestBuildFromURLWithF	30.486s
+SKIP: docker_cli_build_test.go:234: DockerSuite.TestBuildHandleEscapesInVolume (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_history_test.go:16: DockerSuite.TestBuildHistory	18.623s
+PASS: docker_cli_build_test.go:6157: DockerSuite.TestBuildIidFile	1.553s
+PASS: docker_cli_build_test.go:6182: DockerSuite.TestBuildIidFileCleanupOnFail	12.754s
+SKIP: docker_cli_build_test.go:2206: DockerSuite.TestBuildInheritance (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:5954: DockerSuite.TestBuildIntermediateTarget	1.085s
+PASS: docker_cli_build_test.go:3191: DockerSuite.TestBuildInvalidTag	0.060s
+PASS: docker_cli_build_test.go:34: DockerSuite.TestBuildJSONEmptyRun	15.176s
+PASS: docker_cli_build_test.go:4923: DockerSuite.TestBuildLabel	1.579s
+PASS: docker_cli_build_test.go:4954: DockerSuite.TestBuildLabelCacheCommit	0.866s
+PASS: docker_cli_build_test.go:4975: DockerSuite.TestBuildLabelMultiple	1.553s
+PASS: docker_cli_build_test.go:4940: DockerSuite.TestBuildLabelOneNode	0.842s
+PASS: docker_cli_build_test.go:3373: DockerSuite.TestBuildLabels	1.553s
+PASS: docker_cli_build_test.go:3385: DockerSuite.TestBuildLabelsCache	2.174s
+PASS: docker_cli_build_test.go:5061: DockerSuite.TestBuildLabelsOverride	9.415s
+SKIP: docker_cli_build_test.go:391: DockerSuite.TestBuildLastModified (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:2623: DockerSuite.TestBuildLineBreak (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:6086: DockerSuite.TestBuildLineErrorOnBuild	0.071s
+PASS: docker_cli_build_test.go:6097: DockerSuite.TestBuildLineErrorUnknownInstruction	0.070s
+PASS: docker_cli_build_test.go:6128: DockerSuite.TestBuildLineErrorWithComments	0.069s
+PASS: docker_cli_build_test.go:6111: DockerSuite.TestBuildLineErrorWithEmptyLines	0.068s
+PASS: docker_cli_build_test.go:1267: DockerSuite.TestBuildMaintainer	0.830s
+PASS: docker_cli_build_test.go:3891: DockerSuite.TestBuildMissingArgs	0.710s
+PASS: docker_cli_build_test.go:444: DockerSuite.TestBuildModifyFileInFolder	16.593s
+SKIP: docker_cli_build_test.go:5934: DockerSuite.TestBuildMulitStageResetScratch (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4637: DockerSuite.TestBuildMultiStageArg	59.461s
+SKIP: docker_cli_build_test.go:5505: DockerSuite.TestBuildMultiStageCache (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:5684: DockerSuite.TestBuildMultiStageCopyFromErrors	2.105s
+PASS: docker_cli_build_test.go:5626: DockerSuite.TestBuildMultiStageCopyFromSyntax	131.286s
+PASS: docker_cli_build_test.go:4661: DockerSuite.TestBuildMultiStageGlobalArg	58.759s
+PASS: docker_cli_build_test.go:5764: DockerSuite.TestBuildMultiStageImplicitFrom	28.504s
+PASS: docker_cli_build_test.go:5731: DockerSuite.TestBuildMultiStageMultipleBuilds	28.871s
+PASS: docker_cli_build_test.go:5846: DockerSuite.TestBuildMultiStageMultipleBuildsWindows	29.078s
+PASS: docker_cli_build_test.go:5821: DockerSuite.TestBuildMultiStageNameVariants	73.315s
+PASS: docker_cli_build_test.go:4686: DockerSuite.TestBuildMultiStageUnusedArg	29.579s
+PASS: docker_cli_build_test.go:4747: DockerSuite.TestBuildMultipleTags	0.959s
+SKIP: docker_cli_build_test.go:5541: DockerSuite.TestBuildNetContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:5529: DockerSuite.TestBuildNetNone (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:2053: DockerSuite.TestBuildNoContext	13.482s
+PASS: docker_cli_build_test.go:4001: DockerSuite.TestBuildNoDupOutput	15.541s
+PASS: docker_cli_build_test.go:4706: DockerSuite.TestBuildNoNamedVolume	13.246s
+PASS: docker_cli_build_test.go:3498: DockerSuite.TestBuildNotVerboseFailure	0.255s
+PASS: docker_cli_build_test.go:3526: DockerSuite.TestBuildNotVerboseFailureRemote	0.133s
+PASS: docker_cli_build_test.go:3477: DockerSuite.TestBuildNotVerboseFailureWithNonExistImage	2.222s
+PASS: docker_cli_build_test.go:3426: DockerSuite.TestBuildNotVerboseSuccess	1.159s
+PASS: docker_cli_build_test.go:4051: DockerSuite.TestBuildNullStringInAddCopyVolume	2.169s
+PASS: docker_cli_build_test.go:2236: DockerSuite.TestBuildOnBuild	30.550s
+PASS: docker_api_build_test.go:285: DockerSuite.TestBuildOnBuildCache	2.153s
+PASS: docker_cli_build_test.go:337: DockerSuite.TestBuildOnBuildCmdEntrypointJSON	31.701s
+PASS: docker_cli_build_test.go:354: DockerSuite.TestBuildOnBuildEntrypointJSON	15.385s
+PASS: docker_cli_build_test.go:1733: DockerSuite.TestBuildOnBuildLimitedInheritance	30.992s
+PASS: docker_cli_build_test.go:278: DockerSuite.TestBuildOnBuildLowercase	15.897s
+PASS: docker_cli_build_test.go:3181: DockerSuite.TestBuildOnBuildOutput	15.861s
+PASS: docker_api_build_test.go:260: DockerSuite.TestBuildOnBuildWithCopy	1.439s
+SKIP: docker_cli_build_test.go:5992: DockerSuite.TestBuildOpaqueDirectory (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1483: DockerSuite.TestBuildPATH (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4029: DockerSuite.TestBuildRUNErrMsg	11.551s
+SKIP: docker_cli_build_test.go:3951: DockerSuite.TestBuildRUNoneJSON (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1401: DockerSuite.TestBuildRelativeCopy	135.017s
+PASS: docker_cli_build_test.go:1294: DockerSuite.TestBuildRelativeWorkdir	64.599s
+PASS: docker_cli_build_test.go:1189: DockerSuite.TestBuildRm	48.174s
+PASS: docker_cli_build_test.go:3295: DockerSuite.TestBuildRunShEntrypoint	13.565s
+SKIP: docker_cli_build_test.go:1751: DockerSuite.TestBuildSameDockerfileWithAndWithoutCache (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_build_test.go:520: DockerSuite.TestBuildScratchCopy (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:6142: DockerSuite.TestBuildSetCommandWithDefinedShell	1.687s
+PASS: docker_cli_build_test.go:41: DockerSuite.TestBuildShCmdJSONEntrypoint	14.257s
+PASS: docker_cli_build_test.go:5264: DockerSuite.TestBuildShellEntrypoint	14.543s
+PASS: docker_cli_build_test.go:5279: DockerSuite.TestBuildShellInherited	15.677s
+PASS: docker_cli_build_test.go:5228: DockerSuite.TestBuildShellMultiple	60.259s
+PASS: docker_cli_build_test.go:5292: DockerSuite.TestBuildShellNotJSON	0.080s
+PASS: docker_cli_build_test.go:5211: DockerSuite.TestBuildShellUpdatesConfig	0.886s
+PASS: docker_cli_build_test.go:5305: DockerSuite.TestBuildShellWindowsPowershell	20.118s
+PASS: docker_cli_build_test.go:3795: DockerSuite.TestBuildSpaces	0.279s
+PASS: docker_cli_build_test.go:3858: DockerSuite.TestBuildSpacesWithQuotes	14.822s
+PASS: docker_cli_build_test.go:4018: DockerSuite.TestBuildStartsFromOne	0.072s
+PASS: docker_cli_build_test.go:3556: DockerSuite.TestBuildStderr	16.111s
+PASS: docker_cli_build_test.go:5360: DockerSuite.TestBuildStepsWithProgress	73.158s
+SKIP: docker_cli_build_test.go:4071: DockerSuite.TestBuildStopSignal (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:4851: DockerSuite.TestBuildSymlinkBasename	14.059s
+PASS: docker_cli_build_test.go:3598: DockerSuite.TestBuildSymlinkBreakout	1.495s
+PASS: docker_cli_build_test.go:4723: DockerSuite.TestBuildTagEvent	15.703s
+PASS: docker_cli_build_test.go:4143: DockerSuite.TestBuildTimeArgHistoryExclusions	16.794s
+SKIP: docker_cli_build_test.go:1280: DockerSuite.TestBuildUser (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:554: DockerSuite.TestBuildUsernamespaceValidateRemappedRoot (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:2659: DockerSuite.TestBuildUsersAndGroups (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:3344: DockerSuite.TestBuildVerboseOut	15.205s
+PASS: docker_cli_build_test.go:2281: DockerSuite.TestBuildVerifyIntString	0.825s
+PASS: docker_cli_build_test.go:3327: DockerSuite.TestBuildVerifySingleQuoteFails	13.552s
+SKIP: docker_cli_build_test.go:3878: DockerSuite.TestBuildVolumeFileExistsinContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:3671: DockerSuite.TestBuildVolumesRetainContents (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:1347: DockerSuite.TestBuildWindowsAddCopyPathProcessing	70.491s
+PASS: docker_cli_build_test.go:6037: DockerSuite.TestBuildWindowsEnvCaseInsensitive	0.818s
+PASS: docker_cli_build_test.go:6007: DockerSuite.TestBuildWindowsUser	32.907s
+PASS: docker_cli_build_test.go:1336: DockerSuite.TestBuildWindowsWorkdirProcessing	17.336s
+SKIP: docker_cli_build_test.go:5557: DockerSuite.TestBuildWithExtraHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:5573: DockerSuite.TestBuildWithExtraHostInvalidFormat (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:5371: DockerSuite.TestBuildWithFailure	13.141s
+SKIP: docker_cli_build_test.go:1049: DockerSuite.TestBuildWithInaccessibleFilesInContext (unmatched requirement DaemonIsLinux)
+PASS: docker_api_build_windows_test.go:16: DockerSuite.TestBuildWithRecycleBin	43.424s
+PASS: docker_cli_build_test.go:3358: DockerSuite.TestBuildWithTabs	15.263s
+PASS: docker_cli_build_test.go:5184: DockerSuite.TestBuildWithUTF8BOM	0.077s
+PASS: docker_cli_build_test.go:5194: DockerSuite.TestBuildWithUTF8BOMDockerignore	48.132s
+SKIP: docker_cli_build_test.go:2150: DockerSuite.TestBuildWithVolumeOwnership (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:1232: DockerSuite.TestBuildWithVolumes (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_build_test.go:6072: DockerSuite.TestBuildWorkdirCmd (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_build_test.go:6051: DockerSuite.TestBuildWorkdirImageCmd	1.856s
+PASS: docker_cli_build_test.go:4912: DockerSuite.TestBuildWorkdirWindowsPath	28.495s
+PASS: docker_cli_build_test.go:1380: DockerSuite.TestBuildWorkdirWithEnvVariables	3.189s
+SKIP: docker_cli_build_test.go:3653: DockerSuite.TestBuildXZHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_proxy_test.go:12: DockerSuite.TestCLIProxyDisableProxyUnixSock (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_sni_test.go:16: DockerSuite.TestClientSetsTLSServerName (Flakey test)
+PASS: docker_cli_run_test.go:3683: DockerSuite.TestCmdCannotBeInvoked	12.901s
+PASS: docker_cli_commit_test.go:12: DockerSuite.TestCommitAfterContainerIsDone	15.527s
+PASS: docker_cli_commit_test.go:106: DockerSuite.TestCommitChange	16.720s
+PASS: docker_cli_commit_test.go:156: DockerSuite.TestCommitChangeLabels	13.795s
+SKIP: docker_cli_commit_test.go:67: DockerSuite.TestCommitHardlink (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_commit_test.go:56: DockerSuite.TestCommitNewFile	27.735s
+SKIP: docker_cli_commit_test.go:42: DockerSuite.TestCommitPausedContainer (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_commit_test.go:87: DockerSuite.TestCommitTTY	27.205s
+PASS: docker_cli_images_test.go:103: DockerSuite.TestCommitWithFilterLabel	15.637s
+SKIP: docker_cli_commit_test.go:96: DockerSuite.TestCommitWithHostBindMount (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_commit_test.go:26: DockerSuite.TestCommitWithoutPause (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_netmode_test.go:55: DockerSuite.TestConflictContainerNetworkAndLinks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_netmode_test.go:62: DockerSuite.TestConflictContainerNetworkHostAndLinks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_netmode_test.go:76: DockerSuite.TestConflictNetworkModeAndOptions (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_netmode_test.go:69: DockerSuite.TestConflictNetworkModeNetHostAndOptions (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:543: DockerSuite.TestContainerAPIBadPort (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1289: DockerSuite.TestContainerAPIChunkedEncoding	0.019s
+PASS: docker_api_containers_test.go:489: DockerSuite.TestContainerAPICommit	27.479s
+PASS: docker_api_containers_test.go:511: DockerSuite.TestContainerAPICommitWithLabelInConfig	28.026s
+SKIP: docker_api_containers_test.go:1155: DockerSuite.TestContainerAPICopyContainerNotFoundPr124 (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1070: DockerSuite.TestContainerAPICopyNotExistsAnyMore	12.713s
+SKIP: docker_api_containers_test.go:1083: DockerSuite.TestContainerAPICopyPre124 (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1113: DockerSuite.TestContainerAPICopyResourcePathEmptyPre124 (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1134: DockerSuite.TestContainerAPICopyResourcePathNotFoundPre124 (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:570: DockerSuite.TestContainerAPICreate	12.939s
+SKIP: docker_api_containers_test.go:649: DockerSuite.TestContainerAPICreateBridgeNetworkMode (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:587: DockerSuite.TestContainerAPICreateEmptyConfig	0.002s
+PASS: docker_api_containers_test.go:1997: DockerSuite.TestContainerAPICreateMountsBindRead	13.390s
+PASS: docker_api_containers_test.go:599: DockerSuite.TestContainerAPICreateMultipleNetworksConfig	0.003s
+SKIP: docker_api_containers_test.go:1409: DockerSuite.TestContainerAPICreateNoHostConfig118 (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:655: DockerSuite.TestContainerAPICreateOtherNetworkModes (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:684: DockerSuite.TestContainerAPICreateWithCpuSharesCpuset (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:626: DockerSuite.TestContainerAPICreateWithHostName	0.020s
+PASS: docker_api_containers_test.go:1166: DockerSuite.TestContainerAPIDelete	12.918s
+PASS: docker_api_containers_test.go:1239: DockerSuite.TestContainerAPIDeleteConflict	10.274s
+PASS: docker_api_containers_test.go:1191: DockerSuite.TestContainerAPIDeleteForce	10.274s
+PASS: docker_api_containers_test.go:1182: DockerSuite.TestContainerAPIDeleteNotExist	0.002s
+SKIP: docker_api_containers_test.go:1208: DockerSuite.TestContainerAPIDeleteRemoveLinks (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1254: DockerSuite.TestContainerAPIDeleteRemoveVolume	11.824s
+PASS: docker_api_containers_test.go:1648: DockerSuite.TestContainerAPIDeleteWithEmptyName	0.001s
+PASS: docker_api_containers_test.go:41: DockerSuite.TestContainerAPIGetAll	12.521s
+SKIP: docker_api_containers_test.go:167: DockerSuite.TestContainerAPIGetChanges (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:140: DockerSuite.TestContainerAPIGetExport (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:61: DockerSuite.TestContainerAPIGetJSONNoFieldsOmitted	12.809s
+PASS: docker_api_containers_test.go:756: DockerSuite.TestContainerAPIInvalidPortSyntax	0.003s
+PASS: docker_api_containers_test.go:957: DockerSuite.TestContainerAPIKill	10.790s
+SKIP: docker_api_containers_test.go:404: DockerSuite.TestContainerAPIPause (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1309: DockerSuite.TestContainerAPIPostContainerStop	13.241s
+PASS: docker_api_containers_test.go:872: DockerSuite.TestContainerAPIPostCreateNull	0.202s
+SKIP: docker_api_containers_test.go:107: DockerSuite.TestContainerAPIPsOmitFields (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:940: DockerSuite.TestContainerAPIRename	10.164s
+PASS: docker_api_containers_test.go:972: DockerSuite.TestContainerAPIRestart	22.134s
+PASS: docker_api_containers_test.go:986: DockerSuite.TestContainerAPIRestartNotimeoutParam	22.190s
+PASS: docker_api_containers_test.go:854: DockerSuite.TestContainerAPIRestartPolicyDefaultRetryCount	0.022s
+PASS: docker_api_containers_test.go:782: DockerSuite.TestContainerAPIRestartPolicyInvalidPolicyName	0.002s
+PASS: docker_api_containers_test.go:830: DockerSuite.TestContainerAPIRestartPolicyNegativeRetryCount	0.002s
+PASS: docker_api_containers_test.go:806: DockerSuite.TestContainerAPIRestartPolicyRetryMismatch	0.002s
+PASS: docker_api_containers_test.go:1002: DockerSuite.TestContainerAPIStart	9.787s
+SKIP: docker_api_containers_test.go:1657: DockerSuite.TestContainerAPIStatsWithNetworkDisabled (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1028: DockerSuite.TestContainerAPIStop	12.931s
+SKIP: docker_api_containers_test.go:435: DockerSuite.TestContainerAPITop (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:458: DockerSuite.TestContainerAPITopWindows	10.806s
+PASS: docker_api_containers_test.go:715: DockerSuite.TestContainerAPIVerifyHeader	0.022s
+PASS: docker_api_containers_test.go:1047: DockerSuite.TestContainerAPIWait	13.590s
+PASS: docker_api_containers_test.go:2293: DockerSuite.TestContainerKillCustomStopSignal	11.184s
+SKIP: docker_cli_run_test.go:2410: DockerSuite.TestContainerNetworkMode (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3531: DockerSuite.TestContainerRestartInMultipleNetworks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3563: DockerSuite.TestContainerWithConflictingHostNetworks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3594: DockerSuite.TestContainerWithConflictingNoneNetwork (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3577: DockerSuite.TestContainerWithConflictingSharedNetwork (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_windows_test.go:21: DockerSuite.TestContainersAPICreateMountsBindNamedPipe (unmatched requirement DaemonIsWindowsAtLeastBuild.func1)
+PASS: docker_api_containers_test.go:2028: DockerSuite.TestContainersAPICreateMountsCreate	92.059s
+SKIP: docker_api_containers_test.go:2243: DockerSuite.TestContainersAPICreateMountsTmpfs (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1706: DockerSuite.TestContainersAPICreateMountsValidation	0.094s
+SKIP: docker_cli_run_test.go:3467: DockerSuite.TestContainersInMultipleNetworks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3459: DockerSuite.TestContainersInUserDefinedNetwork (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3486: DockerSuite.TestContainersNetworkIsolation (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:582: DockerSuite.TestCopyAndRestart (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:603: DockerSuite.TestCopyCreatedContainer (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_test.go:128: DockerSuite.TestCpAbsolutePath	12.966s
+SKIP: docker_cli_cp_test.go:171: DockerSuite.TestCpAbsoluteSymlink (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:119: DockerSuite.TestCpFromCaseA (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:139: DockerSuite.TestCpFromCaseB (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:157: DockerSuite.TestCpFromCaseC (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:182: DockerSuite.TestCpFromCaseD (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:222: DockerSuite.TestCpFromCaseE (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:251: DockerSuite.TestCpFromCaseF (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:274: DockerSuite.TestCpFromCaseG (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:313: DockerSuite.TestCpFromCaseH (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:343: DockerSuite.TestCpFromCaseI (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:367: DockerSuite.TestCpFromCaseJ (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_from_container_test.go:24: DockerSuite.TestCpFromSymlinkDestination (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:209: DockerSuite.TestCpFromSymlinkToDirectory (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_test.go:38: DockerSuite.TestCpGarbagePath	13.063s
+PASS: docker_cli_cp_test.go:29: DockerSuite.TestCpLocalOnly	0.060s
+SKIP: docker_cli_cp_test.go:562: DockerSuite.TestCpNameHasColon (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_test.go:80: DockerSuite.TestCpRelativePath	12.643s
+SKIP: docker_cli_cp_test.go:405: DockerSuite.TestCpSpecialFiles (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:337: DockerSuite.TestCpSymlinkComponent (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:616: DockerSuite.TestCpSymlinkFromConToHostFollowSymlink (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_to_container_test.go:123: DockerSuite.TestCpToCaseA	26.079s
+PASS: docker_cli_cp_to_container_test.go:144: DockerSuite.TestCpToCaseB	13.023s
+SKIP: docker_cli_cp_to_container_test.go:165: DockerSuite.TestCpToCaseC (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_to_container_test.go:192: DockerSuite.TestCpToCaseD (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_to_container_test.go:238: DockerSuite.TestCpToCaseE	51.497s
+SKIP: docker_cli_cp_to_container_test.go:273: DockerSuite.TestCpToCaseF (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_to_container_test.go:296: DockerSuite.TestCpToCaseG (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_to_container_test.go:342: DockerSuite.TestCpToCaseH	50.553s
+SKIP: docker_cli_cp_to_container_test.go:378: DockerSuite.TestCpToCaseI (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_to_container_test.go:402: DockerSuite.TestCpToCaseJ (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_test.go:521: DockerSuite.TestCpToDot	13.184s
+SKIP: docker_cli_cp_to_container_test.go:445: DockerSuite.TestCpToErrReadOnlyRootfs (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_to_container_test.go:472: DockerSuite.TestCpToErrReadOnlyVolume (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_cp_test.go:543: DockerSuite.TestCpToStdout	13.222s
+SKIP: docker_cli_cp_to_container_test.go:22: DockerSuite.TestCpToSymlinkDestination (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:257: DockerSuite.TestCpToSymlinkToDirectory (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:381: DockerSuite.TestCpUnprivilegedUser (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_cp_test.go:452: DockerSuite.TestCpVolumePath (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_create_test.go:327: DockerSuite.TestCreate64ByteHexID	0.141s
+PASS: docker_cli_create_test.go:21: DockerSuite.TestCreateArgs	0.146s
+PASS: docker_cli_create_test.go:260: DockerSuite.TestCreateByImageID	1.966s
+PASS: docker_cli_create_test.go:163: DockerSuite.TestCreateEchoStdout	12.783s
+PASS: docker_cli_create_test.go:59: DockerSuite.TestCreateGrowRootfs	0.171s
+PASS: docker_cli_create_test.go:83: DockerSuite.TestCreateHostConfig	0.145s
+PASS: docker_cli_create_test.go:222: DockerSuite.TestCreateHostnameWithNumber	12.801s
+PASS: docker_cli_create_test.go:205: DockerSuite.TestCreateLabelFromImage	0.956s
+PASS: docker_cli_create_test.go:192: DockerSuite.TestCreateLabels	0.138s
+SKIP: docker_cli_create_test.go:250: DockerSuite.TestCreateModeIpcContainer (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_create_test.go:233: DockerSuite.TestCreateRM	0.299s
+SKIP: docker_cli_create_test.go:73: DockerSuite.TestCreateShrinkRootfs (unmatched requirement Devicemapper)
+PASS: docker_cli_create_test.go:293: DockerSuite.TestCreateStopSignal	0.142s
+PASS: docker_cli_create_test.go:362: DockerSuite.TestCreateStopTimeout	0.290s
+PASS: docker_cli_create_test.go:335: DockerSuite.TestCreateUnsetEntrypoint	30.343s
+PASS: docker_cli_create_test.go:173: DockerSuite.TestCreateVolumesCreated	0.172s
+PASS: docker_cli_create_test.go:316: DockerSuite.TestCreateWithInvalidLogOpts	0.130s
+PASS: docker_cli_create_test.go:134: DockerSuite.TestCreateWithLargePortRange	2.493s
+PASS: docker_cli_create_test.go:105: DockerSuite.TestCreateWithPortRange	0.155s
+SKIP: docker_api_containers_test.go:916: DockerSuite.TestCreateWithTooLowMemoryLimit (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_create_test.go:302: DockerSuite.TestCreateWithWorkdir	10.300s
+SKIP: docker_deprecated_api_v124_test.go:70: DockerSuite.TestDeprecatedContainerAPIStartDupVolumeBinds (unmatched requirement DaemonIsLinux)
+PASS: docker_deprecated_api_v124_test.go:20: DockerSuite.TestDeprecatedContainerAPIStartHostConfig	0.104s
+SKIP: docker_deprecated_api_v124_test.go:39: DockerSuite.TestDeprecatedContainerAPIStartVolumeBinds (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:103: DockerSuite.TestDeprecatedContainerAPIStartVolumesFrom (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:136: DockerSuite.TestDeprecatedPostContainerBindNormalVolume (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:198: DockerSuite.TestDeprecatedPostContainersStartWithLinksInHostConfig (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:216: DockerSuite.TestDeprecatedPostContainersStartWithLinksInHostConfigIdLinked (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:181: DockerSuite.TestDeprecatedPostContainersStartWithoutLinksInHostConfig (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:235: DockerSuite.TestDeprecatedStartWithNilDNS (unmatched requirement DaemonIsLinux)
+SKIP: docker_deprecated_api_v124_test.go:156: DockerSuite.TestDeprecatedStartWithTooLowMemoryLimit (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2995: DockerSuite.TestDevicePermissions (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:3706: DockerSuite.TestDockerFails	0.062s
+SKIP: docker_cli_volume_test.go:490: DockerSuite.TestDuplicateMountpointsForVolumesFrom (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_volume_test.go:532: DockerSuite.TestDuplicateMountpointsForVolumesFromAndBind (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_volume_test.go:576: DockerSuite.TestDuplicateMountpointsForVolumesFromAndMounts (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_events_test.go:479: DockerSuite.TestEventsAttach (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_events_test.go:410: DockerSuite.TestEventsCommit (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_events_test.go:84: DockerSuite.TestEventsContainerEvents	12.863s
+PASS: docker_cli_events_test.go:103: DockerSuite.TestEventsContainerEventsAttrSort	13.095s
+PASS: docker_cli_events_test.go:126: DockerSuite.TestEventsContainerEventsSinceUnixEpoch	12.981s
+PASS: docker_cli_events_test.go:659: DockerSuite.TestEventsContainerRestart	48.917s
+PASS: docker_cli_events_test.go:427: DockerSuite.TestEventsCopy	16.194s
+PASS: docker_cli_events_test.go:372: DockerSuite.TestEventsFilterContainer	26.615s
+PASS: docker_cli_events_test.go:649: DockerSuite.TestEventsFilterImageInContainerAction	11.920s
+PASS: docker_cli_events_test.go:342: DockerSuite.TestEventsFilterImageLabels	1.118s
+PASS: docker_cli_events_test.go:287: DockerSuite.TestEventsFilterImageName	24.965s
+PASS: docker_cli_events_test.go:316: DockerSuite.TestEventsFilterLabels	23.298s
+PASS: docker_cli_events_test.go:565: DockerSuite.TestEventsFilterType	1.468s
+PASS: docker_cli_events_test.go:271: DockerSuite.TestEventsFilters	25.157s
+PASS: docker_cli_events_test.go:728: DockerSuite.TestEventsFormat	26.469s
+PASS: docker_cli_events_test.go:761: DockerSuite.TestEventsFormatBadField	0.058s
+PASS: docker_cli_events_test.go:751: DockerSuite.TestEventsFormatBadFunc	0.060s
+SKIP: docker_cli_events_test.go:183: DockerSuite.TestEventsImageImport (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_events_test.go:207: DockerSuite.TestEventsImageLoad (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_events_test.go:164: DockerSuite.TestEventsImagePull (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_events_test.go:146: DockerSuite.TestEventsImageTag	1.204s
+SKIP: docker_cli_events_test.go:246: DockerSuite.TestEventsPluginOps (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_events_test.go:517: DockerSuite.TestEventsRename	13.754s
+PASS: docker_cli_events_test.go:456: DockerSuite.TestEventsResize	13.104s
+PASS: docker_cli_events_test.go:699: DockerSuite.TestEventsSinceInTheFuture	11.522s
+PASS: docker_cli_events_test.go:619: DockerSuite.TestEventsSpecialFiltersWithExecCreate	12.622s
+PASS: docker_cli_events_test.go:26: DockerSuite.TestEventsTimestampFormats	15.399s
+SKIP: docker_cli_events_test.go:528: DockerSuite.TestEventsTop (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_events_test.go:61: DockerSuite.TestEventsUntag	2.770s
+PASS: docker_cli_events_test.go:711: DockerSuite.TestEventsUntilInThePast	24.973s
+SKIP: docker_cli_exec_test.go:28: DockerSuite.TestExec (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_exec_test.go:66: DockerSuite.TestExecAPICreateContainerPaused (unmatched requirement DaemonIsLinux)
+PASS: docker_api_exec_test.go:25: DockerSuite.TestExecAPICreateNoCmd	10.351s
+PASS: docker_api_exec_test.go:43: DockerSuite.TestExecAPICreateNoValidContentType	10.425s
+SKIP: docker_api_exec_test.go:87: DockerSuite.TestExecAPIStart (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_exec_test.go:124: DockerSuite.TestExecAPIStartBackwardsCompatible (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_exec_test.go:114: DockerSuite.TestExecAPIStartEnsureHeaders (unmatched requirement DaemonIsLinux)
+PASS: docker_api_exec_test.go:196: DockerSuite.TestExecAPIStartInvalidCommand	11.611s
+PASS: docker_api_exec_test.go:139: DockerSuite.TestExecAPIStartMultipleTimesError	11.637s
+PASS: docker_api_exec_test.go:180: DockerSuite.TestExecAPIStartValidCommand	11.228s
+PASS: docker_api_exec_test.go:149: DockerSuite.TestExecAPIStartWithDetach	10.966s
+PASS: docker_cli_exec_test.go:75: DockerSuite.TestExecAfterContainerRestart	23.976s
+SKIP: docker_cli_exec_test.go:256: DockerSuite.TestExecCgroup (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:108: DockerSuite.TestExecEnv (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:537: DockerSuite.TestExecEnvLinksHost (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_exec_test.go:134: DockerSuite.TestExecExitStatus	11.997s
+PASS: docker_cli_exec_test.go:309: DockerSuite.TestExecInspectID	14.010s
+SKIP: docker_cli_exec_test.go:39: DockerSuite.TestExecInteractive (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:493: DockerSuite.TestExecOnReadonlyContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:214: DockerSuite.TestExecParseError (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:141: DockerSuite.TestExecPausedContainer (unmatched requirement IsPausable)
+SKIP: docker_api_exec_resize_test.go:18: DockerSuite.TestExecResizeAPIHeightWidthNoInt (unmatched requirement DaemonIsLinux)
+PASS: docker_api_exec_resize_test.go:34: DockerSuite.TestExecResizeImmediatelyAfterExecStart	16.068s
+SKIP: docker_cli_exec_test.go:123: DockerSuite.TestExecSetEnv (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:513: DockerSuite.TestExecStartFails (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_exec_test.go:214: DockerSuite.TestExecStateCleanup (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:228: DockerSuite.TestExecStopNotHanging (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:156: DockerSuite.TestExecTTYCloseStdin (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_exec_test.go:177: DockerSuite.TestExecTTYWithoutStdin	10.497s
+SKIP: docker_cli_exec_test.go:501: DockerSuite.TestExecUlimits (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_exec_test.go:546: DockerSuite.TestExecWindowsOpenHandles	22.145s
+PASS: docker_cli_exec_test.go:527: DockerSuite.TestExecWindowsPathNotWiped	17.567s
+SKIP: docker_cli_exec_test.go:480: DockerSuite.TestExecWithImageUser (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:449: DockerSuite.TestExecWithPrivileged (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:436: DockerSuite.TestExecWithUser (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:190: DockerSuite.TestGetContainerStats	14.162s
+PASS: docker_api_containers_test.go:338: DockerSuite.TestGetContainerStatsNoStream	14.019s
+PASS: docker_api_containers_test.go:230: DockerSuite.TestGetContainerStatsRmRunning	12.507s
+PASS: docker_api_containers_test.go:297: DockerSuite.TestGetContainerStatsStream	14.393s
+SKIP: docker_api_attach_test.go:25: DockerSuite.TestGetContainersAttachWebsocket (unmatched requirement DaemonIsLinux)
+PASS: docker_api_attach_test.go:89: DockerSuite.TestGetContainersWsAttachContainerNotFound	0.001s
+PASS: docker_api_containers_test.go:378: DockerSuite.TestGetStoppedContainerStats	0.083s
+SKIP: docker_cli_health_test.go:39: DockerSuite.TestHealth (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_history_test.go:58: DockerSuite.TestHistoryExistentImage	0.065s
+PASS: docker_cli_history_test.go:86: DockerSuite.TestHistoryHumanOptionFalse	0.066s
+PASS: docker_cli_history_test.go:104: DockerSuite.TestHistoryHumanOptionTrue	0.061s
+PASS: docker_cli_history_test.go:67: DockerSuite.TestHistoryImageWithComment	15.819s
+PASS: docker_cli_history_test.go:62: DockerSuite.TestHistoryNonExistentImage	0.084s
+SKIP: docker_cli_images_test.go:225: DockerSuite.TestImagesEnsureDanglingImageOnlyListedOnce (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_images_test.go:20: DockerSuite.TestImagesEnsureImageIsListed	0.064s
+PASS: docker_cli_images_test.go:44: DockerSuite.TestImagesEnsureImageWithBadTagIsNotListed	0.067s
+PASS: docker_cli_images_test.go:25: DockerSuite.TestImagesEnsureImageWithTagIsListed	0.345s
+PASS: docker_cli_images_test.go:299: DockerSuite.TestImagesEnsureImagesFromBusyboxShown	0.869s
+SKIP: docker_cli_images_test.go:282: DockerSuite.TestImagesEnsureImagesFromScratchShown (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_images_test.go:259: DockerSuite.TestImagesEnsureOnlyHeadsImagesShown	1.629s
+PASS: docker_cli_images_test.go:69: DockerSuite.TestImagesErrorWithInvalidFilterNameTest	0.065s
+PASS: docker_cli_images_test.go:75: DockerSuite.TestImagesFilterLabelMatch	2.618s
+PASS: docker_cli_images_test.go:314: DockerSuite.TestImagesFilterNameWithPort	0.256s
+PASS: docker_cli_images_test.go:115: DockerSuite.TestImagesFilterSinceAndBefore	3.101s
+PASS: docker_cli_images_test.go:185: DockerSuite.TestImagesFilterSpaceTrimCase	13.255s
+PASS: docker_cli_images_test.go:327: DockerSuite.TestImagesFormat	0.202s
+SKIP: docker_cli_images_test.go:343: DockerSuite.TestImagesFormatDefaultFormat (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_images_test.go:49: DockerSuite.TestImagesOrderedByCreationDate	4.583s
+PASS: docker_cli_images_test.go:253: DockerSuite.TestImagesWithIncorrectFilter	0.061s
+PASS: docker_cli_import_test.go:36: DockerSuite.TestImportBadURL	2.354s
+SKIP: docker_cli_import_test.go:18: DockerSuite.TestImportDisplay (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_import_test.go:47: DockerSuite.TestImportFile (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_import_test.go:122: DockerSuite.TestImportFileNonExistentFile	0.059s
+SKIP: docker_cli_import_test.go:91: DockerSuite.TestImportFileWithMessage (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_import_test.go:68: DockerSuite.TestImportGzipped (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_import_test.go:127: DockerSuite.TestImportWithQuotedChanges (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_info_test.go:177: DockerSuite.TestInfoDebug (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_info_test.go:106: DockerSuite.TestInfoDiscoveryAdvertiseInterfaceName (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_info_test.go:72: DockerSuite.TestInfoDiscoveryBackend (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_info_test.go:89: DockerSuite.TestInfoDiscoveryInvalidAdvertise (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_info_test.go:143: DockerSuite.TestInfoDisplaysPausedContainers (unmatched requirement IsPausable)
+SKIP: docker_cli_info_test.go:130: DockerSuite.TestInfoDisplaysRunningContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_info_test.go:160: DockerSuite.TestInfoDisplaysStoppedContainers (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_info_test.go:16: DockerSuite.TestInfoEnsureSucceeds	0.069s
+PASS: docker_cli_info_test.go:60: DockerSuite.TestInfoFormat	0.121s
+SKIP: docker_cli_info_test.go:195: DockerSuite.TestInsecureRegistries (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_inspect_test.go:147: DockerSuite.TestInspectAPIBridgeNetworkSettings120 (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_inspect_test.go:164: DockerSuite.TestInspectAPIBridgeNetworkSettings121 (unmatched requirement DaemonIsLinux)
+PASS: docker_api_inspect_test.go:17: DockerSuite.TestInspectAPIContainerResponse	11.496s
+PASS: docker_api_inspect_test.go:84: DockerSuite.TestInspectAPIContainerVolumeDriver	10.445s
+SKIP: docker_api_inspect_test.go:61: DockerSuite.TestInspectAPIContainerVolumeDriverLegacy (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_inspect_test.go:123: DockerSuite.TestInspectAPIEmptyFieldsInConfigPre121 (unmatched requirement DaemonIsLinux)
+PASS: docker_api_inspect_test.go:108: DockerSuite.TestInspectAPIImageResponse	0.084s
+SKIP: docker_cli_inspect_test.go:413: DockerSuite.TestInspectAmpersand (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_inspect_test.go:206: DockerSuite.TestInspectBindMountPoint	11.365s
+PASS: docker_cli_inspect_test.go:341: DockerSuite.TestInspectByPrefix	0.189s
+PASS: docker_cli_inspect_test.go:141: DockerSuite.TestInspectContainerFilterInt	11.821s
+SKIP: docker_cli_inspect_test.go:181: DockerSuite.TestInspectContainerGraphDriver (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_inspect_test.go:391: DockerSuite.TestInspectContainerNetworkCustom (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_inspect_test.go:379: DockerSuite.TestInspectContainerNetworkDefault (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_inspect_test.go:44: DockerSuite.TestInspectDefault	10.503s
+PASS: docker_cli_inspect_test.go:371: DockerSuite.TestInspectHistory	15.367s
+SKIP: docker_cli_inspect_test.go:24: DockerSuite.TestInspectImage (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_inspect_test.go:125: DockerSuite.TestInspectImageFilterInt (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_inspect_test.go:163: DockerSuite.TestInspectImageGraphDriver (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_inspect_test.go:38: DockerSuite.TestInspectInt64	10.269s
+PASS: docker_cli_inspect_test.go:333: DockerSuite.TestInspectJSONFields	11.199s
+PASS: docker_cli_inspect_test.go:283: DockerSuite.TestInspectLogConfigNoType	0.157s
+PASS: docker_cli_inspect_test.go:238: DockerSuite.TestInspectNamedMountPoint	11.070s
+PASS: docker_cli_inspect_test.go:296: DockerSuite.TestInspectNoSizeFlagContainer	11.213s
+SKIP: docker_cli_inspect_test.go:423: DockerSuite.TestInspectPlugin (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_inspect_test.go:402: DockerSuite.TestInspectRootFS	0.063s
+PASS: docker_cli_inspect_test.go:308: DockerSuite.TestInspectSizeFlagContainer	9.902s
+PASS: docker_cli_inspect_test.go:55: DockerSuite.TestInspectStatus	13.333s
+PASS: docker_cli_inspect_test.go:352: DockerSuite.TestInspectStopWhenNotFound	23.873s
+PASS: docker_cli_inspect_test.go:319: DockerSuite.TestInspectTemplateError	11.480s
+PASS: docker_cli_inspect_test.go:262: DockerSuite.TestInspectTimesAsRFC3339Nano	12.177s
+PASS: docker_cli_inspect_test.go:80: DockerSuite.TestInspectTypeFlagContainer	9.977s
+PASS: docker_cli_inspect_test.go:102: DockerSuite.TestInspectTypeFlagWithImage	10.278s
+PASS: docker_cli_inspect_test.go:113: DockerSuite.TestInspectTypeFlagWithInvalidValue	9.787s
+PASS: docker_cli_inspect_test.go:90: DockerSuite.TestInspectTypeFlagWithNoContainer	11.789s
+PASS: docker_cli_inspect_test.go:454: DockerSuite.TestInspectUnknownObject	0.068s
+SKIP: docker_cli_links_test.go:200: DockerSuite.TestLinkShortDefinition (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:191: DockerSuite.TestLinksEnvs (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:227: DockerSuite.TestLinksEtcHostsRegularFile (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:140: DockerSuite.TestLinksHostsFilesInject (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:93: DockerSuite.TestLinksInspectLinksStarted (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:112: DockerSuite.TestLinksInspectLinksStopped (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:24: DockerSuite.TestLinksInvalidContainerTarget (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:234: DockerSuite.TestLinksMultipleWithSameName (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:216: DockerSuite.TestLinksNetworkHostContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:132: DockerSuite.TestLinksNotStartedParentNotFail (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:36: DockerSuite.TestLinksPingLinkedContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:80: DockerSuite.TestLinksPingLinkedContainersAfterRename (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_exec_test.go:379: DockerSuite.TestLinksPingLinkedContainersOnRename (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:15: DockerSuite.TestLinksPingUnlinkedContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_links_test.go:158: DockerSuite.TestLinksUpdateOnRestart (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:332: DockerSuite.TestLoadZeroSizeLayer (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_login_test.go:11: DockerSuite.TestLoginWithoutTTY	0.061s
+PASS: docker_api_logs_test.go:87: DockerSuite.TestLogsAPIContainerNotFound	0.001s
+PASS: docker_api_logs_test.go:72: DockerSuite.TestLogsAPIFollowEmptyOutput	10.472s
+PASS: docker_api_logs_test.go:59: DockerSuite.TestLogsAPINoStdoutNorStderr	9.556s
+PASS: docker_api_logs_test.go:151: DockerSuite.TestLogsAPIUntil	15.652s
+PASS: docker_api_logs_test.go:189: DockerSuite.TestLogsAPIUntilDefaultValue	13.468s
+SKIP: docker_api_logs_test.go:94: DockerSuite.TestLogsAPIUntilFutureFollow (unmatched requirement DaemonIsLinux)
+PASS: docker_api_logs_test.go:23: DockerSuite.TestLogsAPIWithStdout	10.866s
+PASS: docker_cli_logs_test.go:318: DockerSuite.TestLogsCLIContainerNotFound	0.076s
+PASS: docker_cli_logs_test.go:24: DockerSuite.TestLogsContainerBiggerThanPage	14.630s
+PASS: docker_cli_logs_test.go:29: DockerSuite.TestLogsContainerMuchBiggerThanPage	14.974s
+PASS: docker_cli_logs_test.go:19: DockerSuite.TestLogsContainerSmallerThanPage	14.105s
+PASS: docker_cli_logs_test.go:300: DockerSuite.TestLogsFollowGoroutinesNoOutput	10.869s
+PASS: docker_cli_logs_test.go:272: DockerSuite.TestLogsFollowGoroutinesWithStdout	10.974s
+SKIP: docker_cli_logs_test.go:214: DockerSuite.TestLogsFollowSlowStdoutConsumer (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_logs_test.go:124: DockerSuite.TestLogsFollowStopped	12.962s
+PASS: docker_cli_logs_test.go:66: DockerSuite.TestLogsSeparateStderr	12.828s
+PASS: docker_cli_logs_test.go:145: DockerSuite.TestLogsSince	19.158s
+SKIP: docker_cli_logs_test.go:180: DockerSuite.TestLogsSinceFutureFollow (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_logs_test.go:77: DockerSuite.TestLogsStderrInStdout (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_logs_test.go:92: DockerSuite.TestLogsTail	13.614s
+PASS: docker_cli_logs_test.go:41: DockerSuite.TestLogsTimestamps	13.545s
+PASS: docker_cli_logs_test.go:325: DockerSuite.TestLogsWithDetails	12.629s
+SKIP: docker_cli_run_test.go:2909: DockerSuite.TestMountIntoProc (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2918: DockerSuite.TestMountIntoSys (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_netmode_test.go:33: DockerSuite.TestNetHostname (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_netmode_test.go:26: DockerSuite.TestNetHostnameWithNetHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3513: DockerSuite.TestNetworkRmWithActiveContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2695: DockerSuite.TestPermissionsPtsReadonlyRootfs (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_plugins_test.go:76: DockerSuite.TestPluginActive (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_plugins_test.go:99: DockerSuite.TestPluginActiveNetwork (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_plugins_test.go:344: DockerSuite.TestPluginInspectOnWindows	0.085s
+SKIP: docker_cli_plugins_test.go:150: DockerSuite.TestPluginInstallDisableVolumeLs (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_plugins_logdriver_test.go:12: DockerSuite.TestPluginLogDriver (unmatched requirement IsAmd64)
+SKIP: docker_cli_plugins_logdriver_test.go:32: DockerSuite.TestPluginLogDriverInfoList (unmatched requirement IsAmd64)
+SKIP: docker_cli_plugins_test.go:474: DockerSuite.TestPluginMetricsCollector (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_plugins_test.go:442: DockerSuite.TestPluginUpgrade (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_port_test.go:329: DockerSuite.TestPortBindingOnSandbox (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_port_test.go:307: DockerSuite.TestPortExposeHostBinding (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_port_test.go:285: DockerSuite.TestPortHostBinding (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_port_test.go:15: DockerSuite.TestPortList (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1325: DockerSuite.TestPostContainerAPICreateWithStringOrSliceEntrypoint	25.567s
+SKIP: docker_api_attach_test.go:99: DockerSuite.TestPostContainersAttach (unmatched requirement DaemonIsLinux)
+PASS: docker_api_attach_test.go:78: DockerSuite.TestPostContainersAttachContainerNotFound	0.002s
+SKIP: docker_api_containers_test.go:1589: DockerSuite.TestPostContainersCreateMemorySwappinessHostConfigOmitted (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1503: DockerSuite.TestPostContainersCreateShmSizeHostConfigOmitted (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1485: DockerSuite.TestPostContainersCreateShmSizeNegative (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1531: DockerSuite.TestPostContainersCreateShmSizeOmitted (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1614: DockerSuite.TestPostContainersCreateWithOomScoreAdjInvalidRange (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1558: DockerSuite.TestPostContainersCreateWithShmSize (unmatched requirement DaemonIsLinux)
+SKIP: docker_api_containers_test.go:1380: DockerSuite.TestPostContainersCreateWithStringOrSliceCapAddDrop (unmatched requirement DaemonIsLinux)
+PASS: docker_api_containers_test.go:1353: DockerSuite.TestPostContainersCreateWithStringOrSliceCmd	25.987s
+SKIP: docker_api_containers_test.go:1452: DockerSuite.TestPostContainersCreateWithWrongCpusetValues (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_ps_test.go:794: DockerSuite.TestPsByOrder	50.286s
+SKIP: docker_cli_ps_test.go:547: DockerSuite.TestPsImageIDAfterUpdate (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_ps_test.go:19: DockerSuite.TestPsListContainersBase	53.171s
+PASS: docker_cli_ps_test.go:306: DockerSuite.TestPsListContainersFilterAncestorImage	68.270s
+PASS: docker_cli_ps_test.go:516: DockerSuite.TestPsListContainersFilterCreated	0.268s
+PASS: docker_cli_ps_test.go:437: DockerSuite.TestPsListContainersFilterExited	66.324s
+PASS: docker_cli_ps_test.go:227: DockerSuite.TestPsListContainersFilterHealth	56.292s
+PASS: docker_cli_ps_test.go:270: DockerSuite.TestPsListContainersFilterID	23.501s
+PASS: docker_cli_ps_test.go:401: DockerSuite.TestPsListContainersFilterLabel	39.947s
+PASS: docker_cli_ps_test.go:284: DockerSuite.TestPsListContainersFilterName	23.454s
+SKIP: docker_cli_ps_test.go:714: DockerSuite.TestPsListContainersFilterNetwork (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_ps_test.go:813: DockerSuite.TestPsListContainersFilterPorts (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_ps_test.go:180: DockerSuite.TestPsListContainersFilterStatus	23.852s
+SKIP: docker_cli_ps_test.go:140: DockerSuite.TestPsListContainersSize (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_ps_test.go:849: DockerSuite.TestPsNotShowLinknamesOfDeletedContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_ps_test.go:596: DockerSuite.TestPsNotShowPortsOfStoppedContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_ps_test.go:470: DockerSuite.TestPsRightTagName (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_ps_test.go:614: DockerSuite.TestPsShowMounts	38.572s
+SKIP: docker_cli_run_test.go:3144: DockerSuite.TestPtraceContainerProcsFromHost (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_pull_test.go:263: DockerSuite.TestPullLinuxImageFailsOnWindows	1.331s
+SKIP: docker_cli_pull_test.go:270: DockerSuite.TestPullWindowsImageFailsOnLinux (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_push_test.go:291: DockerSuite.TestPushToCentralRegistryUnauthorized	1.284s
+PASS: docker_cli_push_test.go:38: DockerSuite.TestPushUnprefixedRepo	0.952s
+SKIP: docker_api_containers_test.go:1425: DockerSuite.TestPutContainerArchiveErrSymlinkInVolumeToReadOnlyRootfs (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_restart_test.go:297: DockerSuite.TestRestartAutoRemoveContainer	23.499s
+PASS: docker_cli_restart_test.go:166: DockerSuite.TestRestartContainerSuccess	23.367s
+PASS: docker_cli_restart_test.go:151: DockerSuite.TestRestartContainerwithGoodContainer	12.829s
+PASS: docker_cli_restart_test.go:266: DockerSuite.TestRestartContainerwithRestartPolicy	167.555s
+SKIP: docker_cli_restart_test.go:78: DockerSuite.TestRestartDisconnectedContainer (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_restart_test.go:236: DockerSuite.TestRestartPolicyAfterRestart	35.091s
+PASS: docker_cli_restart_test.go:103: DockerSuite.TestRestartPolicyAlways	0.224s
+PASS: docker_cli_restart_test.go:95: DockerSuite.TestRestartPolicyNO	0.146s
+PASS: docker_cli_restart_test.go:116: DockerSuite.TestRestartPolicyOnFailure	0.661s
+PASS: docker_cli_restart_test.go:30: DockerSuite.TestRestartRunningContainer	23.061s
+PASS: docker_cli_restart_test.go:13: DockerSuite.TestRestartStoppedContainer	25.400s
+SKIP: docker_cli_restart_test.go:192: DockerSuite.TestRestartWithPolicyUserDefinedNetwork (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_restart_test.go:53: DockerSuite.TestRestartWithVolumes	23.669s
+PASS: docker_cli_rmi_test.go:217: DockerSuite.TestRmiBlank	0.058s
+PASS: docker_cli_rmi_test.go:327: DockerSuite.TestRmiByIDHardConflict	0.272s
+PASS: docker_cli_rmi_test.go:227: DockerSuite.TestRmiContainerImageNotFound	58.577s
+PASS: docker_cli_rmi_test.go:171: DockerSuite.TestRmiForceWithExistingContainers	13.523s
+PASS: docker_cli_rmi_test.go:199: DockerSuite.TestRmiForceWithMultipleRepositories	0.962s
+PASS: docker_cli_rmi_test.go:144: DockerSuite.TestRmiImageIDForceWithRunningContainersAndMultipleTags	25.623s
+PASS: docker_cli_rmi_test.go:106: DockerSuite.TestRmiImgIDForce	16.503s
+PASS: docker_cli_rmi_test.go:65: DockerSuite.TestRmiImgIDMultipleTag	27.590s
+PASS: docker_cli_rmi_test.go:297: DockerSuite.TestRmiParentImageFail	15.148s
+PASS: docker_cli_rmi_test.go:37: DockerSuite.TestRmiTag	0.720s
+PASS: docker_cli_rmi_test.go:159: DockerSuite.TestRmiTagWithExistingContainers	13.295s
+PASS: docker_cli_rmi_test.go:253: DockerSuite.TestRmiUntagHistoryLayer	70.380s
+PASS: docker_cli_rmi_test.go:16: DockerSuite.TestRmiWithContainerFails	12.380s
+PASS: docker_cli_rmi_test.go:185: DockerSuite.TestRmiWithMultipleRepositories	15.816s
+PASS: docker_cli_rmi_test.go:310: DockerSuite.TestRmiWithParentInUse	1.685s
+SKIP: docker_cli_run_test.go:4522: DockerSuite.TestRunAddDeviceCgroupRule (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1580: DockerSuite.TestRunAddHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4039: DockerSuite.TestRunAddHostInHostMode (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1172: DockerSuite.TestRunAddingOptionalDevices (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1190: DockerSuite.TestRunAddingOptionalDevicesInvalidMode (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1181: DockerSuite.TestRunAddingOptionalDevicesNoSrc (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2061: DockerSuite.TestRunAllocatePortInReservedRange (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:1231: DockerSuite.TestRunAllowBindMountingRoot	13.478s
+SKIP: docker_cli_run_test.go:2266: DockerSuite.TestRunAllowPortRangeThroughExpose (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2624: DockerSuite.TestRunAllowPortRangeThroughPublish (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:573: DockerSuite.TestRunApplyVolumesFromBeforeVolumes	25.209s
+PASS: docker_cli_run_test.go:3920: DockerSuite.TestRunAttachFailedNoLeak	13.524s
+PASS: docker_cli_run_test.go:1592: DockerSuite.TestRunAttachStdErrOnlyTTYMode	11.978s
+PASS: docker_cli_run_test.go:1608: DockerSuite.TestRunAttachStdOutAndErrTTYMode	12.531s
+PASS: docker_cli_run_test.go:1600: DockerSuite.TestRunAttachStdOutOnlyTTYMode	13.327s
+PASS: docker_cli_run_test.go:1617: DockerSuite.TestRunAttachWithDetach	0.073s
+PASS: docker_cli_run_test.go:1882: DockerSuite.TestRunBindMounts	26.146s
+SKIP: docker_cli_run_test.go:1053: DockerSuite.TestRunCapAddALLCanDownInterface (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1063: DockerSuite.TestRunCapAddALLDropNetAdminCanDownInterface (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3008: DockerSuite.TestRunCapAddCHOWN (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1043: DockerSuite.TestRunCapAddCanDownInterface (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1034: DockerSuite.TestRunCapAddInvalid (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3194: DockerSuite.TestRunCapAddSYSTIME (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1024: DockerSuite.TestRunCapDropALLAddMknodCanMknod (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1012: DockerSuite.TestRunCapDropALLCannotMknod (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:986: DockerSuite.TestRunCapDropCannotMknod (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:999: DockerSuite.TestRunCapDropCannotMknodLowerCase (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:977: DockerSuite.TestRunCapDropInvalid (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:1964: DockerSuite.TestRunCidFileCheckIDLength	10.795s
+SKIP: docker_cli_run_test.go:1933: DockerSuite.TestRunCidFileCleanupIfEmpty (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:1695: DockerSuite.TestRunCleanupCmdOnEntrypoint	13.347s
+SKIP: docker_cli_run_test.go:3336: DockerSuite.TestRunContainerNetModeWithDNSMacHosts (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3360: DockerSuite.TestRunContainerNetModeWithExposePort (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:922: DockerSuite.TestRunContainerNetwork	13.705s
+SKIP: docker_cli_run_test.go:3327: DockerSuite.TestRunContainerNetworkModeToSelf (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3311: DockerSuite.TestRunContainerWithCgroupMountRO (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3237: DockerSuite.TestRunContainerWithCgroupParent (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2734: DockerSuite.TestRunContainerWithReadonlyEtcHostsAndLinkedContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2683: DockerSuite.TestRunContainerWithReadonlyRootfs (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2756: DockerSuite.TestRunContainerWithReadonlyRootfsWithAddHostFlag (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2746: DockerSuite.TestRunContainerWithReadonlyRootfsWithDNSFlag (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:2793: DockerSuite.TestRunContainerWithRmFlagCannotStartContainer	11.934s
+PASS: docker_cli_run_test.go:2779: DockerSuite.TestRunContainerWithRmFlagExitCodeNotEqualToZero	13.058s
+PASS: docker_cli_run_test.go:2679: DockerSuite.TestRunContainerWithWritableRootfs	11.517s
+SKIP: docker_cli_run_test.go:1680: DockerSuite.TestRunCopyVolumeContent (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1662: DockerSuite.TestRunCopyVolumeUIDGID (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3202: DockerSuite.TestRunCreateContainerFailedCleanUp (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:612: DockerSuite.TestRunCreateVolume	12.654s
+SKIP: docker_cli_run_test.go:2153: DockerSuite.TestRunCreateVolumeEtc (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:622: DockerSuite.TestRunCreateVolumeWithSymlink (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:378: DockerSuite.TestRunCreateVolumesInSymlinkDir (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:422: DockerSuite.TestRunCreateVolumesInSymlinkDir2 (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:4146: DockerSuite.TestRunCredentialSpecFailures	1.366s
+PASS: docker_cli_run_test.go:4166: DockerSuite.TestRunCredentialSpecWellFormed	13.053s
+SKIP: docker_cli_run_test.go:1254: DockerSuite.TestRunDNSDefaultOptions (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4004: DockerSuite.TestRunDNSInHostMode (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1288: DockerSuite.TestRunDNSOptions (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1322: DockerSuite.TestRunDNSOptionsBasedOnHostResolvConf (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1312: DockerSuite.TestRunDNSRepeatOptions (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2026: DockerSuite.TestRunDeallocatePortOnMissingIptablesRule (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:121: DockerSuite.TestRunDetachedContainerIDPrinting	12.713s
+SKIP: docker_cli_run_test.go:1141: DockerSuite.TestRunDeviceNumbers (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:1240: DockerSuite.TestRunDisallowBindMountingRootToRoot	0.084s
+SKIP: docker_cli_run_test.go:4173: DockerSuite.TestRunDuplicateMount (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:51: DockerSuite.TestRunEchoNamedContainer	11.566s
+PASS: docker_cli_run_test.go:43: DockerSuite.TestRunEchoStdout	12.798s
+SKIP: docker_cli_run_test.go:4259: DockerSuite.TestRunEmptyEnv (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:1871: DockerSuite.TestRunEntrypoint	12.919s
+SKIP: docker_cli_run_test.go:817: DockerSuite.TestRunEnvironment (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:856: DockerSuite.TestRunEnvironmentErase (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:889: DockerSuite.TestRunEnvironmentOverride (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:699: DockerSuite.TestRunExitCode	13.697s
+PASS: docker_cli_run_test.go:90: DockerSuite.TestRunExitCodeOne	13.319s
+PASS: docker_cli_run_test.go:85: DockerSuite.TestRunExitCodeZero	12.852s
+PASS: docker_cli_run_test.go:1734: DockerSuite.TestRunExitOnStdinClose	12.970s
+PASS: docker_cli_run_test.go:2289: DockerSuite.TestRunExposePort	0.064s
+SKIP: docker_cli_run_test.go:948: DockerSuite.TestRunFullHostnameSet (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1075: DockerSuite.TestRunGroupAdd (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4501: DockerSuite.TestRunHostnameFQDN (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4514: DockerSuite.TestRunHostnameInHostMode (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4242: DockerSuite.TestRunHypervIsolationWithCPUCountCPUSharesAndCPUPercent (unmatched requirement IsolationIsHyperv)
+SKIP: docker_cli_run_test.go:3726: DockerSuite.TestRunInitLayerPathOwnership (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2004: DockerSuite.TestRunInspectMacAddress (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:1791: DockerSuite.TestRunInteractiveWithRestartPolicy	24.534s
+SKIP: docker_cli_run_test.go:3272: DockerSuite.TestRunInvalidCgroupParent (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:3714: DockerSuite.TestRunInvalidReference	0.064s
+SKIP: docker_cli_run_test.go:60: DockerSuite.TestRunLeakyFileDescriptors (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3381: DockerSuite.TestRunLinkToContainerNetMode (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:193: DockerSuite.TestRunLinksContainerWithContainerID (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:178: DockerSuite.TestRunLinksContainerWithContainerName (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:72: DockerSuite.TestRunLookupGoogleDNS	19.012s
+SKIP: docker_cli_run_test.go:3391: DockerSuite.TestRunLoopbackOnlyExistsWhenNetworkingDisabled (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:3417: DockerSuite.TestRunLoopbackWhenNetworkDisabled	12.154s
+SKIP: docker_cli_run_test.go:1199: DockerSuite.TestRunModeHostname (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2317: DockerSuite.TestRunModeIpcContainerNotExists (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2326: DockerSuite.TestRunModeIpcContainerNotRunning (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2295: DockerSuite.TestRunModeIpcHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3425: DockerSuite.TestRunModeNetContainerHostname (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2339: DockerSuite.TestRunModePIDContainer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2364: DockerSuite.TestRunModePIDContainerNotExists (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2373: DockerSuite.TestRunModePIDContainerNotRunning (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2431: DockerSuite.TestRunModePIDHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2453: DockerSuite.TestRunModeUTSHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4321: DockerSuite.TestRunMount (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2082: DockerSuite.TestRunMountOrdering (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4309: DockerSuite.TestRunMountReadOnlyDevShm (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2386: DockerSuite.TestRunMountShmMqueueFromHost (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:582: DockerSuite.TestRunMultipleVolumesFrom	38.267s
+SKIP: docker_cli_exec_test.go:395: DockerSuite.TestRunMutableNetworkFiles (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3214: DockerSuite.TestRunNamedVolume (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3858: DockerSuite.TestRunNamedVolumeCopyImageData (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:3872: DockerSuite.TestRunNamedVolumeNotRemoved	26.067s
+PASS: docker_cli_run_test.go:3889: DockerSuite.TestRunNamedVolumesFromNotRemoved	26.146s
+SKIP: docker_cli_run_test.go:3851: DockerSuite.TestRunNamedVolumesMountedAsShared (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2606: DockerSuite.TestRunNetContainerWhichHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2575: DockerSuite.TestRunNetHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:931: DockerSuite.TestRunNetHostNotAllowedWithLinks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2597: DockerSuite.TestRunNetHostTwiceSameName (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3069: DockerSuite.TestRunNetworkFilesBindMount (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3093: DockerSuite.TestRunNetworkFilesBindMountRO (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3115: DockerSuite.TestRunNetworkFilesBindMountROFilesystem (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3438: DockerSuite.TestRunNetworkNotInitializedNoneMode (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:521: DockerSuite.TestRunNoDupVolumes	0.345s
+PASS: docker_cli_run_test.go:2194: DockerSuite.TestRunNoOutputFromPullInStdout	0.954s
+PASS: docker_cli_run_test.go:3663: DockerSuite.TestRunNonExecutableCmd	12.933s
+PASS: docker_cli_run_test.go:3672: DockerSuite.TestRunNonExistingCmd	12.564s
+PASS: docker_cli_run_test.go:3697: DockerSuite.TestRunNonExistingImage	0.965s
+PASS: docker_cli_run_test.go:2558: DockerSuite.TestRunNonLocalMacAddress	13.446s
+SKIP: docker_cli_run_test.go:1404: DockerSuite.TestRunNonRootUserResolvName (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2806: DockerSuite.TestRunPIDHostWithChildIsKillable (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2494: DockerSuite.TestRunPortFromDockerRangeInUse (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2042: DockerSuite.TestRunPortInUse (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:957: DockerSuite.TestRunPrivilegedCanMknod (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1086: DockerSuite.TestRunPrivilegedCanMount (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1125: DockerSuite.TestRunProcNotWritableInNonPrivilegedContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1133: DockerSuite.TestRunProcWritableInPrivilegedContainers (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:4224: DockerSuite.TestRunProcessIsolationWithCPUCountCPUSharesAndCPUPercent	39.605s
+SKIP: docker_cli_run_test.go:2983: DockerSuite.TestRunPublishPort (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2886: DockerSuite.TestRunReadFilteredProc (unmatched requirement Apparmor)
+SKIP: docker_cli_run_test.go:2865: DockerSuite.TestRunReadProcLatency (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2850: DockerSuite.TestRunReadProcTimer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1426: DockerSuite.TestRunResolvconfUpdate (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:2656: DockerSuite.TestRunRestartMaxRetries	49.590s
+SKIP: docker_cli_run_test.go:2127: DockerSuite.TestRunReuseBindVolumeThatIsSymlink (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:4057: DockerSuite.TestRunRm	13.151s
+PASS: docker_cli_run_test.go:4047: DockerSuite.TestRunRmAndWait	15.159s
+PASS: docker_cli_run_test.go:4068: DockerSuite.TestRunRmPre125Api	13.449s
+PASS: docker_cli_run_test.go:1220: DockerSuite.TestRunRootWorkdir	13.371s
+PASS: docker_cli_run_test.go:2648: DockerSuite.TestRunSetDefaultRestartPolicy	10.577s
+PASS: docker_cli_run_test.go:1988: DockerSuite.TestRunSetMacAddress	13.881s
+SKIP: docker_cli_run_test.go:2238: DockerSuite.TestRunSlowStdoutConsumer (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1625: DockerSuite.TestRunState (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:3617: DockerSuite.TestRunStdinBlockedAfterContainerExit	12.863s
+SKIP: docker_cli_run_test.go:97: DockerSuite.TestRunStdinPipe (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:4132: DockerSuite.TestRunStoppedLoggingDriverNoLeak	12.810s
+SKIP: docker_cli_run_test.go:1109: DockerSuite.TestRunSysNotWritableInNonPrivilegedContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1117: DockerSuite.TestRunSysWritableInPrivilegedContainers (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:2478: DockerSuite.TestRunTLSVerify	0.192s
+PASS: docker_cli_run_test.go:2526: DockerSuite.TestRunTTYWithPipe	0.063s
+SKIP: docker_cli_run_test.go:1157: DockerSuite.TestRunThatCharacterDevicesActLikeCharacterDevices (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:795: DockerSuite.TestRunTwoConcurrentContainers	25.401s
+SKIP: docker_cli_run_test.go:967: DockerSuite.TestRunUnprivilegedCanMknod (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1096: DockerSuite.TestRunUnprivilegedCannotMount (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:1166: DockerSuite.TestRunUnprivilegedWithChroot (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4080: DockerSuite.TestRunUnsetEntrypoint (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2925: DockerSuite.TestRunUnshareProc (unmatched requirement Apparmor)
+SKIP: docker_cli_run_test.go:736: DockerSuite.TestRunUserByID (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:746: DockerSuite.TestRunUserByIDBig (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:759: DockerSuite.TestRunUserByIDNegative (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:772: DockerSuite.TestRunUserByIDZero (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:726: DockerSuite.TestRunUserByName (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:715: DockerSuite.TestRunUserDefaults	12.792s
+SKIP: docker_cli_run_test.go:785: DockerSuite.TestRunUserNotFound (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:593: DockerSuite.TestRunVerifyContainerID	10.436s
+SKIP: docker_cli_run_test.go:3969: DockerSuite.TestRunVolumeCopyFlag (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3962: DockerSuite.TestRunVolumeWithOneCharacter (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:2207: DockerSuite.TestRunVolumesCleanPaths	14.235s
+PASS: docker_cli_run_test.go:473: DockerSuite.TestRunVolumesFromInReadWriteMode	38.338s
+PASS: docker_cli_run_test.go:452: DockerSuite.TestRunVolumesFromInReadonlyModeFails	25.041s
+PASS: docker_cli_run_test.go:2766: DockerSuite.TestRunVolumesFromRestartAfterRemoved	36.535s
+SKIP: docker_cli_run_test.go:658: DockerSuite.TestRunVolumesFromSymlinkPath (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:446: DockerSuite.TestRunVolumesMountedAsReadonly	0.109s
+SKIP: docker_cli_run_test.go:3771: DockerSuite.TestRunVolumesMountedAsShared (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3802: DockerSuite.TestRunVolumesMountedAsSlave (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:4194: DockerSuite.TestRunWindowsWithCPUCount	42.899s
+PASS: docker_cli_run_test.go:4214: DockerSuite.TestRunWindowsWithCPUPercent	14.632s
+PASS: docker_cli_run_test.go:4204: DockerSuite.TestRunWindowsWithCPUShares	12.643s
+SKIP: docker_cli_run_test.go:1856: DockerSuite.TestRunWithBadDevice (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:341: DockerSuite.TestRunWithDaemonFlags	0.037s
+PASS: docker_cli_run_test.go:2018: DockerSuite.TestRunWithInvalidMacAddress	0.061s
+SKIP: docker_cli_run_test.go:282: DockerSuite.TestRunWithNetAliasOnDefaultNetworks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3743: DockerSuite.TestRunWithOomScoreAdj (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3754: DockerSuite.TestRunWithOomScoreAdjInvalidRange (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2829: DockerSuite.TestRunWithTooSmallMemoryLimit (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3226: DockerSuite.TestRunWithUlimits (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:348: DockerSuite.TestRunWithVolumesFromExited	25.788s
+PASS: docker_cli_run_test.go:159: DockerSuite.TestRunWithoutNetworking	12.194s
+PASS: docker_cli_run_test.go:1720: DockerSuite.TestRunWorkdirExistsAndIsFile	12.795s
+PASS: docker_cli_run_test.go:136: DockerSuite.TestRunWorkingDirectory	25.943s
+SKIP: docker_cli_run_test.go:3042: DockerSuite.TestRunWriteFilteredProc (unmatched requirement Apparmor)
+SKIP: docker_cli_run_test.go:1808: DockerSuite.TestRunWriteSpecialFilesAndNotCommit (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:2841: DockerSuite.TestRunWriteToProcAsound (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3640: DockerSuite.TestRunWrongCpusetCpusFlagValue (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:3651: DockerSuite.TestRunWrongCpusetMemsFlagValue (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:157: DockerSuite.TestSaveAndLoadRepoFlags (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:99: DockerSuite.TestSaveCheckTimes (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:258: DockerSuite.TestSaveDirectoryPermissions (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:118: DockerSuite.TestSaveImageId (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:379: DockerSuite.TestSaveLoadNoTag (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:340: DockerSuite.TestSaveLoadParents (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:188: DockerSuite.TestSaveMultipleNames (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:206: DockerSuite.TestSaveRepoWithMultipleImages (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:84: DockerSuite.TestSaveSingleTag (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:178: DockerSuite.TestSaveWithNoExistImage (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:26: DockerSuite.TestSaveXzAndLoadRepoStdout (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_save_load_test.go:55: DockerSuite.TestSaveXzGzAndLoadRepoStdout (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_search_test.go:47: DockerSuite.TestSearchCmdOptions (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_search_test.go:12: DockerSuite.TestSearchOnCentralRegistry (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_search_test.go:96: DockerSuite.TestSearchOnCentralRegistryWithDash (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_search_test.go:19: DockerSuite.TestSearchStarsOptionWithWrongParameter	0.363s
+SKIP: docker_cli_search_test.go:103: DockerSuite.TestSearchWithLimit (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:4278: DockerSuite.TestSlowStdinClosing	39.382s
+SKIP: docker_cli_start_test.go:44: DockerSuite.TestStartAttachCorrectExitCode (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_start_test.go:145: DockerSuite.TestStartAttachMultipleContainers	43.462s
+SKIP: docker_cli_start_test.go:15: DockerSuite.TestStartAttachReturnsOnError (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_start_test.go:57: DockerSuite.TestStartAttachSilent	25.318s
+SKIP: docker_cli_start_test.go:174: DockerSuite.TestStartAttachWithRename (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_start_test.go:109: DockerSuite.TestStartMultipleContainers (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_start_test.go:94: DockerSuite.TestStartPausedContainer (unmatched requirement IsPausable)
+SKIP: docker_cli_start_test.go:69: DockerSuite.TestStartRecordError (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_start_test.go:189: DockerSuite.TestStartReturnCorrectExitCode	37.382s
+SKIP: docker_cli_stats_test.go:122: DockerSuite.TestStatsAllNewContainersAdded (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_stats_test.go:93: DockerSuite.TestStatsAllNoStream (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_stats_test.go:57: DockerSuite.TestStatsAllRunningNoStream (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_stats_test.go:44: DockerSuite.TestStatsContainerNotFound (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_stats_test.go:163: DockerSuite.TestStatsFormatAll (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_stats_test.go:15: DockerSuite.TestStatsNoStream (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_top_test.go:11: DockerSuite.TestTopMultipleArgs	10.146s
+PASS: docker_cli_top_test.go:26: DockerSuite.TestTopNonPrivileged	11.260s
+SKIP: docker_cli_top_test.go:61: DockerSuite.TestTopPrivileged (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_top_test.go:50: DockerSuite.TestTopWindowsCoreProcesses	10.548s
+SKIP: docker_cli_run_test.go:3450: DockerSuite.TestTwoContainersInNetHost (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_port_test.go:212: DockerSuite.TestUnpublishedPortsInPsOutput (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_health_test.go:147: DockerSuite.TestUnsetEnvVarHealthCheck (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:293: DockerSuite.TestUserDefinedNetworkAlias (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:208: DockerSuite.TestUserDefinedNetworkLinks (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:244: DockerSuite.TestUserDefinedNetworkLinksWithRestart (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_volume_test.go:22: DockerSuite.TestVolumeCLICreate	15.350s
+PASS: docker_cli_volume_test.go:298: DockerSuite.TestVolumeCLICreateLabel	0.161s
+PASS: docker_cli_volume_test.go:310: DockerSuite.TestVolumeCLICreateLabelMultiple	0.254s
+SKIP: docker_cli_volume_test.go:274: DockerSuite.TestVolumeCLICreateWithOpts (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_volume_test.go:38: DockerSuite.TestVolumeCLIInspect	0.405s
+PASS: docker_cli_volume_test.go:55: DockerSuite.TestVolumeCLIInspectMulti	0.328s
+PASS: docker_cli_volume_test.go:264: DockerSuite.TestVolumeCLIInspectTmplError	0.163s
+PASS: docker_cli_volume_test.go:72: DockerSuite.TestVolumeCLILs	13.934s
+PASS: docker_cli_volume_test.go:193: DockerSuite.TestVolumeCLILsErrorWithInvalidFilterName	0.081s
+PASS: docker_cli_volume_test.go:143: DockerSuite.TestVolumeCLILsFilterDangling	12.992s
+PASS: docker_cli_volume_test.go:367: DockerSuite.TestVolumeCLILsFilterDrivers	0.500s
+PASS: docker_cli_volume_test.go:337: DockerSuite.TestVolumeCLILsFilterLabels	0.489s
+PASS: docker_cli_volume_test.go:199: DockerSuite.TestVolumeCLILsWithIncorrectFilterValue	0.081s
+PASS: docker_cli_volume_test.go:241: DockerSuite.TestVolumeCLINoArgs	0.197s
+PASS: docker_cli_volume_test.go:205: DockerSuite.TestVolumeCLIRm	40.022s
+SKIP: docker_cli_volume_test.go:406: DockerSuite.TestVolumeCLIRmForce (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_volume_test.go:430: DockerSuite.TestVolumeCLIRmForceInUse	0.752s
+PASS: docker_cli_volume_test.go:398: DockerSuite.TestVolumeCLIRmForceUsage	0.253s
+SKIP: docker_cli_volume_test.go:468: DockerSuite.TestVolumeCliInspectWithVolumeOpts (unmatched requirement DaemonIsLinux)
+PASS: docker_cli_run_test.go:3019: DockerSuite.TestVolumeFromMixedRWOptions	38.207s
+PASS: docker_cli_volume_test.go:85: DockerSuite.TestVolumeLsFormat	0.341s
+PASS: docker_cli_volume_test.go:94: DockerSuite.TestVolumeLsFormatDefaultFormat	0.328s
+PASS: docker_cli_run_test.go:496: DockerSuite.TestVolumesFromGetsProperMode	52.348s
+SKIP: docker_cli_run_test.go:2174: DockerSuite.TestVolumesNoCopyData (unmatched requirement DaemonIsLinux)
+SKIP: docker_cli_run_test.go:4537: DockerSuite.TestWindowsRunAsSystem (unmatched requirement DaemonIsWindowsAtLeastBuild.func1)
+SKIP: docker_cli_by_digest_test.go:184: DockerRegistrySuite.TestBuildByDigest
+SKIP: docker_api_build_test.go:327: DockerRegistrySuite.TestBuildCopyFromForcePull
+SKIP: docker_cli_build_test.go:5791: DockerRegistrySuite.TestBuildMultiStageImplicitPull
+SKIP: docker_cli_pull_local_test.go:197: DockerRegistrySuite.TestConcurrentPullMultipleTags
+SKIP: docker_cli_push_test.go:199: DockerRegistrySuite.TestConcurrentPush
+SKIP: docker_cli_by_digest_test.go:130: DockerRegistrySuite.TestCreateByDigest
+SKIP: docker_cli_push_test.go:207: DockerRegistrySuite.TestCrossRepositoryLayerPush
+SKIP: docker_cli_by_digest_test.go:447: DockerRegistrySuite.TestDeleteImageByIDOnlyPulledByDigest
+SKIP: docker_cli_by_digest_test.go:493: DockerRegistrySuite.TestDeleteImageWithDigestAndMultiRepoTag
+SKIP: docker_cli_by_digest_test.go:466: DockerRegistrySuite.TestDeleteImageWithDigestAndTag
+SKIP: docker_cli_events_test.go:545: DockerRegistrySuite.TestEventsImageFilterPush
+SKIP: docker_cli_by_digest_test.go:391: DockerRegistrySuite.TestInspectImageWithDigests
+SKIP: docker_cli_by_digest_test.go:318: DockerRegistrySuite.TestListDanglingImagesWithDigests
+SKIP: docker_cli_by_digest_test.go:241: DockerRegistrySuite.TestListImagesWithDigests
+SKIP: docker_cli_by_digest_test.go:228: DockerRegistrySuite.TestListImagesWithoutDigests
+SKIP: docker_cli_by_digest_test.go:410: DockerRegistrySuite.TestPsListContainersFilterAncestorImageByDigest
+SKIP: docker_cli_by_digest_test.go:105: DockerRegistrySuite.TestPullByDigest
+SKIP: docker_cli_by_digest_test.go:122: DockerRegistrySuite.TestPullByDigestNoFallback
+SKIP: docker_cli_by_digest_test.go:79: DockerRegistrySuite.TestPullByTagDisplaysDigest
+SKIP: docker_cli_by_digest_test.go:612: DockerRegistrySuite.TestPullFailsWithAlteredLayer
+SKIP: docker_cli_by_digest_test.go:530: DockerRegistrySuite.TestPullFailsWithAlteredManifest
+SKIP: docker_cli_pull_local_test.go:258: DockerRegistrySuite.TestPullIDStability
+SKIP: docker_cli_pull_local_test.go:54: DockerRegistrySuite.TestPullImageWithAliases
+SKIP: docker_cli_pull_local_test.go:286: DockerRegistrySuite.TestPullManifestList
+SKIP: docker_cli_pull_local_test.go:278: DockerRegistrySuite.TestPullNoLayers
+SKIP: docker_cli_push_test.go:69: DockerRegistrySuite.TestPushBadTag
+SKIP: docker_cli_push_test.go:29: DockerRegistrySuite.TestPushBusyboxImage
+SKIP: docker_cli_push_test.go:145: DockerRegistrySuite.TestPushEmptyLayer
+SKIP: docker_cli_push_test.go:114: DockerRegistrySuite.TestPushMultipleTags
+SKIP: docker_cli_push_test.go:52: DockerRegistrySuite.TestPushUntagged
+SKIP: docker_cli_by_digest_test.go:161: DockerRegistrySuite.TestRemoveImageByDigest
+SKIP: docker_cli_by_digest_test.go:143: DockerRegistrySuite.TestRunByDigest
+SKIP: docker_cli_pull_local_test.go:451: DockerRegistrySuite.TestRunImplicitPullWithNoTag
+SKIP: docker_cli_by_digest_test.go:209: DockerRegistrySuite.TestTagByDigest
+SKIP: docker_cli_registry_user_agent_test.go:73: DockerRegistrySuite.TestUserAgentPassThrough
+SKIP: docker_cli_v2_only_test.go:27: DockerRegistrySuite.TestV2Only
+SKIP: docker_cli_pull_local_test.go:201: DockerSchema1RegistrySuite.TestConcurrentPullMultipleTags
+SKIP: docker_cli_push_test.go:203: DockerSchema1RegistrySuite.TestConcurrentPush
+SKIP: docker_cli_push_test.go:248: DockerSchema1RegistrySuite.TestCrossRepositoryLayerPushNotSupported
+SKIP: docker_cli_by_digest_test.go:109: DockerSchema1RegistrySuite.TestPullByDigest
+SKIP: docker_cli_by_digest_test.go:126: DockerSchema1RegistrySuite.TestPullByDigestNoFallback
+SKIP: docker_cli_by_digest_test.go:83: DockerSchema1RegistrySuite.TestPullByTagDisplaysDigest
+SKIP: docker_cli_by_digest_test.go:655: DockerSchema1RegistrySuite.TestPullFailsWithAlteredLayer
+SKIP: docker_cli_by_digest_test.go:570: DockerSchema1RegistrySuite.TestPullFailsWithAlteredManifest
+SKIP: docker_cli_pull_local_test.go:262: DockerSchema1RegistrySuite.TestPullIDStability
+SKIP: docker_cli_pull_local_test.go:58: DockerSchema1RegistrySuite.TestPullImageWithAliases
+SKIP: docker_cli_pull_local_test.go:282: DockerSchema1RegistrySuite.TestPullNoLayers
+SKIP: docker_cli_push_test.go:73: DockerSchema1RegistrySuite.TestPushBadTag
+SKIP: docker_cli_push_test.go:33: DockerSchema1RegistrySuite.TestPushBusyboxImage
+SKIP: docker_cli_push_test.go:149: DockerSchema1RegistrySuite.TestPushEmptyLayer
+SKIP: docker_cli_push_test.go:118: DockerSchema1RegistrySuite.TestPushMultipleTags
+SKIP: docker_cli_push_test.go:56: DockerSchema1RegistrySuite.TestPushUntagged
+SKIP: docker_cli_build_test.go:5001: DockerRegistryAuthHtpasswdSuite.TestBuildFromAuthenticatedRegistry
+SKIP: docker_cli_build_test.go:5019: DockerRegistryAuthHtpasswdSuite.TestBuildWithExternalAuth
+SKIP: docker_cli_login_test.go:22: DockerRegistryAuthHtpasswdSuite.TestLoginToPrivateRegistry
+SKIP: docker_cli_logout_test.go:15: DockerRegistryAuthHtpasswdSuite.TestLogoutWithExternalAuth
+SKIP: docker_cli_logout_test.go:67: DockerRegistryAuthHtpasswdSuite.TestLogoutWithWrongHostnamesStored
+SKIP: docker_cli_pull_local_test.go:415: DockerRegistryAuthHtpasswdSuite.TestPullWithExternalAuth
+SKIP: docker_cli_pull_local_test.go:370: DockerRegistryAuthHtpasswdSuite.TestPullWithExternalAuthLoginWithScheme
+SKIP: docker_cli_push_test.go:281: DockerRegistryAuthHtpasswdSuite.TestPushNoCredentialsNoRetry
+SKIP: docker_cli_push_test.go:343: DockerRegistryAuthTokenSuite.TestPushMisconfiguredTokenServiceResponseError
+SKIP: docker_cli_push_test.go:371: DockerRegistryAuthTokenSuite.TestPushMisconfiguredTokenServiceResponseNoToken
+SKIP: docker_cli_push_test.go:330: DockerRegistryAuthTokenSuite.TestPushMisconfiguredTokenServiceResponseUnauthorized
+SKIP: docker_cli_push_test.go:358: DockerRegistryAuthTokenSuite.TestPushMisconfiguredTokenServiceResponseUnparsable
+SKIP: docker_cli_push_test.go:318: DockerRegistryAuthTokenSuite.TestPushTokenServiceUnauthResponse
+SKIP: docker_cli_proxy_test.go:23: DockerDaemonSuite.TestCLIProxyProxyTCPSock
+SKIP: docker_cli_exec_test.go:87: DockerDaemonSuite.TestExecAfterDaemonRestart
+SKIP: docker_cli_info_test.go:212: DockerDaemonSuite.TestRegistryMirrors
+SKIP: docker_cli_run_test.go:4110: DockerDaemonSuite.TestRunWithUlimitAndDaemonDefault
+SKIP: docker_cli_plugins_test.go:31: DockerPluginSuite.TestPluginBasicOps
+SKIP: docker_cli_plugins_test.go:262: DockerPluginSuite.TestPluginCreate
+SKIP: docker_cli_plugins_test.go:240: DockerPluginSuite.TestPluginEnableDisableNegative
+SKIP: docker_cli_plugins_test.go:62: DockerPluginSuite.TestPluginForceRemove
+SKIP: docker_cli_plugins_test.go:354: DockerPluginSuite.TestPluginIDPrefix
+SKIP: docker_cli_plugins_test.go:294: DockerPluginSuite.TestPluginInspect
+SKIP: docker_cli_plugins_test.go:210: DockerPluginSuite.TestPluginInstallArgs
+SKIP: docker_cli_plugins_test.go:126: DockerPluginSuite.TestPluginInstallDisable
+SKIP: docker_cli_plugins_test.go:226: DockerPluginSuite.TestPluginInstallImage
+SKIP: docker_cli_plugins_test.go:411: DockerPluginSuite.TestPluginListDefaultFormat
+SKIP: docker_cli_plugins_test.go:159: DockerPluginSuite.TestPluginSet
+OK: 520 passed, 554 skipped
+PASS
+ok  	github.com/docker/docker/integration-cli	8656.707s
+INFO: Integration tests ended at 01/09/2019 18:00:49. Duration:02:24:24.4159098
+INFO: Docker info of the daemon under test at end of run
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 6
+Server Version: 0.0.0-dev
+Storage Driver: windowsfilter
+ Windows: 
+Logging Driver: json-file
+Plugins: 
+ Volume: local
+ Network: ics l2bridge l2tunnel nat null overlay transparent
+ Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+Swarm: inactive
+Default Isolation: process
+Kernel Version: 10.0 14393 (14393.2312.amd64fre.rs1_release.180607-1919)
+Operating System: Windows Server 2016 Datacenter Version 1607 (OS Build 14393.2312)
+OSType: windows
+Architecture: x86_64
+CPUs: 4
+Total Memory: 14GiB
+Name: jenkins-rs1-7
+ID: NRYL:ZNNY:PDX2:YDFT:QX3F:KS5N:647W:EKHT:FTCB:ZNLR:7CZT:QYE5
+Docker Root Dir: D:\CI\CI-44bc101c3e\daemon
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://index.docker.io/v1/
+Labels:
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+
+
+INFO: Stopping daemon under test
+SUCCESS: The process with PID 6056 (child process of PID 3844) has been terminated.
+SUCCESS: The process with PID 3844 (child process of PID 1880) has been terminated.
+INFO: executeCI.ps1 Completed successfully at 01/09/2019 18:00:50.
+INFO: Tidying up at end of run
+INFO: Saving daemon under test log (d:\CI\CI-44bc101c3e\dut.err) to d:\temp\CIDUT.log
+INFO: Nuke-Everything...
+INFO: Container count on control daemon to delete is 2
+593927f873b6
+6ec48f421b19
+INFO: Non-base image count on control daemon to delete is 1
+Deleted: sha256:e3706c9d9c0155cce2b18c0dbd3daee70fac84259acb419d62b856cb84796003
+Deleted: sha256:df59662d1106417111591ecccb3c3ef27f17349d330d5a42f15e5138e2e7bccc
+INFO: Tidying pidfile d:\CI\CI-44bc101c3e\docker.pid
+INFO: Nuking d:\CI
+INFO: Zapped successfully
+
+INFO: executeCI.ps1 exiting at Wed Jan  9 18:01:13 CUT 2019. Duration 02:34:03.2144413
+
+Set build name.
+New build name is '#31551'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: SUCCESS

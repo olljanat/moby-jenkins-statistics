@@ -1,0 +1,127 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-34 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins8393468609368555335.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+chown: cannot access '/home/docker/workspace/Docker-PRs-powerpc/bundles': No such file or directory
+Failed build for hudson.tasks.Shell@39ff8a96
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision b4842cfe88b39af42416429396aee10d1fe7c3d6 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b4842cfe88b39af42416429396aee10d1fe7c3d6
+Commit message: "Merge pull request #38354 from thaJeztah/fix_ipam_swagger"
+ > git rev-list --no-walk b4842cfe88b39af42416429396aee10d1fe7c3d6 # timeout=10
+Set build name.
+New build name is '#38525'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:b4842cf) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins3224204793666585561.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/38525/head -> origin/pr/38525
+Auto-merging api/swagger.yaml
+Merge made by the 'recursive' strategy.
+ api/swagger.yaml                                   |   3 +
+ api/types/swarm/service.go                         |   9 +-
+ daemon/cluster/convert/service.go                  |   2 +
+ vendor.conf                                        |   2 +-
+ vendor/github.com/docker/swarmkit/api/types.pb.go  | 684 +++++++++++----------
+ vendor/github.com/docker/swarmkit/api/types.proto  |   2 +
+ .../docker/swarmkit/manager/controlapi/network.go  |  13 +-
+ .../docker/swarmkit/manager/controlapi/service.go  |  23 +-
+ .../swarmkit/manager/deallocator/deallocator.go    | 332 ++++++++++
+ .../github.com/docker/swarmkit/manager/manager.go  |  19 +
+ .../swarmkit/manager/orchestrator/global/global.go |  31 +-
+ .../manager/orchestrator/replicated/replicated.go  |   5 +-
+ .../manager/orchestrator/replicated/services.go    |  23 +-
+ vendor/github.com/docker/swarmkit/vendor.conf      |  40 +-
+ 14 files changed, 808 insertions(+), 380 deletions(-)
+ create mode 100644 vendor/github.com/docker/swarmkit/manager/deallocator/deallocator.go
+Sending build context to Docker daemon  45.13MB
+Step 1/94 : FROM golang:1.11.4 AS base
+ ---> c35b367ad4c4
+Step 2/94 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 28d386314be6
+Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> ed231bf37d3e
+Step 4/94 : FROM base AS criu
+ ---> ed231bf37d3e
+Step 5/94 : ENV CRIU_VERSION 3.6
+ ---> Using cache
+ ---> 253ac169661c
+Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in abe74adeb713
+Err:1 http://security.debian.org/debian-security stretch/updates InRelease
+  Could not resolve 'security.debian.org'
+Err:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Err:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+  Could not resolve 'cdn-fastly.deb.debian.org'
+Reading package lists...
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Failed to fetch http://security.debian.org/debian-security/dists/stretch/updates/InRelease  Could not resolve 'security.debian.org'
+W: Failed to fetch http://cdn-fastly.deb.debian.org/debian/dists/stretch-updates/InRelease  Could not resolve 'cdn-fastly.deb.debian.org'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package libnet-dev
+E: Unable to locate package libprotobuf-c0-dev
+E: Unable to locate package libprotobuf-dev
+E: Unable to locate package libnl-3-dev
+E: Unable to locate package libcap-dev
+E: Unable to locate package protobuf-compiler
+E: Unable to locate package protobuf-c-compiler
+E: Unable to locate package python-protobuf
+Removing intermediate container abe74adeb713
+The command '/bin/sh -c apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu' returned a non-zero code: 100
+Unable to find image 'docker-powerpc:68d7dda' locally
+docker: Error response from daemon: pull access denied for docker-powerpc, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#38525'
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins1566973227885923135.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7385683438959590212.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7435376113705803672.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’+ xargs: No such file or directory
+ tar -czf bundles.tar.gz
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Sending e-mails to: tophj@linux.vnet.ibm.com christy@linux.vnet.ibm.com
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE
