@@ -1,0 +1,7 @@
+"CI";"PR";"Error";"Server";"Build"
+"rs5";"38392";"Caused: java.io.IOException: Unexpected termination of the channel";"azure-windows-rs5-1";"899"
+"rs5";"38392";"Caused: java.io.IOException: Unexpected termination of the channel";"azure-windows-rs5-3";"900"
+"rs5";"38392";"Caused: java.io.IOException: Unexpected termination of the channel";"azure-windows-rs5-2";"902"
+"z";"12586";"Caused: java.io.IOException: Unable to delete '/home/jenkins/workspace/Docker-PRs-s390x/bundles/test-integration/d6e165cb80b5c/docker.log'. Tried 3 times (of a maximum of 3) waiting 0.1 sec between attempts.";"s390x-ubuntu-28";"12586"
+"z";"12588";"Caused: java.io.IOException: Unable to delete '/home/jenkins/workspace/Docker-PRs-s390x/bundles/test-integration/d6e4e427d6100/root'. Tried 3 times (of a maximum of 3) waiting 0.1 sec between attempts.";"s390x-ubuntu-28";"12588"
+"powerpc";"12755";"Caused: java.io.IOException: Unable to delete '/home/docker/workspace/Docker-PRs-powerpc/bundles/test-integration/db003285e442a/root'. Tried 3 times (of a maximum of 3) waiting 0.1 sec between attempts.";"ppc64le-ubuntu-23";"12755"
