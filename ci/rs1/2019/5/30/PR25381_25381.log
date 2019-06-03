@@ -1,0 +1,26 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-5 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

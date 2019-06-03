@@ -1,0 +1,252 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-34 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins3917397748547989518.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+Success build forhudson.tasks.Shell@606cc55d
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39295'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:8d76028) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins4419436716242905420.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39295/head -> origin/pr/39295
+Updating 8d76028..b9fb503
+Fast-forward
+ .../builder-next/adapters/containerimage/pull.go   |   2 +-
+ daemon/daemon_linux.go                             |  24 +----
+ vendor.conf                                        |   4 +-
+ .../docker/libnetwork/procfs/procfs_linux.go       | 105 +++++++++++++++++++++
+ .../docker/libnetwork/resolvconf/resolvconf.go     |  41 +++++++-
+ .../docker/libnetwork/sandbox_dns_unix.go          |   4 +-
+ vendor/github.com/moby/buildkit/README.md          |  23 +++++
+ .../moby/buildkit/cache/contenthash/checksum.go    |  10 ++
+ vendor/github.com/moby/buildkit/cache/manager.go   |  25 ++---
+ vendor/github.com/moby/buildkit/cache/refs.go      |  19 ++--
+ .../client/llb/imagemetaresolver/resolver.go       |   2 +-
+ vendor/github.com/moby/buildkit/control/control.go |  10 ++
+ .../moby/buildkit/executor/oci/resolvconf.go       |   2 +-
+ .../dockerfile/dockerfile2llb/convert_runmount.go  |  44 +++++++++
+ .../dockerfile/instructions/commands_runmount.go   |   8 +-
+ .../buildkit/frontend/dockerfile/parser/parser.go  |   6 +-
+ .../buildkit/snapshot/blobmapping/snapshotter.go   |  11 +++
+ .../github.com/moby/buildkit/source/local/local.go |   6 ++
+ .../moby/buildkit/util/imageutil/config.go         |  76 ++++++++++++++-
+ .../moby/buildkit/util/leaseutil/manager.go        | 104 ++++++++++++++++++++
+ 20 files changed, 465 insertions(+), 61 deletions(-)
+ create mode 100644 vendor/github.com/docker/libnetwork/procfs/procfs_linux.go
+ create mode 100644 vendor/github.com/moby/buildkit/util/leaseutil/manager.go
+Sending build context to Docker daemon  48.01MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+1.12.5: Pulling from library/golang
+c6c4df30bc4f: Pulling fs layer
+bb8b6d64c781: Pulling fs layer
+663d68dc2e12: Pulling fs layer
+cb9e53310a32: Pulling fs layer
+adda1ed7fac4: Pulling fs layer
+081da8db1356: Pulling fs layer
+ccc1417e31a3: Pulling fs layer
+cb9e53310a32: Waiting
+adda1ed7fac4: Waiting
+081da8db1356: Waiting
+ccc1417e31a3: Waiting
+663d68dc2e12: Verifying Checksum
+663d68dc2e12: Download complete
+bb8b6d64c781: Verifying Checksum
+bb8b6d64c781: Download complete
+c6c4df30bc4f: Verifying Checksum
+c6c4df30bc4f: Download complete
+cb9e53310a32: Verifying Checksum
+cb9e53310a32: Download complete
+ccc1417e31a3: Verifying Checksum
+ccc1417e31a3: Download complete
+adda1ed7fac4: Verifying Checksum
+adda1ed7fac4: Download complete
+c6c4df30bc4f: Pull complete
+bb8b6d64c781: Pull complete
+663d68dc2e12: Pull complete
+081da8db1356: Verifying Checksum
+081da8db1356: Download complete
+cb9e53310a32: Pull complete
+adda1ed7fac4: Pull complete
+081da8db1356: Pull complete
+ccc1417e31a3: Pull complete
+Digest: sha256:cf0b9f69ad1edd652a7f74a1586080b15bf6f688c545044407e28805066ef2cb
+Status: Downloaded newer image for golang:1.12.5
+ ---> 72b3a9c5fedc
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in c97fb7d14acf
+Removing intermediate container c97fb7d14acf
+ ---> fef19bdbfa87
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in a253c4ec673e
+Removing intermediate container a253c4ec673e
+ ---> fe05a7e98e37
+Step 5/112 : FROM base AS criu
+ ---> fe05a7e98e37
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Running in d46ce45cc9f4
+Removing intermediate container d46ce45cc9f4
+ ---> 5904c7768e82
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in 83c8a14435e8
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [470 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [27.1 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6903 kB]
+Fetched 7706 kB in 3s (2521 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3548 kB of archives.
+After this operation, 21.2 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnet1 ppc64el 1.1.6+dfsg-3 [57.6 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libcap-dev ppc64el 1:2.25-1 [29.7 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnet1-dev ppc64el 1.1.6+dfsg-3 [117 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnl-3-200 ppc64el 3.2.27-2 [55.9 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libnl-3-dev ppc64el 3.2.27-2 [95.0 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-c1 ppc64el 1.2.1-2 [24.6 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-c-dev ppc64el 1.2.1-2 [32.0 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el zlib1g-dev ppc64el 1:1.2.8.dfsg-5 [205 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf10 ppc64el 3.0.0-9 [658 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-lite10 ppc64el 3.0.0-9 [124 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotobuf-dev ppc64el 3.0.0-9 [974 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libprotoc10 ppc64el 3.0.0-9 [589 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el protobuf-c-compiler ppc64el 1.2.1-2 [75.2 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el protobuf-compiler ppc64el 3.0.0-9 [53.0 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el python-protobuf ppc64el 3.0.0-9 [291 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 3548 kB in 0s (16.2 MB/s)
+Selecting previously unselected package libnet1:ppc64el.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14949 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_ppc64el.deb ...
+Unpacking libnet1:ppc64el (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:ppc64el.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_ppc64el.deb ...
+Unpacking libcap-dev:ppc64el (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_ppc64el.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:ppc64el.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_ppc64el.deb ...
+Unpacking libnl-3-200:ppc64el (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:ppc64el.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_ppc64el.deb ...
+Unpacking libnl-3-dev:ppc64el (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:ppc64el.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_ppc64el.deb ...
+Unpacking libprotobuf-c1:ppc64el (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:ppc64el.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_ppc64el.deb ...
+Unpacking libprotobuf-c-dev:ppc64el (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:ppc64el.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_ppc64el.deb ...
+Unpacking zlib1g-dev:ppc64el (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:ppc64el.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_ppc64el.deb ...
+Unpacking libprotobuf10:ppc64el (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:ppc64el.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_ppc64el.deb ...
+Unpacking libprotobuf-lite10:ppc64el (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:ppc64el.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_ppc64el.deb ...
+Unpacking libprotobuf-dev:ppc64el (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:ppc64el.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_ppc64el.deb ...
+Unpacking libprotoc10:ppc64el (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_ppc64el.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_ppc64el.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_ppc64el.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:ppc64el (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:ppc64el (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+/tmp/jenkins4419436716242905420.sh: line 11: 20815 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-powerpc:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#39295'
+Build was aborted
+Aborted by Gordon
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+Unable to find image 'docker-powerpc:b9fb503' locally
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins8003082021218961873.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins4956170257983354182.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+Unable to find image 'ppc64le/busybox:latest' locally
+latest: Pulling from ppc64le/busybox
+b18bb9483cb4: Pulling fs layer
+b18bb9483cb4: Verifying Checksum
+b18bb9483cb4: Download complete
+b18bb9483cb4: Pull complete
+Digest: sha256:a09f03056efb5d3facb5077a9e58e83e9bba74ad4d343b2afa92c70b5ae01e2b
+Status: Downloaded newer image for ppc64le/busybox:latest
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins5093447562821838736.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
++ xargs tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

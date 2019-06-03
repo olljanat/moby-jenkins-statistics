@@ -1,0 +1,264 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2 (i-0954a1e87346f3ecf) (x86_64 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2 ubuntu-1604-overlay2-stable amd64) in workspace /home/ubuntu/workspace/Docker-PRs
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39283'
+[Docker-PRs] $ /bin/bash /tmp/jenkins6800766706690190476.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39283/head -> origin/pr/39283
+Updating 8d76028..c316d0c
+Fast-forward
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> 7ced090ee82e
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 6183be6a8a2c
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 64304c323c78
+Step 5/112 : FROM base AS criu
+ ---> 64304c323c78
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> 4b575d4c521a
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in 5ffc87265fe5
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [492 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.2 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Fetched 7907 kB in 2s (3073 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3602 kB of archives.
+After this operation, 18.9 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnet1 amd64 1.1.6+dfsg-3 [60.4 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libcap-dev amd64 1:2.25-1 [29.4 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnet1-dev amd64 1.1.6+dfsg-3 [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnl-3-200 amd64 3.2.27-2 [61.5 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnl-3-dev amd64 3.2.27-2 [96.2 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-c1 amd64 1.2.1-2 [25.0 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-c-dev amd64 1.2.1-2 [32.5 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-5 [205 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf10 amd64 3.0.0-9 [681 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-lite10 amd64 3.0.0-9 [125 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-dev amd64 3.0.0-9 [954 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotoc10 amd64 3.0.0-9 [626 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 protobuf-c-compiler amd64 1.2.1-2 [78.4 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 protobuf-compiler amd64 3.0.0-9 [52.8 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 python-protobuf amd64 3.0.0-9 [292 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 3602 kB in 1s (1891 kB/s)
+Selecting previously unselected package libnet1:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15090 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_amd64.deb ...
+Unpacking libnet1:amd64 (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:amd64.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_amd64.deb ...
+Unpacking libcap-dev:amd64 (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_amd64.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:amd64.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_amd64.deb ...
+Unpacking libnl-3-200:amd64 (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:amd64.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_amd64.deb ...
+Unpacking libnl-3-dev:amd64 (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:amd64.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_amd64.deb ...
+Unpacking libprotobuf-c1:amd64 (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:amd64.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_amd64.deb ...
+Unpacking libprotobuf-c-dev:amd64 (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:amd64.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf10:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:amd64.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf-lite10:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:amd64.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf-dev:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:amd64.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_amd64.deb ...
+Unpacking libprotoc10:amd64 (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_amd64.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_amd64.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_amd64.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:amd64 (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:amd64 (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+Setting up libnet1-dev (1.1.6+dfsg-3) ...
+Setting up libprotobuf10:amd64 (3.0.0-9) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up python-protobuf (3.0.0-9) ...
+Setting up libcap-dev:amd64 (1:2.25-1) ...
+Setting up libprotobuf-c-dev:amd64 (1.2.1-2) ...
+Setting up libnl-3-200:amd64 (3.2.27-2) ...
+Setting up libprotobuf-lite10:amd64 (3.0.0-9) ...
+Setting up libprotoc10:amd64 (3.0.0-9) ...
+Setting up protobuf-c-compiler (1.2.1-2) ...
+Setting up zlib1g-dev:amd64 (1:1.2.8.dfsg-5) ...
+Setting up protobuf-compiler (3.0.0-9) ...
+Setting up libprotobuf-dev:amd64 (3.0.0-9) ...
+Setting up libnl-3-dev:amd64 (3.2.27-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+[91mfatal: Not a git repository (or any of the parent directories): .git
+[0m  GEN      .gitid
+  GEN      criu/include/version.h
+  GEN      include/common/asm
+  PBCC     images/google/protobuf/descriptor.pb-c.c
+  PBCC     images/opts.pb-c.c
+  PBCC     images/sit.pb-c.c
+  DEP      images/google/protobuf/descriptor.pb-c.d
+  DEP      images/opts.pb-c.d
+  DEP      images/sit.pb-c.d
+  PBCC     images/macvlan.pb-c.c
+  DEP      images/macvlan.pb-c.d
+  PBCC     images/autofs.pb-c.c
+  DEP      images/autofs.pb-c.d
+  PBCC     images/sysctl.pb-c.c
+  DEP      images/sysctl.pb-c.d
+  PBCC     images/time.pb-c.c
+  DEP      images/time.pb-c.d
+  PBCC     images/binfmt-misc.pb-c.c
+  DEP      images/binfmt-misc.pb-c.d
+  PBCC     images/seccomp.pb-c.c
+  DEP      images/seccomp.pb-c.d
+  PBCC     images/userns.pb-c.c
+  DEP      images/userns.pb-c.d
+  PBCC     images/cgroup.pb-c.c
+  DEP      images/cgroup.pb-c.d
+  PBCC     images/fown.pb-c.c
+  PBCC     images/ext-file.pb-c.c
+  DEP      images/fown.pb-c.d
+  DEP      images/ext-file.pb-c.d
+  PBCC     images/rpc.pb-c.c
+  DEP      images/rpc.pb-c.d
+  PBCC     images/siginfo.pb-c.c
+  DEP      images/siginfo.pb-c.d
+  PBCC     images/pagemap.pb-c.c
+  DEP      images/pagemap.pb-c.d
+  PBCC     images/rlimit.pb-c.c
+  DEP      images/rlimit.pb-c.d
+  PBCC     images/file-lock.pb-c.c
+  DEP      images/file-lock.pb-c.d
+  PBCC     images/tty.pb-c.c
+  DEP      images/tty.pb-c.d
+  PBCC     images/tun.pb-c.c
+  PBCC     images/netdev.pb-c.c
+  DEP      images/tun.pb-c.d
+  DEP      images/netdev.pb-c.d
+  PBCC     images/vma.pb-c.c
+  DEP      images/vma.pb-c.d
+  PBCC     images/creds.pb-c.c
+  DEP      images/creds.pb-c.d
+  PBCC     images/utsns.pb-c.c
+  DEP      images/utsns.pb-c.d
+  PBCC     images/ipc-desc.pb-c.c
+  PBCC     images/ipc-sem.pb-c.c
+  DEP      images/ipc-desc.pb-c.d
+  DEP      images/ipc-sem.pb-c.d
+  PBCC     images/ipc-msg.pb-c.c
+  DEP      images/ipc-msg.pb-c.d
+  PBCC     images/ipc-shm.pb-c.c
+  DEP      images/ipc-shm.pb-c.d
+  PBCC     images/ipc-var.pb-c.c
+  DEP      images/ipc-var.pb-c.d
+  PBCC     images/sk-opts.pb-c.c
+  PBCC     images/packet-sock.pb-c.c
+  DEP      images/sk-opts.pb-c.d
+  DEP      images/packet-sock.pb-c.d
+  PBCC     images/sk-netlink.pb-c.c
+  DEP      images/sk-netlink.pb-c.d
+  PBCC     images/sk-inet.pb-c.c
+  DEP      images/sk-inet.pb-c.d
+Set build name.
+New build name is '#39283'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+  PBCC     images/sk-unix.pb-c.c
+  DEP      images/sk-unix.pb-c.d
+  PBCC     images/mm.pb-c.c
+  DEP      images/mm.pb-c.d
+/tmp/jenkins6800766706690190476.sh: line 14:  7734 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker:$GITCOMMIT .
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins2561523020361653527.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr54319
+Error: No such container: docker-pr54319
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins5265310372150891951.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log -o -name *.prof -o -name integration.test
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

@@ -1,0 +1,379 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2 (i-0b4612c5e8226f428) (x86_64 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2 ubuntu-1604-overlay2-stable amd64) in workspace /home/ubuntu/workspace/Docker-PRs
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39292'
+[Docker-PRs] $ /bin/bash /tmp/jenkins566015526458972568.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39292/head -> origin/pr/39292
+Updating 8d76028..be1219c
+Fast-forward
+ daemon/archive.go                    |  15 ++--
+ daemon/export.go                     |   2 +-
+ pkg/chrootarchive/archive.go         |  31 +++++++-
+ pkg/chrootarchive/archive_unix.go    | 137 ++++++++++++++++++++++++++++++++++-
+ pkg/chrootarchive/archive_windows.go |   2 +-
+ pkg/chrootarchive/init_unix.go       |   1 +
+ 6 files changed, 171 insertions(+), 17 deletions(-)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> 7ced090ee82e
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 150bea384a91
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 69a7708e601c
+Step 5/112 : FROM base AS criu
+ ---> 69a7708e601c
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> a7936319c6cd
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> c4a06166281a
+Step 8/112 : FROM base AS registry
+ ---> 69a7708e601c
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 063e2c49ef60
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> f5b5518214e5
+Step 11/112 : FROM base AS docker-py
+ ---> 69a7708e601c
+Step 12/112 : ENV DOCKER_PY_COMMIT ac922192959870774ad8428344d9faa0555f7ba6
+ ---> Using cache
+ ---> fac9e080599c
+Step 13/112 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> cb533a33ff9e
+Step 14/112 : FROM base AS swagger
+ ---> 69a7708e601c
+Step 15/112 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> befaf52c42a3
+Step 16/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> d90b04756c2b
+Step 17/112 : FROM base AS frozen-images
+ ---> 69a7708e601c
+Step 18/112 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> 7d1a8b34a85b
+Step 19/112 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 61d13ca32404
+Step 20/112 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> 5a1ae89dae66
+Step 21/112 : FROM base AS cross-false
+ ---> 69a7708e601c
+Step 22/112 : FROM base AS cross-true
+ ---> 69a7708e601c
+Step 23/112 : RUN dpkg --add-architecture armhf
+ ---> Using cache
+ ---> bb0a62c90a4e
+Step 24/112 : RUN dpkg --add-architecture arm64
+ ---> Using cache
+ ---> 993953669b2d
+Step 25/112 : RUN dpkg --add-architecture armel
+ ---> Using cache
+ ---> b5c9a5b8c5a0
+Step 26/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y --no-install-recommends 		crossbuild-essential-armhf 		crossbuild-essential-arm64 		crossbuild-essential-armel; 	fi
+ ---> Using cache
+ ---> f3776d4ab65c
+Step 27/112 : FROM cross-${CROSS} as dev-base
+ ---> 69a7708e601c
+Step 28/112 : FROM dev-base AS runtime-dev-cross-false
+ ---> 69a7708e601c
+Step 29/112 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> 84c7f7e7b766
+Step 30/112 : FROM cross-true AS runtime-dev-cross-true
+ ---> f3776d4ab65c
+Step 31/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y 		libseccomp-dev:armhf 		libseccomp-dev:arm64 		libseccomp-dev:armel 		libapparmor-dev:armhf 		libapparmor-dev:arm64 		libapparmor-dev:armel 		libapparmor-dev 		libseccomp-dev; 	fi
+ ---> Using cache
+ ---> ae5e55f6b77b
+Step 32/112 : FROM runtime-dev-cross-${CROSS} AS runtime-dev
+ ---> 84c7f7e7b766
+Step 33/112 : FROM base AS tomlv
+ ---> 69a7708e601c
+Step 34/112 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> c0dc1d1201c4
+Step 35/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> ba933d0f477d
+Step 36/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> d07a6168d9c3
+Step 37/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> ea309d941a31
+Step 38/112 : FROM base AS vndr
+ ---> 69a7708e601c
+Step 39/112 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> fd14b85b1343
+Step 40/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> d5124f590056
+Step 41/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 86135b4d80d2
+Step 42/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> a148fe4ccc33
+Step 43/112 : FROM dev-base AS containerd
+ ---> 69a7708e601c
+Step 44/112 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> e36c66459378
+Step 45/112 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> ecd12323fca2
+Step 46/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 779669dc72e0
+Step 47/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 08288761468c
+Step 48/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> b0a47152caa4
+Step 49/112 : FROM dev-base AS proxy
+ ---> 69a7708e601c
+Step 50/112 : ENV INSTALL_BINARY_NAME=proxy
+ ---> Using cache
+ ---> 4695c42c8242
+Step 51/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> cdf276344c67
+Step 52/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> ea34c0df53d1
+Step 53/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> ffc787f9aee3
+Step 54/112 : FROM base AS gometalinter
+ ---> 69a7708e601c
+Step 55/112 : ENV INSTALL_BINARY_NAME=gometalinter
+ ---> Using cache
+ ---> 6bad08eb9b0d
+Step 56/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 5ede3a8870b4
+Step 57/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 9e486ede241a
+Step 58/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 31ea20a8871f
+Step 59/112 : FROM dev-base AS dockercli
+ ---> 69a7708e601c
+Step 60/112 : ENV INSTALL_BINARY_NAME=dockercli
+ ---> Using cache
+ ---> f7ab0da33585
+Step 61/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 7397abf4ae44
+Step 62/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 25bcb404da70
+Step 63/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> bb0b696319a7
+Step 64/112 : FROM runtime-dev AS runc
+ ---> 84c7f7e7b766
+Step 65/112 : ENV INSTALL_BINARY_NAME=runc
+ ---> Using cache
+ ---> 1c5f60da21a9
+Step 66/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 77e9d7b877b1
+Step 67/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> b81365dee1e5
+Step 68/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 5ab2b446bab7
+Step 69/112 : FROM dev-base AS tini
+ ---> 69a7708e601c
+Step 70/112 : RUN apt-get update && apt-get install -y cmake vim-common
+ ---> Using cache
+ ---> e5f62e921f46
+Step 71/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> df151cc3fd41
+Step 72/112 : ENV INSTALL_BINARY_NAME=tini
+ ---> Using cache
+ ---> 1842592a59da
+Step 73/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 2dc46647d1ff
+Step 74/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> e7d979068923
+Step 75/112 : FROM dev-base AS rootlesskit
+ ---> 69a7708e601c
+Step 76/112 : ENV INSTALL_BINARY_NAME=rootlesskit
+ ---> Using cache
+ ---> a80aae22947e
+Step 77/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> d1a9f1fd02e7
+Step 78/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 833d48ec5d7c
+Step 79/112 : RUN PREFIX=/build/ ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 657010b3d5e7
+Step 80/112 : COPY ./contrib/dockerd-rootless.sh /build
+ ---> Using cache
+ ---> 15a4a443efe6
+Step 81/112 : FROM runtime-dev AS dev
+ ---> 84c7f7e7b766
+Step 82/112 : RUN groupadd -r docker
+ ---> Using cache
+ ---> 0afdbdff74b7
+Step 83/112 : RUN useradd --create-home --gid docker unprivilegeduser
+ ---> Using cache
+ ---> dc730604a1fd
+Step 84/112 : RUN ln -sfv /go/src/github.com/docker/docker/.bashrc ~/.bashrc
+ ---> Using cache
+ ---> 21af0c60e5ed
+Step 85/112 : RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
+ ---> Using cache
+ ---> 8e94ed06b748
+Step 86/112 : RUN ln -s /usr/local/completion/bash/docker /etc/bash_completion.d/docker
+ ---> Using cache
+ ---> be3ef3c3abca
+Step 87/112 : RUN ldconfig
+ ---> Using cache
+ ---> 7c9787cd8c94
+Step 88/112 : RUN apt-get update && apt-get install -y 	apparmor 	aufs-tools 	bash-completion 	btrfs-tools 	iptables 	jq 	libcap2-bin 	libdevmapper-dev 	libffi-dev 	libssl-dev 	libudev-dev 	libsystemd-dev 	binutils-mingw-w64 	g++-mingw-w64-x86-64 	net-tools 	pigz 	python-backports.ssl-match-hostname 	python-dev 	python-cffi 	python-mock 	python-pip 	python-requests 	python-setuptools 	python-websocket 	python-wheel 	thin-provisioning-tools 	vim 	vim-common 	xfsprogs 	zip 	bzip2 	xz-utils 	libprotobuf-c1 	libnet1 	libnl-3-200 	--no-install-recommends
+ ---> Using cache
+ ---> 8e70ad2c2ad0
+Step 89/112 : COPY --from=swagger /build/swagger* /usr/local/bin/
+ ---> Using cache
+ ---> 1ece7a6d99b5
+Step 90/112 : COPY --from=frozen-images /build/ /docker-frozen-images
+ ---> Using cache
+ ---> eec410fbae3e
+Step 91/112 : COPY --from=gometalinter /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 379157c5db78
+Step 92/112 : COPY --from=tomlv /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 65d79d1398db
+Step 93/112 : COPY --from=vndr /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 137829469aa7
+Step 94/112 : COPY --from=tini /build/ /usr/local/bin/
+ ---> Using cache
+ ---> b8fc206482a4
+Step 95/112 : COPY --from=runc /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 6d341858b7f8
+Step 96/112 : COPY --from=containerd /build/ /usr/local/bin/
+ ---> Using cache
+ ---> b539770d08ec
+Step 97/112 : COPY --from=proxy /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 4e07005f3504
+Step 98/112 : COPY --from=dockercli /build/ /usr/local/cli
+ ---> Using cache
+ ---> 1a41bbcdd74e
+Step 99/112 : COPY --from=registry /build/registry* /usr/local/bin/
+ ---> Using cache
+ ---> 79e0d7946ef1
+Step 100/112 : COPY --from=criu /build/ /usr/local/
+ ---> Using cache
+ ---> dfcca5072f11
+Step 101/112 : COPY --from=docker-py /build/ /docker-py
+ ---> Using cache
+ ---> 4da668a78b2f
+Step 102/112 : RUN cd /docker-py 	&& pip install docker-pycreds==0.4.0 	&& pip install paramiko==2.4.2 	&& pip install yamllint==1.5.0 	&& pip install -r test-requirements.txt
+ ---> Using cache
+ ---> d0bf19dcdcd4
+Step 103/112 : COPY --from=rootlesskit /build/ /usr/local/bin/
+ ---> Using cache
+ ---> 51983d8f8958
+Step 104/112 : COPY --from=djs55/vpnkit@sha256:e508a17cfacc8fd39261d5b4e397df2b953690da577e2c987a47630cd0c42f8e /vpnkit /usr/local/bin/vpnkit.x86_64
+ ---> Using cache
+ ---> 4390110faefc
+Step 105/112 : ENV PATH=/usr/local/cli:$PATH
+ ---> Using cache
+ ---> a77d65615c11
+Step 106/112 : ENV DOCKER_BUILDTAGS apparmor seccomp selinux
+ ---> Using cache
+ ---> a75e10c9c4c9
+Step 107/112 : ENV GOMETALINTER_OPTS="--deadline=2m"
+ ---> Using cache
+ ---> 7b174ae4fc4e
+Step 108/112 : WORKDIR /go/src/github.com/docker/docker
+ ---> Using cache
+ ---> 7423ef4fa54e
+Step 109/112 : VOLUME /var/lib/docker
+ ---> Using cache
+ ---> e6b8d516ad8a
+Step 110/112 : ENTRYPOINT ["hack/dind"]
+ ---> Using cache
+ ---> 82e0db9087e9
+Step 111/112 : FROM dev AS final
+ ---> 82e0db9087e9
+Step 112/112 : COPY . /go/src/github.com/docker/docker
+ ---> 2efe05102d28
+Successfully built 2efe05102d28
+Successfully tagged docker:be1219c
+Congratulations!  All commits are properly signed with the DCO!
+pkg/chrootarchive/archive.go:91:1:warning: exported function Tar should have comment or be unexported (golint)
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#39292'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins349836008972382604.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr54344
+Error: No such container: docker-pr54344
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins9151280738744710025.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log -o -name *.prof -o -name integration.test
++ xargs tar -czf bundles.tar.gz
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

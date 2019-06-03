@@ -1,0 +1,218 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-32 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins8804884715250382505.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Success build forhudson.tasks.Shell@2d096b56
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39283'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins7902931259116601761.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39283/head -> origin/pr/39283
+Updating 8d76028..fb6b194
+Fast-forward
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> b47f884b941c
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 46329f7ec011
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 45bb6477ef0b
+Step 5/112 : FROM base AS criu
+ ---> 45bb6477ef0b
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> d9361a5f3e85
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> 4f301941b15f
+Step 8/112 : FROM base AS registry
+ ---> 45bb6477ef0b
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 330f7b34a655
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Running in 2eb47f95ba68
+[91m+ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.eOFixaR8Z8
++ git clone https://github.com/docker/distribution.git /tmp/tmp.eOFixaR8Z8/src/github.com/docker/distribution
+[0m[91mCloning into '/tmp/tmp.eOFixaR8Z8/src/github.com/docker/distribution'...
+[0m[91m+ cd[0m[91m /tmp/tmp.eOFixaR8Z8/src/github.com/docker/distribution
++ git checkout -q 47a064d4195a9b56133891bbb13620c3ac83a827[0m[91m
+[0m[91m+ GOPATH=/tmp/tmp.eOFixaR8Z8/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.eOFixaR8Z8 go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry
+[0m[91m+ rm -rf /tmp/tmp.eOFixaR8Z8
+[0mRemoving intermediate container 2eb47f95ba68
+ ---> 38628b37598e
+Step 11/112 : FROM base AS docker-py
+ ---> 45bb6477ef0b
+Step 12/112 : ENV DOCKER_PY_COMMIT ac922192959870774ad8428344d9faa0555f7ba6
+ ---> Running in 13c5f3459bb7
+Removing intermediate container 13c5f3459bb7
+ ---> 35a7c157c26d
+Step 13/112 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Running in 2f04c079c030
+[91mCloning into '/build'...
+[0mRemoving intermediate container 2f04c079c030
+ ---> 18d35a32980e
+Step 14/112 : FROM base AS swagger
+ ---> 45bb6477ef0b
+Step 15/112 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Running in 995bdbfb99e3
+Removing intermediate container 995bdbfb99e3
+ ---> 82db67d5aff7
+Step 16/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Running in 8c4ad9f35471
+[91m+ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.YHktuFB8vh
++ git clone https://github.com/go-swagger/go-swagger.git /tmp/tmp.YHktuFB8vh/src/github.com/go-swagger/go-swagger
+Cloning into '/tmp/tmp.YHktuFB8vh/src/github.com/go-swagger/go-swagger'...
+[0m[91m+ cd /tmp/tmp.YHktuFB8vh/src/github.com/go-swagger/go-swagger
++ git checkout -q c28258affb0b6251755d92489ef685af8d4ff3eb
+[0m[91m+ go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger
+[0m[91m+ rm -rf /tmp/tmp.YHktuFB8vh
+[0mRemoving intermediate container 8c4ad9f35471
+ ---> e88bb70eb8c5
+Step 17/112 : FROM base AS frozen-images
+ ---> 45bb6477ef0b
+Step 18/112 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Running in 4bb1fe82bbdf
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:4 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [27.1 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6852 kB]
+Get:8 http://security.debian.org/debian-security stretch/updates/main s390x Packages [475 kB]
+Fetched 7660 kB in 1s (4810 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20161130+nmu1+deb9u1).
+The following additional packages will be installed:
+  libjq1 libonig4
+The following NEW packages will be installed:
+  jq libjq1 libonig4
+0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+Need to get 328 kB of archives.
+After this operation, 1263 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libonig4 s390x 6.1.3-2 [142 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main s390x libjq1 s390x 1.5+dfsg-1.3 [126 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main s390x jq s390x 1.5+dfsg-1.3 [59.2 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 328 kB in 0s (3725 kB/s)
+Selecting previously unselected package libonig4:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14827 files and directories currently installed.)
+Preparing to unpack .../libonig4_6.1.3-2_s390x.deb ...
+Unpacking libonig4:s390x (6.1.3-2) ...
+Selecting previously unselected package libjq1:s390x.
+Preparing to unpack .../libjq1_1.5+dfsg-1.3_s390x.deb ...
+Unpacking libjq1:s390x (1.5+dfsg-1.3) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../jq_1.5+dfsg-1.3_s390x.deb ...
+Unpacking jq (1.5+dfsg-1.3) ...
+Setting up libonig4:s390x (6.1.3-2) ...
+Setting up libjq1:s390x (1.5+dfsg-1.3) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up jq (1.5+dfsg-1.3) ...
+Removing intermediate container 4bb1fe82bbdf
+ ---> a6583c050727
+Step 19/112 : COPY contrib/download-frozen-image-v2.sh /
+ ---> 18eb84a73bae
+Step 20/112 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Running in cc3c3b37ba32
+Downloading 'library/buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251' (4 layers)...
+[91m########################################[0m[91m################################ 100.0%
+[0m[91m####[0m[91m#[0m[91m#[0m[91m##[0m[91m [0m[91m  [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m                                          [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m11[0m[91m.[0m[91m4%[0m[91m#[0m[91m#####[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m  [0m[91m                                                     26.0%[0m[91m##[0m[91m####[0m[91m##[0m[91m##[0m[91m#[0m[91m####[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m  [0m[91m                                           40.7%[0m[91m###[0m[91m####[0m[91m##[0m[91m###[0m[91m####[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m########              [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m       55.3%[0m[91m####[0m[91m###[0m[91m###[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m###[0m[91m#[0m[91m###[0m[91m##[0m[91m##[0m[91m####################                        69.9%[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#########################              84.5%[0m[91m[0m[91m#####[0m[91m##[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m####[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###############   99.2%[0m[91m[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###########[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m##[0m[91m######## 100[0m[91m.[0m[91m0%
+[0m[91m############################################[0m[91m##########[0m[91m################## 100.0%[0m[91m
+[0m[91m[0m[91m#####[0m[91m#[0m[91m####[0m[91m#[0m[91m#####[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m   [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m   [0m[91m [0m[91m [0m[91m                       24.6%[0m[91m###[0m[91m#[0m[91m#[0m[91m########[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m                     64.3%[0m[91m[0m[91m####[0m[91m##[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m1[0m[91m0[0m[91m0[0m[91m.[0m[91m0[0m[91m%[0m[91m
+[0m[91m##########################################[0m[91m############################## 100.0%
+[0m[91m[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m       [0m[91m                        [0m[91m                      [0m[91m           [0m[91m 13.7%[0m[91m####################   [0m[91m                                                   28.9%[0m[91m[0m[91m#[0m[91m#[0m[91m###########[0m[91m####################                        [0m[91m                 46[0m[91m.8%[0m[91m[0m[91m#########################[0m[91m###################                             [0m[91m 62.1%[0m[91m[0m[91m#########################################################                 79.8%[0m[91m###########################################[0m[91m#########################      95.1%[0m[91m######################################################################## 100.0%[0m[91m
+[0m[91m[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m################################################################### 100.0%
+[0m[91m[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m                 5.0%[0m[91m[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m                        11.6%[0m[91m[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m                                  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m 1[0m[91m8[0m[91m.[0m[91m2[0m[91m%[0m[91m[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m   [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  24.9%[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m                                31.5%[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#    [0m[91m [0m[91m [0m[91m [0m[91m                                        [0m[91m3[0m[91m8.[0m[91m1[0m[91m%[0m[91m###[0m[91m####[0m[91m###[0m[91m#[0m[91m##[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m    [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m  [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m   [0m[91m 4[0m[91m4[0m[91m.[0m[91m7%[0m[91m###[0m[91m####[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m##[0m[91m#########[0m[91m# [0m[91m  [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m5[0m[91m1[0m[91m.3[0m[91m%[0m[91m###[0m[91m####[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m####[0m[91m####[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#####[0m[91m [0m[91m   [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m   [0m[91m [0m[91m [0m[91m [0m[91m   [0m[91m   [0m[91m [0m[91m [0m[91m5[0m[91m7[0m[91m.[0m[91m9[0m[91m%[0m[91m####[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m######[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m###[0m[91m##[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m  [0m[91m [0m[91m                   64.6%[0m[91m###[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m####[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m  [0m[91m [0m[91m  [0m[91m [0m[91m   [0m[91m   71.2%[0m[91m####[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#####[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m##[0m[91m#[0m[91m###[0m[91m##[0m[91m#[0m[91m####[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m  [0m[91m [0m[91m [0m[91m [0m[91m   [0m[91m [0m[91m      77.8%[0m[91m#####[0m[91m######[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m###[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#####[0m[91m#####[0m[91m#####[0m[91m####[0m[91m#[0m[91m########[0m[91m##         [0m[91m   [0m[91m [0m[91m [0m[91m8[0m[91m4.[0m[91m4[0m[91m%[0m[91m##[0m[91m####[0m[91m###[0m[91m##[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#  [0m[91m [0m[91m [0m[91m [0m[91m    91.0%[0m[91m#####[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m###[0m[91m##[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m [0m[91m [0m[91m [0m[91m 9[0m[91m7[0m[91m.[0m[91m6[0m[91m%[0m[91m###[0m[91m###[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m##[0m[91m##[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m#[0m[91m######## 100.0%
+[0m
+Downloading 'library/busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0' (1 layers)...
+[91m######################################################################[0m[91m## [0m[91m100.0%
+[0m[91m[0m[91m##[0m[91m#[0m[91m#[0m[91m###[0m[91m#[0m[91m#[0m[91m#[0m[91m############################################################## 100.0%
+[0m
+Downloading 'library/busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6' (1 layers)...
+[91m[0m[91m################[0m[91m#############################################[0m[91m########### [0m[91m100.0%
+[0m[91m[0m[91m######################################################################## 100.0%
+[0m
+Downloading 'library/debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60' (1 layers)...
+skipping existing b63cc5f62c21
+
+Downloading 'library/hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c' (1 layers)...
+[91m######################################################################## 100.0%[0m[91m
+[0m[91m######################################################################## 100.0%
+[0m
+Download of images into '/build' complete.
+Use something like the following to load the result into a Docker daemon:
+  tar -cC '/build' . | docker load
+Removing intermediate container cc3c3b37ba32
+ ---> 45f9751ef0ee
+Step 21/112 : FROM base AS cross-false
+ ---> 45bb6477ef0b
+Step 22/112 : FROM base AS cross-true
+ ---> 45bb6477ef0b
+Step 23/112 : RUN dpkg --add-architecture armhf
+ ---> Running in 73e02a42cf78
+Removing intermediate container 73e02a42cf78
+ ---> 214272d01570
+Step 24/112 : RUN dpkg --add-architecture arm64
+ ---> Running in 65da395a0d9d
+/tmp/jenkins7902931259116601761.sh: line 12: 10061 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-s390x:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#39283'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+Unable to find image 'docker-s390x:fb6b194' locally
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins756281839347132357.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins8267140665377337812.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

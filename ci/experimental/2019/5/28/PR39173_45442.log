@@ -1,0 +1,69 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs (i-0e694a15f39ebe8ee) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38
+Commit message: "Merge pull request #39242 from arkodg/lb-stale-force-leave"
+ > git rev-list --no-walk c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38 # timeout=10
+Set build name.
+New build name is '#39173'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins8831920913813701380.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39173/head -> origin/pr/39173
+Auto-merging vendor.conf
+CONFLICT (content): Merge conflict in vendor.conf
+Auto-merging daemon/cluster/executor/container/container.go
+Auto-merging api/swagger.yaml
+Automatic merge failed; fix conflicts and then commit the result.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#39173'
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins8080818337329232038.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp45442
+Error: No such container: docker-pr-exp45442
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+53071b97a884: Pulling fs layer
+53071b97a884: Verifying Checksum
+53071b97a884: Download complete
+53071b97a884: Pull complete
+Digest: sha256:4b6ad3a68d34da29bf7c8ccb5d355ba8b4babcad1f99798204e7abb43e54ee3d
+Status: Downloaded newer image for busybox:latest
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins3414362950658495606.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: FAILURE

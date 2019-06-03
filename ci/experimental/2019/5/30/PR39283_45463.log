@@ -1,0 +1,429 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs (i-0c68acd783639f0c8) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39283'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins2826927638611842367.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39283/head -> origin/pr/39283
+Updating 8d76028..e0d5170
+Fast-forward
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> 7ced090ee82e
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 5184f68b4cbf
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 4522def391f8
+Step 5/112 : FROM base AS criu
+ ---> 4522def391f8
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> aa1148baa304
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> d9231362345c
+Step 8/112 : FROM base AS registry
+ ---> 4522def391f8
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 03a86e24c4e7
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> bd00a072aa76
+Step 11/112 : FROM base AS docker-py
+ ---> 4522def391f8
+Step 12/112 : ENV DOCKER_PY_COMMIT ac922192959870774ad8428344d9faa0555f7ba6
+ ---> Using cache
+ ---> 1b2836f71066
+Step 13/112 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> edb5123454ba
+Step 14/112 : FROM base AS swagger
+ ---> 4522def391f8
+Step 15/112 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> fc2a91091e4a
+Step 16/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> a2d1dcc25546
+Step 17/112 : FROM base AS frozen-images
+ ---> 4522def391f8
+Step 18/112 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> 17cdfcf805d9
+Step 19/112 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 056e91a65525
+Step 20/112 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> a09d67f2581e
+Step 21/112 : FROM base AS cross-false
+ ---> 4522def391f8
+Step 22/112 : FROM base AS cross-true
+ ---> 4522def391f8
+Step 23/112 : RUN dpkg --add-architecture armhf
+ ---> Using cache
+ ---> ae9e2c49dce1
+Step 24/112 : RUN dpkg --add-architecture arm64
+ ---> Using cache
+ ---> 8b2bb4f572df
+Step 25/112 : RUN dpkg --add-architecture armel
+ ---> Using cache
+ ---> a8ea188f5757
+Step 26/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y --no-install-recommends 		crossbuild-essential-armhf 		crossbuild-essential-arm64 		crossbuild-essential-armel; 	fi
+ ---> Using cache
+ ---> bf4f05d7b4e2
+Step 27/112 : FROM cross-${CROSS} as dev-base
+ ---> 4522def391f8
+Step 28/112 : FROM dev-base AS runtime-dev-cross-false
+ ---> 4522def391f8
+Step 29/112 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> d9af1fa0fe60
+Step 30/112 : FROM cross-true AS runtime-dev-cross-true
+ ---> bf4f05d7b4e2
+Step 31/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y 		libseccomp-dev:armhf 		libseccomp-dev:arm64 		libseccomp-dev:armel 		libapparmor-dev:armhf 		libapparmor-dev:arm64 		libapparmor-dev:armel 		libapparmor-dev 		libseccomp-dev; 	fi
+ ---> Using cache
+ ---> 83a6781e23e3
+Step 32/112 : FROM runtime-dev-cross-${CROSS} AS runtime-dev
+ ---> d9af1fa0fe60
+Step 33/112 : FROM base AS tomlv
+ ---> 4522def391f8
+Step 34/112 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> 6865e33c528f
+Step 35/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> bd273c761c8e
+Step 36/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 2e752303dcfc
+Step 37/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 2531819c043d
+[91m+ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ '[' -z '' ']'
+[0m[91m++ mktemp -d
++ export GOPATH=/tmp/tmp.QZIMXNIrtx
++ GOPATH=/tmp/tmp.QZIMXNIrtx
++ RM_GOPATH=1
+++ dirname ./install.sh
+[0m[91m+ dir=.
++ bin=tomlv
++ shift
++ '[' '!' -f ./tomlv.installer ']'
++ . ./tomlv.installer
+++ TOMLV_COMMIT=3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ install_tomlv
++ echo 'Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005'
++ git clone https://github.com/BurntSushi/toml.git /tmp/tmp.QZIMXNIrtx/src/github.com/BurntSushi/toml
+Cloning into '/tmp/tmp.QZIMXNIrtx/src/github.com/BurntSushi/toml'...
+[0mInstall tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
+[91m+ cd /tmp/tmp.QZIMXNIrtx/src/github.com/BurntSushi/toml
+[0m[91m+ git checkout -q 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
+[0m[91m+ go build -v -buildmode=pie -o /build/tomlv github.com/BurntSushi/toml/cmd/tomlv
+[0m[91merrors
+[0m[91minternal/cpu
+[0m[91mmath/bits
+[0m[91mruntime/internal/atomic
+[0m[91mmath
+[0m[91minternal/bytealg
+[0m[91mruntime/internal/sys
+[0m[91mruntime/internal/math
+[0m[91mruntime
+[0m[91municode/utf8
+[0m[91mstrconv
+[0m[91minternal/race
+[0m[91msync/atomic
+[0m[91municode
+[0m[91minternal/testlog
+[0m[91mencoding
+[0m[91mruntime/cgo
+[0m[91msync
+[0m[91mio
+[0m[91mreflect
+[0m[91msyscall
+[0m[91mtime
+[0m[91msort
+[0m[91minternal/poll
+[0m[91minternal/fmtsort
+[0m[91minternal/syscall/unix
+[0m[91mstrings
+[0m[91mos
+[0m[91mbytes
+[0m[91mfmt
+[0m[91mbufio
+[0m[91mpath/filepath
+[0m[91mio/ioutil
+[0m[91mpath
+[0m[91mtext/tabwriter
+[0m[91mflag
+[0m[91mgithub.com/BurntSushi/toml
+[0m[91mlog
+[0m[91mgithub.com/BurntSushi/toml/cmd/tomlv
+[0mRemoving intermediate container 2531819c043d
+ ---> 99b0b19c9930
+Step 38/112 : FROM base AS vndr
+ ---> 4522def391f8
+Step 39/112 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Running in d5c43bbecc67
+Removing intermediate container d5c43bbecc67
+ ---> 4ed3af8d1427
+Step 40/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 7d4026c1fa98
+Step 41/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> b64501ed43ae
+Step 42/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 36cb4e8d53f5
+[91m+ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ '[' -z '' ']'
+++ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.Y3QNyVDpIu
++ GOPATH=/tmp/tmp.Y3QNyVDpIu
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=vndr
++ shift
++ '[' '!' -f ./vndr.installer ']'
++ . ./vndr.installer
+++ VNDR_COMMIT=81cb8916aad3c8d06193f008dba3e16f82851f52
++ install_vndr
++ echo 'Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52'
++ git clone https://github.com/LK4D4/vndr.git /tmp/tmp.Y3QNyVDpIu/src/github.com/LK4D4/vndr
+Cloning into '/tmp/tmp.Y3QNyVDpIu/src/github.com/LK4D4/vndr'...
+[0mInstall vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52
+[91m+ cd /tmp/tmp.Y3QNyVDpIu/src/github.com/LK4D4/vndr
+[0m[91m+ git checkout -q 81cb8916aad3c8d06193f008dba3e16f82851f52
+[0m[91m+ go build -buildmode=pie -v -o /build/vndr .
+[0m[91merrors
+[0m[91minternal/cpu
+[0m[91minternal/race
+[0m[91mruntime/internal/atomic
+[0m[91mruntime/internal/sys
+[0m[91minternal/bytealg
+[0m[91mruntime/internal/math
+[0m[91msync/atomic
+[0m[91municode
+[0m[91mruntime
+[0m[91municode/utf8
+[0m[91mmath/bits
+[0m[91mmath
+[0m[91mstrconv
+[0m[91minternal/testlog
+[0m[91mencoding
+[0m[91municode/utf16
+[0m[91mcontainer/list
+[0m[91mcrypto/internal/subtle
+[0m[91mcrypto/subtle
+[0m[91mcrypto/rc4
+[0m[91minternal/x/crypto/cryptobyte/asn1
+[0m[91minternal/nettrace
+[0m[91minternal/x/net/dns/dnsmessage
+[0m[91mruntime/cgo
+[0m[91minternal/x/crypto/curve25519
+[0m[91msync
+[0m[91mio
+[0m[91mreflect
+[0m[91mbytes
+[0m[91mbufio
+[0m[91msyscall
+[0m[91mtime
+[0m[91msort
+[0m[91minternal/fmtsort
+[0m[91minternal/syscall/unix
+[0m[91mstrings
+[0m[91minternal/poll
+[0m[91mpath
+[0m[91mregexp/syntax
+[0m[91mos
+[0m[91mfmt
+[0m[91mpath/filepath
+[0m[91mregexp
+[0m[91mflag
+[0m[91mgo/token
+[0m[91mgo/scanner
+[0m[91mio/ioutil
+[0m[91mnet/url
+[0m[91mgo/ast
+[0m[91mtext/template/parse
+[0m[91mgo/parser
+[0m[91mtext/template
+[0m[91mlog
+[0m[91mencoding/binary
+[0m[91mgo/doc
+[0m[91mencoding/base64
+[0m[91mencoding/json
+[0m[91mgithub.com/LK4D4/vndr/build
+[0m[91mencoding/xml
+[0m[91mgithub.com/LK4D4/vndr/godl/singleflight
+[0m[91mcompress/flate
+[0m[91mhash
+[0m[91mhash/crc32
+[0m[91mcompress/gzip
+[0m[91mcontext
+[0m[91mcrypto/cipher
+[0m[91mmath/rand
+[0m[91mmath/big
+[0m[91mcrypto/aes
+[0m[91mcrypto
+[0m[91mcrypto/des
+[0m[91mcrypto/internal/randutil
+[0m[91mcrypto/sha512
+[0m[91mcrypto/hmac
+[0m[91mcrypto/md5
+[0m[91mcrypto/sha1
+[0m[91mcrypto/sha256
+[0m[91mencoding/hex
+[0m[91mencoding/pem
+[0m[91mcrypto/rand
+[0m[91mcrypto/elliptic
+[0m[91mencoding/asn1
+[0m[91mcrypto/rsa
+[0m[91mcrypto/ecdsa
+[0m[91mcrypto/dsa
+[0m[91mcrypto/x509/pkix
+[0m[91minternal/x/crypto/cryptobyte
+[0m[91minternal/singleflight
+[0m[91mnet
+[0m[91minternal/x/crypto/internal/chacha20
+[0m[91minternal/x/crypto/poly1305
+[0m[91minternal/x/crypto/chacha20poly1305
+[0m[91minternal/x/crypto/hkdf
+[0m[91minternal/x/text/transform
+[0m[91minternal/x/text/unicode/bidi
+[0m[91minternal/x/text/secure/bidirule
+[0m[91minternal/x/text/unicode/norm
+[0m[91minternal/x/net/idna
+[0m[91minternal/x/net/http2/hpack
+[0m[91mmime
+[0m[91mmime/quotedprintable
+[0m[91mnet/http/internal
+[0m[91mos/exec
+[0m[91mnet/textproto
+[0m[91mcrypto/x509
+[0m[91minternal/x/net/http/httpguts
+[0m[91minternal/x/net/http/httpproxy
+[0m[91mmime/multipart
+[0m[91mcrypto/tls
+[0m[91mnet/http/httptrace
+[0m[91mnet/http
+[0m[91mgithub.com/LK4D4/vndr/godl
+[0m[91mgithub.com/LK4D4/vndr
+[0mRemoving intermediate container 36cb4e8d53f5
+ ---> 95b583aa2bb4
+Step 43/112 : FROM dev-base AS containerd
+ ---> 4522def391f8
+Step 44/112 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Running in 1d7679311672
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.2 kB]
+Get:6 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Get:8 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [492 kB]
+Fetched 7907 kB in 2s (3397 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  btrfs-progs liblzo2-2
+The following NEW packages will be installed:
+  btrfs-progs btrfs-tools liblzo2-2
+0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+Need to get 649 kB of archives.
+After this operation, 4320 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 liblzo2-2 amd64 2.08-1.2+b2 [55.0 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 btrfs-progs amd64 4.7.3-1 [577 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 btrfs-tools amd64 4.7.3-1 [16.9 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 649 kB in 1s (604 kB/s)
+Selecting previously unselected package liblzo2-2:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15090 files and directories currently installed.)
+Preparing to unpack .../liblzo2-2_2.08-1.2+b2_amd64.deb ...
+Unpacking liblzo2-2:amd64 (2.08-1.2+b2) ...
+Selecting previously unselected package btrfs-progs.
+Preparing to unpack .../btrfs-progs_4.7.3-1_amd64.deb ...
+Unpacking btrfs-progs (4.7.3-1) ...
+Selecting previously unselected package btrfs-tools.
+Preparing to unpack .../btrfs-tools_4.7.3-1_amd64.deb ...
+Unpacking btrfs-tools (4.7.3-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up liblzo2-2:amd64 (2.08-1.2+b2) ...
+Setting up btrfs-progs (4.7.3-1) ...
+Setting up btrfs-tools (4.7.3-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Removing intermediate container 1d7679311672
+ ---> 95846c1a2dfc
+Step 45/112 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Running in be05d45941b9
+Removing intermediate container be05d45941b9
+ ---> 6000417eb54b
+Step 46/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 62b8b84a6da4
+Step 47/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> cc4ace0bccc6
+Step 48/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in c700a3a9fa34
+Set build name.
+/tmp/jenkins2826927638611842367.sh: line 11:  4921 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker:${GITCOMMIT}-exp .
+New build name is '#39283'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins2470835681725375938.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp45463
+Error: No such container: docker-pr-exp45463
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins1147466811182818472.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ + xargs tarfind bundles -name *.log -czf bundles.tar.gz
+
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

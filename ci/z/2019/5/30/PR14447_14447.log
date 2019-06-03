@@ -1,0 +1,43 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-29 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins5297096100429505087.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+2373f9d1c068: Pulling fs layer
+2373f9d1c068: Download complete
+2373f9d1c068: Pull complete
+Digest: sha256:0b671b6a323d86aa6165883f698b557ca257c3a3ffa1e3152ffb6467e7ac11b3
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@2d096b56
+No credentials specified
+Wiping out workspace first.
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins4990280782783613929.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins38856145491578654.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
++ xargs tar -czf bundles.tar.gz
+tar: bundles/test-integration/d8a33b4e3031d/docker.log: Cannot stat: No such file or directory
+tar: bundles/test-integration/da61c2024359e/docker.log: Cannot stat: No such file or directory
+tar: bundles/test-integration/d38cbcfb4a9e6/docker.log: Cannot stat: No such file or directory
+tar: bundles/test-integration/d38cbcfb4a9e6/root/containers/389cac062ea38866d78d4aa157426e39a991cf677895644f9b13582cbcd767ef/389cac062ea38866d78d4aa157426e39a991cf677895644f9b13582cbcd767ef-json.log: Cannot stat: No such file or directory
+tar: Exiting with failure status due to previous errors
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

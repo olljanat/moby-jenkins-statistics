@@ -1,0 +1,220 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-aufs (i-0c68acd783639f0c8) (docker-edge ubuntu aufs docker-stable docker ubuntu-1604-aufs-edge x86_64 ec2 linux ubuntu-1604-aufs ubuntu-1604 amd64 ubuntu-1604-aufs-stable) in workspace /home/ubuntu/workspace/Docker-PRs-experimental
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs-experimental # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39283'
+[Docker-PRs-experimental] $ /bin/bash /tmp/jenkins5104007737276104165.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39283/head -> origin/pr/39283
+Updating 8d76028..efcef99
+Fast-forward
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> 7ced090ee82e
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 5184f68b4cbf
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 4522def391f8
+Step 5/112 : FROM base AS criu
+ ---> 4522def391f8
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> aa1148baa304
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> d9231362345c
+Step 8/112 : FROM base AS registry
+ ---> 4522def391f8
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 03a86e24c4e7
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> bd00a072aa76
+Step 11/112 : FROM base AS docker-py
+ ---> 4522def391f8
+Step 12/112 : ENV DOCKER_PY_COMMIT ac922192959870774ad8428344d9faa0555f7ba6
+ ---> Using cache
+ ---> 1b2836f71066
+Step 13/112 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> edb5123454ba
+Step 14/112 : FROM base AS swagger
+ ---> 4522def391f8
+Step 15/112 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> fc2a91091e4a
+Step 16/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> a2d1dcc25546
+Step 17/112 : FROM base AS frozen-images
+ ---> 4522def391f8
+Step 18/112 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Using cache
+ ---> 17cdfcf805d9
+Step 19/112 : COPY contrib/download-frozen-image-v2.sh /
+ ---> Using cache
+ ---> 056e91a65525
+Step 20/112 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Using cache
+ ---> a09d67f2581e
+Step 21/112 : FROM base AS cross-false
+ ---> 4522def391f8
+Step 22/112 : FROM base AS cross-true
+ ---> 4522def391f8
+Step 23/112 : RUN dpkg --add-architecture armhf
+ ---> Using cache
+ ---> ae9e2c49dce1
+Step 24/112 : RUN dpkg --add-architecture arm64
+ ---> Using cache
+ ---> 8b2bb4f572df
+Step 25/112 : RUN dpkg --add-architecture armel
+ ---> Using cache
+ ---> a8ea188f5757
+Step 26/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y --no-install-recommends 		crossbuild-essential-armhf 		crossbuild-essential-arm64 		crossbuild-essential-armel; 	fi
+ ---> Using cache
+ ---> bf4f05d7b4e2
+Step 27/112 : FROM cross-${CROSS} as dev-base
+ ---> 4522def391f8
+Step 28/112 : FROM dev-base AS runtime-dev-cross-false
+ ---> 4522def391f8
+Step 29/112 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Using cache
+ ---> d9af1fa0fe60
+Step 30/112 : FROM cross-true AS runtime-dev-cross-true
+ ---> bf4f05d7b4e2
+Step 31/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y 		libseccomp-dev:armhf 		libseccomp-dev:arm64 		libseccomp-dev:armel 		libapparmor-dev:armhf 		libapparmor-dev:arm64 		libapparmor-dev:armel 		libapparmor-dev 		libseccomp-dev; 	fi
+ ---> Using cache
+ ---> 83a6781e23e3
+Step 32/112 : FROM runtime-dev-cross-${CROSS} AS runtime-dev
+ ---> d9af1fa0fe60
+Step 33/112 : FROM base AS tomlv
+ ---> 4522def391f8
+Step 34/112 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Using cache
+ ---> 6865e33c528f
+Step 35/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> bd273c761c8e
+Step 36/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> 2e752303dcfc
+Step 37/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 99b0b19c9930
+Step 38/112 : FROM base AS vndr
+ ---> 4522def391f8
+Step 39/112 : ENV INSTALL_BINARY_NAME=vndr
+ ---> Using cache
+ ---> 4ed3af8d1427
+Step 40/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 7d4026c1fa98
+Step 41/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> b64501ed43ae
+Step 42/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Using cache
+ ---> 95b583aa2bb4
+Step 43/112 : FROM dev-base AS containerd
+ ---> 4522def391f8
+Step 44/112 : RUN apt-get update && apt-get install -y btrfs-tools
+ ---> Using cache
+ ---> 95846c1a2dfc
+Step 45/112 : ENV INSTALL_BINARY_NAME=containerd
+ ---> Using cache
+ ---> 6000417eb54b
+Step 46/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> Using cache
+ ---> 62b8b84a6da4
+Step 47/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> Using cache
+ ---> cc4ace0bccc6
+Step 48/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 1518b18f6a46
+[91m+ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ '[' -z '' ']'
+[0m[91m++ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.5oLFzuZPbC
++ GOPATH=/tmp/tmp.5oLFzuZPbC
++ RM_GOPATH=1
+++ dirname ./install.sh
+[0mInstall containerd version 894b81a4b802e4eb2a91d1ce216b8817763c29fb
+[91m+ dir=.
++ bin=containerd
++ shift
++ '[' '!' -f ./containerd.installer ']'
++ . ./containerd.installer
+++ CONTAINERD_COMMIT=894b81a4b802e4eb2a91d1ce216b8817763c29fb
++ install_containerd
++ echo 'Install containerd version 894b81a4b802e4eb2a91d1ce216b8817763c29fb'
++ git clone https://github.com/containerd/containerd.git /tmp/tmp.5oLFzuZPbC/src/github.com/containerd/containerd
+Cloning into '/tmp/tmp.5oLFzuZPbC/src/github.com/containerd/containerd'...
+[0m[91m+ cd /tmp/tmp.5oLFzuZPbC/src/github.com/containerd/containerd
+[0m[91m+ git checkout -q 894b81a4b802e4eb2a91d1ce216b8817763c29fb
+[0m[91m+ export 'BUILDTAGS=netgo osusergo static_build'
++ BUILDTAGS='netgo osusergo static_build'
++ export EXTRA_FLAGS=-buildmode=pie
++ EXTRA_FLAGS=-buildmode=pie
++ export 'EXTRA_LDFLAGS=-extldflags "-fno-PIC -static"'
++ EXTRA_LDFLAGS='-extldflags "-fno-PIC -static"'
++ '[' '' = dynamic ']'
++ make
+[0m🇩 bin/ctr
+Set build name.
+New build name is '#39283'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+/tmp/jenkins5104007737276104165.sh: line 11: 27977 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker:${GITCOMMIT}-exp .
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins7270833876845104449.sh
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr-exp45468
+Error: No such container: docker-pr-exp45468
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs-experimental:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs-experimental] $ /bin/sh -xe /tmp/jenkins2447339900159617638.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ + xargs tar -czf bundles.tar.gzfind
+ bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

@@ -1,0 +1,1706 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ubuntu-1604-overlay2 (i-0992546ed21208c02) (x86_64 ubuntu overlay2 linux ubuntu-1604 ubuntu-1604-overlay2 ubuntu-1604-overlay2-stable amd64) in workspace /home/ubuntu/workspace/Docker-PRs
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/ubuntu/workspace/Docker-PRs # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision cefc60ccfa13a4db41a0463fe206af47879054b5 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f cefc60ccfa13a4db41a0463fe206af47879054b5
+Commit message: "Merge pull request #39255 from thaJeztah/fix_windows_errortype"
+ > git rev-list --no-walk c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38 # timeout=10
+Set build name.
+New build name is '#39173'
+[Docker-PRs] $ /bin/bash /tmp/jenkins7493803760007124605.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39173/head -> origin/pr/39173
+Merge made by the 'recursive' strategy.
+ api/server/router/swarm/helpers.go             |  7 +++
+ api/swagger.yaml                               | 14 ++++-
+ api/types/swarm/container.go                   | 13 +++--
+ daemon/cluster/convert/container.go            | 76 +++++++++++++-------------
+ daemon/cluster/executor/container/container.go |  1 +
+ docs/api/version-history.md                    |  7 ++-
+ integration/internal/swarm/service.go          |  8 +++
+ integration/service/create_test.go             | 76 ++++++++++++++++++++++++++
+ 8 files changed, 157 insertions(+), 45 deletions(-)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+1.12.5: Pulling from library/golang
+c5e155d5a1d1: Pulling fs layer
+221d80d00ae9: Pulling fs layer
+4250b3117dca: Pulling fs layer
+3b7ca19181b2: Pulling fs layer
+aa24759e848f: Pulling fs layer
+927e9eaeed19: Pulling fs layer
+66293f4dacbd: Pulling fs layer
+aa24759e848f: Waiting
+927e9eaeed19: Waiting
+66293f4dacbd: Waiting
+3b7ca19181b2: Waiting
+4250b3117dca: Verifying Checksum
+4250b3117dca: Download complete
+221d80d00ae9: Verifying Checksum
+221d80d00ae9: Download complete
+c5e155d5a1d1: Download complete
+3b7ca19181b2: Verifying Checksum
+3b7ca19181b2: Download complete
+aa24759e848f: Verifying Checksum
+aa24759e848f: Download complete
+66293f4dacbd: Verifying Checksum
+66293f4dacbd: Download complete
+927e9eaeed19: Verifying Checksum
+927e9eaeed19: Download complete
+c5e155d5a1d1: Pull complete
+221d80d00ae9: Pull complete
+4250b3117dca: Pull complete
+3b7ca19181b2: Pull complete
+aa24759e848f: Pull complete
+927e9eaeed19: Pull complete
+66293f4dacbd: Pull complete
+Digest: sha256:cf0b9f69ad1edd652a7f74a1586080b15bf6f688c545044407e28805066ef2cb
+Status: Downloaded newer image for golang:1.12.5
+ ---> 7ced090ee82e
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in 49beeca23956
+Removing intermediate container 49beeca23956
+ ---> 843261a7011b
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in ab9607c39a3c
+Removing intermediate container ab9607c39a3c
+ ---> 4659f1c353d9
+Step 5/112 : FROM base AS criu
+ ---> 4659f1c353d9
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Running in ed68ba9f8da7
+Removing intermediate container ed68ba9f8da7
+ ---> 56136875cdc4
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in c64544e36ae2
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.2 kB]
+Get:7 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [492 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Fetched 7907 kB in 2s (3122 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libnet1 libnl-3-200 libprotobuf-c1 libprotobuf-lite10 libprotobuf10
+  libprotoc10 python-pkg-resources zlib1g-dev
+Suggested packages:
+  manpages-dev python-setuptools
+The following NEW packages will be installed:
+  libcap-dev libnet1 libnet1-dev libnl-3-200 libnl-3-dev libprotobuf-c-dev
+  libprotobuf-c1 libprotobuf-dev libprotobuf-lite10 libprotobuf10 libprotoc10
+  protobuf-c-compiler protobuf-compiler python-pkg-resources python-protobuf
+  zlib1g-dev
+0 upgraded, 16 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3602 kB of archives.
+After this operation, 18.9 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnet1 amd64 1.1.6+dfsg-3 [60.4 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libcap-dev amd64 1:2.25-1 [29.4 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnet1-dev amd64 1.1.6+dfsg-3 [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnl-3-200 amd64 3.2.27-2 [61.5 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnl-3-dev amd64 3.2.27-2 [96.2 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-c1 amd64 1.2.1-2 [25.0 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-c-dev amd64 1.2.1-2 [32.5 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-5 [205 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf10 amd64 3.0.0-9 [681 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-lite10 amd64 3.0.0-9 [125 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotobuf-dev amd64 3.0.0-9 [954 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libprotoc10 amd64 3.0.0-9 [626 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 protobuf-c-compiler amd64 1.2.1-2 [78.4 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 protobuf-compiler amd64 3.0.0-9 [52.8 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 python-pkg-resources all 33.1.1-1 [166 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 python-protobuf amd64 3.0.0-9 [292 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 3602 kB in 1s (2085 kB/s)
+Selecting previously unselected package libnet1:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15090 files and directories currently installed.)
+Preparing to unpack .../00-libnet1_1.1.6+dfsg-3_amd64.deb ...
+Unpacking libnet1:amd64 (1.1.6+dfsg-3) ...
+Selecting previously unselected package libcap-dev:amd64.
+Preparing to unpack .../01-libcap-dev_1%3a2.25-1_amd64.deb ...
+Unpacking libcap-dev:amd64 (1:2.25-1) ...
+Selecting previously unselected package libnet1-dev.
+Preparing to unpack .../02-libnet1-dev_1.1.6+dfsg-3_amd64.deb ...
+Unpacking libnet1-dev (1.1.6+dfsg-3) ...
+Selecting previously unselected package libnl-3-200:amd64.
+Preparing to unpack .../03-libnl-3-200_3.2.27-2_amd64.deb ...
+Unpacking libnl-3-200:amd64 (3.2.27-2) ...
+Selecting previously unselected package libnl-3-dev:amd64.
+Preparing to unpack .../04-libnl-3-dev_3.2.27-2_amd64.deb ...
+Unpacking libnl-3-dev:amd64 (3.2.27-2) ...
+Selecting previously unselected package libprotobuf-c1:amd64.
+Preparing to unpack .../05-libprotobuf-c1_1.2.1-2_amd64.deb ...
+Unpacking libprotobuf-c1:amd64 (1.2.1-2) ...
+Selecting previously unselected package libprotobuf-c-dev:amd64.
+Preparing to unpack .../06-libprotobuf-c-dev_1.2.1-2_amd64.deb ...
+Unpacking libprotobuf-c-dev:amd64 (1.2.1-2) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../07-zlib1g-dev_1%3a1.2.8.dfsg-5_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-5) ...
+Selecting previously unselected package libprotobuf10:amd64.
+Preparing to unpack .../08-libprotobuf10_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf10:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-lite10:amd64.
+Preparing to unpack .../09-libprotobuf-lite10_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf-lite10:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotobuf-dev:amd64.
+Preparing to unpack .../10-libprotobuf-dev_3.0.0-9_amd64.deb ...
+Unpacking libprotobuf-dev:amd64 (3.0.0-9) ...
+Selecting previously unselected package libprotoc10:amd64.
+Preparing to unpack .../11-libprotoc10_3.0.0-9_amd64.deb ...
+Unpacking libprotoc10:amd64 (3.0.0-9) ...
+Selecting previously unselected package protobuf-c-compiler.
+Preparing to unpack .../12-protobuf-c-compiler_1.2.1-2_amd64.deb ...
+Unpacking protobuf-c-compiler (1.2.1-2) ...
+Selecting previously unselected package protobuf-compiler.
+Preparing to unpack .../13-protobuf-compiler_3.0.0-9_amd64.deb ...
+Unpacking protobuf-compiler (3.0.0-9) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../14-python-pkg-resources_33.1.1-1_all.deb ...
+Unpacking python-pkg-resources (33.1.1-1) ...
+Selecting previously unselected package python-protobuf.
+Preparing to unpack .../15-python-protobuf_3.0.0-9_amd64.deb ...
+Unpacking python-protobuf (3.0.0-9) ...
+Setting up libnet1:amd64 (1.1.6+dfsg-3) ...
+Setting up libprotobuf-c1:amd64 (1.2.1-2) ...
+Setting up python-pkg-resources (33.1.1-1) ...
+Setting up libnet1-dev (1.1.6+dfsg-3) ...
+Setting up libprotobuf10:amd64 (3.0.0-9) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up python-protobuf (3.0.0-9) ...
+Setting up libcap-dev:amd64 (1:2.25-1) ...
+Setting up libprotobuf-c-dev:amd64 (1.2.1-2) ...
+Setting up libnl-3-200:amd64 (3.2.27-2) ...
+Setting up libprotobuf-lite10:amd64 (3.0.0-9) ...
+Setting up libprotoc10:amd64 (3.0.0-9) ...
+Setting up protobuf-c-compiler (1.2.1-2) ...
+Setting up zlib1g-dev:amd64 (1:1.2.8.dfsg-5) ...
+Setting up protobuf-compiler (3.0.0-9) ...
+Setting up libprotobuf-dev:amd64 (3.0.0-9) ...
+Setting up libnl-3-dev:amd64 (3.2.27-2) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+[91mfatal: Not a git repository (or any of the parent directories): .git
+[0m  GEN      .gitid
+  GEN      criu/include/version.h
+  GEN      include/common/asm
+  PBCC     images/google/protobuf/descriptor.pb-c.c
+  PBCC     images/opts.pb-c.c
+  PBCC     images/sit.pb-c.c
+  DEP      images/google/protobuf/descriptor.pb-c.d
+  DEP      images/opts.pb-c.d
+  DEP      images/sit.pb-c.d
+  PBCC     images/macvlan.pb-c.c
+  DEP      images/macvlan.pb-c.d
+  PBCC     images/autofs.pb-c.c
+  DEP      images/autofs.pb-c.d
+  PBCC     images/sysctl.pb-c.c
+  DEP      images/sysctl.pb-c.d
+  PBCC     images/time.pb-c.c
+  DEP      images/time.pb-c.d
+  PBCC     images/binfmt-misc.pb-c.c
+  DEP      images/binfmt-misc.pb-c.d
+  PBCC     images/seccomp.pb-c.c
+  DEP      images/seccomp.pb-c.d
+  PBCC     images/userns.pb-c.c
+  DEP      images/userns.pb-c.d
+  PBCC     images/cgroup.pb-c.c
+  DEP      images/cgroup.pb-c.d
+  PBCC     images/fown.pb-c.c
+  PBCC     images/ext-file.pb-c.c
+  DEP      images/fown.pb-c.d
+  DEP      images/ext-file.pb-c.d
+  PBCC     images/rpc.pb-c.c
+  DEP      images/rpc.pb-c.d
+  PBCC     images/siginfo.pb-c.c
+  DEP      images/siginfo.pb-c.d
+  PBCC     images/pagemap.pb-c.c
+  DEP      images/pagemap.pb-c.d
+  PBCC     images/rlimit.pb-c.c
+  DEP      images/rlimit.pb-c.d
+  PBCC     images/file-lock.pb-c.c
+  DEP      images/file-lock.pb-c.d
+  PBCC     images/tty.pb-c.c
+  DEP      images/tty.pb-c.d
+  PBCC     images/tun.pb-c.c
+  PBCC     images/netdev.pb-c.c
+  DEP      images/tun.pb-c.d
+  DEP      images/netdev.pb-c.d
+  PBCC     images/vma.pb-c.c
+  DEP      images/vma.pb-c.d
+  PBCC     images/creds.pb-c.c
+  DEP      images/creds.pb-c.d
+  PBCC     images/utsns.pb-c.c
+  DEP      images/utsns.pb-c.d
+  PBCC     images/ipc-desc.pb-c.c
+  PBCC     images/ipc-sem.pb-c.c
+  DEP      images/ipc-desc.pb-c.d
+  DEP      images/ipc-sem.pb-c.d
+  PBCC     images/ipc-msg.pb-c.c
+  DEP      images/ipc-msg.pb-c.d
+  PBCC     images/ipc-shm.pb-c.c
+  DEP      images/ipc-shm.pb-c.d
+  PBCC     images/ipc-var.pb-c.c
+  DEP      images/ipc-var.pb-c.d
+  PBCC     images/sk-opts.pb-c.c
+  PBCC     images/packet-sock.pb-c.c
+  DEP      images/sk-opts.pb-c.d
+  DEP      images/packet-sock.pb-c.d
+  PBCC     images/sk-netlink.pb-c.c
+  DEP      images/sk-netlink.pb-c.d
+  PBCC     images/sk-inet.pb-c.c
+  DEP      images/sk-inet.pb-c.d
+  PBCC     images/sk-unix.pb-c.c
+  DEP      images/sk-unix.pb-c.d
+  PBCC     images/mm.pb-c.c
+  DEP      images/mm.pb-c.d
+  PBCC     images/timerfd.pb-c.c
+  DEP      images/timerfd.pb-c.d
+  PBCC     images/timer.pb-c.c
+  DEP      images/timer.pb-c.d
+  PBCC     images/sa.pb-c.c
+  DEP      images/sa.pb-c.d
+  PBCC     images/pipe-data.pb-c.c
+  DEP      images/pipe-data.pb-c.d
+  PBCC     images/mnt.pb-c.c
+  DEP      images/mnt.pb-c.d
+  PBCC     images/sk-packet.pb-c.c
+  DEP      images/sk-packet.pb-c.d
+  PBCC     images/tcp-stream.pb-c.c
+  DEP      images/tcp-stream.pb-c.d
+  PBCC     images/pipe.pb-c.c
+  DEP      images/pipe.pb-c.d
+  PBCC     images/pstree.pb-c.c
+  DEP      images/pstree.pb-c.d
+  PBCC     images/fs.pb-c.c
+  DEP      images/fs.pb-c.d
+  PBCC     images/signalfd.pb-c.c
+  DEP      images/signalfd.pb-c.d
+  PBCC     images/fh.pb-c.c
+  PBCC     images/fsnotify.pb-c.c
+  DEP      images/fh.pb-c.d
+  DEP      images/fsnotify.pb-c.d
+  PBCC     images/eventpoll.pb-c.c
+  DEP      images/eventpoll.pb-c.d
+  PBCC     images/eventfd.pb-c.c
+  DEP      images/eventfd.pb-c.d
+  PBCC     images/remap-file-path.pb-c.c
+  DEP      images/remap-file-path.pb-c.d
+  PBCC     images/fifo.pb-c.c
+  DEP      images/fifo.pb-c.d
+  PBCC     images/ghost-file.pb-c.c
+  DEP      images/ghost-file.pb-c.d
+  PBCC     images/regfile.pb-c.c
+  DEP      images/regfile.pb-c.d
+  PBCC     images/ns.pb-c.c
+  DEP      images/ns.pb-c.d
+  PBCC     images/fdinfo.pb-c.c
+  DEP      images/fdinfo.pb-c.d
+  PBCC     images/core-aarch64.pb-c.c
+  PBCC     images/core-arm.pb-c.c
+  PBCC     images/core-ppc64.pb-c.c
+  PBCC     images/core-s390.pb-c.c
+  PBCC     images/core-x86.pb-c.c
+  PBCC     images/core.pb-c.c
+  PBCC     images/inventory.pb-c.c
+  DEP      images/core-aarch64.pb-c.d
+  DEP      images/core-arm.pb-c.d
+  DEP      images/core-ppc64.pb-c.d
+  DEP      images/core-s390.pb-c.d
+  DEP      images/core-x86.pb-c.d
+  DEP      images/core.pb-c.d
+  DEP      images/inventory.pb-c.d
+  PBCC     images/cpuinfo.pb-c.c
+  DEP      images/cpuinfo.pb-c.d
+  PBCC     images/stats.pb-c.c
+  DEP      images/stats.pb-c.d
+make[1]: Nothing to be done for 'all'.
+  CC       images/stats.o
+  CC       images/core.o
+  CC       images/core-x86.o
+  CC       images/core-arm.o
+  CC       images/core-aarch64.o
+  CC       images/core-ppc64.o
+  CC       images/core-s390.o
+  CC       images/cpuinfo.o
+  CC       images/inventory.o
+  CC       images/fdinfo.o
+  CC       images/fown.o
+  CC       images/ns.o
+  CC       images/regfile.o
+  CC       images/ghost-file.o
+  CC       images/fifo.o
+  CC       images/remap-file-path.o
+  CC       images/eventfd.o
+  CC       images/eventpoll.o
+  CC       images/fh.o
+  CC       images/fsnotify.o
+  CC       images/signalfd.o
+  CC       images/fs.o
+  CC       images/pstree.o
+  CC       images/pipe.o
+  CC       images/tcp-stream.o
+  CC       images/sk-packet.o
+  CC       images/mnt.o
+  CC       images/pipe-data.o
+  CC       images/sa.o
+  CC       images/timer.o
+  CC       images/timerfd.o
+  CC       images/mm.o
+  CC       images/sk-opts.o
+  CC       images/sk-unix.o
+  CC       images/sk-inet.o
+  CC       images/tun.o
+  CC       images/sk-netlink.o
+  CC       images/packet-sock.o
+  CC       images/ipc-var.o
+  CC       images/ipc-desc.o
+  CC       images/ipc-shm.o
+  CC       images/ipc-msg.o
+  CC       images/ipc-sem.o
+  CC       images/utsns.o
+  CC       images/creds.o
+  CC       images/vma.o
+  CC       images/netdev.o
+  CC       images/tty.o
+  CC       images/file-lock.o
+  CC       images/rlimit.o
+  CC       images/pagemap.o
+  CC       images/siginfo.o
+  CC       images/rpc.o
+  CC       images/ext-file.o
+  CC       images/cgroup.o
+  CC       images/userns.o
+  CC       images/google/protobuf/descriptor.o
+  CC       images/opts.o
+  CC       images/seccomp.o
+  CC       images/binfmt-misc.o
+  CC       images/time.o
+  CC       images/sysctl.o
+  CC       images/autofs.o
+  CC       images/macvlan.o
+  CC       images/sit.o
+  LINK     images/built-in.o
+  GEN      compel/include/asm
+  GEN      compel/include/version.h
+touch .config
+  GEN      include/common/config.h
+  GEN      compel/plugins/include/uapi/std/syscall-codes-64.h
+  GEN      compel/plugins/include/uapi/std/syscall-64.h
+  GEN      compel/arch/x86/plugins/std/syscalls-64.S
+  DEP      compel/arch/x86/plugins/std/syscalls-64.d
+  DEP      compel/arch/x86/plugins/std/memcpy.d
+  DEP      compel/arch/x86/plugins/std/parasite-head.d
+  GEN      compel/plugins/include/uapi/std/syscall.h
+  GEN      compel/arch/x86/plugins/std/sys-exec-tbl-64.c
+  GEN      compel/plugins/include/uapi/std/syscall-codes.h
+  GEN      compel/plugins/include/uapi/std/asm/syscall-types.h
+  DEP      compel/plugins/std/infect.d
+  DEP      compel/plugins/std/string.d
+  DEP      compel/plugins/std/log.d
+  DEP      compel/plugins/std/fds.d
+  DEP      compel/plugins/std/std.d
+  DEP      compel/plugins/shmem/shmem.d
+  DEP      compel/plugins/fds/fds.d
+  CC       compel/plugins/std/std.o
+  CC       compel/plugins/std/fds.o
+  CC       compel/plugins/std/log.o
+  CC       compel/plugins/std/string.o
+  CC       compel/plugins/std/infect.o
+  CC       compel/arch/x86/plugins/std/parasite-head.o
+  CC       compel/arch/x86/plugins/std/memcpy.o
+  CC       compel/arch/x86/plugins/std/syscalls-64.o
+  AR       compel/plugins/std.lib.a
+  CC       compel/plugins/fds/fds.o
+  AR       compel/plugins/fds.lib.a
+  HOSTDEP  compel/src/lib/handle-elf-host.d
+  HOSTDEP  compel/arch/x86/src/lib/handle-elf-host.d
+  HOSTDEP  compel/src/lib/log-host.d
+  HOSTDEP  compel/src/main-host.d
+  DEP      compel/src/lib/ptrace.d
+  DEP      compel/src/lib/infect.d
+  DEP      compel/src/lib/infect-util.d
+  DEP      compel/src/lib/infect-rpc.d
+  DEP      compel/src/lib/handle-elf.d
+  DEP      compel/arch/x86/src/lib/handle-elf.d
+  DEP      compel/arch/x86/src/lib/infect.d
+  DEP      compel/arch/x86/src/lib/cpu.d
+  DEP      compel/src/lib/log.d
+  DEP      compel/src/main.d
+  CC       compel/src/lib/log.o
+  CC       compel/arch/x86/src/lib/cpu.o
+  CC       compel/arch/x86/src/lib/infect.o
+  CC       compel/arch/x86/src/lib/handle-elf.o
+  CC       compel/src/lib/handle-elf.o
+  CC       compel/src/lib/infect-rpc.o
+  CC       compel/src/lib/infect-util.o
+  CC       compel/src/lib/infect.o
+  CC       compel/src/lib/ptrace.o
+  AR       compel/libcompel.a
+  HOSTCC   compel/src/main-host.o
+  HOSTCC   compel/src/lib/log-host.o
+  HOSTCC   compel/arch/x86/src/lib/handle-elf-host.o
+  HOSTCC   compel/src/lib/handle-elf-host.o
+  HOSTLINK compel/compel-host-bin
+  DEP      soccr/soccr.d
+  CC       soccr/soccr.o
+  AR       soccr/libsoccr.a
+make[1]: 'soccr/libsoccr.a' is up to date.
+  DEP      criu/arch/x86/sigframe.d
+  DEP      criu/arch/x86/sigaction_compat.d
+  DEP      criu/arch/x86/kerndat.d
+  DEP      criu/arch/x86/crtools.d
+  DEP      criu/arch/x86/cpu.d
+  CC       criu/arch/x86/cpu.o
+  CC       criu/arch/x86/crtools.o
+  CC       criu/arch/x86/kerndat.o
+  CC       criu/arch/x86/sigaction_compat.o
+  CC       criu/arch/x86/sigframe.o
+  LINK     criu/arch/x86/crtools.built-in.o
+  DEP      criu/pie/util-vdso-elf32.d
+  DEP      criu/arch/x86/vdso-pie.d
+  DEP      criu/pie/parasite-vdso.d
+  DEP      criu/pie/util-vdso.d
+  DEP      criu/pie/util.d
+  CC       criu/pie/util.o
+  CC       criu/pie/util-vdso.o
+  CC       criu/pie/parasite-vdso.o
+  CC       criu/arch/x86/vdso-pie.o
+  CC       criu/pie/util-vdso-elf32.o
+  AR       criu/pie/pie.lib.a
+  DEP      criu/pie/restorer.d
+  DEP      criu/arch/x86/sigaction_compat_pie.d
+  DEP      criu/arch/x86/restorer_unmap.d
+  DEP      criu/arch/x86/restorer.d
+  DEP      criu/pie/parasite.d
+  CC       criu/pie/parasite.o
+  LINK     criu/pie/parasite.built-in.o
+  GEN      criu/pie/parasite-blob.h
+  CC       criu/arch/x86/restorer.o
+  CC       criu/arch/x86/restorer_unmap.o
+  CC       criu/arch/x86/sigaction_compat_pie.o
+  CC       criu/pie/restorer.o
+  LINK     criu/pie/restorer.built-in.o
+  GEN      criu/pie/restorer-blob.h
+  DEP      criu/vdso.d
+  DEP      criu/vdso-compat.d
+  DEP      criu/uts_ns.d
+  DEP      criu/util.d
+  DEP      criu/uffd.d
+  DEP      criu/tun.d
+  DEP      criu/tty.d
+  DEP      criu/timerfd.d
+  DEP      criu/sysfs_parse.d
+  DEP      criu/sysctl.d
+  DEP      criu/string.d
+  DEP      criu/stats.d
+  DEP      criu/sockets.d
+  DEP      criu/sk-unix.d
+  DEP      criu/sk-tcp.d
+  DEP      criu/sk-queue.d
+  DEP      criu/sk-packet.d
+  DEP      criu/sk-netlink.d
+  DEP      criu/sk-inet.d
+  DEP      criu/signalfd.d
+  DEP      criu/sigframe.d
+  DEP      criu/shmem.d
+  DEP      criu/seize.d
+  DEP      criu/seccomp.d
+  DEP      criu/rst-malloc.d
+  DEP      criu/rbtree.d
+  DEP      criu/pstree.d
+  DEP      criu/protobuf.d
+  GEN      criu/protobuf-desc-gen.h
+  DEP      criu/protobuf-desc.d
+  DEP      criu/proc_parse.d
+  DEP      criu/plugin.d
+  DEP      criu/pipes.d
+  DEP      criu/pie-util.d
+  DEP      criu/pie-util-vdso.d
+  DEP      criu/pie-util-vdso-elf32.d
+  DEP      criu/path.d
+  DEP      criu/parasite-syscall.d
+  DEP      criu/pagemap.d
+  DEP      criu/pagemap-cache.d
+  DEP      criu/page-xfer.d
+  DEP      criu/page-pipe.d
+  DEP      criu/netfilter.d
+  DEP      criu/net.d
+  DEP      criu/namespaces.d
+  DEP      criu/mount.d
+  DEP      criu/mem.d
+  DEP      criu/lsm.d
+  DEP      criu/log.d
+  DEP      criu/libnetlink.d
+  DEP      criu/kerndat.d
+  DEP      criu/kcmp-ids.d
+  DEP      criu/irmap.d
+  DEP      criu/ipc_ns.d
+  DEP      criu/image.d
+  DEP      criu/image-desc.d
+  DEP      criu/fsnotify.d
+  DEP      criu/filesystems.d
+  DEP      criu/files.d
+  DEP      criu/files-reg.d
+  DEP      criu/files-ext.d
+  DEP      criu/file-lock.d
+  DEP      criu/file-ids.d
+  DEP      criu/fifo.d
+  DEP      criu/fdstore.d
+  DEP      criu/fault-injection.d
+  DEP      criu/external.d
+  DEP      criu/eventpoll.d
+  DEP      criu/eventfd.d
+  DEP      criu/crtools.d
+  DEP      criu/cr-service.d
+  DEP      criu/cr-restore.d
+  DEP      criu/cr-errno.d
+  DEP      criu/cr-dump.d
+  DEP      criu/cr-dedup.d
+  DEP      criu/cr-check.d
+  DEP      criu/config.d
+  DEP      criu/clone-noasan.d
+  DEP      criu/cgroup.d
+  DEP      criu/cgroup-props.d
+  DEP      criu/bitmap.d
+  DEP      criu/bfd.d
+  DEP      criu/autofs.d
+  DEP      criu/aio.d
+  DEP      criu/action-scripts.d
+  CC       criu/action-scripts.o
+  CC       criu/aio.o
+  CC       criu/autofs.o
+  CC       criu/bfd.o
+  CC       criu/bitmap.o
+  CC       criu/cgroup-props.o
+  CC       criu/cgroup.o
+  CC       criu/clone-noasan.o
+  CC       criu/config.o
+  CC       criu/cr-check.o
+  CC       criu/cr-dedup.o
+  CC       criu/cr-dump.o
+  CC       criu/cr-errno.o
+  CC       criu/cr-restore.o
+  CC       criu/cr-service.o
+  CC       criu/crtools.o
+  CC       criu/eventfd.o
+  CC       criu/eventpoll.o
+  CC       criu/external.o
+  CC       criu/fault-injection.o
+  CC       criu/fdstore.o
+  CC       criu/fifo.o
+  CC       criu/file-ids.o
+  CC       criu/file-lock.o
+  CC       criu/files-ext.o
+  CC       criu/files-reg.o
+  CC       criu/files.o
+  CC       criu/filesystems.o
+  CC       criu/fsnotify.o
+  CC       criu/image-desc.o
+  CC       criu/image.o
+  CC       criu/ipc_ns.o
+  CC       criu/irmap.o
+  CC       criu/kcmp-ids.o
+  CC       criu/kerndat.o
+  CC       criu/libnetlink.o
+  CC       criu/log.o
+  CC       criu/lsm.o
+  CC       criu/mem.o
+  CC       criu/mount.o
+  CC       criu/namespaces.o
+  CC       criu/net.o
+  CC       criu/netfilter.o
+  CC       criu/page-pipe.o
+  CC       criu/page-xfer.o
+  CC       criu/pagemap-cache.o
+  CC       criu/pagemap.o
+  CC       criu/parasite-syscall.o
+  CC       criu/path.o
+  CC       criu/pie-util-vdso-elf32.o
+  CC       criu/pie-util-vdso.o
+  CC       criu/pie-util.o
+  CC       criu/pipes.o
+  CC       criu/plugin.o
+  CC       criu/proc_parse.o
+  CC       criu/protobuf-desc.o
+  CC       criu/protobuf.o
+  CC       criu/pstree.o
+  CC       criu/rbtree.o
+  CC       criu/rst-malloc.o
+  CC       criu/seccomp.o
+  CC       criu/seize.o
+  CC       criu/shmem.o
+  CC       criu/sigframe.o
+  CC       criu/signalfd.o
+  CC       criu/sk-inet.o
+  CC       criu/sk-netlink.o
+  CC       criu/sk-packet.o
+  CC       criu/sk-queue.o
+  CC       criu/sk-tcp.o
+  CC       criu/sk-unix.o
+  CC       criu/sockets.o
+  CC       criu/stats.o
+  CC       criu/string.o
+  CC       criu/sysctl.o
+  CC       criu/sysfs_parse.o
+  CC       criu/timerfd.o
+  CC       criu/tty.o
+  CC       criu/tun.o
+  CC       criu/uffd.o
+  CC       criu/util.o
+  CC       criu/uts_ns.o
+  CC       criu/vdso-compat.o
+  CC       criu/vdso.o
+  LINK     criu/built-in.o
+  LINK     criu/criu
+  DEP      lib/c/criu.d
+  CC       images/rpc.pb-c.o
+  CC       lib/c/criu.o
+  LINK     lib/c/built-in.o
+  LINK     lib/c/libcriu.so
+  GEN      magic.py
+[91mfatal: Not a git repository (or any of the parent directories): .git
+[0mmake[1]: Nothing to be done for 'all'.
+make[1]: 'images/built-in.o' is up to date.
+make[1]: 'compel/plugins/std.lib.a' is up to date.
+make[1]: 'compel/plugins/fds.lib.a' is up to date.
+make[1]: 'compel/libcompel.a' is up to date.
+make[1]: 'compel/compel-host-bin' is up to date.
+make[1]: Nothing to be done for 'all'.
+make[1]: 'soccr/libsoccr.a' is up to date.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+make[2]: Nothing to be done for 'all'.
+  INSTALL  criu/criu
+Removing intermediate container c64544e36ae2
+ ---> b22e97d2e825
+Step 8/112 : FROM base AS registry
+ ---> 4659f1c353d9
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Running in be9194a8cfe2
+Removing intermediate container be9194a8cfe2
+ ---> b579b6ac6a2f
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Running in 054e6844ca38
+[91m+ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.vdYtjkC9TP
++ git clone https://github.com/docker/distribution.git /tmp/tmp.vdYtjkC9TP/src/github.com/docker/distribution
+[0m[91mCloning into '/tmp/tmp.vdYtjkC9TP/src/github.com/docker/distribution'...
+[0m[91m+ cd /tmp/tmp.vdYtjkC9TP/src/github.com/docker/distribution
+[0m[91m+ git checkout -q 47a064d4195a9b56133891bbb13620c3ac83a827
+[0m[91m+ GOPATH=/tmp/tmp.vdYtjkC9TP/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.vdYtjkC9TP go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry
+[0m[91m+ rm -rf /tmp/tmp.vdYtjkC9TP
+[0mRemoving intermediate container 054e6844ca38
+ ---> ddb9e1efb5bf
+Step 11/112 : FROM base AS docker-py
+ ---> 4659f1c353d9
+Step 12/112 : ENV DOCKER_PY_COMMIT ac922192959870774ad8428344d9faa0555f7ba6
+ ---> Running in 7dc540d54533
+Removing intermediate container 7dc540d54533
+ ---> 03796e69f5c4
+Step 13/112 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Running in 87003035d24c
+[91mCloning into '/build'...
+[0mRemoving intermediate container 87003035d24c
+ ---> 433435af8253
+Step 14/112 : FROM base AS swagger
+ ---> 4659f1c353d9
+Step 15/112 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Running in 12b675d1dcae
+Removing intermediate container 12b675d1dcae
+ ---> 03d4ebc434b0
+Step 16/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Running in 2e6eb005915f
+[91m+ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.CinwQZTzYU
++ git clone https://github.com/go-swagger/go-swagger.git /tmp/tmp.CinwQZTzYU/src/github.com/go-swagger/go-swagger
+Cloning into '/tmp/tmp.CinwQZTzYU/src/github.com/go-swagger/go-swagger'...
+[0m[91m+ cd /tmp/tmp.CinwQZTzYU/src/github.com/go-swagger/go-swagger
+[0m[91m+ git checkout -q c28258affb0b6251755d92489ef685af8d4ff3eb
+[0m[91m+ go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger
+[0m[91m+ rm -rf /tmp/tmp.CinwQZTzYU
+[0mRemoving intermediate container 2e6eb005915f
+ ---> 9a147c9cc25b
+Step 17/112 : FROM base AS frozen-images
+ ---> 4659f1c353d9
+Step 18/112 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
+ ---> Running in 72a186c12f01
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:5 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.2 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Get:8 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [492 kB]
+Fetched 7907 kB in 2s (3298 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20161130+nmu1+deb9u1).
+The following additional packages will be installed:
+  libjq1 libonig4
+The following NEW packages will be installed:
+  jq libjq1 libonig4
+0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+Need to get 327 kB of archives.
+After this operation, 1157 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libonig4 amd64 6.1.3-2 [146 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libjq1 amd64 1.5+dfsg-1.3 [123 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 jq amd64 1.5+dfsg-1.3 [58.6 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 327 kB in 1s (303 kB/s)
+Selecting previously unselected package libonig4:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15090 files and directories currently installed.)
+Preparing to unpack .../libonig4_6.1.3-2_amd64.deb ...
+Unpacking libonig4:amd64 (6.1.3-2) ...
+Selecting previously unselected package libjq1:amd64.
+Preparing to unpack .../libjq1_1.5+dfsg-1.3_amd64.deb ...
+Unpacking libjq1:amd64 (1.5+dfsg-1.3) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../jq_1.5+dfsg-1.3_amd64.deb ...
+Unpacking jq (1.5+dfsg-1.3) ...
+Setting up libonig4:amd64 (6.1.3-2) ...
+Setting up libjq1:amd64 (1.5+dfsg-1.3) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up jq (1.5+dfsg-1.3) ...
+Removing intermediate container 72a186c12f01
+ ---> f8a9dceb9907
+Step 19/112 : COPY contrib/download-frozen-image-v2.sh /
+ ---> f894f940328d
+Step 20/112 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
+ ---> Running in ca3e06015f95
+Downloading 'library/buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251' (4 layers)...
+[91m######################################################################## 10[0m[91m0.0%
+[0m[91m############                                                              17.4%[0m[91m####################################                                      50.2%[0m[91m##########################################[0m[91m###################     [0m[91m        85.1%[0m[91m###################################################[0m[91m##################### 100.0%
+[0m[91m######################################################################## 10[0m[91m0.0%
+[0m[91m############################                                              4[0m[91m0.1%[0m[91m########################[0m[91m################################################ 100.0%
+[0m[91m######################################################################## 100[0m[91m.0%
+[0m[91m############                                                              17.5%[0m[91m#####################################                                     52.6%[0m[91m###########################################################               82.5%[0m[91m######################################################################## 100.0%[0m[91m
+[0m[91m######################################################################## 100.0%
+[0m[91m#######                                                                   11.0%[0m[91m#################                                                         24.5%[0m[91m###########################                                               37.5%[0m[91m####################################                                      51.1%[0m[91m[0m[91m######[0m[91m##[0m[91m##########[0m[91m#[0m[91m###########################                           [0m[91m [0m[91m64.9%[0m[91m#########################[0m[91m###############################          [0m[91m        78.5%[0m[91m#################################################################         90.7%[0m[91m######################################################################## 100.0%
+[0m
+Downloading 'library/busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0' (1 layers)...
+[91m######################################################################## 100.0%[0m[91m
+[0m[91m##############################################################[0m[91m########## 100.0%
+[0m
+Downloading 'library/busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6' (1 layers)...
+[91m######################################################################## [0m[91m100.0%
+[0m[91m######################################################################## 100.0%[0m[91m
+[0m
+Downloading 'library/debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60' (1 layers)...
+skipping existing 1849cc453dee
+
+Downloading 'library/hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c' (1 layers)...
+[91m######################################################################## [0m[91m100.0%
+[0m[91m######################################################################## [0m[91m100.0%
+[0m
+Download of images into '/build' complete.
+Use something like the following to load the result into a Docker daemon:
+  tar -cC '/build' . | docker load
+Removing intermediate container ca3e06015f95
+ ---> e75738fa04dd
+Step 21/112 : FROM base AS cross-false
+ ---> 4659f1c353d9
+Step 22/112 : FROM base AS cross-true
+ ---> 4659f1c353d9
+Step 23/112 : RUN dpkg --add-architecture armhf
+ ---> Running in f1f8498f3761
+Removing intermediate container f1f8498f3761
+ ---> 87f5639c2af2
+Step 24/112 : RUN dpkg --add-architecture arm64
+ ---> Running in bbb3e21752cd
+Removing intermediate container bbb3e21752cd
+ ---> 11acdf46addc
+Step 25/112 : RUN dpkg --add-architecture armel
+ ---> Running in 612b904ef6e0
+Removing intermediate container 612b904ef6e0
+ ---> cd9e5ac713e9
+Step 26/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y --no-install-recommends 		crossbuild-essential-armhf 		crossbuild-essential-arm64 		crossbuild-essential-armel; 	fi
+ ---> Running in 3f31ba0c925e
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:2 http://security.debian.org/debian-security stretch/updates/main armel Packages [473 kB]
+Ign:3 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:4 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [492 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:6 http://security.debian.org/debian-security stretch/updates/main arm64 Packages [472 kB]
+Get:7 http://security.debian.org/debian-security stretch/updates/main armhf Packages [477 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch-updates/main armhf Packages [27.1 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.2 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch-updates/main arm64 Packages [27.1 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch-updates/main armel Packages [27.1 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 Packages [6924 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main armel Packages [6882 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main armhf Packages [6912 kB]
+Get:17 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Fetched 30.1 MB in 5s (5547 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  binutils-aarch64-linux-gnu binutils-arm-linux-gnueabi
+  binutils-arm-linux-gnueabihf bzip2 cpp-6-aarch64-linux-gnu
+  cpp-6-arm-linux-gnueabi cpp-6-arm-linux-gnueabihf cpp-aarch64-linux-gnu
+  cpp-arm-linux-gnueabi cpp-arm-linux-gnueabihf cross-config dpkg-cross
+  dpkg-dev file g++-6-aarch64-linux-gnu g++-6-arm-linux-gnueabi
+  g++-6-arm-linux-gnueabihf g++-aarch64-linux-gnu g++-arm-linux-gnueabi
+  g++-arm-linux-gnueabihf gcc-6-aarch64-linux-gnu gcc-6-aarch64-linux-gnu-base
+  gcc-6-arm-linux-gnueabi gcc-6-arm-linux-gnueabi-base
+  gcc-6-arm-linux-gnueabihf gcc-6-arm-linux-gnueabihf-base gcc-6-cross-base
+  gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi gcc-arm-linux-gnueabihf
+  libasan3-arm64-cross libasan3-armel-cross libasan3-armhf-cross
+  libatomic1-arm64-cross libatomic1-armel-cross libatomic1-armhf-cross
+  libc6-arm64-cross libc6-armel-cross libc6-armhf-cross libc6-dev-arm64-cross
+  libc6-dev-armel-cross libc6-dev-armhf-cross libconfig-auto-perl
+  libconfig-inifiles-perl libdebian-dpkgcross-perl libfile-homedir-perl
+  libfile-which-perl libgcc-6-dev-arm64-cross libgcc-6-dev-armel-cross
+  libgcc-6-dev-armhf-cross libgcc1-arm64-cross libgcc1-armel-cross
+  libgcc1-armhf-cross libgomp1-arm64-cross libgomp1-armel-cross
+  libgomp1-armhf-cross libicu57 libio-string-perl libitm1-arm64-cross
+  liblocale-gettext-perl libmagic-mgc libmagic1 libstdc++-6-dev-arm64-cross
+  libstdc++-6-dev-armel-cross libstdc++-6-dev-armhf-cross
+  libstdc++6-arm64-cross libstdc++6-armel-cross libstdc++6-armhf-cross
+  libubsan0-arm64-cross libubsan0-armel-cross libubsan0-armhf-cross
+  libxml-libxml-perl libxml-namespacesupport-perl libxml-sax-base-perl
+  libxml-sax-perl libxml-simple-perl libxml2 libyaml-perl
+  linux-libc-dev-arm64-cross linux-libc-dev-armel-cross
+  linux-libc-dev-armhf-cross patch xz-utils
+Suggested packages:
+  binutils-doc bzip2-doc gcc-6-locales cpp-doc binutils-multiarch
+  debian-keyring gcc-6-doc libstdc++6-6-dbg-arm64-cross
+  libstdc++6-6-dbg-armel-cross libstdc++6-6-dbg-armhf-cross
+  libgcc1-dbg-arm64-cross libgomp1-dbg-arm64-cross libitm1-dbg-arm64-cross
+  libatomic1-dbg-arm64-cross libasan3-dbg-arm64-cross liblsan0-dbg-arm64-cross
+  libtsan0-dbg-arm64-cross libubsan0-dbg-arm64-cross
+  libcilkrts5-dbg-arm64-cross libmpx2-dbg-arm64-cross
+  libquadmath0-dbg-arm64-cross libgcc1-dbg-armel-cross
+  libgomp1-dbg-armel-cross libitm1-dbg-armel-cross libatomic1-dbg-armel-cross
+  libasan3-dbg-armel-cross liblsan0-dbg-armel-cross libtsan0-dbg-armel-cross
+  libubsan0-dbg-armel-cross libcilkrts5-dbg-armel-cross
+  libmpx2-dbg-armel-cross libquadmath0-dbg-armel-cross libgcc1-dbg-armhf-cross
+  libgomp1-dbg-armhf-cross libitm1-dbg-armhf-cross libatomic1-dbg-armhf-cross
+  libasan3-dbg-armhf-cross liblsan0-dbg-armhf-cross libtsan0-dbg-armhf-cross
+  libubsan0-dbg-armhf-cross libcilkrts5-dbg-armhf-cross
+  libmpx2-dbg-armhf-cross libquadmath0-dbg-armhf-cross manpages-dev autoconf
+  automake libtool flex bison gdb-aarch64-linux-gnu gcc-doc
+  gdb-arm-linux-gnueabi gdb-arm-linux-gnueabihf libyaml-shell-perl ed
+  diffutils-doc
+Recommended packages:
+  fakeroot build-essential libalgorithm-merge-perl libxml-sax-expat-perl
+  xml-core libyaml-libyaml-perl | libyaml-syck-perl
+The following NEW packages will be installed:
+  binutils-aarch64-linux-gnu binutils-arm-linux-gnueabi
+  binutils-arm-linux-gnueabihf bzip2 cpp-6-aarch64-linux-gnu
+  cpp-6-arm-linux-gnueabi cpp-6-arm-linux-gnueabihf cpp-aarch64-linux-gnu
+  cpp-arm-linux-gnueabi cpp-arm-linux-gnueabihf cross-config
+  crossbuild-essential-arm64 crossbuild-essential-armel
+  crossbuild-essential-armhf dpkg-cross dpkg-dev file g++-6-aarch64-linux-gnu
+  g++-6-arm-linux-gnueabi g++-6-arm-linux-gnueabihf g++-aarch64-linux-gnu
+  g++-arm-linux-gnueabi g++-arm-linux-gnueabihf gcc-6-aarch64-linux-gnu
+  gcc-6-aarch64-linux-gnu-base gcc-6-arm-linux-gnueabi
+  gcc-6-arm-linux-gnueabi-base gcc-6-arm-linux-gnueabihf
+  gcc-6-arm-linux-gnueabihf-base gcc-6-cross-base gcc-aarch64-linux-gnu
+  gcc-arm-linux-gnueabi gcc-arm-linux-gnueabihf libasan3-arm64-cross
+  libasan3-armel-cross libasan3-armhf-cross libatomic1-arm64-cross
+  libatomic1-armel-cross libatomic1-armhf-cross libc6-arm64-cross
+  libc6-armel-cross libc6-armhf-cross libc6-dev-arm64-cross
+  libc6-dev-armel-cross libc6-dev-armhf-cross libconfig-auto-perl
+  libconfig-inifiles-perl libdebian-dpkgcross-perl libfile-homedir-perl
+  libfile-which-perl libgcc-6-dev-arm64-cross libgcc-6-dev-armel-cross
+  libgcc-6-dev-armhf-cross libgcc1-arm64-cross libgcc1-armel-cross
+  libgcc1-armhf-cross libgomp1-arm64-cross libgomp1-armel-cross
+  libgomp1-armhf-cross libicu57 libio-string-perl libitm1-arm64-cross
+  liblocale-gettext-perl libmagic-mgc libmagic1 libstdc++-6-dev-arm64-cross
+  libstdc++-6-dev-armel-cross libstdc++-6-dev-armhf-cross
+  libstdc++6-arm64-cross libstdc++6-armel-cross libstdc++6-armhf-cross
+  libubsan0-arm64-cross libubsan0-armel-cross libubsan0-armhf-cross
+  libxml-libxml-perl libxml-namespacesupport-perl libxml-sax-base-perl
+  libxml-sax-perl libxml-simple-perl libxml2 libyaml-perl
+  linux-libc-dev-arm64-cross linux-libc-dev-armel-cross
+  linux-libc-dev-armhf-cross patch xz-utils
+0 upgraded, 86 newly installed, 0 to remove and 1 not upgraded.
+Need to get 97.4 MB of archives.
+After this operation, 346 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 liblocale-gettext-perl amd64 1.07-3+b1 [18.7 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 bzip2 amd64 1.0.6-8.1 [47.5 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic-mgc amd64 1:5.30-1+deb9u2 [222 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libmagic1 amd64 1:5.30-1+deb9u2 [111 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 file amd64 1:5.30-1+deb9u2 [64.1 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libicu57 amd64 57.1-6+deb9u2 [7700 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml2 amd64 2.9.4+dfsg1-2.2+deb9u2 [920 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 xz-utils amd64 5.2.2-1.2+b1 [266 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-aarch64-linux-gnu-base amd64 6.3.0-18cross1 [180 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cpp-6-aarch64-linux-gnu amd64 6.3.0-18cross1 [5679 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cpp-aarch64-linux-gnu amd64 4:6.3.0-4 [15.7 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-arm-linux-gnueabi-base amd64 6.3.0-18cross1 [180 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cpp-6-arm-linux-gnueabi amd64 6.3.0-18cross1 [6115 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cpp-arm-linux-gnueabi amd64 4:6.3.0-4 [15.7 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-arm-linux-gnueabihf-base amd64 6.3.0-18cross1 [180 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cpp-6-arm-linux-gnueabihf amd64 6.3.0-18cross1 [6108 kB]
+Get:17 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cpp-arm-linux-gnueabihf amd64 4:6.3.0-4 [15.7 kB]
+Get:18 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 binutils-aarch64-linux-gnu amd64 2.28-5 [2801 kB]
+Get:19 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-cross-base all 6.3.0-18cross1 [173 kB]
+Get:20 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libc6-arm64-cross all 2.24-10cross1 [1215 kB]
+Get:21 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgcc1-arm64-cross all 1:6.3.0-18cross1 [29.9 kB]
+Get:22 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgomp1-arm64-cross all 6.3.0-18cross1 [58.0 kB]
+Get:23 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libitm1-arm64-cross all 6.3.0-18cross1 [23.7 kB]
+Get:24 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libatomic1-arm64-cross all 6.3.0-18cross1 [6148 B]
+Get:25 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libstdc++6-arm64-cross all 6.3.0-18cross1 [319 kB]
+Get:26 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libasan3-arm64-cross all 6.3.0-18cross1 [260 kB]
+Get:27 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libubsan0-arm64-cross all 6.3.0-18cross1 [94.3 kB]
+Get:28 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgcc-6-dev-arm64-cross all 6.3.0-18cross1 [549 kB]
+Get:29 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-aarch64-linux-gnu amd64 6.3.0-18cross1 [6019 kB]
+Get:30 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-aarch64-linux-gnu amd64 4:6.3.0-4 [1376 B]
+Get:31 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 linux-libc-dev-arm64-cross all 4.9.25-1cross1 [766 kB]
+Get:32 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libc6-dev-arm64-cross all 2.24-10cross1 [2114 kB]
+Get:33 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libstdc++-6-dev-arm64-cross all 6.3.0-18cross1 [1376 kB]
+Get:34 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 g++-6-aarch64-linux-gnu amd64 6.3.0-18cross1 [6194 kB]
+Get:35 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 g++-aarch64-linux-gnu amd64 4:6.3.0-4 [1094 B]
+Get:36 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 patch amd64 2.7.5-1+deb9u1 [112 kB]
+Get:37 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 dpkg-dev all 1.18.25 [1595 kB]
+Get:38 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libconfig-inifiles-perl all 2.94-1 [53.4 kB]
+Get:39 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libio-string-perl all 1.08-3 [12.3 kB]
+Get:40 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml-namespacesupport-perl all 1.11-1 [14.8 kB]
+Get:41 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml-sax-base-perl all 1.07-1 [23.1 kB]
+Get:42 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml-sax-perl all 0.99+dfsg-2 [68.3 kB]
+Get:43 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml-libxml-perl amd64 2.0128+dfsg-1+deb9u1 [338 kB]
+Get:44 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libxml-simple-perl all 2.22-1 [71.8 kB]
+Get:45 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libyaml-perl all 1.21-1 [64.8 kB]
+Get:46 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libconfig-auto-perl all 0.44-1 [19.5 kB]
+Get:47 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libfile-which-perl all 1.21-1 [14.3 kB]
+Get:48 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libfile-homedir-perl all 1.00-1 [48.9 kB]
+Get:49 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libdebian-dpkgcross-perl all 2.6.15-1 [38.4 kB]
+Get:50 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 cross-config all 2.6.15-1 [39.6 kB]
+Get:51 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 dpkg-cross all 2.6.15-1 [49.2 kB]
+Get:52 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 crossbuild-essential-arm64 all 12.3 [6318 B]
+Get:53 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 binutils-arm-linux-gnueabi amd64 2.28-5 [2754 kB]
+Get:54 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libc6-armel-cross all 2.24-10cross1 [1172 kB]
+Get:55 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgcc1-armel-cross all 1:6.3.0-18cross1 [40.2 kB]
+Get:56 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgomp1-armel-cross all 6.3.0-18cross1 [64.5 kB]
+Get:57 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libatomic1-armel-cross all 6.3.0-18cross1 [6748 B]
+Get:58 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libstdc++6-armel-cross all 6.3.0-18cross1 [291 kB]
+Get:59 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libasan3-armel-cross all 6.3.0-18cross1 [262 kB]
+Get:60 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libubsan0-armel-cross all 6.3.0-18cross1 [91.5 kB]
+Get:61 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgcc-6-dev-armel-cross all 6.3.0-18cross1 [529 kB]
+Get:62 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-arm-linux-gnueabi amd64 6.3.0-18cross1 [6398 kB]
+Get:63 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-arm-linux-gnueabi amd64 4:6.3.0-4 [1376 B]
+Get:64 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 linux-libc-dev-armel-cross all 4.9.25-1cross1 [772 kB]
+Get:65 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libc6-dev-armel-cross all 2.24-10cross1 [2041 kB]
+Get:66 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libstdc++-6-dev-armel-cross all 6.3.0-18cross1 [1457 kB]
+Get:67 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 g++-6-arm-linux-gnueabi amd64 6.3.0-18cross1 [6625 kB]
+Get:68 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 g++-arm-linux-gnueabi amd64 4:6.3.0-4 [1094 B]
+Get:69 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 crossbuild-essential-armel all 12.3 [6312 B]
+Get:70 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 binutils-arm-linux-gnueabihf amd64 2.28-5 [2756 kB]
+Get:71 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libc6-armhf-cross all 2.24-10cross1 [1147 kB]
+Get:72 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgcc1-armhf-cross all 1:6.3.0-18cross1 [38.4 kB]
+Get:73 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgomp1-armhf-cross all 6.3.0-18cross1 [62.9 kB]
+Get:74 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libatomic1-armhf-cross all 6.3.0-18cross1 [5822 B]
+Get:75 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libstdc++6-armhf-cross all 6.3.0-18cross1 [304 kB]
+Get:76 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libasan3-armhf-cross all 6.3.0-18cross1 [276 kB]
+Get:77 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libubsan0-armhf-cross all 6.3.0-18cross1 [92.2 kB]
+Get:78 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgcc-6-dev-armhf-cross all 6.3.0-18cross1 [534 kB]
+Get:79 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-6-arm-linux-gnueabihf amd64 6.3.0-18cross1 [6398 kB]
+Get:80 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gcc-arm-linux-gnueabihf amd64 4:6.3.0-4 [1382 B]
+Get:81 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 linux-libc-dev-armhf-cross all 4.9.25-1cross1 [772 kB]
+Get:82 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libc6-dev-armhf-cross all 2.24-10cross1 [1993 kB]
+Get:83 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libstdc++-6-dev-armhf-cross all 6.3.0-18cross1 [1457 kB]
+Get:84 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 g++-6-arm-linux-gnueabihf amd64 6.3.0-18cross1 [6626 kB]
+Get:85 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 g++-arm-linux-gnueabihf amd64 4:6.3.0-4 [1102 B]
+Get:86 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 crossbuild-essential-armhf all 12.3 [6320 B]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 97.4 MB in 2s (43.0 MB/s)
+Selecting previously unselected package liblocale-gettext-perl.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15090 files and directories currently installed.)
+Preparing to unpack .../00-liblocale-gettext-perl_1.07-3+b1_amd64.deb ...
+Unpacking liblocale-gettext-perl (1.07-3+b1) ...
+Selecting previously unselected package bzip2.
+Preparing to unpack .../01-bzip2_1.0.6-8.1_amd64.deb ...
+Unpacking bzip2 (1.0.6-8.1) ...
+Selecting previously unselected package libmagic-mgc.
+Preparing to unpack .../02-libmagic-mgc_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic-mgc (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libmagic1:amd64.
+Preparing to unpack .../03-libmagic1_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../04-file_1%3a5.30-1+deb9u2_amd64.deb ...
+Unpacking file (1:5.30-1+deb9u2) ...
+Selecting previously unselected package libicu57:amd64.
+Preparing to unpack .../05-libicu57_57.1-6+deb9u2_amd64.deb ...
+Unpacking libicu57:amd64 (57.1-6+deb9u2) ...
+Selecting previously unselected package libxml2:amd64.
+Preparing to unpack .../06-libxml2_2.9.4+dfsg1-2.2+deb9u2_amd64.deb ...
+Unpacking libxml2:amd64 (2.9.4+dfsg1-2.2+deb9u2) ...
+Selecting previously unselected package xz-utils.
+Preparing to unpack .../07-xz-utils_5.2.2-1.2+b1_amd64.deb ...
+Unpacking xz-utils (5.2.2-1.2+b1) ...
+Selecting previously unselected package gcc-6-aarch64-linux-gnu-base:amd64.
+Preparing to unpack .../08-gcc-6-aarch64-linux-gnu-base_6.3.0-18cross1_amd64.deb ...
+Unpacking gcc-6-aarch64-linux-gnu-base:amd64 (6.3.0-18cross1) ...
+Selecting previously unselected package cpp-6-aarch64-linux-gnu.
+Preparing to unpack .../09-cpp-6-aarch64-linux-gnu_6.3.0-18cross1_amd64.deb ...
+Unpacking cpp-6-aarch64-linux-gnu (6.3.0-18cross1) ...
+Selecting previously unselected package cpp-aarch64-linux-gnu.
+Preparing to unpack .../10-cpp-aarch64-linux-gnu_4%3a6.3.0-4_amd64.deb ...
+Unpacking cpp-aarch64-linux-gnu (4:6.3.0-4) ...
+Selecting previously unselected package gcc-6-arm-linux-gnueabi-base:amd64.
+Preparing to unpack .../11-gcc-6-arm-linux-gnueabi-base_6.3.0-18cross1_amd64.deb ...
+Unpacking gcc-6-arm-linux-gnueabi-base:amd64 (6.3.0-18cross1) ...
+Selecting previously unselected package cpp-6-arm-linux-gnueabi.
+Preparing to unpack .../12-cpp-6-arm-linux-gnueabi_6.3.0-18cross1_amd64.deb ...
+Unpacking cpp-6-arm-linux-gnueabi (6.3.0-18cross1) ...
+Selecting previously unselected package cpp-arm-linux-gnueabi.
+Preparing to unpack .../13-cpp-arm-linux-gnueabi_4%3a6.3.0-4_amd64.deb ...
+Unpacking cpp-arm-linux-gnueabi (4:6.3.0-4) ...
+Selecting previously unselected package gcc-6-arm-linux-gnueabihf-base:amd64.
+Preparing to unpack .../14-gcc-6-arm-linux-gnueabihf-base_6.3.0-18cross1_amd64.deb ...
+Unpacking gcc-6-arm-linux-gnueabihf-base:amd64 (6.3.0-18cross1) ...
+Selecting previously unselected package cpp-6-arm-linux-gnueabihf.
+Preparing to unpack .../15-cpp-6-arm-linux-gnueabihf_6.3.0-18cross1_amd64.deb ...
+Unpacking cpp-6-arm-linux-gnueabihf (6.3.0-18cross1) ...
+Selecting previously unselected package cpp-arm-linux-gnueabihf.
+Preparing to unpack .../16-cpp-arm-linux-gnueabihf_4%3a6.3.0-4_amd64.deb ...
+Unpacking cpp-arm-linux-gnueabihf (4:6.3.0-4) ...
+Selecting previously unselected package binutils-aarch64-linux-gnu.
+Preparing to unpack .../17-binutils-aarch64-linux-gnu_2.28-5_amd64.deb ...
+Unpacking binutils-aarch64-linux-gnu (2.28-5) ...
+Selecting previously unselected package gcc-6-cross-base.
+Preparing to unpack .../18-gcc-6-cross-base_6.3.0-18cross1_all.deb ...
+Unpacking gcc-6-cross-base (6.3.0-18cross1) ...
+Selecting previously unselected package libc6-arm64-cross.
+Preparing to unpack .../19-libc6-arm64-cross_2.24-10cross1_all.deb ...
+Unpacking libc6-arm64-cross (2.24-10cross1) ...
+Selecting previously unselected package libgcc1-arm64-cross.
+Preparing to unpack .../20-libgcc1-arm64-cross_1%3a6.3.0-18cross1_all.deb ...
+Unpacking libgcc1-arm64-cross (1:6.3.0-18cross1) ...
+Selecting previously unselected package libgomp1-arm64-cross.
+Preparing to unpack .../21-libgomp1-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libgomp1-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libitm1-arm64-cross.
+Preparing to unpack .../22-libitm1-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libitm1-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libatomic1-arm64-cross.
+Preparing to unpack .../23-libatomic1-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libatomic1-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libstdc++6-arm64-cross.
+Preparing to unpack .../24-libstdc++6-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libstdc++6-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libasan3-arm64-cross.
+Preparing to unpack .../25-libasan3-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libasan3-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libubsan0-arm64-cross.
+Preparing to unpack .../26-libubsan0-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libubsan0-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libgcc-6-dev-arm64-cross.
+Preparing to unpack .../27-libgcc-6-dev-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libgcc-6-dev-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package gcc-6-aarch64-linux-gnu.
+Preparing to unpack .../28-gcc-6-aarch64-linux-gnu_6.3.0-18cross1_amd64.deb ...
+Unpacking gcc-6-aarch64-linux-gnu (6.3.0-18cross1) ...
+Selecting previously unselected package gcc-aarch64-linux-gnu.
+Preparing to unpack .../29-gcc-aarch64-linux-gnu_4%3a6.3.0-4_amd64.deb ...
+Unpacking gcc-aarch64-linux-gnu (4:6.3.0-4) ...
+Selecting previously unselected package linux-libc-dev-arm64-cross.
+Preparing to unpack .../30-linux-libc-dev-arm64-cross_4.9.25-1cross1_all.deb ...
+Unpacking linux-libc-dev-arm64-cross (4.9.25-1cross1) ...
+Selecting previously unselected package libc6-dev-arm64-cross.
+Preparing to unpack .../31-libc6-dev-arm64-cross_2.24-10cross1_all.deb ...
+Unpacking libc6-dev-arm64-cross (2.24-10cross1) ...
+Selecting previously unselected package libstdc++-6-dev-arm64-cross.
+Preparing to unpack .../32-libstdc++-6-dev-arm64-cross_6.3.0-18cross1_all.deb ...
+Unpacking libstdc++-6-dev-arm64-cross (6.3.0-18cross1) ...
+Selecting previously unselected package g++-6-aarch64-linux-gnu.
+Preparing to unpack .../33-g++-6-aarch64-linux-gnu_6.3.0-18cross1_amd64.deb ...
+Unpacking g++-6-aarch64-linux-gnu (6.3.0-18cross1) ...
+Selecting previously unselected package g++-aarch64-linux-gnu.
+Preparing to unpack .../34-g++-aarch64-linux-gnu_4%3a6.3.0-4_amd64.deb ...
+Unpacking g++-aarch64-linux-gnu (4:6.3.0-4) ...
+Selecting previously unselected package patch.
+Preparing to unpack .../35-patch_2.7.5-1+deb9u1_amd64.deb ...
+Unpacking patch (2.7.5-1+deb9u1) ...
+Selecting previously unselected package dpkg-dev.
+Preparing to unpack .../36-dpkg-dev_1.18.25_all.deb ...
+Unpacking dpkg-dev (1.18.25) ...
+Selecting previously unselected package libconfig-inifiles-perl.
+Preparing to unpack .../37-libconfig-inifiles-perl_2.94-1_all.deb ...
+Unpacking libconfig-inifiles-perl (2.94-1) ...
+Selecting previously unselected package libio-string-perl.
+Preparing to unpack .../38-libio-string-perl_1.08-3_all.deb ...
+Unpacking libio-string-perl (1.08-3) ...
+Selecting previously unselected package libxml-namespacesupport-perl.
+Preparing to unpack .../39-libxml-namespacesupport-perl_1.11-1_all.deb ...
+Unpacking libxml-namespacesupport-perl (1.11-1) ...
+Selecting previously unselected package libxml-sax-base-perl.
+Preparing to unpack .../40-libxml-sax-base-perl_1.07-1_all.deb ...
+Unpacking libxml-sax-base-perl (1.07-1) ...
+Selecting previously unselected package libxml-sax-perl.
+Preparing to unpack .../41-libxml-sax-perl_0.99+dfsg-2_all.deb ...
+Unpacking libxml-sax-perl (0.99+dfsg-2) ...
+Selecting previously unselected package libxml-libxml-perl.
+Preparing to unpack .../42-libxml-libxml-perl_2.0128+dfsg-1+deb9u1_amd64.deb ...
+Unpacking libxml-libxml-perl (2.0128+dfsg-1+deb9u1) ...
+Selecting previously unselected package libxml-simple-perl.
+Preparing to unpack .../43-libxml-simple-perl_2.22-1_all.deb ...
+Unpacking libxml-simple-perl (2.22-1) ...
+Selecting previously unselected package libyaml-perl.
+Preparing to unpack .../44-libyaml-perl_1.21-1_all.deb ...
+Unpacking libyaml-perl (1.21-1) ...
+Selecting previously unselected package libconfig-auto-perl.
+Preparing to unpack .../45-libconfig-auto-perl_0.44-1_all.deb ...
+Unpacking libconfig-auto-perl (0.44-1) ...
+Selecting previously unselected package libfile-which-perl.
+Preparing to unpack .../46-libfile-which-perl_1.21-1_all.deb ...
+Unpacking libfile-which-perl (1.21-1) ...
+Selecting previously unselected package libfile-homedir-perl.
+Preparing to unpack .../47-libfile-homedir-perl_1.00-1_all.deb ...
+Unpacking libfile-homedir-perl (1.00-1) ...
+Selecting previously unselected package libdebian-dpkgcross-perl.
+Preparing to unpack .../48-libdebian-dpkgcross-perl_2.6.15-1_all.deb ...
+Unpacking libdebian-dpkgcross-perl (2.6.15-1) ...
+Selecting previously unselected package cross-config.
+Preparing to unpack .../49-cross-config_2.6.15-1_all.deb ...
+Unpacking cross-config (2.6.15-1) ...
+Selecting previously unselected package dpkg-cross.
+Preparing to unpack .../50-dpkg-cross_2.6.15-1_all.deb ...
+Unpacking dpkg-cross (2.6.15-1) ...
+Selecting previously unselected package crossbuild-essential-arm64.
+Preparing to unpack .../51-crossbuild-essential-arm64_12.3_all.deb ...
+Unpacking crossbuild-essential-arm64 (12.3) ...
+Selecting previously unselected package binutils-arm-linux-gnueabi.
+Preparing to unpack .../52-binutils-arm-linux-gnueabi_2.28-5_amd64.deb ...
+Unpacking binutils-arm-linux-gnueabi (2.28-5) ...
+Selecting previously unselected package libc6-armel-cross.
+Preparing to unpack .../53-libc6-armel-cross_2.24-10cross1_all.deb ...
+Unpacking libc6-armel-cross (2.24-10cross1) ...
+Selecting previously unselected package libgcc1-armel-cross.
+Preparing to unpack .../54-libgcc1-armel-cross_1%3a6.3.0-18cross1_all.deb ...
+Unpacking libgcc1-armel-cross (1:6.3.0-18cross1) ...
+Selecting previously unselected package libgomp1-armel-cross.
+Preparing to unpack .../55-libgomp1-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libgomp1-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libatomic1-armel-cross.
+Preparing to unpack .../56-libatomic1-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libatomic1-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libstdc++6-armel-cross.
+Preparing to unpack .../57-libstdc++6-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libstdc++6-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libasan3-armel-cross.
+Preparing to unpack .../58-libasan3-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libasan3-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libubsan0-armel-cross.
+Preparing to unpack .../59-libubsan0-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libubsan0-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libgcc-6-dev-armel-cross.
+Preparing to unpack .../60-libgcc-6-dev-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libgcc-6-dev-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package gcc-6-arm-linux-gnueabi.
+Preparing to unpack .../61-gcc-6-arm-linux-gnueabi_6.3.0-18cross1_amd64.deb ...
+Unpacking gcc-6-arm-linux-gnueabi (6.3.0-18cross1) ...
+Selecting previously unselected package gcc-arm-linux-gnueabi.
+Preparing to unpack .../62-gcc-arm-linux-gnueabi_4%3a6.3.0-4_amd64.deb ...
+Unpacking gcc-arm-linux-gnueabi (4:6.3.0-4) ...
+Selecting previously unselected package linux-libc-dev-armel-cross.
+Preparing to unpack .../63-linux-libc-dev-armel-cross_4.9.25-1cross1_all.deb ...
+Unpacking linux-libc-dev-armel-cross (4.9.25-1cross1) ...
+Selecting previously unselected package libc6-dev-armel-cross.
+Preparing to unpack .../64-libc6-dev-armel-cross_2.24-10cross1_all.deb ...
+Unpacking libc6-dev-armel-cross (2.24-10cross1) ...
+Selecting previously unselected package libstdc++-6-dev-armel-cross.
+Preparing to unpack .../65-libstdc++-6-dev-armel-cross_6.3.0-18cross1_all.deb ...
+Unpacking libstdc++-6-dev-armel-cross (6.3.0-18cross1) ...
+Selecting previously unselected package g++-6-arm-linux-gnueabi.
+Preparing to unpack .../66-g++-6-arm-linux-gnueabi_6.3.0-18cross1_amd64.deb ...
+Unpacking g++-6-arm-linux-gnueabi (6.3.0-18cross1) ...
+Selecting previously unselected package g++-arm-linux-gnueabi.
+Preparing to unpack .../67-g++-arm-linux-gnueabi_4%3a6.3.0-4_amd64.deb ...
+Unpacking g++-arm-linux-gnueabi (4:6.3.0-4) ...
+Selecting previously unselected package crossbuild-essential-armel.
+Preparing to unpack .../68-crossbuild-essential-armel_12.3_all.deb ...
+Unpacking crossbuild-essential-armel (12.3) ...
+Selecting previously unselected package binutils-arm-linux-gnueabihf.
+Preparing to unpack .../69-binutils-arm-linux-gnueabihf_2.28-5_amd64.deb ...
+Unpacking binutils-arm-linux-gnueabihf (2.28-5) ...
+Selecting previously unselected package libc6-armhf-cross.
+Preparing to unpack .../70-libc6-armhf-cross_2.24-10cross1_all.deb ...
+Unpacking libc6-armhf-cross (2.24-10cross1) ...
+Selecting previously unselected package libgcc1-armhf-cross.
+Preparing to unpack .../71-libgcc1-armhf-cross_1%3a6.3.0-18cross1_all.deb ...
+Unpacking libgcc1-armhf-cross (1:6.3.0-18cross1) ...
+Selecting previously unselected package libgomp1-armhf-cross.
+Preparing to unpack .../72-libgomp1-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libgomp1-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libatomic1-armhf-cross.
+Preparing to unpack .../73-libatomic1-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libatomic1-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libstdc++6-armhf-cross.
+Preparing to unpack .../74-libstdc++6-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libstdc++6-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libasan3-armhf-cross.
+Preparing to unpack .../75-libasan3-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libasan3-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libubsan0-armhf-cross.
+Preparing to unpack .../76-libubsan0-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libubsan0-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package libgcc-6-dev-armhf-cross.
+Preparing to unpack .../77-libgcc-6-dev-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libgcc-6-dev-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package gcc-6-arm-linux-gnueabihf.
+Preparing to unpack .../78-gcc-6-arm-linux-gnueabihf_6.3.0-18cross1_amd64.deb ...
+Unpacking gcc-6-arm-linux-gnueabihf (6.3.0-18cross1) ...
+Selecting previously unselected package gcc-arm-linux-gnueabihf.
+Preparing to unpack .../79-gcc-arm-linux-gnueabihf_4%3a6.3.0-4_amd64.deb ...
+Unpacking gcc-arm-linux-gnueabihf (4:6.3.0-4) ...
+Selecting previously unselected package linux-libc-dev-armhf-cross.
+Preparing to unpack .../80-linux-libc-dev-armhf-cross_4.9.25-1cross1_all.deb ...
+Unpacking linux-libc-dev-armhf-cross (4.9.25-1cross1) ...
+Selecting previously unselected package libc6-dev-armhf-cross.
+Preparing to unpack .../81-libc6-dev-armhf-cross_2.24-10cross1_all.deb ...
+Unpacking libc6-dev-armhf-cross (2.24-10cross1) ...
+Selecting previously unselected package libstdc++-6-dev-armhf-cross.
+Preparing to unpack .../82-libstdc++-6-dev-armhf-cross_6.3.0-18cross1_all.deb ...
+Unpacking libstdc++-6-dev-armhf-cross (6.3.0-18cross1) ...
+Selecting previously unselected package g++-6-arm-linux-gnueabihf.
+Preparing to unpack .../83-g++-6-arm-linux-gnueabihf_6.3.0-18cross1_amd64.deb ...
+Unpacking g++-6-arm-linux-gnueabihf (6.3.0-18cross1) ...
+Selecting previously unselected package g++-arm-linux-gnueabihf.
+Preparing to unpack .../84-g++-arm-linux-gnueabihf_4%3a6.3.0-4_amd64.deb ...
+Unpacking g++-arm-linux-gnueabihf (4:6.3.0-4) ...
+Selecting previously unselected package crossbuild-essential-armhf.
+Preparing to unpack .../85-crossbuild-essential-armhf_12.3_all.deb ...
+Unpacking crossbuild-essential-armhf (12.3) ...
+Setting up libc6-armhf-cross (2.24-10cross1) ...
+Setting up libconfig-inifiles-perl (2.94-1) ...
+Setting up libxml-namespacesupport-perl (1.11-1) ...
+Setting up libfile-which-perl (1.21-1) ...
+Setting up gcc-6-arm-linux-gnueabi-base:amd64 (6.3.0-18cross1) ...
+Setting up cpp-6-arm-linux-gnueabi (6.3.0-18cross1) ...
+Setting up gcc-6-cross-base (6.3.0-18cross1) ...
+Setting up libfile-homedir-perl (1.00-1) ...
+Setting up linux-libc-dev-armel-cross (4.9.25-1cross1) ...
+Setting up binutils-arm-linux-gnueabihf (2.28-5) ...
+Setting up libyaml-perl (1.21-1) ...
+Setting up libgomp1-armhf-cross (6.3.0-18cross1) ...
+Setting up libicu57:amd64 (57.1-6+deb9u2) ...
+Setting up linux-libc-dev-armhf-cross (4.9.25-1cross1) ...
+Setting up libxml2:amd64 (2.9.4+dfsg1-2.2+deb9u2) ...
+Setting up libatomic1-armhf-cross (6.3.0-18cross1) ...
+Setting up libmagic-mgc (1:5.30-1+deb9u2) ...
+Setting up bzip2 (1.0.6-8.1) ...
+Setting up libmagic1:amd64 (1:5.30-1+deb9u2) ...
+Setting up libxml-sax-base-perl (1.07-1) ...
+Setting up patch (2.7.5-1+deb9u1) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up libc6-arm64-cross (2.24-10cross1) ...
+Setting up cross-config (2.6.15-1) ...
+Setting up binutils-aarch64-linux-gnu (2.28-5) ...
+Setting up xz-utils (5.2.2-1.2+b1) ...
+update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+Setting up libgomp1-arm64-cross (6.3.0-18cross1) ...
+Setting up linux-libc-dev-arm64-cross (4.9.25-1cross1) ...
+Setting up libc6-armel-cross (2.24-10cross1) ...
+Setting up libgcc1-arm64-cross (1:6.3.0-18cross1) ...
+Setting up libio-string-perl (1.08-3) ...
+Setting up liblocale-gettext-perl (1.07-3+b1) ...
+Setting up binutils-arm-linux-gnueabi (2.28-5) ...
+Setting up gcc-6-aarch64-linux-gnu-base:amd64 (6.3.0-18cross1) ...
+Setting up libxml-sax-perl (0.99+dfsg-2) ...
+update-perl-sax-parsers: Registering Perl SAX parser XML::SAX::PurePerl with priority 10...
+update-perl-sax-parsers: Updating overall Perl SAX parser modules info file...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/perl/XML/SAX/ParserDetails.ini with new version
+Setting up gcc-6-arm-linux-gnueabihf-base:amd64 (6.3.0-18cross1) ...
+Setting up libatomic1-armel-cross (6.3.0-18cross1) ...
+Setting up cpp-6-arm-linux-gnueabihf (6.3.0-18cross1) ...
+Setting up libgomp1-armel-cross (6.3.0-18cross1) ...
+Setting up cpp-6-aarch64-linux-gnu (6.3.0-18cross1) ...
+Setting up cpp-arm-linux-gnueabi (4:6.3.0-4) ...
+Setting up libgcc1-armhf-cross (1:6.3.0-18cross1) ...
+Setting up libstdc++6-armhf-cross (6.3.0-18cross1) ...
+Setting up libgcc1-armel-cross (1:6.3.0-18cross1) ...
+Setting up libatomic1-arm64-cross (6.3.0-18cross1) ...
+Setting up libc6-dev-armhf-cross (2.24-10cross1) ...
+Setting up libc6-dev-armel-cross (2.24-10cross1) ...
+Setting up libstdc++6-arm64-cross (6.3.0-18cross1) ...
+Setting up libubsan0-arm64-cross (6.3.0-18cross1) ...
+Setting up file (1:5.30-1+deb9u2) ...
+Setting up libitm1-arm64-cross (6.3.0-18cross1) ...
+Setting up libstdc++6-armel-cross (6.3.0-18cross1) ...
+Setting up libc6-dev-arm64-cross (2.24-10cross1) ...
+Setting up dpkg-dev (1.18.25) ...
+Setting up libasan3-armel-cross (6.3.0-18cross1) ...
+Setting up cpp-aarch64-linux-gnu (4:6.3.0-4) ...
+Setting up cpp-arm-linux-gnueabihf (4:6.3.0-4) ...
+Setting up libxml-libxml-perl (2.0128+dfsg-1+deb9u1) ...
+update-perl-sax-parsers: Registering Perl SAX parser XML::LibXML::SAX::Parser with priority 50...
+update-perl-sax-parsers: Registering Perl SAX parser XML::LibXML::SAX with priority 50...
+update-perl-sax-parsers: Updating overall Perl SAX parser modules info file...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Replacing config file /etc/perl/XML/SAX/ParserDetails.ini with new version
+Setting up libubsan0-armhf-cross (6.3.0-18cross1) ...
+Setting up libasan3-armhf-cross (6.3.0-18cross1) ...
+Setting up libgcc-6-dev-armhf-cross (6.3.0-18cross1) ...
+Setting up libubsan0-armel-cross (6.3.0-18cross1) ...
+Setting up libstdc++-6-dev-armhf-cross (6.3.0-18cross1) ...
+Setting up libasan3-arm64-cross (6.3.0-18cross1) ...
+Setting up gcc-6-arm-linux-gnueabihf (6.3.0-18cross1) ...
+Setting up g++-6-arm-linux-gnueabihf (6.3.0-18cross1) ...
+Setting up libxml-simple-perl (2.22-1) ...
+Setting up libgcc-6-dev-arm64-cross (6.3.0-18cross1) ...
+Setting up libconfig-auto-perl (0.44-1) ...
+Setting up gcc-arm-linux-gnueabihf (4:6.3.0-4) ...
+Setting up libdebian-dpkgcross-perl (2.6.15-1) ...
+Setting up gcc-6-aarch64-linux-gnu (6.3.0-18cross1) ...
+Setting up libgcc-6-dev-armel-cross (6.3.0-18cross1) ...
+Setting up gcc-aarch64-linux-gnu (4:6.3.0-4) ...
+Setting up gcc-6-arm-linux-gnueabi (6.3.0-18cross1) ...
+Setting up g++-arm-linux-gnueabihf (4:6.3.0-4) ...
+Setting up libstdc++-6-dev-arm64-cross (6.3.0-18cross1) ...
+Setting up dpkg-cross (2.6.15-1) ...
+Setting up gcc-arm-linux-gnueabi (4:6.3.0-4) ...
+Setting up libstdc++-6-dev-armel-cross (6.3.0-18cross1) ...
+Setting up g++-6-aarch64-linux-gnu (6.3.0-18cross1) ...
+Setting up g++-aarch64-linux-gnu (4:6.3.0-4) ...
+Setting up crossbuild-essential-armhf (12.3) ...
+Setting up crossbuild-essential-arm64 (12.3) ...
+Setting up g++-6-arm-linux-gnueabi (6.3.0-18cross1) ...
+Setting up g++-arm-linux-gnueabi (4:6.3.0-4) ...
+Setting up crossbuild-essential-armel (12.3) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Removing intermediate container 3f31ba0c925e
+ ---> 12a023d9a44e
+Step 27/112 : FROM cross-${CROSS} as dev-base
+ ---> 4659f1c353d9
+Step 28/112 : FROM dev-base AS runtime-dev-cross-false
+ ---> 4659f1c353d9
+Step 29/112 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
+ ---> Running in 9eef430f3984
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Get:2 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [492 kB]
+Ign:3 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main amd64 Packages [27.2 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [7082 kB]
+Fetched 7907 kB in 2s (3370 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libapparmor1 libseccomp2
+Suggested packages:
+  seccomp
+The following NEW packages will be installed:
+  libapparmor-dev libapparmor1 libseccomp-dev libseccomp2
+0 upgraded, 4 newly installed, 0 to remove and 1 not upgraded.
+Need to get 300 kB of archives.
+After this operation, 1201 kB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libseccomp2 amd64 2.3.1-2.1+deb9u1 [40.7 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libseccomp-dev amd64 2.3.1-2.1+deb9u1 [61.0 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libapparmor1 amd64 2.11.0-3+deb9u2 [78.9 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libapparmor-dev amd64 2.11.0-3+deb9u2 [119 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 300 kB in 1s (265 kB/s)
+Selecting previously unselected package libseccomp2:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15090 files and directories currently installed.)
+Preparing to unpack .../libseccomp2_2.3.1-2.1+deb9u1_amd64.deb ...
+Unpacking libseccomp2:amd64 (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:amd64.
+Preparing to unpack .../libseccomp-dev_2.3.1-2.1+deb9u1_amd64.deb ...
+Unpacking libseccomp-dev:amd64 (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libapparmor1:amd64.
+Preparing to unpack .../libapparmor1_2.11.0-3+deb9u2_amd64.deb ...
+Unpacking libapparmor1:amd64 (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:amd64.
+Preparing to unpack .../libapparmor-dev_2.11.0-3+deb9u2_amd64.deb ...
+Unpacking libapparmor-dev:amd64 (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up libseccomp2:amd64 (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor1:amd64 (2.11.0-3+deb9u2) ...
+Setting up libseccomp-dev:amd64 (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor-dev:amd64 (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Removing intermediate container 9eef430f3984
+ ---> d45ce2610e47
+Step 30/112 : FROM cross-true AS runtime-dev-cross-true
+ ---> 12a023d9a44e
+Step 31/112 : RUN if [ "$(go env GOHOSTARCH)" = "amd64" ]; then 	apt-get update 	&& apt-get install -y 		libseccomp-dev:armhf 		libseccomp-dev:arm64 		libseccomp-dev:armel 		libapparmor-dev:armhf 		libapparmor-dev:arm64 		libapparmor-dev:armel 		libapparmor-dev 		libseccomp-dev; 	fi
+ ---> Running in fe1bb528ed2b
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Hit:2 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+Hit:3 http://cdn-fastly.deb.debian.org/debian stretch Release
+Hit:4 http://security.debian.org/debian-security stretch/updates InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  gcc-6-base:armhf gcc-6-base:arm64 gcc-6-base:armel libapparmor1
+  libapparmor1:armhf libapparmor1:arm64 libapparmor1:armel libc6:armhf
+  libc6:arm64 libc6:armel libgcc1:armhf libgcc1:arm64 libgcc1:armel
+  libseccomp2 libseccomp2:armhf libseccomp2:arm64 libseccomp2:armel
+Suggested packages:
+  glibc-doc:armhf libc-l10n:armhf locales:armhf glibc-doc:arm64
+  libc-l10n:arm64 locales:arm64 glibc-doc:armel libc-l10n:armel locales:armel
+  seccomp seccomp:armhf seccomp:arm64 seccomp:armel
+The following NEW packages will be installed:
+  gcc-6-base:armhf gcc-6-base:arm64 gcc-6-base:armel libapparmor-dev
+  libapparmor-dev:armhf libapparmor-dev:arm64 libapparmor-dev:armel
+  libapparmor1 libapparmor1:armhf libapparmor1:arm64 libapparmor1:armel
+  libc6:armhf libc6:arm64 libc6:armel libgcc1:armhf libgcc1:arm64
+  libgcc1:armel libseccomp-dev libseccomp-dev:armhf libseccomp-dev:arm64
+  libseccomp-dev:armel libseccomp2 libseccomp2:armhf libseccomp2:arm64
+  libseccomp2:armel
+0 upgraded, 25 newly installed, 0 to remove and 1 not upgraded.
+Need to get 8897 kB of archives.
+After this operation, 33.0 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main armhf gcc-6-base armhf 6.3.0-18+deb9u1 [180 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 gcc-6-base arm64 6.3.0-18+deb9u1 [180 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main armel gcc-6-base armel 6.3.0-18+deb9u1 [180 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main armhf libgcc1 armhf 1:6.3.0-18+deb9u1 [38.5 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main armhf libc6 armhf 2.24-11+deb9u4 [2341 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 libgcc1 arm64 1:6.3.0-18+deb9u1 [30.0 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 libc6 arm64 2.24-11+deb9u4 [2395 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main armel libgcc1 armel 1:6.3.0-18+deb9u1 [40.3 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main armel libc6 armel 2.24-11+deb9u4 [2360 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libseccomp2 amd64 2.3.1-2.1+deb9u1 [40.7 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libseccomp-dev amd64 2.3.1-2.1+deb9u1 [61.0 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main armhf libseccomp2 armhf 2.3.1-2.1+deb9u1 [31.3 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main armhf libseccomp-dev armhf 2.3.1-2.1+deb9u1 [58.1 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 libseccomp2 arm64 2.3.1-2.1+deb9u1 [36.2 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 libseccomp-dev arm64 2.3.1-2.1+deb9u1 [58.1 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main armel libseccomp2 armel 2.3.1-2.1+deb9u1 [32.7 kB]
+Get:17 http://cdn-fastly.deb.debian.org/debian stretch/main armel libseccomp-dev armel 2.3.1-2.1+deb9u1 [58.6 kB]
+Get:18 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libapparmor1 amd64 2.11.0-3+deb9u2 [78.9 kB]
+Get:19 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libapparmor-dev amd64 2.11.0-3+deb9u2 [119 kB]
+Get:20 http://cdn-fastly.deb.debian.org/debian stretch/main armhf libapparmor1 armhf 2.11.0-3+deb9u2 [75.0 kB]
+Get:21 http://cdn-fastly.deb.debian.org/debian stretch/main armhf libapparmor-dev armhf 2.11.0-3+deb9u2 [116 kB]
+Get:22 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 libapparmor1 arm64 2.11.0-3+deb9u2 [75.7 kB]
+Get:23 http://cdn-fastly.deb.debian.org/debian stretch/main arm64 libapparmor-dev arm64 2.11.0-3+deb9u2 [117 kB]
+Get:24 http://cdn-fastly.deb.debian.org/debian stretch/main armel libapparmor1 armel 2.11.0-3+deb9u2 [75.8 kB]
+Get:25 http://cdn-fastly.deb.debian.org/debian stretch/main armel libapparmor-dev armel 2.11.0-3+deb9u2 [117 kB]
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0mFetched 8897 kB in 1s (6783 kB/s)
+Selecting previously unselected package gcc-6-base:arm64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 22838 files and directories currently installed.)
+Preparing to unpack .../00-gcc-6-base_6.3.0-18+deb9u1_arm64.deb ...
+Unpacking gcc-6-base:arm64 (6.3.0-18+deb9u1) ...
+Selecting previously unselected package gcc-6-base:armel.
+Preparing to unpack .../01-gcc-6-base_6.3.0-18+deb9u1_armel.deb ...
+Unpacking gcc-6-base:armel (6.3.0-18+deb9u1) ...
+Selecting previously unselected package gcc-6-base:armhf.
+Preparing to unpack .../02-gcc-6-base_6.3.0-18+deb9u1_armhf.deb ...
+Unpacking gcc-6-base:armhf (6.3.0-18+deb9u1) ...
+Selecting previously unselected package libgcc1:armhf.
+Preparing to unpack .../03-libgcc1_1%3a6.3.0-18+deb9u1_armhf.deb ...
+Unpacking libgcc1:armhf (1:6.3.0-18+deb9u1) ...
+Selecting previously unselected package libc6:armhf.
+Preparing to unpack .../04-libc6_2.24-11+deb9u4_armhf.deb ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Unpacking libc6:armhf (2.24-11+deb9u4) ...
+Selecting previously unselected package libgcc1:arm64.
+Preparing to unpack .../05-libgcc1_1%3a6.3.0-18+deb9u1_arm64.deb ...
+Unpacking libgcc1:arm64 (1:6.3.0-18+deb9u1) ...
+Selecting previously unselected package libc6:arm64.
+Preparing to unpack .../06-libc6_2.24-11+deb9u4_arm64.deb ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Unpacking libc6:arm64 (2.24-11+deb9u4) ...
+Selecting previously unselected package libgcc1:armel.
+Preparing to unpack .../07-libgcc1_1%3a6.3.0-18+deb9u1_armel.deb ...
+Unpacking libgcc1:armel (1:6.3.0-18+deb9u1) ...
+Selecting previously unselected package libc6:armel.
+Preparing to unpack .../08-libc6_2.24-11+deb9u4_armel.deb ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Unpacking libc6:armel (2.24-11+deb9u4) ...
+Selecting previously unselected package libseccomp2:armhf.
+Preparing to unpack .../09-libseccomp2_2.3.1-2.1+deb9u1_armhf.deb ...
+Unpacking libseccomp2:armhf (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:armhf.
+Preparing to unpack .../10-libseccomp-dev_2.3.1-2.1+deb9u1_armhf.deb ...
+Unpacking libseccomp-dev:armhf (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp2:armel.
+Preparing to unpack .../11-libseccomp2_2.3.1-2.1+deb9u1_armel.deb ...
+Unpacking libseccomp2:armel (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:armel.
+Preparing to unpack .../12-libseccomp-dev_2.3.1-2.1+deb9u1_armel.deb ...
+Unpacking libseccomp-dev:armel (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp2:arm64.
+Preparing to unpack .../13-libseccomp2_2.3.1-2.1+deb9u1_arm64.deb ...
+Unpacking libseccomp2:arm64 (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:arm64.
+Preparing to unpack .../14-libseccomp-dev_2.3.1-2.1+deb9u1_arm64.deb ...
+Unpacking libseccomp-dev:arm64 (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp2:amd64.
+Preparing to unpack .../15-libseccomp2_2.3.1-2.1+deb9u1_amd64.deb ...
+Unpacking libseccomp2:amd64 (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libseccomp-dev:amd64.
+Preparing to unpack .../16-libseccomp-dev_2.3.1-2.1+deb9u1_amd64.deb ...
+Unpacking libseccomp-dev:amd64 (2.3.1-2.1+deb9u1) ...
+Selecting previously unselected package libapparmor1:amd64.
+Preparing to unpack .../17-libapparmor1_2.11.0-3+deb9u2_amd64.deb ...
+Unpacking libapparmor1:amd64 (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:amd64.
+Preparing to unpack .../18-libapparmor-dev_2.11.0-3+deb9u2_amd64.deb ...
+Unpacking libapparmor-dev:amd64 (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor1:armhf.
+Preparing to unpack .../19-libapparmor1_2.11.0-3+deb9u2_armhf.deb ...
+Unpacking libapparmor1:armhf (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:armhf.
+Preparing to unpack .../20-libapparmor-dev_2.11.0-3+deb9u2_armhf.deb ...
+Unpacking libapparmor-dev:armhf (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor1:arm64.
+Preparing to unpack .../21-libapparmor1_2.11.0-3+deb9u2_arm64.deb ...
+Unpacking libapparmor1:arm64 (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:arm64.
+Preparing to unpack .../22-libapparmor-dev_2.11.0-3+deb9u2_arm64.deb ...
+Unpacking libapparmor-dev:arm64 (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor1:armel.
+Preparing to unpack .../23-libapparmor1_2.11.0-3+deb9u2_armel.deb ...
+Unpacking libapparmor1:armel (2.11.0-3+deb9u2) ...
+Selecting previously unselected package libapparmor-dev:armel.
+Preparing to unpack .../24-libapparmor-dev_2.11.0-3+deb9u2_armel.deb ...
+Unpacking libapparmor-dev:armel (2.11.0-3+deb9u2) ...
+Setting up gcc-6-base:arm64 (6.3.0-18+deb9u1) ...
+Setting up gcc-6-base:armel (6.3.0-18+deb9u1) ...
+Setting up gcc-6-base:armhf (6.3.0-18+deb9u1) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Setting up libseccomp2:amd64 (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor1:amd64 (2.11.0-3+deb9u2) ...
+Setting up libseccomp-dev:amd64 (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor-dev:amd64 (2.11.0-3+deb9u2) ...
+Setting up libc6:armhf (2.24-11+deb9u4) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Setting up libc6:arm64 (2.24-11+deb9u4) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Setting up libc6:armel (2.24-11+deb9u4) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Setting up libseccomp2:armhf (2.3.1-2.1+deb9u1) ...
+Setting up libseccomp2:armel (2.3.1-2.1+deb9u1) ...
+Setting up libseccomp2:arm64 (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor1:armhf (2.11.0-3+deb9u2) ...
+Setting up libapparmor1:arm64 (2.11.0-3+deb9u2) ...
+Setting up libapparmor1:armel (2.11.0-3+deb9u2) ...
+Setting up libgcc1:armhf (1:6.3.0-18+deb9u1) ...
+Setting up libgcc1:arm64 (1:6.3.0-18+deb9u1) ...
+Setting up libgcc1:armel (1:6.3.0-18+deb9u1) ...
+Setting up libseccomp-dev:armhf (2.3.1-2.1+deb9u1) ...
+Setting up libseccomp-dev:armel (2.3.1-2.1+deb9u1) ...
+Setting up libseccomp-dev:arm64 (2.3.1-2.1+deb9u1) ...
+Setting up libapparmor-dev:armhf (2.11.0-3+deb9u2) ...
+Setting up libapparmor-dev:arm64 (2.11.0-3+deb9u2) ...
+Setting up libapparmor-dev:armel (2.11.0-3+deb9u2) ...
+Processing triggers for libc-bin (2.24-11+deb9u4) ...
+Removing intermediate container fe1bb528ed2b
+ ---> f53f26c02087
+Step 32/112 : FROM runtime-dev-cross-${CROSS} AS runtime-dev
+ ---> d45ce2610e47
+Step 33/112 : FROM base AS tomlv
+ ---> 4659f1c353d9
+Step 34/112 : ENV INSTALL_BINARY_NAME=tomlv
+ ---> Running in a1af7def6c57
+Removing intermediate container a1af7def6c57
+ ---> 9611111f9d7a
+Step 35/112 : COPY hack/dockerfile/install/install.sh ./install.sh
+ ---> 495c3a23b8c5
+Step 36/112 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
+ ---> 0374197e5e7d
+Step 37/112 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
+ ---> Running in 85ac46cd0a6e
+[91m+ RM_GOPATH=0
++ TMP_GOPATH=
++ : /build
++ '[' -z '' ']'
+[0m[91m++ mktemp -d
++ export GOPATH=/tmp/tmp.d7sWHBnTL5
++ GOPATH=/tmp/tmp.d7sWHBnTL5
++ RM_GOPATH=1
+++ dirname ./install.sh
++ dir=.
++ bin=tomlv
++ shift
++ '[' '!' -f ./tomlv.installer ']'
++ . ./tomlv.installer
+++ TOMLV_COMMIT=3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
++ install_tomlv
++ echo 'Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005'
++ git clone https://github.com/BurntSushi/toml.git /tmp/tmp.d7sWHBnTL5/src/github.com/BurntSushi/toml
+Cloning into '/tmp/tmp.d7sWHBnTL5/src/github.com/BurntSushi/toml'...
+[0mInstall tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
+Set build name.
+New build name is '#39173'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins7403941901228034012.sh
+/tmp/jenkins7493803760007124605.sh: line 14: 16693 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker:$GITCOMMIT .
++ echo Ensuring container killed.
+Ensuring container killed.
++ docker rm -vf docker-pr54296
+Error: No such container: docker-pr54296
++ true
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/ubuntu/workspace/Docker-PRs:/workspace busybox chown -R 1000:1000 /workspace
+[Docker-PRs] $ /bin/sh -xe /tmp/jenkins191917510865439579.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log+ xargs tar -czf bundles.tar.gz
+ -o -name *.prof -o -name integration.test
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

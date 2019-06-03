@@ -1,368 +1,0 @@
-Started by user Gordon
-Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
-[EnvInject] - Loading node environment variables.
-Building remotely on ppc64le-ubuntu-25 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
-Running Prebuild steps
-[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins1291478783141633107.sh
-+ id -u
-+ id -g
-+ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
-chown: cannot access '/home/docker/workspace/Docker-PRs-powerpc/bundles': No such file or directory
-Failed build for hudson.tasks.Shell@39ff8a96
-Wiping out workspace first.
-Cloning the remote Git repository
-Cloning repository https://github.com/moby/moby.git
- > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
-Fetching upstream changes from https://github.com/moby/moby.git
- > git --version # timeout=10
- > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
- > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
- > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
- > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
-Fetching upstream changes from https://github.com/moby/moby.git
- > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
- > git rev-parse origin/master^{commit} # timeout=10
-Checking out Revision f76d6a078d881f410c00e8d900dcdfc2e026c841 (origin/master)
- > git config core.sparsecheckout # timeout=10
- > git checkout -f f76d6a078d881f410c00e8d900dcdfc2e026c841
-Commit message: "Merge pull request #38370 from farnasirim/36413-bind-dir-skip-copy"
- > git rev-list --no-walk f76d6a078d881f410c00e8d900dcdfc2e026c841 # timeout=10
-Set build name.
-New build name is '#38392'
-[Set GitHub commit status (universal)] PENDING on repos [] (sha:f76d6a0) with context:Docker-PRs-powerpc
-[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins4038770871353224828.sh
-From https://github.com/moby/moby
- * [new ref]         refs/pull/38392/head -> origin/pr/38392
-Merge made by the 'recursive' strategy.
- hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-Sending build context to Docker daemon  45.09MB
-Step 1/94 : FROM golang:1.11.4 AS base
- ---> c35b367ad4c4
-Step 2/94 : ARG APT_MIRROR=deb.debian.org
- ---> Using cache
- ---> 85edaf464cc2
-Step 3/94 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
- ---> Using cache
- ---> 6c4f58bf33dc
-Step 4/94 : FROM base AS criu
- ---> 6c4f58bf33dc
-Step 5/94 : ENV CRIU_VERSION 3.6
- ---> Using cache
- ---> b44eba0dccef
-Step 6/94 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
- ---> Using cache
- ---> fd9a23ad77c6
-Step 7/94 : FROM base AS registry
- ---> 6c4f58bf33dc
-Step 8/94 : ENV REGISTRY_COMMIT_SCHEMA1 ec87e9b6971d831f0eff752ddb54fb64693e51cd
- ---> Using cache
- ---> e12a3113d4e7
-Step 9/94 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
- ---> Using cache
- ---> 58c29d4b9f29
-Step 10/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& case $(dpkg --print-architecture) in 		amd64|ppc64*|s390x) 		(cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT_SCHEMA1"); 		GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH"; 			go build -buildmode=pie -o /build/registry-v2-schema1 github.com/docker/distribution/cmd/registry; 		;; 	   esac 	&& rm -rf "$GOPATH"
- ---> Using cache
- ---> 88fafd8215b2
-Step 11/94 : FROM base AS docker-py
- ---> 6c4f58bf33dc
-Step 12/94 : ENV DOCKER_PY_COMMIT 8b246db271a85d6541dc458838627e89c683e42f
- ---> Using cache
- ---> 89641e8e60f0
-Step 13/94 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
- ---> Using cache
- ---> 348eefd9015e
-Step 14/94 : FROM base AS swagger
- ---> 6c4f58bf33dc
-Step 15/94 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
- ---> Using cache
- ---> 234d532686a4
-Step 16/94 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
- ---> Using cache
- ---> 456fce04266a
-Step 17/94 : FROM base AS frozen-images
- ---> 6c4f58bf33dc
-Step 18/94 : RUN apt-get update && apt-get install -y jq ca-certificates --no-install-recommends
- ---> Using cache
- ---> f1ce4a9b4809
-Step 19/94 : COPY contrib/download-frozen-image-v2.sh /
- ---> Using cache
- ---> 37ecb70de64e
-Step 20/94 : RUN /download-frozen-image-v2.sh /build 	buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251 	busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0 	busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6 	debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60 	hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c
- ---> Running in 20447a81dced
-Downloading 'library/buildpack-deps:jessie@sha256:dd86dced7c9cd2a724e779730f0a53f93b7ef42228d4344b25ce9a42a1486251' (4 layers)...
-######################################################################## 100.0%
-#######                                                                   11.0%#####################                                                     29.9%######################################                                    53.1%#######################################################                   77.4%######################################################################## 100.0%
-######################################################################## 100.0%
-#######                                                                   10.8%############################                                              39.2%###################################################################       94.3%######################################################################## 100.0%
-######################################################################## 100.0%
-################                                                          22.7%#################################                                         46.4%####################################################                      72.4%#######################################################################   98.6%######################################################################## 100.0%
-######################################################################## 100.0%
-#####                                                                      7.1%############                                                              16.8%##################                                                        26.2%#########################                                                 34.9%###############################                                           43.9%####################################                                      51.3%############################################                              61.1%###################################################                       71.9%##########################################################                81.2%################################################################          89.2%#######################################################################   99.1%######################################################################## 100.0%
-
-Downloading 'library/busybox:latest@sha256:bbc3a03235220b170ba48a157dd097dd1379299370e1ed99ce976df0355d24f0' (1 layers)...
-######################################################################## 100.0%
-######################################################################## 100.0%
-
-Downloading 'library/busybox:glibc@sha256:0b55a30394294ab23b9afd58fab94e61a923f5834fba7ddbae7f8e0c11ba85e6' (1 layers)...
-######################################################################## 100.0%
-######################################################################## 100.0%
-
-Downloading 'library/debian:jessie@sha256:287a20c5f73087ab406e6b364833e3fb7b3ae63ca0eb3486555dc27ed32c6e60' (1 layers)...
-skipping existing c8c2d4a6b2e3
-
-Downloading 'library/hello-world:latest@sha256:be0cd392e45be79ffeffa6b05338b98ebb16c87b255f48e297ec7f98e123905c' (1 layers)...
-######################################################################## 100.0%
-######################################################################## 100.0%
-
-Download of images into '/build' complete.
-Use something like the following to load the result into a Docker daemon:
-  tar -cC '/build' . | docker load
-Removing intermediate container 20447a81dced
- ---> 9a295a2b0ddc
-Step 21/94 : FROM base AS runtime-dev
- ---> 6c4f58bf33dc
-Step 22/94 : RUN apt-get update && apt-get install -y 	libapparmor-dev 	libseccomp-dev
- ---> Running in bbd7c81f78fb
-Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
-Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
-Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
-Get:4 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
-Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
-Get:6 http://security.debian.org/debian-security stretch/updates/main ppc64el Packages [443 kB]
-Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main ppc64el Packages [5092 B]
-Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el Packages [6910 kB]
-Fetched 7664 kB in 2s (3196 kB/s)
-Reading package lists...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  libapparmor1 libseccomp2
-Suggested packages:
-  seccomp
-The following NEW packages will be installed:
-  libapparmor-dev libapparmor1 libseccomp-dev libseccomp2
-0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
-Need to get 296 kB of archives.
-After this operation, 1346 kB of additional disk space will be used.
-Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libseccomp2 ppc64el 2.3.1-2.1+deb9u1 [39.6 kB]
-Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libseccomp-dev ppc64el 2.3.1-2.1+deb9u1 [61.1 kB]
-Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libapparmor1 ppc64el 2.11.0-3+deb9u2 [77.1 kB]
-Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main ppc64el libapparmor-dev ppc64el 2.11.0-3+deb9u2 [118 kB]
-debconf: delaying package configuration, since apt-utils is not installed
-Fetched 296 kB in 0s (1823 kB/s)
-Selecting previously unselected package libseccomp2:ppc64el.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14948 files and directories currently installed.)
-Preparing to unpack .../libseccomp2_2.3.1-2.1+deb9u1_ppc64el.deb ...
-Unpacking libseccomp2:ppc64el (2.3.1-2.1+deb9u1) ...
-Selecting previously unselected package libseccomp-dev:ppc64el.
-Preparing to unpack .../libseccomp-dev_2.3.1-2.1+deb9u1_ppc64el.deb ...
-Unpacking libseccomp-dev:ppc64el (2.3.1-2.1+deb9u1) ...
-Selecting previously unselected package libapparmor1:ppc64el.
-Preparing to unpack .../libapparmor1_2.11.0-3+deb9u2_ppc64el.deb ...
-Unpacking libapparmor1:ppc64el (2.11.0-3+deb9u2) ...
-Selecting previously unselected package libapparmor-dev:ppc64el.
-Preparing to unpack .../libapparmor-dev_2.11.0-3+deb9u2_ppc64el.deb ...
-Unpacking libapparmor-dev:ppc64el (2.11.0-3+deb9u2) ...
-Processing triggers for libc-bin (2.24-11+deb9u3) ...
-Setting up libseccomp2:ppc64el (2.3.1-2.1+deb9u1) ...
-Setting up libapparmor1:ppc64el (2.11.0-3+deb9u2) ...
-Setting up libseccomp-dev:ppc64el (2.3.1-2.1+deb9u1) ...
-Setting up libapparmor-dev:ppc64el (2.11.0-3+deb9u2) ...
-Processing triggers for libc-bin (2.24-11+deb9u3) ...
-Removing intermediate container bbd7c81f78fb
- ---> 758ac6c54c61
-Step 23/94 : FROM base AS tomlv
- ---> 6c4f58bf33dc
-Step 24/94 : ENV INSTALL_BINARY_NAME=tomlv
- ---> Running in 7d7ae15dc04c
-Removing intermediate container 7d7ae15dc04c
- ---> 656b6b21b605
-Step 25/94 : COPY hack/dockerfile/install/install.sh ./install.sh
- ---> 04d506ab63c8
-Step 26/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
- ---> 508784b52362
-Step 27/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
- ---> Running in 9be027cd89f8
-+ RM_GOPATH=0
-+ TMP_GOPATH=
-+ : /build
-+ [[ -z '' ]]
-++ mktemp -d
-+ export GOPATH=/tmp/tmp.hQXO3CT0vI
-+ GOPATH=/tmp/tmp.hQXO3CT0vI
-+ RM_GOPATH=1
-++ dirname ./install.sh
-+ dir=.
-+ bin=tomlv
-+ shift
-+ [[ ! -f ./tomlv.installer ]]
-+ . ./tomlv.installer
-++ TOMLV_COMMIT=3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
-+ install_tomlv
-Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
-+ echo 'Install tomlv version 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005'
-+ git clone https://github.com/BurntSushi/toml.git /tmp/tmp.hQXO3CT0vI/src/github.com/BurntSushi/toml
-Cloning into '/tmp/tmp.hQXO3CT0vI/src/github.com/BurntSushi/toml'...
-+ cd /tmp/tmp.hQXO3CT0vI/src/github.com/BurntSushi/toml
-+ git checkout -q 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
-+ go build -v -buildmode=pie -o /build/tomlv github.com/BurntSushi/toml/cmd/tomlv
-errors
-internal/cpu
-internal/race
-runtime/internal/atomic
-runtime/internal/sys
-sync/atomic
-math
-internal/bytealg
-internal/testlog
-math/bits
-unicode/utf8
-unicode
-runtime
-encoding
-runtime/cgo
-strconv
-sync
-io
-reflect
-syscall
-bytes
-strings
-bufio
-path
-text/tabwriter
-internal/syscall/unix
-time
-internal/poll
-os
-sort
-path/filepath
-fmt
-io/ioutil
-log
-flag
-github.com/BurntSushi/toml
-github.com/BurntSushi/toml/cmd/tomlv
-Removing intermediate container 9be027cd89f8
- ---> 471a6442b4bf
-Step 28/94 : FROM base AS vndr
- ---> 6c4f58bf33dc
-Step 29/94 : ENV INSTALL_BINARY_NAME=vndr
- ---> Running in 8077d1351466
-Removing intermediate container 8077d1351466
- ---> d746bf48d748
-Step 30/94 : COPY hack/dockerfile/install/install.sh ./install.sh
- ---> 25851ab6664b
-Step 31/94 : COPY hack/dockerfile/install/$INSTALL_BINARY_NAME.installer ./
- ---> 15f56fb548ee
-Step 32/94 : RUN PREFIX=/build ./install.sh $INSTALL_BINARY_NAME
- ---> Running in b6b5a6ae6906
-+ RM_GOPATH=0
-+ TMP_GOPATH=
-+ : /build
-+ [[ -z '' ]]
-++ mktemp -d
-+ export GOPATH=/tmp/tmp.mwPI1n6ZmL
-+ GOPATH=/tmp/tmp.mwPI1n6ZmL
-+ RM_GOPATH=1
-++ dirname ./install.sh
-+ dir=.
-+ bin=vndr
-+ shift
-+ [[ ! -f ./vndr.installer ]]
-+ . ./vndr.installer
-++ VNDR_COMMIT=81cb8916aad3c8d06193f008dba3e16f82851f52
-Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52
-+ install_vndr
-+ echo 'Install vndr version 81cb8916aad3c8d06193f008dba3e16f82851f52'
-+ git clone https://github.com/LK4D4/vndr.git /tmp/tmp.mwPI1n6ZmL/src/github.com/LK4D4/vndr
-Cloning into '/tmp/tmp.mwPI1n6ZmL/src/github.com/LK4D4/vndr'...
-+ cd /tmp/tmp.mwPI1n6ZmL/src/github.com/LK4D4/vndr
-+ git checkout -q 81cb8916aad3c8d06193f008dba3e16f82851f52
-+ go build -buildmode=pie -v -o /build/vndr .
-errors
-internal/race
-internal/cpu
-runtime/internal/atomic
-runtime/internal/sys
-sync/atomic
-internal/bytealg
-unicode
-unicode/utf8
-math
-internal/testlog
-runtime
-math/bits
-encoding
-unicode/utf16
-container/list
-crypto/internal/subtle
-crypto/subtle
-vendor/golang_org/x/crypto/cryptobyte/asn1
-vendor/golang_org/x/net/dns/dnsmessage
-strconv
-internal/nettrace
-runtime/cgo
-crypto/rc4
-sync
-github.com/LK4D4/vndr/godl/singleflight
-io
-reflect
-syscall
-math/rand
-internal/singleflight
-bytes
-strings
-bufio
-path
-hash
-hash/crc32
-crypto/cipher
-crypto
-crypto/internal/randutil
-crypto/sha512
-crypto/aes
-time
-internal/syscall/unix
-crypto/hmac
-crypto/md5
-crypto/sha1
-crypto/sha256
-vendor/golang_org/x/text/transform
-/tmp/jenkins4038770871353224828.sh: line 11:  4508 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-powerpc:$GITCOMMIT -f Dockerfile .
-Set build name.
-New build name is '#38392'
-Build was aborted
-Aborted by Gordon
-Performing Post build task...
-Match found for : : True
-Logical operation result is TRUE
-Running script  : 
-Unable to find image 'docker-powerpc:b6083a2' locally
-docker: Error response from daemon: pull access denied for docker-powerpc, repository does not exist or may require 'docker login'.
-See 'docker run --help'.
-[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins8419645662398133666.sh
-POST BUILD TASK : SUCCESS
-END OF POST BUILD TASK : 0
-[PostBuildScript] - Executing post build scripts.
-[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins1749452106839367087.sh
-+ echo Chowning /workspace to jenkins user
-Chowning /workspace to jenkins user
-+ id -u
-+ id -g
-+ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
-[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7469598923835278922.sh
-+ echo Creating bundles.tar.gz
-Creating bundles.tar.gz
-+ find bundles -name *.log
-+ xargs tar -czf bundles.tar.gz
-find: ‘bundles’: No such file or directory
-tar: Cowardly refusing to create an empty archive
-Try 'tar --help' or 'tar --usage' for more information.
-+ true
-Archiving artifacts
-Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
-[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
-Finished: ABORTED

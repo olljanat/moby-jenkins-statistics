@@ -1,0 +1,170 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-3 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39281'
+[docker] $ sh -xe C:\Users\jenkins\jenkins3136936292178248884.sh
++ git fetch origin +refs/pull/39281/head:refs/remotes/origin/pr/39281
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/39281/head -> origin/pr/39281
++ git merge origin/pr/39281
+Updating 8d760280a2..c7d9599e3d
+Fast-forward
+ integration/service/update_test.go                 | 24 +++++++++---
+ vendor.conf                                        |  2 +-
+ .../manager/orchestrator/update/updater.go         | 45 ++++++----------------
+ 3 files changed, 32 insertions(+), 39 deletions(-)
+[docker] $ powershell.exe -NonInteractive -ExecutionPolicy ByPass "& 'C:\Users\jenkins\jenkins3762931125264761989.ps1'"
+
+INFO: executeCI.ps1 starting at Thu May 30 07:44:52 CUT 2019
+
+INFO: Script version 05-Feb-2019 09:03 PDT
+INFO: Running git version 2.18.0.windows.1
+INFO: Branch:rs1_release_inmarket Build:14393.2906.190401-1809
+INFO: Environment variables:
+
+Name                           Value                                                                                   
+----                           -----                                                                                   
+_                              /cygdrive/c/ProgramData/Oracle/Java/javapath/java                                       
+ALLUSERSPROFILE                C:\ProgramData                                                                          
+APPDATA                        C:\Users\jenkins\AppData\Roaming                                                        
+BASE_BRANCH                    master                                                                                  
+BUILD_CAUSE                    MANUALTRIGGER                                                                           
+BUILD_CAUSE_MANUALTRIGGER      true                                                                                    
+BUILD_DISPLAY_NAME             #39281                                                                                  
+BUILD_ID                       25368                                                                                   
+BUILD_NUMBER                   25368                                                                                   
+BUILD_TAG                      jenkins-Docker-PRs-WoW-RS1-25368                                                        
+BUILD_URL                      https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/25368/                         
+CommonProgramFiles             C:\Program Files\Common Files                                                           
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files                                                     
+CommonProgramW6432             C:\Program Files\Common Files                                                           
+COMPUTERNAME                   jenkins-rs1-3                                                                           
+COMSPEC                        C:\Windows\system32\cmd.exe                                                             
+ConfigSet                      rs                                                                                      
+CYGWIN                         binmode ntsec                                                                           
+EXECUTOR_NUMBER                0                                                                                       
+GIT_AUTHOR_EMAIL               janky@dockerproject.org                                                                 
+GIT_AUTHOR_NAME                Docker Jenkins                                                                          
+GIT_BASE_REPO                  moby/moby                                                                               
+GIT_BRANCH                     origin/master                                                                           
+GIT_COMMIT                     8d760280a232f98d92440539e1e8a8f66c213bdb                                                
+GIT_COMMITTER_EMAIL            janky@dockerproject.org                                                                 
+GIT_COMMITTER_NAME             Docker Jenkins                                                                          
+GIT_HEAD_REPO                  dperny/docker                                                                           
+GIT_PREVIOUS_COMMIT            8d760280a232f98d92440539e1e8a8f66c213bdb                                                
+GIT_PREVIOUS_SUCCESSFUL_COMMIT b1239f0a9f5acb08436d7c97092b3e0f5e75fcaa                                                
+GIT_SHA1                       c7d9599e3d95ce588113dc351facb2befac062fa                                                
+GIT_URL                        https://github.com/moby/moby.git                                                        
+GITHUB_URL                     https://github.com/moby/moby/pull/39281                                                 
+HOME                           C:\cygwin\home\jenkins                                                                  
+HOMEDRIVE                      C:                                                                                      
+HOMEPATH                       \cygwin\home\jenkins                                                                    
+HUDSON_COOKIE                  369814df-cf71-4aac-b827-b0da0232cdb7                                                    
+HUDSON_HOME                    /var/jenkins_home                                                                       
+HUDSON_SERVER_COOKIE           5654907fc74b1465                                                                        
+HUDSON_URL                     https://jenkins.dockerproject.org/                                                      
+JENKINS_HOME                   /var/jenkins_home                                                                       
+JENKINS_SERVER_COOKIE          5654907fc74b1465                                                                        
+JENKINS_URL                    https://jenkins.dockerproject.org/                                                      
+JOB_BASE_NAME                  Docker-PRs-WoW-RS1                                                                      
+JOB_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/display/redirect               
+JOB_NAME                       Docker-PRs-WoW-RS1                                                                      
+JOB_URL                        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/                               
+LOCALAPPDATA                   C:\Users\jenkins\AppData\Local                                                          
+LOGNAME                        jenkins                                                                                 
+LOGONSERVER                    \\jenkins-rs1-3                                                                         
+MAIL                           /var/spool/mail//jenkins                                                                
+NODE_LABELS                    azure-windows-rs1-3 windows-rs1                                                         
+NODE_NAME                      azure-windows-rs1-3                                                                     
+NUMBER_OF_PROCESSORS           4                                                                                       
+OLDPWD                         /home/jenkins                                                                           
+OS                             Windows_NT                                                                              
+PATH                           C:\cygwin\bin;C:\ProgramData\Oracle\Java\javapath;C:\pstools;C:\Program Files\Notepad...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL                              
+PR                             39281                                                                                   
+PROCESSOR_ARCHITECTURE         AMD64                                                                                   
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 79 Stepping 1, GenuineIntel                                      
+PROCESSOR_LEVEL                6                                                                                       
+PROCESSOR_REVISION             4f01                                                                                    
+ProgramData                    C:\ProgramData                                                                          
+PROGRAMFILES                   C:\Program Files                                                                        
+ProgramFiles(x86)              C:\Program Files (x86)                                                                  
+ProgramW6432                   C:\Program Files                                                                        
+PSExecutionPolicyPreference    Bypass                                                                                  
+PSModulePath                   C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0...
+PUBLIC                         C:\Users\Public                                                                         
+PWD                            /cygdrive/c/workspace                                                                   
+ROOT_BUILD_CAUSE               MANUALTRIGGER                                                                           
+ROOT_BUILD_CAUSE_MANUALTRIGGER true                                                                                    
+RUN_CHANGES_DISPLAY_URL        https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/25368/display/redirect?page=...
+RUN_DISPLAY_URL                https://jenkins.dockerproject.org/job/Docker-PRs-WoW-RS1/25368/display/redirect         
+SHELL                          /bin/bash                                                                               
+SHLVL                          1                                                                                       
+SOURCES_DRIVE                  c                                                                                       
+SOURCES_SUBDIR                 gopath                                                                                  
+SSH_CLIENT                     52.88.204.51 15702 22                                                                   
+SSH_CONNECTION                 52.88.204.51 15702 10.0.0.12 22                                                         
+SYSTEMDRIVE                    C:                                                                                      
+SYSTEMROOT                     C:\Windows                                                                              
+TEMP                           d:\temp                                                                                 
+TESTRUN_DRIVE                  d                                                                                       
+TESTRUN_SUBDIR                 CI                                                                                      
+USER                           jenkins                                                                                 
+USERDOMAIN                     jenkins-rs1-3                                                                           
+USERNAME                       jenkins                                                                                 
+USERPROFILE                    C:\Users\jenkins                                                                        
+WINDIR                         C:\Windows                                                                              
+WORKSPACE                      /gopath/src/github.com/docker/docker                                                    
+
+
+
+INFO: PR#39281 (https://github.com/docker/docker/pull/39281)
+INFO: Sources under c:\gopath\...
+INFO: Test run under d:\CI\...
+INFO: Running in C:\gopath\src\github.com\docker\docker
+INFO: docker/docker repository was found
+error during connect: Get http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.40/images/json: open //./pipe/docker_engine: The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.
+INFO: Loading windowsservercore.tar from disk. This may take some time...
+error during connect: Post http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.40/images/load?quiet=1: open //./pipe/docker_engine: The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.
+
+
+ERROR: Failed 'ERROR: Failed to load d:\baseimages\windowsservercore.tar' at 05/30/2019 07:44:52
+At C:\gopath\src\github.com\docker\docker\hack\ci\windows.ps1:342 char:17
++ ...             Throw $("ERROR: Failed to load $readBaseFrom`:\baseimages ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+INFO: Tidying up at end of run
+INFO: Nuke-Everything...
+error during connect: Get http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.40/containers/json?all=1: open //./pipe/docker_engine: The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.
+
+INFO: executeCI.ps1 exiting at Thu May 30 07:44:52 CUT 2019. Duration 00:00:00.4319993
+
+Build step 'Windows PowerShell' marked build as failure
+Set build name.
+New build name is '#39281'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE

@@ -1,0 +1,121 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on ppc64le-ubuntu-32 (linux ppc64le-ubuntu-1604 ppc64le) in workspace /home/docker/workspace/Docker-PRs-powerpc
+Running Prebuild steps
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins2066646293375096831.sh
++ id -u
++ id -g
++ sudo chown -R 1001:1001 /home/docker/workspace/Docker-PRs-powerpc/bundles
+chown: cannot access '/home/docker/workspace/Docker-PRs-powerpc/bundles': No such file or directory
+Failed build for hudson.tasks.Shell@606cc55d
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/docker/workspace/Docker-PRs-powerpc # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39283'
+[Set GitHub commit status (universal)] PENDING on repos [] (sha:8d76028) with context:Docker-PRs-powerpc
+[Docker-PRs-powerpc] $ /bin/bash /tmp/jenkins5096182257660594689.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39283/head -> origin/pr/39283
+Updating 8d76028..cf44038
+Fast-forward
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> 72b3a9c5fedc
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 026a45d42fa7
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> 6e97b2956c25
+Step 5/112 : FROM base AS criu
+ ---> 6e97b2956c25
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> d8620e2447a9
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> 9973cbc846c6
+Step 8/112 : FROM base AS registry
+ ---> 6e97b2956c25
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 1fcc209c9856
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Using cache
+ ---> cfce6b6be0cd
+Step 11/112 : FROM base AS docker-py
+ ---> 6e97b2956c25
+Step 12/112 : ENV DOCKER_PY_COMMIT ac922192959870774ad8428344d9faa0555f7ba6
+ ---> Using cache
+ ---> 200855dc43cf
+Step 13/112 : RUN git clone https://github.com/docker/docker-py.git /build 	&& cd /build 	&& git checkout -q $DOCKER_PY_COMMIT
+ ---> Using cache
+ ---> 8b6f2d83da3e
+Step 14/112 : FROM base AS swagger
+ ---> 6e97b2956c25
+Step 15/112 : ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+ ---> Using cache
+ ---> c6a7b4020082
+Step 16/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/go-swagger/go-swagger.git "$GOPATH/src/github.com/go-swagger/go-swagger" 	&& (cd "$GOPATH/src/github.com/go-swagger/go-swagger" && git checkout -q "$GO_SWAGGER_COMMIT") 	&& go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger 	&& rm -rf "$GOPATH"
+ ---> Running in cf9dea355c4c
+[91m+ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.ClE2CzmYVb
++ git clone https://github.com/go-swagger/go-swagger.git /tmp/tmp.ClE2CzmYVb/src/github.com/go-swagger/go-swagger
+[0m[91mCloning into '/tmp/tmp.ClE2CzmYVb/src/github.com/go-swagger/go-swagger'...
+[0m[91m+ cd /tmp/tmp.ClE2CzmYVb/src/github.com/go-swagger/go-swagger
++ git checkout -q c28258affb0b6251755d92489ef685af8d4ff3eb
+[0m[91m+ go build -o /build/swagger github.com/go-swagger/go-swagger/cmd/swagger
+[0m/tmp/jenkins5096182257660594689.sh: line 11: 25322 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-powerpc:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#39283'
+Build was aborted
+Aborted by Gordon
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : 
+Unable to find image 'docker-powerpc:cf44038' locally
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins7962065097243281216.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins5402885819049986362.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/docker/workspace/Docker-PRs-powerpc:/workspace ppc64le/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-powerpc] $ /bin/sh -xe /tmp/jenkins4304095178398086964.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
++ xargs tar -czf bundles.tar.gz
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[WS-CLEANUP] Deleting project workspace...[WS-CLEANUP] done
+Finished: ABORTED

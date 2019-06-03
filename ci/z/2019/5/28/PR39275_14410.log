@@ -1,0 +1,106 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-32 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins61405912889929787.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+2373f9d1c068: Pulling fs layer
+2373f9d1c068: Verifying Checksum
+2373f9d1c068: Download complete
+2373f9d1c068: Pull complete
+Digest: sha256:0b671b6a323d86aa6165883f698b557ca257c3a3ffa1e3152ffb6467e7ac11b3
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@2d096b56
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38
+Commit message: "Merge pull request #39242 from arkodg/lb-stale-force-leave"
+ > git rev-list --no-walk d128be3d4d493eec2dd3373ce044b8ced03b677e # timeout=10
+Set build name.
+New build name is '#39275'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins8479900694346722769.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39275/head -> origin/pr/39275
+Updating c7a0eaf..0724b8b
+Fast-forward
+ contrib/init/systemd/docker.socket | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+1.12.5: Pulling from library/golang
+3602dd773e45: Pulling fs layer
+412a17b553a5: Pulling fs layer
+5007dca2cc2a: Pulling fs layer
+612e650c4b45: Pulling fs layer
+1821e00782c1: Pulling fs layer
+59889e9dafcc: Pulling fs layer
+d1bebbd28c92: Pulling fs layer
+612e650c4b45: Waiting
+1821e00782c1: Waiting
+59889e9dafcc: Waiting
+d1bebbd28c92: Waiting
+412a17b553a5: Verifying Checksum
+412a17b553a5: Download complete
+5007dca2cc2a: Verifying Checksum
+5007dca2cc2a: Download complete
+3602dd773e45: Verifying Checksum
+3602dd773e45: Download complete
+612e650c4b45: Verifying Checksum
+612e650c4b45: Download complete
+d1bebbd28c92: Verifying Checksum
+d1bebbd28c92: Download complete
+59889e9dafcc: Verifying Checksum
+59889e9dafcc: Download complete
+1821e00782c1: Verifying Checksum
+1821e00782c1: Download complete
+3602dd773e45: Pull complete
+412a17b553a5: Pull complete
+5007dca2cc2a: Pull complete
+612e650c4b45: Pull complete
+1821e00782c1: Pull complete
+/tmp/jenkins8479900694346722769.sh: line 12: 26911 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-s390x:$GITCOMMIT -f Dockerfile .
+Unable to find image 'docker-s390x:0724b8b' locally
+Set build name.
+New build name is '#39275'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins1382152944588150025.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins1224476871631237508.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
++ xargs tar -czf bundles.tar.gz
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

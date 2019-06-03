@@ -1,0 +1,98 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-28 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins7582731123111461482.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Success build forhudson.tasks.Shell@2d096b56
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision 8d760280a232f98d92440539e1e8a8f66c213bdb (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d760280a232f98d92440539e1e8a8f66c213bdb
+Commit message: "Merge pull request #39275 from wiktor-k/move-var-run-to-run"
+ > git rev-list --no-walk 8d760280a232f98d92440539e1e8a8f66c213bdb # timeout=10
+Set build name.
+New build name is '#39283'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins2057340757900909124.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39283/head -> origin/pr/39283
+Updating 8d76028..539f27d
+Fast-forward
+ hack/ci/windows.ps1 | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+Sending build context to Docker daemon     48MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+ ---> b47f884b941c
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Using cache
+ ---> 9e0a7f7680ea
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Using cache
+ ---> f126185994e6
+Step 5/112 : FROM base AS criu
+ ---> f126185994e6
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Using cache
+ ---> b76f721f539f
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Using cache
+ ---> c5d651807387
+Step 8/112 : FROM base AS registry
+ ---> f126185994e6
+Step 9/112 : ENV REGISTRY_COMMIT 47a064d4195a9b56133891bbb13620c3ac83a827
+ ---> Using cache
+ ---> 4eaf7e985931
+Step 10/112 : RUN set -x 	&& export GOPATH="$(mktemp -d)" 	&& git clone https://github.com/docker/distribution.git "$GOPATH/src/github.com/docker/distribution" 	&& (cd "$GOPATH/src/github.com/docker/distribution" && git checkout -q "$REGISTRY_COMMIT") 	&& GOPATH="$GOPATH/src/github.com/docker/distribution/Godeps/_workspace:$GOPATH" 		go build -buildmode=pie -o /build/registry-v2 github.com/docker/distribution/cmd/registry 	&& rm -rf "$GOPATH"
+ ---> Running in 2f1a9722a49e
+[91m+ mktemp -d
+[0m[91m+ export GOPATH=/tmp/tmp.b4gUe9O6YB
++ git clone https://github.com/docker/distribution.git /tmp/tmp.b4gUe9O6YB/src/github.com/docker/distribution
+[0m[91mCloning into '/tmp/tmp.b4gUe9O6YB/src/github.com/docker/distribution'...
+[0m[91m+ [0m[91mcd /tmp/tmp.b4gUe9O6YB/src/github.com/docker/distribution[0m[91m
+[0m[91m+ [0m[91mgit[0m[91m checkout[0m[91m -q[0m[91m 47a064d4195a9b56133891bbb13620c3ac83a827[0m[91m
+[0m[91m+ GOPATH=/tmp/tmp.b4gUe9O6YB/src/github.com/docker/distribution/Godeps/_workspace:/tmp/tmp.b4gUe9O6YB go build -buildmode=pie -o[0m[91m /build/registry-v2 github.com/docker/distribution/cmd/registry
+[0m/tmp/jenkins2057340757900909124.sh: line 12: 19883 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-s390x:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#39283'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+Unable to find image 'docker-s390x:539f27d' locally
+docker: Error response from daemon: pull access denied for docker-s390x, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins7818161874255381045.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins2324176629944261189.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ + xargs tar -czf bundles.tar.gz
+find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

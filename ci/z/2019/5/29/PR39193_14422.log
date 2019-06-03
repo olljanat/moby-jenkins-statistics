@@ -1,0 +1,146 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on s390x-ubuntu-26 (linux s390x-ubuntu-1604 s390x) in workspace /home/jenkins/workspace/Docker-PRs-s390x
+Running Prebuild steps
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins2108998141669252460.sh
++ pwd
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+Unable to find image 's390x/busybox:latest' locally
+latest: Pulling from s390x/busybox
+2373f9d1c068: Pulling fs layer
+2373f9d1c068: Verifying Checksum
+2373f9d1c068: Download complete
+2373f9d1c068: Pull complete
+Digest: sha256:0b671b6a323d86aa6165883f698b557ca257c3a3ffa1e3152ffb6467e7ac11b3
+Status: Downloaded newer image for s390x/busybox:latest
+Success build forhudson.tasks.Shell@2d096b56
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init /home/jenkins/workspace/Docker-PRs-s390x # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse origin/master^{commit} # timeout=10
+Checking out Revision b1239f0a9f5acb08436d7c97092b3e0f5e75fcaa (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b1239f0a9f5acb08436d7c97092b3e0f5e75fcaa
+Commit message: "Merge pull request #39277 from olljanat/fix-code-on-master"
+ > git rev-list --no-walk b1239f0a9f5acb08436d7c97092b3e0f5e75fcaa # timeout=10
+Set build name.
+New build name is '#39193'
+[Docker-PRs-s390x] $ /bin/bash /tmp/jenkins7387665730879965988.sh
+From https://github.com/moby/moby
+ * [new ref]         refs/pull/39193/head -> origin/pr/39193
+Auto-merging layer/layer_store.go
+Auto-merging internal/test/daemon/daemon.go
+Merge made by the 'recursive' strategy.
+ integration/image/remove_unix_test.go | 88 ++++++++++++++++++++++++++++++++
+ internal/test/daemon/daemon.go        |  7 +++
+ internal/test/daemon/ops.go           |  7 +++
+ internal/test/daemon/ops_unix.go      | 34 +++++++++++++
+ layer/filestore.go                    | 95 ++++++++++++++++++++++++++++++++++-
+ layer/layer_store.go                  | 34 +++++++++++--
+ 6 files changed, 259 insertions(+), 6 deletions(-)
+ create mode 100644 integration/image/remove_unix_test.go
+ create mode 100644 internal/test/daemon/ops_unix.go
+Sending build context to Docker daemon  48.01MB
+Step 1/112 : ARG CROSS="false"
+Step 2/112 : FROM golang:1.12.5 AS base
+1.12.5: Pulling from library/golang
+3602dd773e45: Pulling fs layer
+412a17b553a5: Pulling fs layer
+5007dca2cc2a: Pulling fs layer
+612e650c4b45: Pulling fs layer
+1821e00782c1: Pulling fs layer
+59889e9dafcc: Pulling fs layer
+d1bebbd28c92: Pulling fs layer
+1821e00782c1: Waiting
+59889e9dafcc: Waiting
+d1bebbd28c92: Waiting
+612e650c4b45: Waiting
+5007dca2cc2a: Verifying Checksum
+5007dca2cc2a: Download complete
+412a17b553a5: Verifying Checksum
+412a17b553a5: Download complete
+3602dd773e45: Verifying Checksum
+3602dd773e45: Download complete
+612e650c4b45: Verifying Checksum
+612e650c4b45: Download complete
+d1bebbd28c92: Verifying Checksum
+d1bebbd28c92: Download complete
+1821e00782c1: Verifying Checksum
+1821e00782c1: Download complete
+3602dd773e45: Pull complete
+412a17b553a5: Pull complete
+59889e9dafcc: Verifying Checksum
+59889e9dafcc: Download complete
+5007dca2cc2a: Pull complete
+612e650c4b45: Pull complete
+1821e00782c1: Pull complete
+59889e9dafcc: Pull complete
+d1bebbd28c92: Pull complete
+Digest: sha256:cf0b9f69ad1edd652a7f74a1586080b15bf6f688c545044407e28805066ef2cb
+Status: Downloaded newer image for golang:1.12.5
+ ---> b47f884b941c
+Step 3/112 : ARG APT_MIRROR=deb.debian.org
+ ---> Running in d410afbb4e8c
+Removing intermediate container d410afbb4e8c
+ ---> 8381f14d5e75
+Step 4/112 : RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
+ ---> Running in f61d48061afa
+Removing intermediate container f61d48061afa
+ ---> c886c695d4c7
+Step 5/112 : FROM base AS criu
+ ---> c886c695d4c7
+Step 6/112 : ENV CRIU_VERSION 3.11
+ ---> Running in 0fd92a589fe1
+Removing intermediate container 0fd92a589fe1
+ ---> dad83be6a18a
+Step 7/112 : RUN apt-get update && apt-get install -y 	libnet-dev 	libprotobuf-c0-dev 	libprotobuf-dev 	libnl-3-dev 	libcap-dev 	protobuf-compiler 	protobuf-c-compiler 	python-protobuf 	&& mkdir -p /usr/src/criu 	&& curl -sSL https://github.com/checkpoint-restore/criu/archive/v${CRIU_VERSION}.tar.gz | tar -C /usr/src/criu/ -xz --strip-components=1 	&& cd /usr/src/criu 	&& make 	&& make PREFIX=/build/ install-criu
+ ---> Running in d5d993e4eacb
+Get:1 http://security.debian.org/debian-security stretch/updates InRelease [94.3 kB]
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [91.0 kB]
+Get:4 http://security.debian.org/debian-security stretch/updates/main s390x Packages [475 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2434 B]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch-updates/main s390x Packages [27.1 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main s390x Packages [6852 kB]
+Fetched 7660 kB in 1s (4641 kB/s)
+Reading package lists.../tmp/jenkins7387665730879965988.sh: line 12:  9822 Terminated              docker build --rm --force-rm --build-arg APT_MIRROR=cdn-fastly.deb.debian.org -t docker-s390x:$GITCOMMIT -f Dockerfile .
+Set build name.
+New build name is '#39193'
+Build was aborted
+Aborted by Gordon
+[PostBuildScript] - Executing post build scripts.
+Unable to find image 'docker-s390x:c6826fb' locally
+docker: Error response from daemon: pull access denied for docker-s390x, repository does not exist or may require 'docker login'.
+See 'docker run --help'.
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins1842678029513704342.sh
++ echo Chowning /workspace to jenkins user
+Chowning /workspace to jenkins user
++ id -u
++ id -g
++ docker run --rm -v /home/jenkins/workspace/Docker-PRs-s390x:/workspace s390x/busybox chown -R 1001:1001 /workspace
+[Docker-PRs-s390x] $ /bin/sh -xe /tmp/jenkins649705108391918818.sh
++ echo Creating bundles.tar.gz
+Creating bundles.tar.gz
++ xargs tar -czf bundles.tar.gz
++ find bundles -name *.log
+find: ‘bundles’: No such file or directory
+tar: Cowardly refusing to create an empty archive
+Try 'tar --help' or 'tar --usage' for more information.
++ true
+Archiving artifacts
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: ABORTED

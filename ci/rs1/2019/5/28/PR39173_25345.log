@@ -1,0 +1,41 @@
+Started by user Gordon
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+[EnvInject] - Loading node environment variables.
+Building remotely on azure-windows-rs1-8 (windows-rs1) in workspace /gopath/src/github.com/docker/docker
+No credentials specified
+Wiping out workspace first.
+Cloning the remote Git repository
+Cloning repository https://github.com/moby/moby.git
+ > git init C:\gopath\src\github.com\docker\docker # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git --version # timeout=10
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/moby/moby.git # timeout=10
+Fetching upstream changes from https://github.com/moby/moby.git
+ > git fetch --tags --progress https://github.com/moby/moby.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse "origin/master^{commit}" # timeout=10
+Checking out Revision c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38 (origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38
+Commit message: "Merge pull request #39242 from arkodg/lb-stale-force-leave"
+ > git rev-list --no-walk c7a0eaf00425bbaefc0232ae8eadb2edc49b3b38 # timeout=10
+Set build name.
+New build name is '#39173'
+[docker] $ sh -xe C:\Users\jenkins\jenkins486290879841303863.sh
++ git fetch origin +refs/pull/39173/head:refs/remotes/origin/pr/39173
+From https://github.com/moby/moby
+ * [new ref]               refs/pull/39173/head -> origin/pr/39173
++ git merge origin/pr/39173
+Auto-merging vendor.conf
+CONFLICT (content): Merge conflict in vendor.conf
+Auto-merging daemon/cluster/executor/container/container.go
+Auto-merging api/swagger.yaml
+Automatic merge failed; fix conflicts and then commit the result.
+Build step 'Execute shell' marked build as failure
+Set build name.
+New build name is '#39173'
+[PostBuildScript] - Executing post build scripts.
+Notifying endpoint with url 'https://leeroy.dockerproject.org/notification/jenkins'
+Finished: FAILURE
